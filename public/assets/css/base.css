@@ -1,7 +1,11 @@
 * {
-    box-sizing: inherit;
+    box-sizing: border-box;
 }
 
 html {
     font-size: 62.5%;
+}
+
+button {
+    font-size: 1.6rem;
 }

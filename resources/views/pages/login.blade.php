@@ -12,7 +12,7 @@
                 <div class="login-content">
                     <div class="login-logo">Welcome to The Admin Team</div>
                     <div class="login-form">
-                        <form action="/login" method="POST">
+                        <form action="/loginHandler" method="POST">
                             @csrf
                             <div class="form-group">
                                 <input class="au-input au-input--full" type="email" name="email" placeholder="Email"

@@ -36,7 +36,7 @@
                                 <input class="au-input au-input--full" type="text" name="fullName"
                                     placeholder="Full name" required>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group m-b-20">
                                 <input class="au-input au-input--full" type="text" name="phone"
                                     placeholder="Phone number" required>
                             </div>

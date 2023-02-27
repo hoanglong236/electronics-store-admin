@@ -1,0 +1,10 @@
+.logo-wrapper {
+    min-width: 50%;
+    width: 140px;
+}
+
+.login-logo {
+    font-size: 1.6rem;
+    text-align: center;
+    margin-bottom: 3rem;
+}

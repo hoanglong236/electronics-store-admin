@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,3 +22,7 @@ Route::get('/login', [AdminController::class, 'index']);
 Route::post('/loginHandler', [AdminController::class, 'loginHandler']);
 Route::get('/register',[AdminController::class, 'register']);
 Route::post('/registerHandler', [AdminController::class, 'registerHandler']);
+Route::post('/logout', [AdminController::class, 'logout']);
+
+
+Route::get('/dashboard',[DashboardController::class, 'index']);
