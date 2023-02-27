@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\AdminController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,6 +15,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// AdminController Routing
+Route::get('/', [AdminController::class, 'index']);
+Route::get('/login', [AdminController::class, 'index']);
+Route::post('/loginHandler', [AdminController::class, 'loginHandler']);
+Route::get('/register',[AdminController::class, 'register']);
+Route::post('/registerHandler', [AdminController::class, 'registerHandler']);
