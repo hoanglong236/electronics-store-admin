@@ -9,21 +9,22 @@ use Illuminate\Support\Facades\Log;
 
 class AdminService
 {
-    public function login($loginDTO) {
-        $adminEntity = Admin::where('email', $loginDTO->email)->first();
+    public function login($loginProperties) {
+        $admin = Admin::where('email', $loginProperties['email'])->first();
 
-        if (!isset($adminEntity->id)) {
+        if (is_null($admin)) {
             return false;
         }
-        if (Hash::check($loginDTO->password, $adminEntity->password)) {
-            Session::put('ADMIN_LOGIN', true);
-            Session::put('ADMIN_ID', $adminEntity->id);
-            Session::put('ADMIN_NAME', $adminEntity->full_name);
-
-            Log::info("User ". $adminEntity->id . " logged in successfully.");
-            return true;
+        if (!Hash::check($loginProperties['password'], $admin->password)) {
+            return false;
         }
-        return false;
+
+        Session::put('ADMIN_LOGIN', true);
+        Session::put('ADMIN_ID', $admin->id);
+        Session::put('ADMIN_NAME', $admin->name);
+
+        Log::info("User ". $admin->id . " logged in successfully.");
+        return true;
     }
 
     public function logout() {
@@ -32,15 +33,15 @@ class AdminService
         Session::forget('ADMIN_NAME');
     }
 
-    public function register($registerDTO)
+    public function register($registerProperties)
     {
-        $adminEntity = new Admin();
+        $admin = new Admin();
 
-        $adminEntity->email = $registerDTO->email;
-        $adminEntity->password = Hash::make($registerDTO->password);
-        $adminEntity->full_name = $registerDTO->fullName;
-        $adminEntity->phone = $registerDTO->phone;
+        $admin->email = $registerProperties['email'];
+        $admin->password = Hash::make($registerProperties['password']);
+        $admin->name = $registerProperties['name'];
+        $admin->phone = $registerProperties['phone'];
 
-        $adminEntity->save();
+        $admin->save();
     }
 }

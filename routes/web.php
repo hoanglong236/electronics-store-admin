@@ -1,9 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DashboardController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,12 +16,17 @@ use App\Http\Controllers\DashboardController;
 */
 
 // AdminController Routing
-Route::get('/', [AdminController::class, 'index']);
-Route::get('/login', [AdminController::class, 'index']);
-Route::post('/loginHandler', [AdminController::class, 'loginHandler']);
-Route::get('/register',[AdminController::class, 'register']);
-Route::post('/registerHandler', [AdminController::class, 'registerHandler']);
-Route::post('/logout', [AdminController::class, 'logout']);
+Route::group(['prefix' => 'admin'], function () {
+    Route::get('', [AdminController::class, 'index']);
+    Route::get('/login', [AdminController::class, 'index'])->name('admin.login');
+    Route::post('/login-handler', [AdminController::class, 'loginHandler'])->name(
+        'admin.login.handler');
 
+    Route::get('/register', [AdminController::class, 'register'])->name('admin.register');
+    Route::post('/register-handler', [AdminController::class, 'registerHandler'])->name(
+        'admin.register.handler');
 
-Route::get('/dashboard',[DashboardController::class, 'index']);
+    Route::get('/logout', [AdminController::class, 'logout'])->name('admin.logout');
+});
+
+Route::get('/dashboard', [DashboardController::class, 'index']);

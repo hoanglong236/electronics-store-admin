@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Services\AdminService;
 use App\Http\Controllers\DashboardController;
+use App\Http\Requests\AdminLoginRequest;
+use App\Http\Requests\AdminRegisterRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
-use stdClass;
+use App\Common\Constants;
 
 class AdminController extends Controller
 {
@@ -20,21 +22,17 @@ class AdminController extends Controller
 
     public function index()
     {
-        return view('pages.login', ['pageTitle' => 'Login']);
+        return view('pages.admin.login', ['pageTitle' => 'Login']);
     }
 
-    public function loginHandler(Request $request)
+    public function loginHandler(AdminLoginRequest $adminLoginRequest)
     {
-        $loginDTO = new stdClass;
-
-        $loginDTO->email = $request->post('email');
-        $loginDTO->password = $request->post('password');
-
-        if ($this->adminService->login($loginDTO)) {
+        $loginValidatedRequest = $adminLoginRequest->validated();
+        if ($this->adminService->login($loginValidatedRequest)) {
             return redirect()->action([DashboardController::class, 'index']);
         }
 
-        Session::flash('error_mess', 'Please enter valid login details');
+        Session::flash(Constants::ACTION_ERROR, Constants::LOGIN_DETAIL_INVALID);
         return redirect()->action([AdminController::class, 'index']);
     }
 
@@ -42,27 +40,21 @@ class AdminController extends Controller
     {
         $this->adminService->logout();
 
-        Session::flash('success_mess', 'Logout successfully');
+        Session::flash(Constants::ACTION_SUCCESS, Constants::LOGOUT_SUCCESS);
         return redirect()->action([AdminController::class, 'index']);
     }
 
     public function register()
     {
-        return view('pages.register', ['pageTitle' => 'Register']);
+        return view('pages.admin.register', ['pageTitle' => 'Register']);
     }
 
-    public function registerHandler(Request $request)
+    public function registerHandler(AdminRegisterRequest $adminRegisterRequest)
     {
-        $registerDTO = new stdClass;
+        $registerValidatedRequest = $adminRegisterRequest->validated();
+        $this->adminService->register($registerValidatedRequest);
 
-        $registerDTO->email = $request->post('email');
-        $registerDTO->password = $request->post('password');
-        $registerDTO->fullName = $request->post('fullName');
-        $registerDTO->phone = $request->post('phone');
-
-        $this->adminService->register($registerDTO);
-
-        Session::flash('success_mess', 'Register successfully');
+        Session::flash(Constants::ACTION_SUCCESS, Constants::REGISTER_SUCCESS);
         return redirect()->action([AdminController::class, 'index']);
     }
 }

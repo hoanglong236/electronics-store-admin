@@ -281,10 +281,10 @@ section {
 
 @media (max-width: 991px) {
     .page-wrapper {
-    overflow: auto;
-    background: #e5e5e5;
-    padding-bottom: 12vh;
-}
+        overflow: auto;
+        background: #e5e5e5;
+        padding-bottom: 12vh;
+    }
 }
 .page-container {
     background: #e5e5e5;
@@ -394,9 +394,9 @@ section {
 }
 
 .register-link {
-    padding-top: 15px;
+    padding-top: 14px;
     text-align: center;
-    font-size: 14px;
+    font-size: 13px;
 }
 
 .register-link > p > a {
@@ -707,11 +707,11 @@ section {
 
 /* ----- Input ----- */
 .au-input {
-    line-height: 43px;
+    line-height: 40px;
     border: 1px solid #e5e5e5;
     font-size: 14px;
     color: #666;
-    padding: 0 17px;
+    padding: 0 16px;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
@@ -723,10 +723,10 @@ section {
 
 .au-input--style2 {
     color: #808080;
-    line-height: 43px;
+    line-height: 40px;
     border: 1px solid #e5e5e5;
     font-size: 14px;
-    padding: 0 17px;
+    padding: 0 16px;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
