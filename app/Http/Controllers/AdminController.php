@@ -27,8 +27,8 @@ class AdminController extends Controller
 
     public function loginHandler(AdminLoginRequest $adminLoginRequest)
     {
-        $loginValidatedRequest = $adminLoginRequest->validated();
-        if ($this->adminService->login($loginValidatedRequest)) {
+        $loginValidatedProperties = $adminLoginRequest->validated();
+        if ($this->adminService->login($loginValidatedProperties)) {
             return redirect()->action([DashboardController::class, 'index']);
         }
 
@@ -51,8 +51,8 @@ class AdminController extends Controller
 
     public function registerHandler(AdminRegisterRequest $adminRegisterRequest)
     {
-        $registerValidatedRequest = $adminRegisterRequest->validated();
-        $this->adminService->register($registerValidatedRequest);
+        $registerValidatedProperties = $adminRegisterRequest->validated();
+        $this->adminService->register($registerValidatedProperties);
 
         Session::flash(Constants::ACTION_SUCCESS, Constants::REGISTER_SUCCESS);
         return redirect()->action([AdminController::class, 'index']);

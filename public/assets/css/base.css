@@ -1,3 +1,7 @@
+:root {
+    --bs-body-font-size: 1.4rem;
+}
+
 * {
     box-sizing: border-box;
 }
@@ -6,10 +10,15 @@ html {
     font-size: 62.5%;
 }
 
-button {
-    font-size: 1.6rem;
-}
-
 .alert {
     font-size: 1.3rem;
+}
+
+.btn {
+    font-size: 1.6rem;
+    border-radius: 0.6rem;
+}
+
+.form-control {
+    font-size: 1.6rem;
 }

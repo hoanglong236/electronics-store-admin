@@ -3,16 +3,16 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\Password;
+use Illuminate\Validation\Rule;
 
-class AdminRegisterRequest extends FormRequest
+class UpdateBrandRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -23,11 +23,7 @@ class AdminRegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'required|email|max:64|unique:admins',
-            'password' => ['required', Password::min(8)->mixedCase()],
-            'confirm-password' => 'required|same:password',
-            'name' => 'required|max:64',
-            'phone' => 'required|max:15|digits_between:6,15'
+            'name' => ['required', 'max:64', Rule::unique('brands')->where('delete_flag', false)],
         ];
     }
 }

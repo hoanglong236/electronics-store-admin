@@ -8,3 +8,17 @@
     text-align: center;
     margin-bottom: 3rem;
 }
+
+.card-small {
+    max-width: 540px;
+}
+
+.form-action-wrapper {
+    display: inline-flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.form-action-wrapper_item:not(:first-child) {
+    margin-left: 5px;
+}
