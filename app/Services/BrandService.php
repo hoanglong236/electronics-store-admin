@@ -32,6 +32,7 @@ class BrandService
 
         $brand->name = $updateBrandProperties['name'];
         if (isset($updateBrandProperties['logoPath'])) {
+            Storage::delete(Constants::BRAND_LOGO_STORAGE_PATH . $brand->logo_path);
             $brand->logo_path = $updateBrandProperties['logoPath'];
         }
 

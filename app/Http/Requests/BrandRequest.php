@@ -5,14 +5,14 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UpdateBrandRequest extends FormRequest
+class BrandRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,8 +22,16 @@ class UpdateBrandRequest extends FormRequest
      */
     public function rules(): array
     {
+        $brandId = $this->route('brandId');
+
         return [
-            'name' => ['required', 'max:64', Rule::unique('brands')->where('delete_flag', false)],
+            'name' => [
+                'required', 'max:64',
+                isset($brandId)
+                    ? Rule::unique('brands', 'name')->where('delete_flag', false)->ignore($brandId)
+                    : Rule::unique('brands', 'name')->where('delete_flag', false)
+            ],
+            'logo' => ['mimes:jpeg,jpg,png', Rule::requiredIf(!isset($brandId))],
         ];
     }
 }

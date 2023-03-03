@@ -276,7 +276,7 @@ section {
 .page-wrapper {
     overflow: hidden;
     background: #e5e5e5;
-    padding-bottom: 8vh;
+    /* padding-bottom: 8vh; */
 }
 
 @media (max-width: 991px) {
@@ -1398,6 +1398,7 @@ section {
 
 .account-item {
     cursor: pointer;
+    font-size: 13px;
 }
 
 .account-item .image {
@@ -14653,16 +14654,15 @@ section {
 } */
 
 .brand_logo_container, .product_image_container {
-    /* width: 100px !important; */
-    min-height: 105px;
-    max-height: 105px;
-    min-width: 105px;
-    max-width: 105px;
+    min-height: 70px;
+    max-height: 70px;
+    min-width: 70px;
+    max-width: 70px;
 }
 
 .product_image, .brand_logo {
-    height: 100px;
-    width: 100px;
+    height: 60px;
+    width: 60px;
 }
 
 .table-earning tbody tr:hover td {

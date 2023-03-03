@@ -16,4 +16,5 @@ class Constants {
     const DELETE_SUCCESS = 'Delete successfully.';
 
     const BRAND_LOGO_STORAGE_PATH = 'brand_logos';
+    const PRODUCT_IMAGE_PATH = 'product_images';
 }

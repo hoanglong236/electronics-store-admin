@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class CreateBrandRequest extends FormRequest
+class ProductRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,9 +22,13 @@ class CreateBrandRequest extends FormRequest
      */
     public function rules(): array
     {
+        $productId = $this->route('productId');
+
         return [
-            'name' => ['required', 'max:64', Rule::unique('brands')->where('delete_flag', false)],
-            'logo' => 'required|mimes:jpeg,jpg,png',
+            'categoryId' => ['required', Rule::exists('categories', 'id')->where('delete_flag', false)],
+            'brandId' => ['required', Rule::exists('brands', 'id')->where('delete_flag', false)],
+            'name' => 'required|max:128',
+            'mainImage' => ['mimes:jpeg,jpg,png', Rule::requiredIf(!isset($productId))],
         ];
     }
 }

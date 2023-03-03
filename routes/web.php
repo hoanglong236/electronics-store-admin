@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,7 +18,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// AdminController Routing
 Route::group(['prefix' => 'admin'], function () {
     Route::get('', [AdminController::class, 'index']);
     Route::get('/login', [AdminController::class, 'index'])->name('admin.login');
@@ -37,8 +38,38 @@ Route::group(['prefix' => 'catalog/brand'], function () {
     Route::get('/create', [BrandController::class, 'create'])->name('catalog.brand.create');
     Route::post('/create-handler', [BrandController::class, 'createHandler'])->name(
         'catalog.brand.create.handler');
-    Route::get('/update/{brandId}', [BrandController::class, 'update'])->name('catalog.brand.update');
-    Route::put('/update-handler/{brandId}', [BrandController::class, 'updateHandler'])->name(
+    Route::get('/update/{brandId}', [BrandController::class, 'update'])->name(
+        'catalog.brand.update');
+    Route::post('/update-handler/{brandId}', [BrandController::class, 'updateHandler'])->name(
         'catalog.brand.update.handler');
-    Route::delete('/delete/{brandId}', [BrandController::class, 'delete'])->name('catalog.brand.delete');
+    Route::delete('/delete/{brandId}', [BrandController::class, 'delete'])->name(
+        'catalog.brand.delete');
+});
+
+Route::group(['prefix' => 'catalog/category'], function () {
+    Route::get('', [CategoryController::class, 'index'])->name('catalog.category.index');
+    Route::get('/create', [CategoryController::class, 'create'])->name(
+        'catalog.category.create');
+    Route::post('/create-handler', [CategoryController::class, 'createHandler'])->name(
+        'catalog.category.create.handler');
+    Route::get('/update/{categoryId}', [CategoryController::class, 'update'])->name(
+        'catalog.category.update');
+    Route::post('/update-handler/{categoryId}', [CategoryController::class, 'updateHandler'])->name(
+        'catalog.category.update.handler');
+    Route::delete('/delete/{categoryId}', [CategoryController::class, 'delete'])->name(
+        'catalog.category.delete');
+});
+
+Route::group(['prefix' => 'catalog/product'], function () {
+    Route::get('', [ProductController::class, 'index'])->name('catalog.product.index');
+    Route::get('/create', [ProductController::class, 'create'])->name(
+        'catalog.product.create');
+    Route::post('/create-handler', [ProductController::class, 'createHandler'])->name(
+        'catalog.product.create.handler');
+    Route::get('/update/{productId}', [ProductController::class, 'update'])->name(
+        'catalog.product.update');
+    Route::post('/update-handler/{productId}', [ProductController::class, 'updateHandler'])->name(
+        'catalog.product.update.handler');
+    Route::delete('/delete/{productId}', [ProductController::class, 'delete'])->name(
+        'catalog.product.delete');
 });

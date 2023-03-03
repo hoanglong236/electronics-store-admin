@@ -33,10 +33,10 @@
                             <a href="{{ route('admin.coupon') }}" style="text-decoration: none;">
                                 <i class="fas fa-tachometer-alt"></i>Coupon</a>
                         </li> --}}
-                        {{-- <li>
-                            <a href="{{ route('admin.product') }}" style="text-decoration: none;">
+                        <li>
+                            <a href="{{ route('catalog.product.index') }}" style="text-decoration: none;">
                                 <i class="fas fa-tachometer-alt"></i>Product</a>
-                        </li> --}}
+                        </li>
                         {{-- <li>
                             <a href="{{ route('admin.customer') }}" style="text-decoration: none;">
                                 <i class="fas fa-tachometer-alt"></i>Customer</a>

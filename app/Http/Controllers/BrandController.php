@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Common\Constants;
-use App\Http\Requests\CreateBrandRequest;
-use App\Http\Requests\UpdateBrandRequest;
+use App\Http\Requests\BrandRequest;
 use App\Services\BrandService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -23,7 +22,10 @@ class BrandController extends Controller
     public function index(Request $request)
     {
         $brands = $this->brandService->listBrands();
-        return view('pages.brand.list-brands', ['pageTitle' => 'List brands', 'brands' => $brands]);
+        return view('pages.brand.list-brands', [
+            'pageTitle' => 'List brands',
+            'brands' => $brands
+        ]);
     }
 
     public function create(Request $request)
@@ -31,17 +33,19 @@ class BrandController extends Controller
         return view('pages.brand.create-brand', ['pageTitle' => 'Create brand']);
     }
 
-    public function createHandler(CreateBrandRequest $createBrandRequest)
+    public function createHandler(BrandRequest $brandRequest)
     {
-        $brandValidatedProperties = $createBrandRequest->validated();
-
-        $logoUploaded = $createBrandRequest->file('logo');
-        $brandValidatedProperties['logoPath'] = Storage::putFileAs(
-            Constants::BRAND_LOGO_STORAGE_PATH,
-            $logoUploaded,
-            rand() . time() . '.' . $logoUploaded->getClientOriginalExtension()
+        $logoUploaded = $brandRequest->file('logo');
+        $logoStorageName = rand() . time() . '.' . $logoUploaded->getClientOriginalExtension();
+        $logoPath = Storage::putFileAs(
+            Constants::BRAND_LOGO_STORAGE_PATH, $logoUploaded, $logoStorageName
         );
-        $this->brandService->createBrand($brandValidatedProperties);
+
+        $brandProperties = array(
+            'name' => $brandRequest->post('name'),
+            'logoPath' => $logoPath
+        );
+        $this->brandService->createBrand($brandProperties);
 
         Session::flash(Constants::ACTION_SUCCESS, Constants::CREATE_SUCCESS);
         return redirect()->action([BrandController::class, 'index']);
@@ -50,26 +54,32 @@ class BrandController extends Controller
     public function update(Request $request, $brandId)
     {
         $brand = $this->brandService->findBrandById($brandId);
-        return view('pages.brand.update-brand', ['pageTitle' => 'Update brand', 'brand' => $brand]);
+        return view('pages.brand.update-brand', [
+            'pageTitle' => 'Update brand',
+            'brand' => $brand
+        ]);
     }
 
-    public function updateHandler(UpdateBrandRequest $updateBrandRequest, $brandId)
+    public function updateHandler(BrandRequest $brandRequest, $brandId)
     {
-        $brandValidatedProperties = $updateBrandRequest->validated();
-        if ($updateBrandRequest->hasFile('logo')) {
-            $logoUploaded = $updateBrandRequest->file('logo');
-            $brandValidatedProperties['logoPath'] = Storage::putFileAs(
-                Constants::BRAND_LOGO_STORAGE_PATH,
-                $logoUploaded,
-                rand() . time() . '.' . $logoUploaded->getClientOriginalExtension()
+        if ($brandRequest->hasFile('logo')) {
+            $logoUploaded = $brandRequest->file('logo');
+            $logoStorageName = rand() . time() . '.' . $logoUploaded->getClientOriginalExtension();
+            $logoPath = Storage::putFileAs(
+                Constants::BRAND_LOGO_STORAGE_PATH, $logoUploaded, $logoStorageName
             );
+
+            $brandProperties['logoPath'] = $logoPath;
         }
-        $this->brandService->updateBrand($brandValidatedProperties, $brandId);
+
+        $brandProperties['name'] = $brandRequest->post('name');
+        $this->brandService->updateBrand($brandProperties, $brandId);
 
         Session::flash(Constants::ACTION_SUCCESS, Constants::UPDATE_SUCCESS);
         return redirect()->action([BrandController::class, 'index']);
     }
 
+    // TODO: validate here
     public function delete(Request $request, $brandId)
     {
         $this->brandService->deleteBrand($brandId);
