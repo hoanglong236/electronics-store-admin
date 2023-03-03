@@ -54,7 +54,7 @@
                                 </div>
                             @enderror
                         </div><br>
-                        <button type="submit" class="btn btn-lg btn-info btn-block">
+                        <button type="submit" class="btn btn-lg btn-info btn-block mt-3 mb-1">
                             Submit
                         </button>
                     </form>
