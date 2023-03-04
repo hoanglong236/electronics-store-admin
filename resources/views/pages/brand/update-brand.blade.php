@@ -1,47 +1,48 @@
-@extends('layouts.base-layout')
+@extends('layouts.catalog-layout')
 
 @section('container')
-    <h1>Brand</h1><br>
+    <a href="{{ route('catalog.brand.index') }}">
+        <button type="button" class="btn btn-info">
+            <i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;Back
+        </button>
+    </a>
 
-    <div class="row m-t-30">
-        <div class="col-md-12">
+    <div class="row mt-4">
+        <div class="col-lg-8">
             <div class="card">
-                <div class="card-header">Update Brand</div>
-                <div class="card-body">
-                    <form action="{{ route('catalog.brand.update.handler', $brand->id) }}" enctype="multipart/form-data"
-                        method="post">
-                        @csrf
+                <div class="card-header">
+                    <strong>Update Brand</strong>
+                </div>
+                <form action="{{ route('catalog.brand.update.handler', $brand->id) }}" method="post"
+                    enctype="multipart/form-data" class="form-horizontal">
+                    @csrf
+                    @method('PUT')
+                    <div class="card-body card-block">
                         <div class="form-group">
-                            <label class="control-label mb-1">Brand ID</label>
-                            <input type="text" value="{{ $brand->id }}" class="form-control" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label for="name" class="control-label mb-1">Brand Name</label>
-                            <input name="name" type="text" class="form-control" aria-required="true"
-                                aria-invalid="false" value="{{ $brand->name }}" required>
+                            <label class=" form-control-label">Brand name</label>
+                            <input type="text" name="name" value="{{ $brand->name }}" class="form-control" required>
                             @error('name')
                                 <div class="alert alert-danger" role="alert">{{ $message }}</div>
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label for="logo" class="control-label mb-1">Select new logo</label>
-                            <input name="logo" type="file" class="form-control-file" aria-required="true"
-                                aria-invalid="false">
+                            <label class=" form-control-label">New brand logo?</label>
+                            <input type="file" name="logo" class="form-control-file" required>
                             @error('logo')
                                 <div class="alert alert-danger" role="alert">{{ $message }}</div>
                             @enderror
                         </div>
-                        <button type="submit" class="btn btn-lg btn-info btn-block mt-3 mb-1">
-                            Submit
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary btn-sm">
+                            <i class="fa fa-dot-circle-o"></i> Submit
                         </button>
-                    </form>
-                </div>
+                        <button type="reset" class="btn btn-danger btn-sm">
+                            <i class="fa fa-ban"></i> Reset
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-    <a href="{{ route('catalog.brand.index') }}">
-        <button type="button" class="btn btn-success">
-            <i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;Back
-        </button>
-    </a>
 @endsection

@@ -38,9 +38,9 @@ Route::group(['prefix' => 'catalog/brand'], function () {
     Route::get('/create', [BrandController::class, 'create'])->name('catalog.brand.create');
     Route::post('/create-handler', [BrandController::class, 'createHandler'])->name(
         'catalog.brand.create.handler');
-    Route::get('/update/{brandId}', [BrandController::class, 'update'])->name(
+    Route::post('/update/{brandId}', [BrandController::class, 'update'])->name(
         'catalog.brand.update');
-    Route::post('/update-handler/{brandId}', [BrandController::class, 'updateHandler'])->name(
+    Route::put('/update-handler/{brandId}', [BrandController::class, 'updateHandler'])->name(
         'catalog.brand.update.handler');
     Route::delete('/delete/{brandId}', [BrandController::class, 'delete'])->name(
         'catalog.brand.delete');

@@ -11,7 +11,7 @@ html {
 }
 
 .alert {
-    font-size: 1.3rem;
+    font-size: 1.4rem;
 }
 
 .btn {
@@ -21,4 +21,8 @@ html {
 
 .form-control, .form-select {
     font-size: 1.6rem;
+}
+
+.form-control-label {
+    margin-bottom: 0.3rem;
 }

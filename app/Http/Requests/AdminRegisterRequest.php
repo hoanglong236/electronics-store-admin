@@ -24,7 +24,7 @@ class AdminRegisterRequest extends FormRequest
     {
         return [
             'email' => 'required|email|max:64|unique:admins',
-            'password' => ['required', Password::min(8)->mixedCase()],
+            'password' => ['required', Password::min(8)],
             'confirm-password' => 'required|same:password',
             'name' => 'required|max:64',
             'phone' => 'required|max:15|digits_between:6,15'

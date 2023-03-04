@@ -1,4 +1,39 @@
-.logo-wrapper {
+.au-input--small {
+    line-height: 4rem;
+    padding: 0 16px;
+}
+
+.register-link {
+    padding-top: 14px;
+}
+
+.card-action-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.card-action-item:not(:first-child) {
+    margin-left: 5px;
+}
+
+.card-img-custom {
+    height: 170px;
+}
+
+.main-content {
+    padding-top: 110px;
+    min-height: 92vh;
+}
+
+@media (max-width: 991px) {
+    .main-content {
+        padding-top: 50px;
+	    padding-bottom: 100px;
+    }
+}
+
+/* .logo-wrapper {
     min-width: 50%;
     width: 140px;
 }
@@ -21,4 +56,4 @@
 
 .form-action-wrapper_item:not(:first-child) {
     margin-left: 5px;
-}
+} */
