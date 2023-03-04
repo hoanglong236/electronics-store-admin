@@ -13,6 +13,12 @@
     justify-content: flex-start;
 }
 
+.card-action-wrapper--right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
 .card-action-item:not(:first-child) {
     margin-left: 5px;
 }
@@ -31,6 +37,11 @@
         padding-top: 50px;
 	    padding-bottom: 100px;
     }
+}
+
+.icon-small {
+    width: 32px;
+    height: 32px;
 }
 
 /* .logo-wrapper {

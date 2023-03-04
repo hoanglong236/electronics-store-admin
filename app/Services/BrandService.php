@@ -3,12 +3,16 @@
 namespace App\Services;
 
 use App\Models\Brand;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
-use App\Common\Constants;
 
 class BrandService
 {
+    private $storageService;
+
+    public function __construct() {
+        $this->storageService = new StorageService();
+    }
+
     public function findBrandById($brandId) {
         return Brand::where(['id' => $brandId, 'delete_flag' => false])->first();
     }
@@ -32,7 +36,7 @@ class BrandService
 
         $brand->name = $updateBrandProperties['name'];
         if (isset($updateBrandProperties['logoPath'])) {
-            Storage::delete(Constants::BRAND_LOGO_STORAGE_PATH . $brand->logo_path);
+            $this->storageService->deleteFile($brand->logo_path);
             $brand->logo_path = $updateBrandProperties['logoPath'];
         }
 
@@ -42,9 +46,9 @@ class BrandService
     public function deleteBrand($brandId) {
         $brand = $this->findBrandById($brandId);
 
+        $this->storageService->deleteFile($brand->logo_path);
         $brand->delete_flag = true;
-        $brand->update();
 
-        Storage::delete(Constants::BRAND_LOGO_STORAGE_PATH . $brand->logo_path);
+        $brand->update();
     }
 }

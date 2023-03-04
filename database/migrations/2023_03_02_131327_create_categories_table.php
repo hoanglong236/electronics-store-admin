@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('parent_id', false, true)->nullable();
             $table->string('name', 64);
+            $table->string('icon_path')->nullable();
             $table->boolean('delete_flag')->default(false);
             $table->timestamps();
         });

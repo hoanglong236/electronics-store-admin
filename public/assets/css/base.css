@@ -19,10 +19,14 @@ html {
     border-radius: 0.6rem;
 }
 
-.form-control, .form-select {
+.form-control {
     font-size: 1.6rem;
 }
 
 .form-control-label {
     margin-bottom: 0.3rem;
+}
+
+select.form-control:not([size]):not([multiple]) {
+    height: calc(3.6rem + 2px);
 }

@@ -8,6 +8,12 @@ use Illuminate\Support\Facades\DB;
 
 class CategoryService
 {
+    private $storageService;
+
+    public function __construct() {
+        $this->storageService = new StorageService();
+    }
+
     public function findCategoryById($categoryId) {
         return Category::where(['id' => $categoryId, 'delete_flag' => false])->first();
     }
@@ -21,6 +27,9 @@ class CategoryService
 
         $category->parent_id = $categoryProperties['parentId'];
         $category->name = $categoryProperties['name'];
+        if (isset($categoryProperties['iconPath'])) {
+            $category->icon_path = $categoryProperties['iconPath'];
+        }
         $category->delete_flag = false;
 
         $category->save();
@@ -31,6 +40,10 @@ class CategoryService
 
         $category->parent_id = $categoryProperties['parentId'];
         $category->name = $categoryProperties['name'];
+        if (isset($categoryProperties['iconPath'])) {
+            $this->storageService->deleteFile($category->icon_path);
+            $category->icon_path = $categoryProperties['iconPath'];
+        }
 
         $category->update();
     }
@@ -38,7 +51,9 @@ class CategoryService
     public function deleteCategory($categoryId) {
         $category = $this->findCategoryById($categoryId);
 
+        $this->storageService->deleteFile($category->icon_path);
         $category->delete_flag = true;
+
         $category->update();
     }
 

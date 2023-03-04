@@ -38,7 +38,7 @@ Route::group(['prefix' => 'catalog/brand'], function () {
     Route::get('/create', [BrandController::class, 'create'])->name('catalog.brand.create');
     Route::post('/create-handler', [BrandController::class, 'createHandler'])->name(
         'catalog.brand.create.handler');
-    Route::post('/update/{brandId}', [BrandController::class, 'update'])->name(
+    Route::get('/update/{brandId}', [BrandController::class, 'update'])->name(
         'catalog.brand.update');
     Route::put('/update-handler/{brandId}', [BrandController::class, 'updateHandler'])->name(
         'catalog.brand.update.handler');
@@ -54,7 +54,7 @@ Route::group(['prefix' => 'catalog/category'], function () {
         'catalog.category.create.handler');
     Route::get('/update/{categoryId}', [CategoryController::class, 'update'])->name(
         'catalog.category.update');
-    Route::post('/update-handler/{categoryId}', [CategoryController::class, 'updateHandler'])->name(
+    Route::put('/update-handler/{categoryId}', [CategoryController::class, 'updateHandler'])->name(
         'catalog.category.update.handler');
     Route::delete('/delete/{categoryId}', [CategoryController::class, 'delete'])->name(
         'catalog.category.delete');

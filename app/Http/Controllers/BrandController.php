@@ -5,18 +5,20 @@ namespace App\Http\Controllers;
 use App\Common\Constants;
 use App\Http\Requests\BrandRequest;
 use App\Services\BrandService;
+use App\Services\StorageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 
 class BrandController extends Controller
 {
     private $brandService;
+    private $storageService;
 
     public function __construct()
     {
         $this->brandService = new BrandService();
+        $this->storageService = new StorageService();
     }
 
     public function index(Request $request)
@@ -35,15 +37,12 @@ class BrandController extends Controller
 
     public function createHandler(BrandRequest $brandRequest)
     {
-        $logoUploaded = $brandRequest->file('logo');
-        $logoStorageName = rand() . time() . '.' . $logoUploaded->getClientOriginalExtension();
-        $logoPath = Storage::putFileAs(
-            Constants::BRAND_LOGO_STORAGE_PATH, $logoUploaded, $logoStorageName
-        );
-
         $brandProperties = array(
             'name' => $brandRequest->post('name'),
-            'logoPath' => $logoPath
+            'logoPath' => $this->storageService->saveFile(
+                $brandRequest->file('logo'),
+                Constants::BRAND_LOGO_STORAGE_PATH
+            ),
         );
         $this->brandService->createBrand($brandProperties);
 
@@ -63,15 +62,11 @@ class BrandController extends Controller
     public function updateHandler(BrandRequest $brandRequest, $brandId)
     {
         if ($brandRequest->hasFile('logo')) {
-            $logoUploaded = $brandRequest->file('logo');
-            $logoStorageName = rand() . time() . '.' . $logoUploaded->getClientOriginalExtension();
-            $logoPath = Storage::putFileAs(
-                Constants::BRAND_LOGO_STORAGE_PATH, $logoUploaded, $logoStorageName
+            $brandProperties['logoPath'] = $this->storageService->saveFile(
+                $brandRequest->file('logo'),
+                Constants::BRAND_LOGO_STORAGE_PATH
             );
-
-            $brandProperties['logoPath'] = $logoPath;
         }
-
         $brandProperties['name'] = $brandRequest->post('name');
         $this->brandService->updateBrand($brandProperties, $brandId);
 

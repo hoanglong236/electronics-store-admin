@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Common\Constants;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 
@@ -25,18 +25,21 @@ class CategoryRequest extends FormRequest
     public function rules(): array
     {
         $categoryId = $this->route('categoryId');
+        $isUpdateCategoryRequest = isset($categoryId);
 
         return [
-            // TODO: handle this
-            // 'parentId' => [
-            //     Rule::exists('categories', 'id')->where('delete_flag', false)
-            // ],
+            'parentId' => [
+                $this->parentId !== Constants::NONE_VALUE
+                    ? Rule::exists('categories', 'id')->where('delete_flag', false)
+                    : ''
+            ],
             'name' => [
                 'required', 'max:64',
-                isset($categoryId)
-                    ? Rule::unique('categories')->where('delete_flag', false)->ignore($categoryId)
-                    : Rule::unique('categories')->where('delete_flag', false)
+                $isUpdateCategoryRequest
+                    ? Rule::unique('categories', 'name')->where('delete_flag', false)->ignore($categoryId)
+                    : Rule::unique('categories', 'name')->where('delete_flag', false)
             ],
+            'icon' => ['mimes:jpeg,jpg,png'],
         ];
     }
 }

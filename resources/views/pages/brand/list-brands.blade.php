@@ -72,12 +72,11 @@
                     <div class="card-footer">
                         <div class="card-action-wrapper">
                             <div class="card-action-item">
-                                <form method="post" action="{{ route('catalog.brand.update', [$brand->id]) }}">
-                                    @csrf
+                                <a href="{{ route('catalog.brand.update', [$brand->id]) }}">
                                     <button type="submit" class="btn btn-primary btn-sm">
                                         <i class="zmdi zmdi-edit"></i> Edit
                                     </button>
-                                </form>
+                                </a>
                             </div>
                             <div class="card-action-item">
                                 <form method="post" action="{{ route('catalog.brand.delete', [$brand->id]) }}"

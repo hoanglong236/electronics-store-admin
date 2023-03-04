@@ -1,7 +1,7 @@
 @extends('layouts.catalog-layout')
 
 @section('container')
-    <a href="{{ route('catalog.brand.index') }}">
+    <a href="{{ route('catalog.category.index') }}">
         <button type="button" class="btn btn-info">
             <i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;Back
         </button>
@@ -11,23 +11,35 @@
         <div class="col-lg-8">
             <div class="card">
                 <div class="card-header">
-                    <strong>Update Brand</strong>
+                    <strong>Update Category</strong>
                 </div>
-                <form action="{{ route('catalog.brand.update.handler', $brand->id) }}" method="post"
+                <form action="{{ route('catalog.category.update.handler', $category->id) }}" method="post"
                     enctype="multipart/form-data" class="form-horizontal">
                     @csrf
                     @method('PUT')
                     <div class="card-body card-block">
                         <div class="form-group">
-                            <label for="brandName" class=" form-control-label">Brand name</label>
-                            <input id="brandName" type="text" name="name" value="{{ $brand->name }}" class="form-control" required>
+                            <label for="parentCategoryId" class="form-control-label">Parent category</label>
+                            <select id="parentCategoryId" name="parentId" class="form-control">
+                                <option value="{{ Constants::NONE_VALUE }}">None</option>
+                                @foreach ($categoryNameMap as $key => $value)
+                                    <option value="{{ $key }}">{{ $value }}</option>
+                                @endforeach
+                            </select>
+                            @error('parentId')
+                                <div class="alert alert-danger mt-1" role="alert">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label for="categoryName" class=" form-control-label">Category name</label>
+                            <input id="categoryName" type="text" name="name" value="{{ $category->name }}" class="form-control" required>
                             @error('name')
                                 <div class="alert alert-danger mt-1" role="alert">{{ $message }}</div>
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label for="brandLogo" class=" form-control-label">New brand logo?</label>
-                            <input id="brandLogo" type="file" name="logo" class="form-control-file">
+                            <label for="categoryLogo" class="form-control-label">New category logo?</label>
+                            <input id="categoryLogo" type="file" name="logo" class="form-control-file">
                             @error('logo')
                                 <div class="alert alert-danger mt-1" role="alert">{{ $message }}</div>
                             @enderror
