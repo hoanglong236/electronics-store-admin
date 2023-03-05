@@ -1,18 +1,18 @@
-@extends('layouts.base-layout')
+@extends('shared.layouts.base-layout')
 
 @section('page-content')
     <!-- HEADER MOBILE-->
-    @include('layouts.components.header-mobile')
+    @include('shared.components.header-mobile')
     <!-- END HEADER MOBILE-->
 
     <!-- MENU SIDEBAR-->
-    @include('layouts.components.menu-sidebar')
+    @include('shared.components.menu-sidebar')
     <!-- END MENU SIDEBAR-->
 
     <!-- PAGE CONTAINER-->
     <div class="page-container">
         <!-- HEADER DESKTOP-->
-        @include('layouts.components.header-desktop')
+        @include('shared.components.header-desktop')
         <!-- END HEADER DESKTOP-->
 
 

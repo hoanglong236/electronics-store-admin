@@ -1,4 +1,4 @@
-@extends('layouts.catalog-layout')
+@extends('shared.layouts.catalog-layout')
 
 @section('container')
     <div class="row">
@@ -61,5 +61,5 @@
         @endforelse
     </div>
 
-    @include('components.paginate', ['paginator' => $products])
+    @include('shared.components.paginate', ['paginator' => $products])
 @endsection

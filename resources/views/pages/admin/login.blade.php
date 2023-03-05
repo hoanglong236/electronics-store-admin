@@ -1,4 +1,4 @@
-@extends('layouts.base-layout')
+@extends('shared.layouts.base-layout')
 
 @section('page-content')
     <div class="container" style="min-height: 92vh">
