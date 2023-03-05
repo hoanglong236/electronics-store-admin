@@ -11,8 +11,8 @@ class ProductService
         return Product::where(['id' => $productId, 'delete_flag' => false])->first();
     }
 
-    public function listProducts() {
-        return Product::where('delete_flag', false)->get();
+    public function listProductsPaginate($itemPerPage = 9) {
+        return Product::where('delete_flag', false)->paginate($itemPerPage);
     }
 
     public function createProduct($productPropterties) {

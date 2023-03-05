@@ -60,8 +60,8 @@
                     <div class="card-header">
                         <strong class="card-title mb-3">Product profile</strong>
                     </div>
-                    <img class="card-img-top card-img-custom" src="{{ asset('/storage' . '/' . $product->main_image_path) }}"
-                        alt="Product image">
+                    <img class="card-img-top card-img-custom"
+                        src="{{ asset('/storage' . '/' . $product->main_image_path) }}" alt="Product image">
                     <div class="card-body">
                         <div class="card-text">
                             <div>ID: {{ $product->id }}</div>
@@ -74,9 +74,9 @@
                         <div class="card-action-wrapper">
                             <div class="card-action-item">
                                 {{-- <a href="{{ route('catalog.product.detail', [$product->id]) }}"> --}}
-                                    <button type="submit" class="btn btn-info btn-sm">
-                                        <i class="fa fa-info-circle"></i> Detail
-                                    </button>
+                                <button type="submit" class="btn btn-info btn-sm">
+                                    <i class="fa fa-info-circle"></i> Detail
+                                </button>
                                 {{-- </a> --}}
                             </div>
                             <div class="card-action-item">
@@ -102,4 +102,41 @@
             </div>
         @endforeach
     </div>
+
+    @php
+        $firstPage = 1;
+        $currentPage = $products->currentPage();
+        $lastPage = $products->lastPage();
+    @endphp
+    <nav class="mt-3">
+        <ul class="pagination justify-content-center">
+            <li class="page-item">
+                <a class="page-link" href="{{ $products->url($firstPage) }}" @disabled($currentPage <= $firstPage)>
+                    <i class="fa fa-angle-double-left"></i>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="{{ $products->url(max($currentPage - 1, $firstPage)) }}"
+                    @disabled($currentPage <= $firstPage)>
+                    <i class="fa fa-angle-left"></i>
+                </a>
+            </li>
+            <li class="page-item page-item-center">
+                <a class="page-link" href="{{ $products->url($currentPage) }}">
+                    {{ $currentPage . '/' . $lastPage }}
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="{{ $products->url(min($currentPage + 1, $lastPage)) }}"
+                    @disabled($currentPage >= $lastPage)>
+                    <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="{{ $products->url($lastPage) }}" @disabled($currentPage >= $lastPage)>
+                    <i class="fa fa-angle-double-right"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
 @endsection

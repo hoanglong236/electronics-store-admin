@@ -20,4 +20,6 @@ class Constants {
     const PRODUCT_IMAGE_PATH = 'product_images';
 
     const NONE_VALUE = 'none';
+
+    const PRODUCT_PAGE_COUNT = 9;
 }

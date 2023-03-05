@@ -41,7 +41,7 @@ class ProductController extends Controller
             $categoryNameMap[$category->id] = $category->name;
         }
 
-        $products = $this->productService->listProducts();
+        $products = $this->productService->listProductsPaginate(Constants::PRODUCT_PAGE_COUNT);
 
         return view('pages.product.list-products', [
             'pageTitle' => 'List products',

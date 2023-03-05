@@ -34,3 +34,8 @@ select.form-control:not([size]):not([multiple]) {
 .card {
     border-radius: 4px;
 }
+
+a[disabled] {
+    pointer-events: none;
+    color: gray;
+}
