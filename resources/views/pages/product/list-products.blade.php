@@ -55,11 +55,11 @@
 
     <div class="row">
         @forelse ($products as $product)
-            @include('pages.product.product-item')
+            @include('pages.product.components.product-item')
         @empty
-            @include('pages.product.product-no-item')
+            @include('pages.product.components.product-no-item')
         @endforelse
     </div>
 
-    @include('shared.components.paginate', ['paginator' => $products])
+    @include('shared.components.pagination', ['paginator' => $products])
 @endsection

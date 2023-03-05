@@ -68,7 +68,7 @@
                     </thead>
                     <tbody>
                         @foreach ($categories as $category)
-                            @include('pages.category.category-item')
+                            @include('pages.category.components.category-item')
                         @endforeach
                     </tbody>
                 </table>

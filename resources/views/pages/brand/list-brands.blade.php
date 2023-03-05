@@ -55,9 +55,9 @@
 
     <div class="row">
         @forelse ($brands as $brand)
-            @include('pages.brand.brand-item')
+            @include('pages.brand.components.brand-item')
         @empty
-            @include('pages.brand.brand-no-item')
+            @include('pages.brand.components.brand-no-item')
         @endforelse
     </div>
 @endsection
