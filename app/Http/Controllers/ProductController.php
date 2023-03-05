@@ -27,7 +27,7 @@ class ProductController extends Controller
         $this->storageService = new StorageService();
     }
 
-    public function index()
+    private function createBrandNameMap()
     {
         $brands = $this->brandService->listBrands();
         $brandNameMap = [];
@@ -35,40 +35,38 @@ class ProductController extends Controller
             $brandNameMap[$brand->id] = $brand->name;
         }
 
+        return $brandNameMap;
+    }
+
+    private function createCategoryNameMap()
+    {
         $categories = $this->categoryService->listCategories();
         $categoryNameMap = [];
         foreach ($categories as $category) {
             $categoryNameMap[$category->id] = $category->name;
         }
 
+        return $categoryNameMap;
+    }
+
+    public function index()
+    {
         $products = $this->productService->listProductsPaginate(Constants::PRODUCT_PAGE_COUNT);
 
         return view('pages.product.list-products', [
             'pageTitle' => 'List products',
             'products' => $products,
-            'categoryNameMap' => $categoryNameMap,
-            'brandNameMap' => $brandNameMap,
+            'categoryNameMap' => $this->createCategoryNameMap(),
+            'brandNameMap' => $this->createBrandNameMap(),
         ]);
     }
 
     public function create(Request $request)
     {
-        $brands = $this->brandService->listBrands();
-        $brandNameMap = [];
-        foreach ($brands as $brand) {
-            $brandNameMap[$brand->id] = $brand->name;
-        }
-
-        $categories = $this->categoryService->listCategories();
-        $categoryNameMap = [];
-        foreach ($categories as $category) {
-            $categoryNameMap[$category->id] = $category->name;
-        }
-
         return view('pages.product.create-product', [
             'pageTitle' => 'Create product',
-            'categoryNameMap' => $categoryNameMap,
-            'brandNameMap' => $brandNameMap,
+            'categoryNameMap' => $this->createCategoryNameMap(),
+            'brandNameMap' => $this->createBrandNameMap(),
         ]);
     }
 
@@ -93,25 +91,13 @@ class ProductController extends Controller
 
     public function update(Request $request, $productId)
     {
-        $brands = $this->brandService->listBrands();
-        $brandNameMap = [];
-        foreach ($brands as $brand) {
-            $brandNameMap[$brand->id] = $brand->name;
-        }
-
-        $categories = $this->categoryService->listCategories();
-        $categoryNameMap = [];
-        foreach ($categories as $category) {
-            $categoryNameMap[$category->id] = $category->name;
-        }
-
         $product = $this->productService->findProductById($productId);
 
         return view('pages.product.update-product', [
             'pageTitle' => 'Update product',
             'product' => $product,
-            'categoryNameMap' => $categoryNameMap,
-            'brandNameMap' => $brandNameMap
+            'categoryNameMap' => $this->createCategoryNameMap(),
+            'brandNameMap' => $this->createBrandNameMap(),
         ]);
     }
 
