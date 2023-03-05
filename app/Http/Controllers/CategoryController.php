@@ -39,15 +39,9 @@ class CategoryController extends Controller
 
     public function create(Request $request)
     {
-        $categories = $this->categoryService->listCategories();
-        $categoryNameMap = [];
-        foreach ($categories as $category) {
-            $categoryNameMap[$category->id] = $category->name;
-        }
-
         return view('pages.category.create-category', [
             'pageTitle' => 'Create category',
-            'categoryNameMap' => $categoryNameMap,
+            'categoryNameMap' => $this->categoryService->getCategoryNameMap(),
         ]);
     }
 
@@ -72,16 +66,10 @@ class CategoryController extends Controller
 
     public function update(Request $request, $categoryId)
     {
-        $categories = $this->categoryService->listCategories();
-        $categoryNameMap = [];
-        foreach ($categories as $category) {
-            $categoryNameMap[$category->id] = $category->name;
-        }
-
         return view('pages.category.update-category', [
             'pageTitle' => 'Update category',
             'category' => $this->categoryService->findCategoryById($categoryId),
-            'categoryNameMap' => $categoryNameMap
+            'categoryNameMap' => $this->categoryService->getCategoryNameMap()
         ]);
     }
 

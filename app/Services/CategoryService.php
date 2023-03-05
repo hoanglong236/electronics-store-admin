@@ -70,4 +70,14 @@ class CategoryService
                 WHERE category_tree.deleted_flag = FALSE
             )", [$categoryId]);
     }
+
+    public function getCategoryNameMap() {
+        $categories = $this->listCategories();
+        $categoryNameMap = [];
+        foreach ($categories as $category) {
+            $categoryNameMap[$category->id] = $category->name;
+        }
+
+        return $categoryNameMap;
+    }
 }

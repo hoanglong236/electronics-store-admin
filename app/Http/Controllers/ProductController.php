@@ -27,28 +27,6 @@ class ProductController extends Controller
         $this->storageService = new StorageService();
     }
 
-    private function createBrandNameMap()
-    {
-        $brands = $this->brandService->listBrands();
-        $brandNameMap = [];
-        foreach ($brands as $brand) {
-            $brandNameMap[$brand->id] = $brand->name;
-        }
-
-        return $brandNameMap;
-    }
-
-    private function createCategoryNameMap()
-    {
-        $categories = $this->categoryService->listCategories();
-        $categoryNameMap = [];
-        foreach ($categories as $category) {
-            $categoryNameMap[$category->id] = $category->name;
-        }
-
-        return $categoryNameMap;
-    }
-
     public function index()
     {
         $products = $this->productService->listProductsPaginate(Constants::PRODUCT_PAGE_COUNT);
@@ -56,8 +34,8 @@ class ProductController extends Controller
         return view('pages.product.list-products', [
             'pageTitle' => 'List products',
             'products' => $products,
-            'categoryNameMap' => $this->createCategoryNameMap(),
-            'brandNameMap' => $this->createBrandNameMap(),
+            'categoryNameMap' => $this->categoryService->getCategoryNameMap(),
+            'brandNameMap' => $this->brandService->getBrandNameMap(),
         ]);
     }
 
@@ -65,8 +43,8 @@ class ProductController extends Controller
     {
         return view('pages.product.create-product', [
             'pageTitle' => 'Create product',
-            'categoryNameMap' => $this->createCategoryNameMap(),
-            'brandNameMap' => $this->createBrandNameMap(),
+            'categoryNameMap' => $this->categoryService->getCategoryNameMap(),
+            'brandNameMap' => $this->brandService->getBrandNameMap(),
         ]);
     }
 
@@ -96,8 +74,8 @@ class ProductController extends Controller
         return view('pages.product.update-product', [
             'pageTitle' => 'Update product',
             'product' => $product,
-            'categoryNameMap' => $this->createCategoryNameMap(),
-            'brandNameMap' => $this->createBrandNameMap(),
+            'categoryNameMap' => $this->categoryService->getCategoryNameMap(),
+            'brandNameMap' => $this->brandService->getBrandNameMap(),
         ]);
     }
 

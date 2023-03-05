@@ -51,4 +51,14 @@ class BrandService
 
         $brand->update();
     }
+
+    public function getBrandNameMap() {
+        $brands = $this->listBrands();
+        $brandNameMap = [];
+        foreach ($brands as $brand) {
+            $brandNameMap[$brand->id] = $brand->name;
+        }
+
+        return $brandNameMap;
+    }
 }
