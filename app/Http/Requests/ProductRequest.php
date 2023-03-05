@@ -23,12 +23,13 @@ class ProductRequest extends FormRequest
     public function rules(): array
     {
         $productId = $this->route('productId');
+        $isUpdateProductRequest = isset($productId);
 
         return [
             'categoryId' => ['required', Rule::exists('categories', 'id')->where('delete_flag', false)],
             'brandId' => ['required', Rule::exists('brands', 'id')->where('delete_flag', false)],
             'name' => 'required|max:128',
-            'mainImage' => ['mimes:jpeg,jpg,png', Rule::requiredIf(!isset($productId))],
+            'mainImage' => ['mimes:jpeg,jpg,png', Rule::requiredIf(!$isUpdateProductRequest)],
         ];
     }
 }

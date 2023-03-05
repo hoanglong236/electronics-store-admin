@@ -25,6 +25,8 @@
 
 .card-img-custom {
     height: 170px;
+    border: 1px solid #ddd;
+    padding: 3px 5px;
 }
 
 .main-content {
@@ -42,6 +44,16 @@
 .icon-small {
     width: 32px;
     height: 32px;
+}
+
+.text-truncate--two-line {
+    /* overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2; /* number of lines to show */
+   /* line-height: 1.5rem;        /* fallback */
+   /* max-height: 3rem;     */
 }
 
 /* .logo-wrapper {

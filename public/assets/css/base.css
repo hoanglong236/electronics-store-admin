@@ -30,3 +30,7 @@ html {
 select.form-control:not([size]):not([multiple]) {
     height: calc(3.6rem + 2px);
 }
+
+.card {
+    border-radius: 4px;
+}

@@ -68,7 +68,7 @@ Route::group(['prefix' => 'catalog/product'], function () {
         'catalog.product.create.handler');
     Route::get('/update/{productId}', [ProductController::class, 'update'])->name(
         'catalog.product.update');
-    Route::post('/update-handler/{productId}', [ProductController::class, 'updateHandler'])->name(
+    Route::put('/update-handler/{productId}', [ProductController::class, 'updateHandler'])->name(
         'catalog.product.update.handler');
     Route::delete('/delete/{productId}', [ProductController::class, 'delete'])->name(
         'catalog.product.delete');
