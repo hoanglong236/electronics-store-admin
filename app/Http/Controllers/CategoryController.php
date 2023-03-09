@@ -9,7 +9,6 @@ use App\Services\StorageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
 {
@@ -22,7 +21,7 @@ class CategoryController extends Controller
         $this->storageService = new StorageService();
     }
 
-    public function index(Request $request)
+    public function index()
     {
         $categories = $this->categoryService->listCategories();
         $categoryNameMap = [];
@@ -37,7 +36,7 @@ class CategoryController extends Controller
         ]);
     }
 
-    public function create(Request $request)
+    public function create()
     {
         return view('pages.category.create-category', [
             'pageTitle' => 'Create category',
@@ -64,7 +63,7 @@ class CategoryController extends Controller
         return redirect()->action([CategoryController::class, 'index']);
     }
 
-    public function update(Request $request, $categoryId)
+    public function update($categoryId)
     {
         return view('pages.category.update-category', [
             'pageTitle' => 'Update category',
@@ -93,7 +92,7 @@ class CategoryController extends Controller
     }
 
     // TODO: validate here
-    public function delete(Request $request, $categoryId)
+    public function delete($categoryId)
     {
         $this->categoryService->deleteCategory($categoryId);
 

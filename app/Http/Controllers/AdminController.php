@@ -36,7 +36,7 @@ class AdminController extends Controller
         return redirect()->action([AdminController::class, 'index']);
     }
 
-    public function logout(Request $request)
+    public function logout()
     {
         $this->adminService->logout();
 

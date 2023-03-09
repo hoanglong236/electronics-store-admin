@@ -6,7 +6,6 @@ use App\Common\Constants;
 use App\Http\Requests\BrandRequest;
 use App\Services\BrandService;
 use App\Services\StorageService;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Log;
 
@@ -21,7 +20,7 @@ class BrandController extends Controller
         $this->storageService = new StorageService();
     }
 
-    public function index(Request $request)
+    public function index()
     {
         $brands = $this->brandService->listBrands();
         return view('pages.brand.list-brands', [
@@ -30,7 +29,7 @@ class BrandController extends Controller
         ]);
     }
 
-    public function create(Request $request)
+    public function create()
     {
         return view('pages.brand.create-brand', ['pageTitle' => 'Create brand']);
     }
@@ -50,7 +49,7 @@ class BrandController extends Controller
         return redirect()->action([BrandController::class, 'index']);
     }
 
-    public function update(Request $request, $brandId)
+    public function update($brandId)
     {
         $brand = $this->brandService->findBrandById($brandId);
         return view('pages.brand.update-brand', [
@@ -75,7 +74,7 @@ class BrandController extends Controller
     }
 
     // TODO: validate here
-    public function delete(Request $request, $brandId)
+    public function delete($brandId)
     {
         $this->brandService->deleteBrand($brandId);
 
