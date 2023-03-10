@@ -1,15 +1,14 @@
 <div class="col-md-4">
     <div class="card">
         <div class="card-header">
-            <strong class="card-title mb-3">{{ $brand->name }}</strong>
+            <strong class="card-title mb-3">ID:&nbsp; {{ $brand->id }}</strong>
         </div>
         <img class="card-img-top card-img-custom" src="{{ asset('/storage' . '/' . $brand->logo_path) }}"
             alt="{{ $brand->name . ' logo' }}">
         <div class="card-body">
             <div class="card-text">
-                <div>ID: {{ $brand->id }}</div>
-                <div class="text-truncate">Name: {{ $brand->name }}</div>
-                <div class="text-truncate">Product count: {{ $brand->updated_at }}</div>
+                <div class="text-truncate">Name:&nbsp; {{ $brand->name }}</div>
+                <div class="text-truncate">Product count:&nbsp; {{ $brand->updated_at }}</div>
             </div>
         </div>
         <div class="card-footer">
