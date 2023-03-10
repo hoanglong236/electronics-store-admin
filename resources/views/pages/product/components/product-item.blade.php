@@ -1,16 +1,20 @@
 <div class="col-md-4">
     <div class="card">
         <div class="card-header">
-            <strong class="card-title mb-3">Product profile</strong>
+            <strong class="card-title mb-3">ID: {{ $product->id }}</strong>
         </div>
         <img class="card-img-top card-img-custom" src="{{ asset('/storage' . '/' . $product->main_image_path) }}"
             alt="Product image">
         <div class="card-body">
             <div class="card-text">
-                <div>ID: {{ $product->id }}</div>
                 <div class="text-truncate">Category: {{ $categoryNameMap[$product->category_id] }}</div>
                 <div class="text-truncate">Brand: {{ $brandNameMap[$product->brand_id] }}</div>
                 <div class="text-truncate--two-line">Name: {{ $product->name }}</div>
+                <div class="text-truncate">Price: {{ $product->price }}</div>
+                <div class="text-truncate">Discount: {{ $product->discount_percent . '%' }}</div>
+                <div class="text-truncate">Quantity: {{ $product->quantity }}</div>
+                <div class="text-truncate">Warranty: {{ $product->warranty_period . ' (month)' }}</div>
+                <div class="text-truncate--two-line">Description: {{ $product->description }}</div>
             </div>
         </div>
         <div class="card-footer">

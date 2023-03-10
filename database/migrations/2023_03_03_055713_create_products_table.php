@@ -13,9 +13,14 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->integer('category_id', false, true)->reference('id')->on('categories');
-            $table->integer('brand_id', false, true)->reference('id')->on('brands');
+            $table->integer('category_id')->unsigned()->reference('id')->on('categories');
+            $table->integer('brand_id')->unsigned()->reference('id')->on('brands');
             $table->string('name', 128);
+            $table->integer('price')->unsigned();
+            $table->smallInteger('discount_percent')->unsigned();
+            $table->integer('quantity')->unsigned();
+            $table->smallInteger('warranty_period')->unsigned();
+            $table->string('description')->nullable();
             $table->string('main_image_path');
             $table->boolean('delete_flag')->default(false);
             $table->timestamps();

@@ -39,7 +39,7 @@ class ProductController extends Controller
         ]);
     }
 
-    public function create(Request $request)
+    public function create()
     {
         return view('pages.product.create-product', [
             'pageTitle' => 'Create product',
@@ -50,24 +50,14 @@ class ProductController extends Controller
 
     public function createHandler(ProductRequest $productRequest)
     {
-        $mainImagePath = $this->storageService->saveFile(
-            $productRequest->file('mainImage'),
-            Constants::PRODUCT_IMAGE_PATH
-        );
-
-        $productProperties = array(
-            'categoryId' => $productRequest->post('categoryId'),
-            'brandId' => $productRequest->post('brandId'),
-            'name' => $productRequest->post('name'),
-            'mainImagePath' => $mainImagePath
-        );
+        $productProperties = $productRequest->validated();
         $this->productService->createProduct($productProperties);
 
         Session::flash(Constants::ACTION_SUCCESS, Constants::CREATE_SUCCESS);
         return redirect()->action([ProductController::class, 'index']);
     }
 
-    public function update(Request $request, $productId)
+    public function update($productId)
     {
         $product = $this->productService->findProductById($productId);
 
@@ -81,23 +71,14 @@ class ProductController extends Controller
 
     public function updateHandler(ProductRequest $productRequest, $productId)
     {
-        if ($productRequest->hasFile('mainImage')) {
-            $productProperties['mainImagePath'] = $this->storageService->saveFile(
-                $productRequest->file('mainImage'),
-                Constants::PRODUCT_IMAGE_PATH
-            );;
-        }
-
-        $productProperties['categoryId'] = $productRequest->post('categoryId');
-        $productProperties['brandId'] = $productRequest->post('brandId');
-        $productProperties['name'] = $productRequest->post('name');
+        $productProperties = $productRequest->validated();
         $this->productService->updateProduct($productProperties, $productId);
 
         Session::flash(Constants::ACTION_SUCCESS, Constants::UPDATE_SUCCESS);
         return redirect()->action([ProductController::class, 'index']);
     }
 
-    public function delete(Request $request, $productId)
+    public function delete($productId)
     {
         $this->productService->deleteProduct($productId);
 
