@@ -106,12 +106,26 @@
                                 <div class="alert alert-danger mt-1" role="alert">{{ $message }}</div>
                             @enderror
                         </div>
-                        <div class="form-group">
-                            <label for="productMainImage" class="form-control-label">New main image?</label>
-                            <input id="productMainImage" type="file" name="mainImage" class="form-control-file">
-                            @error('mainImage')
-                                <div class="alert alert-danger mt-1" role="alert">{{ $message }}</div>
-                            @enderror
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="productMainImage" class="form-control-label">New main image?</label>
+                                    <input id="productMainImage" type="file" name="mainImage" class="form-control-file">
+                                    @error('mainImage')
+                                        <div class="alert alert-danger mt-1" role="alert">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="productImageSlider" class="form-control-label">Add more slider images?</label>
+                                    <input id="productImageSlider" name="images[]" type="file" class="form-control-file"
+                                        multiple>
+                                    @error('images.*')
+                                        <div class="alert alert-danger mt-1" role="alert">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="card-footer">

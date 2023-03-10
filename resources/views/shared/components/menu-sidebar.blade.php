@@ -8,7 +8,7 @@
     <div class="menu-sidebar__content js-scrollbar1">
         <nav class="navbar-sidebar">
             <ul class="list-unstyled navbar__list">
-                <li class="active has-sub">
+                <li class="has-sub">
                     <a class="js-arrow" href="#">
                         <i class="fas fa-tachometer-alt"></i>Dashboard</a>
                     <ul class="list-unstyled navbar__sub-list js-sub-list">
@@ -34,24 +34,20 @@
                     <a href="table.html">
                         <i class="fas fa-table"></i>Tables</a>
                 </li>
-                <li>
-                    <a href="form.html">
-                        <i class="far fa-check-square"></i>Forms</a>
+                <li class="{{ Request::routeIs('catalog.brand.*') ? 'active' : '' }}">
+                    <a href="{{ route('catalog.brand.index') }}">
+                        <i class="fas fa-tag"></i>Brand
+                    </a>
                 </li>
-                <li class="has-sub">
-                    <a class="js-arrow" href="#">
-                        <i class="fas fa-copy"></i>Pages</a>
-                    <ul class="list-unstyled navbar__sub-list js-sub-list">
-                        <li>
-                            <a href="login.html">Login</a>
-                        </li>
-                        <li>
-                            <a href="register.html">Register</a>
-                        </li>
-                        <li>
-                            <a href="forget-pass.html">Forget Password</a>
-                        </li>
-                    </ul>
+                <li class="{{ Request::routeIs('catalog.category.*') ? 'active' : '' }}">
+                    <a href="{{ route('catalog.category.index') }}">
+                        <i class="fas fa-tag"></i>Category
+                    </a>
+                </li>
+                <li class="{{ Request::routeIs('catalog.product.*') ? 'active' : '' }}">
+                    <a href="{{ route('catalog.product.index') }}">
+                        <i class="fas fa-tag"></i>Product
+                    </a>
                 </li>
             </ul>
         </nav>

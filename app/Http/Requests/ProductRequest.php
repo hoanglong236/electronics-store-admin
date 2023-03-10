@@ -35,6 +35,15 @@ class ProductRequest extends FormRequest
             'warrantyPeriod' => 'required|min:0|max:120',
             'description' => '',
             'mainImage' => ['mimes:jpeg,jpg,png', Rule::requiredIf(!$isUpdateProductRequest)],
+            'images' => ['', Rule::requiredIf(!$isUpdateProductRequest)],
+            'images.*' => 'mimes:jpeg,jpg,png',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'images.*.mimes' => 'Uploaded files must be images.',
         ];
     }
 }

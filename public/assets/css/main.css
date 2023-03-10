@@ -83,6 +83,15 @@
    /* max-height: 3rem;     */
 }
 
+.original-price {
+    color: #9a9a9a;
+    text-decoration: line-through;
+}
+
+.discount-price {
+    color: #ff5858;
+}
+
 /* .logo-wrapper {
     min-width: 50%;
     width: 140px;

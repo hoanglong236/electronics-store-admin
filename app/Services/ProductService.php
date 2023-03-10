@@ -9,10 +9,12 @@ use App\Models\Product;
 class ProductService
 {
     private $storageService;
+    private $productImageService;
 
     public function __construct()
     {
         $this->storageService = new StorageService();
+        $this->productImageService = new ProductImageService();
     }
 
     public function findProductById($productId)
@@ -44,6 +46,11 @@ class ProductService
         $product->delete_flag = false;
 
         $product->save();
+
+        $this->productImageService->createProductImages([
+            'productId' => $product->id,
+            'images' => $productPropterties['images']
+        ]);
     }
 
     public function updateProduct($productPropterties, $productId)
@@ -67,6 +74,14 @@ class ProductService
         }
 
         $product->update();
+
+        if (isset($productPropterties['images'])) {
+            $productImageProperties = [
+                'productId' => $productId,
+                'images' => $productPropterties['images']
+            ];
+            $this->productImageService->createProductImages($productImageProperties);
+        }
     }
 
     public function deleteProduct($productId)
@@ -74,6 +89,7 @@ class ProductService
         $product = $this->findProductById($productId);
 
         $this->storageService->deleteFile($product->main_image_path);
+        $this->productImageService->deleteProductImagesInProduct($productId);
         $product->delete_flag = true;
 
         $product->update();

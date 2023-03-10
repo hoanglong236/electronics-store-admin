@@ -8,8 +8,16 @@
         <div class="card-body">
             <div class="card-text">
                 <div class="text-truncate--two-line">Name:&nbsp; <strong>{{ $product->name }}</strong></div>
-                <div class="text-truncate">Price:&nbsp; {{ $product->price . '$' }}</div>
-                <div class="text-truncate">Discount:&nbsp; {{ $product->discount_percent . '%' }}</div>
+                <div class="text-truncate">Category:&nbsp; {{ $categoryNameMap[$product->category_id] }}</div>
+                <div class="text-truncate">
+                    Price:&nbsp;
+                    @if ($product->discount_percent === 0)
+                        {{ $product->price . '$' }}
+                    @else
+                        <span class="discount-price">{{ $product->price * ((100 - $product->discount_percent) / 100) . '$' }}</span>
+                        <span class="original-price">{{ $product->price . '$' }}</span>
+                    @endif
+                </div>
                 <div class="text-truncate">Quantity:&nbsp; {{ $product->quantity }}</div>
             </div>
         </div>
