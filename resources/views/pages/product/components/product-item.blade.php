@@ -3,7 +3,7 @@
         <div class="card-header">
             <strong class="card-title mb-3">ID:&nbsp; {{ $product->id }}</strong>
         </div>
-        <img class="card-img-top card-img-custom" src="{{ asset('/storage' . '/' . $product->main_image_path) }}"
+        <img class="card-img-top card-img-custom" src="{{ asset('storage/' . $product->main_image_path) }}"
             alt="Product image">
         <div class="card-body">
             <div class="card-text">

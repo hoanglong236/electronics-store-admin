@@ -3,7 +3,7 @@
         <div class="card-header">
             <strong class="card-title mb-3">ID:&nbsp; {{ $brand->id }}</strong>
         </div>
-        <img class="card-img-top card-img-custom" src="{{ asset('/storage' . '/' . $brand->logo_path) }}"
+        <img class="card-img-top card-img-custom" src="{{ asset('storage/' . $brand->logo_path) }}"
             alt="{{ $brand->name . ' logo' }}">
         <div class="card-body">
             <div class="card-text">
