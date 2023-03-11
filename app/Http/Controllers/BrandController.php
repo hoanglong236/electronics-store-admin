@@ -81,4 +81,6 @@ class BrandController extends Controller
         Session::flash(Constants::ACTION_SUCCESS, Constants::DELETE_SUCCESS);
         return redirect()->action([BrandController::class, 'index']);
     }
+
+    // TODO: handle only delete brand logo
 }

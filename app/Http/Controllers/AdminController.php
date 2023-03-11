@@ -22,7 +22,7 @@ class AdminController extends Controller
 
     public function index(Request $request)
     {
-        return view('pages.login', ['pageTitle' => 'Login']);
+        return view('pages.guest.login', ['pageTitle' => 'Login']);
     }
 
     public function loginHandler(LoginRequest $loginRequest)
@@ -48,7 +48,7 @@ class AdminController extends Controller
 
     public function register(Request $request)
     {
-        return view('pages.register', ['pageTitle' => 'Register']);
+        return view('pages.guest.register', ['pageTitle' => 'Register']);
     }
 
     public function registerHandler(RegisterRequest $registerRequest)
