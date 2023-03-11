@@ -133,7 +133,11 @@
                                 <img src="{{ asset('assets/images/icon/avatar-01.jpg') }}" alt="John Doe" />
                             </div>
                             <div class="content">
-                                <a class="js-acc-btn" href="#">john doe</a>
+                                <a class="js-acc-btn d-flex" href="#">
+                                    <span class="text-truncate--small">
+                                        {{ Auth::guard('admin')->user()->name }}
+                                    </span>
+                                </a>
                             </div>
                             <div class="account-dropdown js-dropdown">
                                 <div class="info clearfix">
@@ -144,9 +148,15 @@
                                     </div>
                                     <div class="content">
                                         <h5 class="name">
-                                            <a href="#">john doe</a>
+                                            <a href="#">
+                                                <span class="text-truncate--medium">
+                                                    {{ Auth::guard('admin')->user()->name }}
+                                                </span>
+                                            </a>
                                         </h5>
-                                        <span class="email">johndoe@example.com</span>
+                                        <span class="email text-truncate--medium">
+                                            {{ Auth::guard('admin')->user()->email }}
+                                        </span>
                                     </div>
                                 </div>
                                 <div class="account-dropdown__body">
@@ -164,7 +174,8 @@
                                     </div>
                                 </div>
                                 <div class="account-dropdown__footer">
-                                    <a href="{{ route('logout') }}" onclick="event.preventDefault(); $('#logoutForm').submit();">
+                                    <a href="{{ route('logout') }}"
+                                        onclick="event.preventDefault(); $('#logoutForm').submit();">
                                         <i class="zmdi zmdi-power"></i>Logout</a>
                                 </div>
                                 <form id="logoutForm" action="{{ route('logout') }}" method="POST">

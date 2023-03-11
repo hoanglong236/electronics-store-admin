@@ -6,6 +6,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\RedirectIfAuthenticated;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,19 +19,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('', [AdminController::class, 'index']);
+Route::middleware([RedirectIfAuthenticated::class])->group(function () {
+    Route::get('', [AdminController::class, 'index']);
 
-// for redirect when admin user are not authenticated.
-Route::get('/login', [AdminController::class, 'index'])->name('login');
+    // for redirect when admin user are not authenticated.
+    Route::get('/login', [AdminController::class, 'index'])->name('login');
 
-Route::post('/login-handler', [AdminController::class, 'loginHandler'])->name(
-    'login.handler'
-);
+    Route::post('/login-handler', [AdminController::class, 'loginHandler'])->name(
+        'login.handler'
+    );
 
-Route::get('/register', [AdminController::class, 'register'])->name('register');
-Route::post('/register-handler', [AdminController::class, 'registerHandler'])->name(
-    'register.handler'
-);
+    Route::get('/register', [AdminController::class, 'register'])->name('register');
+    Route::post('/register-handler', [AdminController::class, 'registerHandler'])->name(
+        'register.handler'
+    );
+});
 
 Route::middleware('auth:admin')->group(function () {
     Route::post('/logout', [AdminController::class, 'logout'])->name('logout');
