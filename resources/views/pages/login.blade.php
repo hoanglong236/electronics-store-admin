@@ -11,17 +11,18 @@
                 </div>
                 <div class="text-center">Welcome to The Admin Team</div>
                 <div class="login-form mt-4">
-                    <form action="{{ route('admin.login.handler') }}" method="POST">
+                    <form action="{{ route('login.handler') }}" method="POST">
                         @csrf
                         <div class="form-group">
-                            <input class="au-input au-input--full au-input--small" type="email" name="email" placeholder="Email" required>
+                            <input class="au-input au-input--full au-input--small" type="email"
+                                name="email" value="{{ old('email') }}" placeholder="Email" required>
                         </div>
                         @error('email')
                             <div class="alert alert-danger mt-1" role="alert">{{ $message }}</div>
                         @enderror
                         <div class="form-group">
-                            <input class="au-input au-input--full au-input--small" type="password" name="password" placeholder="Password"
-                                required>
+                            <input class="au-input au-input--full au-input--small" type="password"
+                                name="password" value="{{ old('password') }}" placeholder="Password" required>
                         </div>
                         @error('password')
                             <div class="alert alert-danger mt-1" role="alert">{{ $message }}</div>
@@ -40,7 +41,7 @@
                     <div class="register-link">
                         <p>
                             Don't you have account?
-                            <a href="{{ route('admin.register') }}">Sign Up</a>
+                            <a href="{{ route('register') }}">Sign Up</a>
                         </p>
                     </div>
                 </div>

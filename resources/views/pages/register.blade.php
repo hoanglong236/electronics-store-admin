@@ -11,11 +11,11 @@
                 </div>
                 <div class="text-center">Register Account</div>
                 <div class="login-form mt-4">
-                    <form id="registerForm" action="{{ route('admin.register.handler') }}" method="POST">
+                    <form id="registerForm" action="{{ route('register.handler') }}" method="POST">
                         @csrf
                         <div class="form-group">
-                            <input class="au-input au-input--full" type="email" name="email" placeholder="Email"
-                                required>
+                            <input class="au-input au-input--full" type="email" name="email" value="{{ old('email') }}"
+                                placeholder="Email" required>
                         </div>
                         @error('email')
                             <div class="alert alert-danger" role="alert">{{ $message }}</div>
@@ -24,7 +24,7 @@
                             <div class="col">
                                 <div class="form-group">
                                     <input class="au-input au-input--full" type="password" name="password"
-                                        placeholder="Password" required>
+                                        value="{{ old('password') }}" placeholder="Password" required>
                                 </div>
                                 @error('password')
                                     <div class="alert alert-danger" role="alert">{{ $message }}</div>
@@ -32,26 +32,19 @@
                             </div>
                             <div class="col">
                                 <div class="form-group">
-                                    <input class="au-input au-input--full" type="password" name="confirm-password"
-                                        placeholder="Confirm your Password" required>
+                                    <input class="au-input au-input--full" type="password" name="confirmPassword"
+                                        value="{{ old('confirmPassword') }}" placeholder="Confirm your Password" required>
                                 </div>
-                                @error('confirm-password')
+                                @error('confirmPassword')
                                     <div class="alert alert-danger" role="alert">{{ $message }}</div>
                                 @enderror
                             </div>
                         </div>
                         <div class="form-group">
-                            <input class="au-input au-input--full" type="text" name="name" placeholder="Full name"
-                                required>
+                            <input class="au-input au-input--full" type="text" name="name"
+                                value="{{ old('name') }}" placeholder="Full name" required>
                         </div>
                         @error('name')
-                            <div class="alert alert-danger" role="alert">{{ $message }}</div>
-                        @enderror
-                        <div class="form-group">
-                            <input class="au-input au-input--full" type="text" name="phone" placeholder="Phone number"
-                                required>
-                        </div>
-                        @error('phone')
                             <div class="alert alert-danger" role="alert">{{ $message }}</div>
                         @enderror
                         <button class="au-btn au-btn--block au-btn--green m-b-10 m-t-20" type="submit">Register</button>
@@ -59,7 +52,7 @@
                         <div class="register-link">
                             <p>
                                 Already have account?
-                                <a href="{{ route('admin.login') }}">Sign In</a>
+                                <a href="{{ route('login') }}">Sign In</a>
                             </p>
                         </div>
                     </form>

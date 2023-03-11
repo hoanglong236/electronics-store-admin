@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Password;
 
-class AdminRegisterRequest extends FormRequest
+class LoginRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,11 +23,8 @@ class AdminRegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'required|email|max:64|unique:admins',
+            'email' => 'required|email',
             'password' => ['required', Password::min(8)],
-            'confirm-password' => 'required|same:password',
-            'name' => 'required|max:64',
-            'phone' => 'required|max:15|digits_between:6,15'
         ];
     }
 }

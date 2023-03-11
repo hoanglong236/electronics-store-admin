@@ -21,7 +21,8 @@
                                 </div>
                                 <div class="mess__item">
                                     <div class="image img-cir img-40">
-                                        <img src="{{ asset('assets/images/icon/avatar-06.jpg') }}" alt="Michelle Moreno" />
+                                        <img src="{{ asset('assets/images/icon/avatar-06.jpg') }}"
+                                            alt="Michelle Moreno" />
                                     </div>
                                     <div class="content">
                                         <h6>Michelle Moreno</h6>
@@ -53,7 +54,8 @@
                                 </div>
                                 <div class="email__item">
                                     <div class="image img-cir img-40">
-                                        <img src="{{ asset('assets/images/icon/avatar-06.jpg') }}" alt="Cynthia Harvey" />
+                                        <img src="{{ asset('assets/images/icon/avatar-06.jpg') }}"
+                                            alt="Cynthia Harvey" />
                                     </div>
                                     <div class="content">
                                         <p>Meeting about new dashboard...</p>
@@ -62,7 +64,8 @@
                                 </div>
                                 <div class="email__item">
                                     <div class="image img-cir img-40">
-                                        <img src="{{ asset('assets/images/icon/avatar-05.jpg') }}" alt="Cynthia Harvey" />
+                                        <img src="{{ asset('assets/images/icon/avatar-05.jpg') }}"
+                                            alt="Cynthia Harvey" />
                                     </div>
                                     <div class="content">
                                         <p>Meeting about new dashboard...</p>
@@ -71,7 +74,8 @@
                                 </div>
                                 <div class="email__item">
                                     <div class="image img-cir img-40">
-                                        <img src="{{ asset('assets/images/icon/avatar-04.jpg') }}" alt="Cynthia Harvey" />
+                                        <img src="{{ asset('assets/images/icon/avatar-04.jpg') }}"
+                                            alt="Cynthia Harvey" />
                                     </div>
                                     <div class="content">
                                         <p>Meeting about new dashboard...</p>
@@ -160,9 +164,12 @@
                                     </div>
                                 </div>
                                 <div class="account-dropdown__footer">
-                                    <a href="#">
+                                    <a href="{{ route('logout') }}" onclick="event.preventDefault(); $('#logoutForm').submit();">
                                         <i class="zmdi zmdi-power"></i>Logout</a>
                                 </div>
+                                <form id="logoutForm" action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                </form>
                             </div>
                         </div>
                     </div>

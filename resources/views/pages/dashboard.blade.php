@@ -1,4 +1,4 @@
-@extends('layouts.catalog-layout')
+@extends('shared.layouts.catalog-layout')
 
 @section('container')
     <div class="row">
