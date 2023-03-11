@@ -2,7 +2,7 @@
     <td>{{ $category->id }}</td>
     <td>
         @if (isset($category->icon_path))
-            <img class="icon-small" src="{{ asset('/storage' . '/' . $category->icon_path) }}"
+            <img class="category-icon--small" src="{{ asset('/storage' . '/' . $category->icon_path) }}"
                 alt="{{ $category->name . ' icon' }}">
         @else
             --

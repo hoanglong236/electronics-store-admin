@@ -25,7 +25,8 @@
 
 .card-img-custom {
     height: 170px;
-    border: 1px solid #ddd;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
     padding: 3px 5px;
 }
 
@@ -41,9 +42,9 @@
     }
 }
 
-.icon-small {
-    width: 32px;
-    height: 32px;
+.category-icon--small {
+    width: 30px;
+    height: 30px;
 }
 
 .page-item {
@@ -94,22 +95,6 @@
 
 .account-item > .content > a:after {
     margin-left: 8px;
-}
-
-.text-truncate--small {
-    display: inline-block;
-    max-width: 120px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.text-truncate--medium {
-    display: inline-block;
-    width: 178px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
 }
 
 /* .logo-wrapper {
