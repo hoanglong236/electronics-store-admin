@@ -14,7 +14,9 @@
                     @if ($product->discount_percent === 0)
                         {{ $product->price . '$' }}
                     @else
-                        <span class="discount-price">{{ $product->price * ((100 - $product->discount_percent) / 100) . '$' }}</span>
+                        <span class="discount-price">
+                            {{ $product->price * ((100 - $product->discount_percent) / 100) . '$' }}
+                        </span>
                         <span class="original-price">{{ $product->price . '$' }}</span>
                     @endif
                 </div>
@@ -24,11 +26,11 @@
         <div class="card-footer">
             <div class="card-action-wrapper">
                 <div class="card-action-item">
-                    {{-- <a href="{{ route('catalog.product.detail', [$product->id]) }}"> --}}
-                    <button type="submit" class="btn btn-info btn-sm">
-                        <i class="fa fa-info-circle"></i> Detail
-                    </button>
-                    {{-- </a> --}}
+                    <a href="{{ route('catalog.product.detail', [$product->id]) }}">
+                        <button type="submit" class="btn btn-info btn-sm">
+                            <i class="fa fa-info-circle"></i> Detail
+                        </button>
+                    </a>
                 </div>
                 <div class="card-action-item">
                     <a href="{{ route('catalog.product.update', [$product->id]) }}">

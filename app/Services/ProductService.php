@@ -74,14 +74,6 @@ class ProductService
         }
 
         $product->update();
-
-        if (isset($productPropterties['images'])) {
-            $productImageProperties = [
-                'productId' => $productId,
-                'images' => $productPropterties['images']
-            ];
-            $this->productImageService->createProductImages($productImageProperties);
-        }
     }
 
     public function deleteProduct($productId)

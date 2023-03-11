@@ -55,3 +55,8 @@ a[disabled] {
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
+.card-radius {
+    border-radius: 8px;
+    overflow: hidden;
+}

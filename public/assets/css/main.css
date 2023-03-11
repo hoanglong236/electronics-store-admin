@@ -30,6 +30,12 @@
     padding: 3px 5px;
 }
 
+.card-img-custom--square {
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    padding: 5px;
+}
+
 .main-content {
     padding-top: 110px;
     min-height: 92vh;
@@ -45,6 +51,11 @@
 .category-icon--small {
     width: 30px;
     height: 30px;
+}
+
+.product-image--small {
+    width: 50px;
+    height: 50px;
 }
 
 .page-item {
@@ -95,6 +106,17 @@
 
 .account-item > .content > a:after {
     margin-left: 8px;
+}
+
+.horizontal-table-title--small {
+    width: 180px;
+    /* background-color: #d7d7d7; */
+    font-weight: 500;
+}
+
+.carousel-control-icon {
+    background-color: #a9a9a9;
+    height: 40px;
 }
 
 /* .logo-wrapper {

@@ -15,6 +15,10 @@ class ProductImageService
         $this->storageService = new StorageService();
     }
 
+    public function listProductImagesInProduct($productId) {
+        return ProductImage::where('product_id', $productId)->get();
+    }
+
     public function createProductImages($productImageProperties)
     {
         $productId = $productImageProperties['productId'];
@@ -32,7 +36,7 @@ class ProductImageService
 
     public function deleteProductImage($productImageId)
     {
-        $productImage = ProductImage::id($productImageId);
+        $productImage = ProductImage::find($productImageId);
         $this->storageService->deleteFile($productImage->image_path);
         $productImage->delete();
     }

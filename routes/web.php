@@ -93,5 +93,15 @@ Route::middleware('auth:admin')->group(function () {
         Route::delete('/delete/{productId}', [ProductController::class, 'delete'])->name(
             'catalog.product.delete'
         );
+
+        Route::get('/detail/{productId}', [ProductController::class, 'showDetail'])->name(
+            'catalog.product.detail'
+        );
+        Route::post('/detail/{productId}/images/create-handler', [ProductController::class, 'createImages'])->name(
+            'catalog.product.detail.images.create.handler'
+        );
+        Route::delete('/detail/{productId}/images/delete/{productImageId}', [ProductController::class, 'deleteImage'])->name(
+            'catalog.product.detail.images.delete'
+        );
     });
 });
