@@ -14,6 +14,13 @@
                 @enderror
             </div>
             <div class="form-group">
+                <label for="brandSlug" class="form-control-label">Brand slug</label>
+                <input id="brandSlug" type="text" name="slug" value="{{ old('slug') }}" class="form-control" required>
+                @error('slug')
+                    <div class="alert alert-danger mt-1" role="alert">{{ $message }}</div>
+                @enderror
+            </div>
+            <div class="form-group">
                 <label for="brandLogo" class="form-control-label">Brand logo</label>
                 <input id="brandLogo" type="file" name="logo" class="form-control-file" required>
                 @error('logo')

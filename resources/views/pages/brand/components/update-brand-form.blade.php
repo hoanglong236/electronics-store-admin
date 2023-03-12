@@ -16,6 +16,13 @@
                 @enderror
             </div>
             <div class="form-group">
+                <label for="brandSlug" class="form-control-label">Brand slug</label>
+                <input id="brandSlug" type="text" name="slug" value="{{ $brand->slug }}" class="form-control">
+                @error('slug')
+                    <div class="alert alert-danger mt-1" role="alert">{{ $message }}</div>
+                @enderror
+            </div>
+            <div class="form-group">
                 <label for="brandLogo" class=" form-control-label">New brand logo?</label>
                 <input id="brandLogo" type="file" name="logo" class="form-control-file">
                 @error('logo')

@@ -8,7 +8,7 @@
     </a>
 
     <div class="row mt-4">
-        <div class="col-lg-8">
+        <div class="col-lg-6">
             @include('pages.brand.components.update-brand-form')
         </div>
     </div>

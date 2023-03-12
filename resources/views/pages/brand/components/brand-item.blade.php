@@ -8,6 +8,7 @@
         <div class="card-body">
             <div class="card-text">
                 <div class="text-truncate">Name:&nbsp; {{ $brand->name }}</div>
+                <div class="text-truncate">Slug:&nbsp; {{ $brand->slug }}</div>
                 <div class="text-truncate">Product count:&nbsp; {{ $brand->updated_at }}</div>
             </div>
         </div>

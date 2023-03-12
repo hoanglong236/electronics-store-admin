@@ -5,24 +5,22 @@ namespace App\Http\Controllers;
 use App\Common\Constants;
 use App\Http\Requests\BrandRequest;
 use App\Services\BrandService;
-use App\Services\StorageService;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Log;
 
 class BrandController extends Controller
 {
     private $brandService;
-    private $storageService;
 
     public function __construct()
     {
         $this->brandService = new BrandService();
-        $this->storageService = new StorageService();
     }
 
     public function index()
     {
         $brands = $this->brandService->listBrands();
+
         return view('pages.brand.list-brands', [
             'pageTitle' => 'List brands',
             'brands' => $brands
@@ -36,13 +34,7 @@ class BrandController extends Controller
 
     public function createHandler(BrandRequest $brandRequest)
     {
-        $brandProperties = array(
-            'name' => $brandRequest->post('name'),
-            'logoPath' => $this->storageService->saveFile(
-                $brandRequest->file('logo'),
-                Constants::BRAND_LOGO_STORAGE_PATH
-            ),
-        );
+        $brandProperties = $brandRequest->validated();
         $this->brandService->createBrand($brandProperties);
 
         Session::flash(Constants::ACTION_SUCCESS, Constants::CREATE_SUCCESS);
@@ -51,22 +43,18 @@ class BrandController extends Controller
 
     public function update($brandId)
     {
-        $brand = $this->brandService->findBrandById($brandId);
+        $brand = $this->brandService->findById($brandId);
+
         return view('pages.brand.update-brand', [
             'pageTitle' => 'Update brand',
             'brand' => $brand
         ]);
     }
 
+    // TODO: handle only delete brand logo
     public function updateHandler(BrandRequest $brandRequest, $brandId)
     {
-        if ($brandRequest->hasFile('logo')) {
-            $brandProperties['logoPath'] = $this->storageService->saveFile(
-                $brandRequest->file('logo'),
-                Constants::BRAND_LOGO_STORAGE_PATH
-            );
-        }
-        $brandProperties['name'] = $brandRequest->post('name');
+        $brandProperties = $brandRequest->validated();
         $this->brandService->updateBrand($brandProperties, $brandId);
 
         Session::flash(Constants::ACTION_SUCCESS, Constants::UPDATE_SUCCESS);
@@ -82,5 +70,5 @@ class BrandController extends Controller
         return redirect()->action([BrandController::class, 'index']);
     }
 
-    // TODO: handle only delete brand logo
+
 }

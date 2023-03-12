@@ -25,12 +25,17 @@ class BrandRequest extends FormRequest
         $brandId = $this->route('brandId');
         $isUpdateBrandRequest = isset($brandId);
 
+        $brandNameUniqueRule = Rule::unique('brands', 'name')->where('delete_flag', false);
+        $brandSlugUniqueRule = Rule::unique('brands', 'slug')->where('delete_flag', false);
+
         return [
             'name' => [
-                'required', 'max:64',
-                $isUpdateBrandRequest
-                    ? Rule::unique('brands', 'name')->where('delete_flag', false)->ignore($brandId)
-                    : Rule::unique('brands', 'name')->where('delete_flag', false)
+                'required', 'max:42',
+                $isUpdateBrandRequest ? $brandNameUniqueRule->ignore($brandId) : $brandNameUniqueRule
+            ],
+            'slug' => [
+                'required', 'max:42',
+                $isUpdateBrandRequest ? $brandSlugUniqueRule->ignore($brandId) : $brandSlugUniqueRule
             ],
             'logo' => ['mimes:jpeg,jpg,png', Rule::requiredIf(!$isUpdateBrandRequest)],
         ];
