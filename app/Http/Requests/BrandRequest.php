@@ -30,11 +30,11 @@ class BrandRequest extends FormRequest
 
         return [
             'name' => [
-                'required', 'max:42',
+                'required', 'max:45',
                 $isUpdateBrandRequest ? $brandNameUniqueRule->ignore($brandId) : $brandNameUniqueRule
             ],
             'slug' => [
-                'required', 'max:42',
+                'required', 'max:45',
                 $isUpdateBrandRequest ? $brandSlugUniqueRule->ignore($brandId) : $brandSlugUniqueRule
             ],
             'logo' => ['mimes:jpeg,jpg,png', Rule::requiredIf(!$isUpdateBrandRequest)],
