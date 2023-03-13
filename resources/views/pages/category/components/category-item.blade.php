@@ -9,7 +9,8 @@
         @endif
     </td>
     <td>{{ $category->name }}</td>
-    <td>{{ is_null($category->parent_id) ? '--' : $categoryNameMap[$category->parent_id] }}</td>
+    <td>{{ $category->slug }}</td>
+    <td>{{ is_null($category->parent_id) ? '--' : $categoryIdNameMap[$category->parent_id] }}</td>
     <td>
         <div class="card-action-wrapper--right">
             <div class="card-action-item">

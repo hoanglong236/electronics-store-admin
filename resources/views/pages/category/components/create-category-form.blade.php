@@ -1,6 +1,6 @@
 <div class="card">
-    <div class="card-header">
-        <strong>Create Category</strong>
+    <div class="card-header card-header-flex">
+        <span class="form-title">Create category</span>
     </div>
     <form action="{{ route('catalog.category.create.handler') }}" method="post" enctype="multipart/form-data"
         class="form-horizontal">
@@ -10,7 +10,7 @@
                 <label for="parentCategoryId" class="form-control-label">Parent category</label>
                 <select id="parentCategoryId" name="parentId" class="form-control">
                     <option value="{{ Constants::NONE_VALUE }}">None</option>
-                    @foreach ($categoryNameMap as $categoryId => $categoryName)
+                    @foreach ($categoryIdNameMap as $categoryId => $categoryName)
                         <option value="{{ $categoryId }}" @selected(intval(old('parentId')) === $categoryId)>{{ $categoryName }}</option>
                     @endforeach
                 </select>
@@ -26,8 +26,15 @@
                 @enderror
             </div>
             <div class="form-group">
+                <label for="categorySlug" class="form-control-label">Category slug</label>
+                <input id="categorySlug" type="text" name="slug" value="{{ old('slug') }}" class="form-control" required>
+                @error('slug')
+                    <div class="alert alert-danger mt-1" role="alert">{{ $message }}</div>
+                @enderror
+            </div>
+            <div class="form-group">
                 <label for="categoryIcon" class="form-control-label">Category icon</label>
-                <input id="categoryIcon" type="file" name="icon" class="form-control-file">
+                <input id="categoryIcon" type="file" name="icon" class="form-control-file" required>
                 @error('icon')
                     <div class="alert alert-danger mt-1" role="alert">{{ $message }}</div>
                 @enderror

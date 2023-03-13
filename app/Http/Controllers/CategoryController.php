@@ -24,15 +24,15 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = $this->categoryService->listCategories();
-        $categoryNameMap = [];
+        $categoryIdNameMap = [];
         foreach ($categories as $category) {
-            $categoryNameMap[$category->id] = $category->name;
+            $categoryIdNameMap[$category->id] = $category->name;
         }
 
         return view('pages.category.list-categories', [
             'pageTitle' => 'List categories',
             'categories' => $categories,
-            'categoryNameMap' => $categoryNameMap,
+            'categoryIdNameMap' => $categoryIdNameMap,
         ]);
     }
 
@@ -40,23 +40,13 @@ class CategoryController extends Controller
     {
         return view('pages.category.create-category', [
             'pageTitle' => 'Create category',
-            'categoryNameMap' => $this->categoryService->getCategoryNameMap(),
+            'categoryIdNameMap' => $this->categoryService->getCategoryIdNameMap(),
         ]);
     }
 
     public function createHandler(CategoryRequest $categoryRequest)
     {
-        $parentCategoryId = $categoryRequest->post('parentId');
-        $categoryProperties['parentId'] =
-            $parentCategoryId === Constants::NONE_VALUE ? null : (int) $parentCategoryId;
-
-        if ($categoryRequest->hasFile('icon')) {
-            $categoryProperties['iconPath'] = $this->storageService->saveFile(
-                $categoryRequest->file('icon'),
-                Constants::CATEGORY_ICON_PATH
-            );
-        }
-        $categoryProperties['name'] = $categoryRequest->post('name');
+        $categoryProperties = $categoryRequest->validated();
         $this->categoryService->createCategory($categoryProperties);
 
         Session::flash(Constants::ACTION_SUCCESS, Constants::CREATE_SUCCESS);
@@ -67,24 +57,14 @@ class CategoryController extends Controller
     {
         return view('pages.category.update-category', [
             'pageTitle' => 'Update category',
-            'category' => $this->categoryService->findCategoryById($categoryId),
-            'categoryNameMap' => $this->categoryService->getCategoryNameMap()
+            'category' => $this->categoryService->findById($categoryId),
+            'categoryIdNameMap' => $this->categoryService->getCategoryIdNameMap(),
         ]);
     }
 
     public function updateHandler(CategoryRequest $categoryRequest, $categoryId)
     {
-        $parentCategoryId = $categoryRequest->post('parentId');
-        $categoryProperties['parentId'] =
-            $parentCategoryId === Constants::NONE_VALUE ? null : (int) $parentCategoryId;
-
-        if ($categoryRequest->hasFile('icon')) {
-            $categoryProperties['iconPath'] = $this->storageService->saveFile(
-                $categoryRequest->file('icon'),
-                Constants::CATEGORY_ICON_PATH
-            );
-        }
-        $categoryProperties['name'] = $categoryRequest->post('name');
+        $categoryProperties = $categoryRequest->validated();
         $this->categoryService->updateCategory($categoryProperties, $categoryId);
 
         Session::flash(Constants::ACTION_SUCCESS, Constants::UPDATE_SUCCESS);

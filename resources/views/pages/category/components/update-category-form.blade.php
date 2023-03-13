@@ -1,6 +1,6 @@
 <div class="card">
     <div class="card-header">
-        <strong>Update Category</strong>
+        <span class="form-title">Update category</span>
     </div>
     <form action="{{ route('catalog.category.update.handler', $category->id) }}" method="post"
         enctype="multipart/form-data" class="form-horizontal">
@@ -11,7 +11,7 @@
                 <label for="parentCategoryId" class="form-control-label">Parent category</label>
                 <select id="parentCategoryId" name="parentId" class="form-control">
                     <option value="{{ Constants::NONE_VALUE }}">None</option>
-                    @foreach ($categoryNameMap as $categoryId => $categoryName)
+                    @foreach ($categoryIdNameMap as $categoryId => $categoryName)
                         <option value="{{ $categoryId }}" @selected(intval($category->parent_id) === $categoryId)>{{ $categoryName }}</option>
                     @endforeach
                 </select>
@@ -24,6 +24,14 @@
                 <input id="categoryName" type="text" name="name" value="{{ $category->name }}"
                     class="form-control" required>
                 @error('name')
+                    <div class="alert alert-danger mt-1" role="alert">{{ $message }}</div>
+                @enderror
+            </div>
+            <div class="form-group">
+                <label for="categorySlug" class=" form-control-label">Category slug</label>
+                <input id="categorySlug" type="text" name="slug" value="{{ $category->slug }}"
+                    class="form-control" required>
+                @error('slug')
                     <div class="alert alert-danger mt-1" role="alert">{{ $message }}</div>
                 @enderror
             </div>

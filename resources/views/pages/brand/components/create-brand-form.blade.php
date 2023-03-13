@@ -1,6 +1,6 @@
 <div class="card">
     <div class="card-header">
-        <strong>Create Brand</strong>
+        <span class="card-title--medium">Create brand</span>
     </div>
     <form action="{{ route('catalog.brand.create.handler') }}" method="post" enctype="multipart/form-data"
         class="form-horizontal">

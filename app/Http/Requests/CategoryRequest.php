@@ -27,6 +27,9 @@ class CategoryRequest extends FormRequest
         $categoryId = $this->route('categoryId');
         $isUpdateCategoryRequest = isset($categoryId);
 
+        $categoryNameUniqueRule = Rule::unique('categories', 'name')->where('delete_flag', false);
+        $categorySlugUniqueRule = Rule::unique('categories', 'slug')->where('delete_flag', false);
+
         return [
             'parentId' => [
                 $this->parentId !== Constants::NONE_VALUE
@@ -34,12 +37,14 @@ class CategoryRequest extends FormRequest
                     : ''
             ],
             'name' => [
-                'required', 'max:64',
-                $isUpdateCategoryRequest
-                    ? Rule::unique('categories', 'name')->where('delete_flag', false)->ignore($categoryId)
-                    : Rule::unique('categories', 'name')->where('delete_flag', false)
+                'required', 'max:60',
+                $isUpdateCategoryRequest ? $categoryNameUniqueRule->ignore($categoryId) : $categoryNameUniqueRule
             ],
-            'icon' => ['mimes:jpeg,jpg,png'],
+            'slug' => [
+                'required', 'max:60',
+                $isUpdateCategoryRequest ? $categorySlugUniqueRule->ignore($categoryId) : $categorySlugUniqueRule
+            ],
+            'icon' => ['mimes:jpeg,jpg,png', Rule::requiredIf(!$isUpdateCategoryRequest)],
         ];
     }
 }

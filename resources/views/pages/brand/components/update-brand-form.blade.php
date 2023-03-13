@@ -1,6 +1,6 @@
 <div class="card">
     <div class="card-header">
-        <strong>Update Brand</strong>
+        <span class="card-title--medium">Update brand</span>
     </div>
     <form action="{{ route('catalog.brand.update.handler', $brand->id) }}" method="post" enctype="multipart/form-data"
         class="form-horizontal">
