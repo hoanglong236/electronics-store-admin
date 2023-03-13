@@ -33,6 +33,12 @@ class CategorySeeder extends Seeder
             'delete_flag' => false,
         ]);
         Category::create([
+            'name' => 'Smartwatch',
+            'slug' => 'smartwatch',
+            'icon_path' => Constants::CATEGORY_ICON_PATH . '/smartwatch.png',
+            'delete_flag' => false,
+        ]);
+        Category::create([
             'name' => 'Sound device',
             'slug' => 'sound-device',
             'icon_path' => Constants::CATEGORY_ICON_PATH . '/sound-device.png',
@@ -62,9 +68,9 @@ class CategorySeeder extends Seeder
         ]);
         Category::create([
             'parent_id' => $accessoriesId,
-            'name' => 'Adapter',
-            'slug' => 'adapter',
-            'icon_path' => Constants::CATEGORY_ICON_PATH . '/adapter.png',
+            'name' => 'Adaptor',
+            'slug' => 'adaptor',
+            'icon_path' => Constants::CATEGORY_ICON_PATH . '/adaptor.png',
             'delete_flag' => false,
         ]);
         Category::create([
