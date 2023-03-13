@@ -51,7 +51,6 @@ class BrandController extends Controller
         ]);
     }
 
-    // TODO: handle only delete brand logo
     public function updateHandler(BrandRequest $brandRequest, $brandId)
     {
         $brandProperties = $brandRequest->validated();
@@ -69,6 +68,4 @@ class BrandController extends Controller
         Session::flash(Constants::ACTION_SUCCESS, Constants::DELETE_SUCCESS);
         return redirect()->action([BrandController::class, 'index']);
     }
-
-
 }

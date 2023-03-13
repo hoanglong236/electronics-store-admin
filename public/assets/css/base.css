@@ -60,3 +60,18 @@ a[disabled] {
     border-radius: 8px;
     overflow: hidden;
 }
+
+.card-text {
+    font-size: 1.3rem;
+    line-height: 1.7rem;
+}
+
+.text-small {
+    font-size: 1.4rem;
+}
+
+.card-title--small {
+    font-size: 1.4rem;
+    font-weight: 600;
+    line-height: 1.8rem;
+}

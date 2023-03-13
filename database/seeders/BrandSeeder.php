@@ -35,7 +35,7 @@ class BrandSeeder extends Seeder
         Brand::create([
             'name' => 'Dell',
             'slug' => 'dell',
-            'logo_path' => Constants::BRAND_LOGO_PATH . '/dell-logo.png',
+            'logo_path' => Constants::BRAND_LOGO_PATH . '/dell-logo.jpg',
             'delete_flag' => false,
         ]);
         Brand::create([

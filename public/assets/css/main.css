@@ -23,11 +23,12 @@
     margin-left: 5px;
 }
 
-.card-img-custom {
-    height: 170px;
+.card-image--small {
+    display: block;
+    height: 120px;
     border-top: 1px solid #ddd;
     border-bottom: 1px solid #ddd;
-    padding: 3px 5px;
+    padding: 5px;
 }
 
 .card-img-custom--square {
