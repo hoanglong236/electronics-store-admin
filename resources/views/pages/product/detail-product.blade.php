@@ -13,7 +13,7 @@
         </div>
         <div class="col-lg-4">
             <div class="card card-radius">
-                <img class="card-img-top card-img-custom--square" src="{{ asset('storage/' . $product->main_image_path) }}"
+                <img class="card-img-top card-image-custom--square" src="{{ asset('storage/' . $product->main_image_path) }}"
                     alt="Card image cap">
                 <div class="card-body">
                     <h5>Main image</h5>

@@ -12,8 +12,9 @@
                     <div class="form-group">
                         <label for="category" class="form-control-label">Category</label>
                         <select id="category" name="categoryId" class="form-control">
-                            @foreach ($categoryNameMap as $key => $value)
-                                <option value="{{ $key }}" @selected($key === $product->category_id)>{{ $value }}
+                            @foreach ($categoryIdNameMap as $categoryId => $categoryName)
+                                <option value="{{ $categoryId }}" @selected($categoryId === $product->category_id)>
+                                    {{ $categoryName }}
                                 </option>
                             @endforeach
                         </select>
@@ -26,8 +27,8 @@
                     <div class="form-group">
                         <label for="brand" class="form-control-label">Brand</label>
                         <select id="brand" name="brandId" class="form-control">
-                            @foreach ($brandNameMap as $key => $value)
-                                <option value="{{ $key }}" @selected($key === $product->brand_id)>{{ $value }}
+                            @foreach ($brandIdNameMap as $brandId => $brandName)
+                                <option value="{{ $brandId }}" @selected($brandId === $product->brand_id)>{{ $brandName }}
                                 </option>
                             @endforeach
                         </select>

@@ -20,7 +20,6 @@ class ProductController extends Controller
     private $brandService;
     private $productImageService;
 
-
     public function __construct()
     {
         $this->productService = new ProductService();
@@ -36,8 +35,8 @@ class ProductController extends Controller
         return view('pages.product.list-products', [
             'pageTitle' => 'List products',
             'products' => $products,
-            'categoryNameMap' => $this->categoryService->getCategoryNameMap(),
-            'brandNameMap' => $this->brandService->getBrandNameMap(),
+            'categoryIdNameMap' => $this->categoryService->getCategoryIdNameMap(),
+            'brandIdNameMap' => $this->brandService->getBrandIdNameMap(),
         ]);
     }
 
@@ -45,8 +44,8 @@ class ProductController extends Controller
     {
         return view('pages.product.create-product', [
             'pageTitle' => 'Create product',
-            'categoryNameMap' => $this->categoryService->getCategoryNameMap(),
-            'brandNameMap' => $this->brandService->getBrandNameMap(),
+            'categoryIdNameMap' => $this->categoryService->getCategoryIdNameMap(),
+            'brandIdNameMap' => $this->brandService->getBrandIdNameMap(),
         ]);
     }
 
@@ -66,8 +65,8 @@ class ProductController extends Controller
         return view('pages.product.update-product', [
             'pageTitle' => 'Update product',
             'product' => $product,
-            'categoryNameMap' => $this->categoryService->getCategoryNameMap(),
-            'brandNameMap' => $this->brandService->getBrandNameMap(),
+            'categoryIdNameMap' => $this->categoryService->getCategoryIdNameMap(),
+            'brandIdNameMap' => $this->brandService->getBrandIdNameMap(),
         ]);
     }
 
@@ -94,8 +93,8 @@ class ProductController extends Controller
         return view('pages.product.detail-product', [
             'pageTitle' => 'Detail product',
             'product' => $product,
-            'categoryNameMap' => $this->categoryService->getCategoryNameMap(),
-            'brandNameMap' => $this->brandService->getBrandNameMap(),
+            'categoryIdNameMap' => $this->categoryService->getCategoryIdNameMap(),
+            'brandIdNameMap' => $this->brandService->getBrandIdNameMap(),
             'productImages' => $this->productImageService->listProductImagesInProduct($productId),
         ]);
     }

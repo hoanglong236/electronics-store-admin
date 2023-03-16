@@ -1,14 +1,19 @@
-<div class="col-md-4">
-    <div class="card">
-        <div class="card-header">
-            <strong class="card-title mb-3">ID:&nbsp; {{ $product->id }}</strong>
+<div class="col-md-3">
+    <div class="card card-hover">
+        <div class="card-header card-header-flex--space-center">
+            <div class="card-title--custom">ID:&nbsp; {{ $product->id }}</div>
+            <a href="{{ route('catalog.product.detail', [$product->id]) }}">
+                <button type="submit" class="btn btn-info btn-sm card-header__icon-button" title="View detail">
+                    <i class="fa fa-info-circle"></i>
+                </button>
+            </a>
         </div>
-        <img class="card-img-top card-img-custom" src="{{ asset('storage/' . $product->main_image_path) }}"
+        <img class="card-img-top card-image--medium" src="{{ asset('storage/' . $product->main_image_path) }}"
             alt="Product image">
         <div class="card-body">
             <div class="card-text">
-                <div class="text-truncate--two-line">Name:&nbsp; <strong>{{ $product->name }}</strong></div>
-                <div class="text-truncate">Category:&nbsp; {{ $categoryNameMap[$product->category_id] }}</div>
+                <div class="text-truncate--two-line">{{ $product->name }}</div>
+                <div class="text-truncate">Category:&nbsp; {{ $categoryIdNameMap[$product->category_id] }}</div>
                 <div class="text-truncate">
                     Price:&nbsp;
                     @if ($product->discount_percent === 0)
@@ -25,13 +30,6 @@
         </div>
         <div class="card-footer">
             <div class="card-action-wrapper">
-                <div class="card-action-item">
-                    <a href="{{ route('catalog.product.detail', [$product->id]) }}">
-                        <button type="submit" class="btn btn-info btn-sm">
-                            <i class="fa fa-info-circle"></i> Detail
-                        </button>
-                    </a>
-                </div>
                 <div class="card-action-item">
                     <a href="{{ route('catalog.product.update', [$product->id]) }}">
                         <button type="submit" class="btn btn-primary btn-sm">

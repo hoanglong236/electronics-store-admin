@@ -12,11 +12,11 @@
             </tr>
             <tr>
                 <td class="horizontal-table-title--small">Category</td>
-                <td>{{ $categoryNameMap[$product->category_id] }}</td>
+                <td>{{ $categoryIdNameMap[$product->category_id] }}</td>
             </tr>
             <tr>
                 <td class="horizontal-table-title--small">Brand</td>
-                <td>{{ $brandNameMap[$product->brand_id] }}</td>
+                <td>{{ $brandIdNameMap[$product->brand_id] }}</td>
             </tr>
             <tr>
                 <td class="horizontal-table-title--small">Name</td>
