@@ -22,7 +22,7 @@ class ProductService
         return Product::where(['id' => $productId, 'delete_flag' => false])->first();
     }
 
-    public function listProductsPaginate($itemPerPage = 9)
+    public function listProductsPaginate($itemPerPage)
     {
         return Product::where('delete_flag', false)->paginate($itemPerPage);
     }

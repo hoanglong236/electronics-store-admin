@@ -12,9 +12,9 @@ class CustomerService
         return Customer::where(['id' => $customerId, 'delete_flag' => false])->first();
     }
 
-    public function listCustomers()
+    public function listCustomersPaginate($itemPerPage)
     {
-        return Customer::where('delete_flag', false)->get();
+        return Customer::where('delete_flag', false)->paginate($itemPerPage);
     }
 
     public function updateDisableFlagCustomer($customerProperties, $customerId)

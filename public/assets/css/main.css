@@ -37,7 +37,7 @@
     padding: 5px 25px;
 }
 
-.card-image-custom--square {
+.card-image--custom-square {
     border-top: 1px solid #ddd;
     border-bottom: 1px solid #ddd;
     padding: 5px;
@@ -203,4 +203,14 @@
 
 .alert--small {
     font-size: 1.3rem;
+}
+
+.table-earning--custom {
+    white-space: normal;
+    font-size: 1.4rem;
+}
+
+.table-earning--custom tbody tr:hover td {
+    color: #555;
+    cursor: default;
 }

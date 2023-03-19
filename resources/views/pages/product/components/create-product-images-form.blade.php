@@ -1,6 +1,6 @@
 <div class="card">
     <div class="card-header">
-        <strong>Create Product Image</strong>
+        <strong>Add product image</strong>
     </div>
     <form action="{{ route('catalog.product.detail.images.create.handler', ['productId' => $product->id]) }}"
         method="post" enctype="multipart/form-data" class="form-horizontal">

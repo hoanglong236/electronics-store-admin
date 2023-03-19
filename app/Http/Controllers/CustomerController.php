@@ -17,10 +17,13 @@ class CustomerController extends Controller
         $this->customerService = new CustomerService();
     }
 
-    public function index() {
+    public function index()
+    {
+        $customers = $this->customerService->listCustomersPaginate(Constants::CUSTOMER_PAGE_COUNT);
+
         return view('pages.customer.list-customers', [
             'pageTitle' => 'List categories',
-            'customers' => $this->customerService->listCustomers(),
+            'customers' => $customers,
         ]);
     }
 

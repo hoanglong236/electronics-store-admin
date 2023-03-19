@@ -1,5 +1,5 @@
 <div class="table-responsive table--no-card m-b-30">
-    <table class="table table-borderless table-striped table-earning">
+    <table class="table table-borderless table-striped table-earning table-earning--custom">
         <thead>
             <tr>
                 <th scope="col" colspan="2" class="custom-table-header">Product detail</th>
@@ -20,7 +20,7 @@
             </tr>
             <tr>
                 <td class="horizontal-table-title--small">Name</td>
-                <td>{{ $product->name }}</td>
+                <td style="word-wrap: break-word; white-space: normal;">{{ $product->name }}</td>
             </tr>
             <tr>
                 <td class="horizontal-table-title--small">Price ($)</td>

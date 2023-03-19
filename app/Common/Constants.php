@@ -22,4 +22,5 @@ class Constants {
     const NONE_VALUE = 'none';
 
     const PRODUCT_PAGE_COUNT = 8;
+    const CUSTOMER_PAGE_COUNT = 8;
 }

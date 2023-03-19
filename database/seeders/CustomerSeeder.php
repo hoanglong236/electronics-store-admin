@@ -41,5 +41,59 @@ class CustomerSeeder extends Seeder
             'disable_flag' => true,
             'delete_flag' => false,
         ]);
+        Customer::create([
+            'name' => 'Customer Three',
+            'gender' => false,
+            'phone' => '1234567892',
+            'email' => 'customer-three@gmail.com',
+            'password' => Hash::make('Abc12345'),
+            'disable_flag' => true,
+            'delete_flag' => false,
+        ]);
+        Customer::create([
+            'name' => 'Customer Four',
+            'gender' => false,
+            'phone' => '1234567892',
+            'email' => 'customer-fout@gmail.com',
+            'password' => Hash::make('Abc12345'),
+            'disable_flag' => true,
+            'delete_flag' => false,
+        ]);
+        Customer::create([
+            'name' => 'Customer Five',
+            'gender' => false,
+            'phone' => '1234567892',
+            'email' => 'customer-five@gmail.com',
+            'password' => Hash::make('Abc12345'),
+            'disable_flag' => true,
+            'delete_flag' => false,
+        ]);
+        Customer::create([
+            'name' => 'Customer Six',
+            'gender' => false,
+            'phone' => '1234567892',
+            'email' => 'customer-six@gmail.com',
+            'password' => Hash::make('Abc12345'),
+            'disable_flag' => true,
+            'delete_flag' => false,
+        ]);
+        Customer::create([
+            'name' => 'Customer Seven',
+            'gender' => false,
+            'phone' => '1234567892',
+            'email' => 'customer-seven@gmail.com',
+            'password' => Hash::make('Abc12345'),
+            'disable_flag' => true,
+            'delete_flag' => false,
+        ]);
+        Customer::create([
+            'name' => 'Customer Eight',
+            'gender' => false,
+            'phone' => '1234567892',
+            'email' => 'customer-eight@gmail.com',
+            'password' => Hash::make('Abc12345'),
+            'disable_flag' => true,
+            'delete_flag' => false,
+        ]);
     }
 }

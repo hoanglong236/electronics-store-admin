@@ -13,11 +13,8 @@
         </div>
         <div class="col-lg-4">
             <div class="card card-radius">
-                <img class="card-img-top card-image-custom--square" src="{{ asset('storage/' . $product->main_image_path) }}"
+                <img class="card-img-top card-image--custom-square" src="{{ asset('storage/' . $product->main_image_path) }}"
                     alt="Card image cap">
-                <div class="card-body">
-                    <h5>Main image</h5>
-                </div>
             </div>
         </div>
     </div>
@@ -38,7 +35,7 @@
             @include('pages.product.components.create-product-images-form')
 
             <div class="table-responsive table--no-card m-b-30">
-                <table class="table table-borderless table-striped table-earning">
+                <table class="table table-borderless table-striped table-earning table-earning--custom">
                     <thead>
                         <tr>
                             <th>Order</th>

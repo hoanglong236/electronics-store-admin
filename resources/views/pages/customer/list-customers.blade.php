@@ -35,11 +35,6 @@
                         <i class="zmdi zmdi-filter-list"></i>filters</button>
                 </div>
                 <div class="table-data__tool-right">
-                    <a href="{{ route('catalog.product.create') }}">
-                        <button class="au-btn au-btn-icon au-btn--green au-btn--small">
-                            <i class="zmdi zmdi-plus"></i>add item
-                        </button>
-                    </a>
                     <div class="rs-select2--dark rs-select2--sm rs-select2--dark2">
                         <select class="js-select2" name="type">
                             <option selected="selected">Export</option>
@@ -61,5 +56,5 @@
         @endforelse
     </div>
 
-    {{-- @include('shared.components.pagination', ['paginator' => $products]) --}}
+    @include('shared.components.pagination', ['paginator' => $customers])
 @endsection
