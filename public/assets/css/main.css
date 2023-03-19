@@ -166,9 +166,41 @@
 }
 
 .carousel-indicators li {
-    background-color: #444;
+    background-color: #a6a6a6;
 }
 
 .carousel-indicators li.active {
-    background-color: #a6a6a6;
+    background-color: #444;
+}
+
+.rounded-circle-avatar {
+    --avatar-diameter: 90px;
+
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: var(--avatar-diameter);
+    height: var(--avatar-diameter);
+    border-radius: 50%;
+}
+
+.btn-enable, .btn-disable {
+    font-size: 1.4rem;
+    line-height: 1.6rem;
+    height: 26px;
+    text-align: center;
+    margin: auto;
+    color: #fff;
+}
+
+.btn-enable {
+    background-color: #5bad60;
+}
+
+.btn-disable {
+    background-color: #ff5555;
+}
+
+.alert--small {
+    font-size: 1.3rem;
 }

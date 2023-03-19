@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
@@ -102,6 +103,16 @@ Route::middleware('auth:admin')->group(function () {
         );
         Route::delete('/detail/{productId}/images/delete/{productImageId}', [ProductController::class, 'deleteImage'])->name(
             'catalog.product.detail.images.delete'
+        );
+    });
+
+    Route::group(['prefix' => 'manage/customer'], function () {
+        Route::get('', [CustomerController::class, 'index'])->name('manage.customer.index');
+        Route::put('/update-disable-flag/{customerId}', [CustomerController::class, 'updateDisableFlag'])->name(
+            'manage.customer.update-disable-flag'
+        );
+        Route::delete('/delete/{customerId}', [CustomerController::class, 'delete'])->name(
+            'manage.customer.delete'
         );
     });
 });

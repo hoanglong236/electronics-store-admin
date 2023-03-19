@@ -49,6 +49,11 @@
                         <i class="fas fa-tag"></i>Product
                     </a>
                 </li>
+                <li class="{{ Request::routeIs('manage.customer.*') ? 'active' : '' }}">
+                    <a href="{{ route('manage.customer.index') }}">
+                        <i class="fas fa-tag"></i>Customer
+                    </a>
+                </li>
             </ul>
         </nav>
     </div>

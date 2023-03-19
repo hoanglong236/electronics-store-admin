@@ -21,5 +21,5 @@ class Constants {
 
     const NONE_VALUE = 'none';
 
-    const PRODUCT_PAGE_COUNT = 9;
+    const PRODUCT_PAGE_COUNT = 8;
 }
