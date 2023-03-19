@@ -35,8 +35,6 @@ class ProductController extends Controller
         return view('pages.product.list-products', [
             'pageTitle' => 'List products',
             'products' => $products,
-            'categoryIdNameMap' => $this->categoryService->getCategoryIdNameMap(),
-            'brandIdNameMap' => $this->brandService->getBrandIdNameMap(),
         ]);
     }
 

@@ -13,16 +13,15 @@
         <div class="card-body">
             <div class="card-text">
                 <div class="text-truncate--two-line">{{ $product->name }}</div>
-                <div class="text-truncate">Category:&nbsp; {{ $categoryIdNameMap[$product->category_id] }}</div>
                 <div class="text-truncate">
                     Price:&nbsp;
                     @if ($product->discount_percent === 0)
-                        {{ $product->price . '$' }}
+                        {{ '$' . $product->price }}
                     @else
                         <span class="discount-price">
-                            {{ $product->price * ((100 - $product->discount_percent) / 100) . '$' }}
+                            {{ '$' . $product->price * ((100 - $product->discount_percent) / 100) }}
                         </span>
-                        <span class="original-price">{{ $product->price . '$' }}</span>
+                        <span class="original-price ml-1">{{ $product->price . '$' }}</span>
                     @endif
                 </div>
                 <div class="text-truncate">Quantity:&nbsp; {{ $product->quantity }}</div>
