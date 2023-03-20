@@ -114,5 +114,9 @@ Route::middleware('auth:admin')->group(function () {
         Route::delete('/delete/{customerId}', [CustomerController::class, 'delete'])->name(
             'manage.customer.delete'
         );
+
+        Route::get('/detail/{customerId}', [CustomerController::class, 'showDetail'])->name(
+            'manage.customer.detail'
+        );
     });
 });

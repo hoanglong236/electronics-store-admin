@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Customer;
+use App\Models\CustomerAddress;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -14,7 +15,12 @@ class CustomerSeeder extends Seeder
      */
     public function run(): void
     {
-        Customer::create([
+        $this->generateMainCustomer();
+        $this->generateCustomers();
+    }
+
+    private function generateMainCustomer() {
+        $customer = Customer::create([
             'name' => 'Customer Zero',
             'gender' => true,
             'phone' => '1234567890',
@@ -23,6 +29,28 @@ class CustomerSeeder extends Seeder
             'disable_flag' => false,
             'delete_flag' => false,
         ]);
+
+        CustomerAddress::create([
+            'customer_id' => $customer->id,
+            'city' => 'Thanh pho Ho Chi Minh',
+            'district' => 'Quan Tan Binh',
+            'ward' => 'Phuong 2',
+            'specific_address' => 'Toa nha Waseco',
+            'address_type' => 'Home',
+            'default_flag' => true,
+        ]);
+        CustomerAddress::create([
+            'customer_id' => $customer->id,
+            'city' => 'Thanh pho Can Tho',
+            'district' => 'Quan Ninh Kieu',
+            'ward' => 'Phuong Xuan Khanh',
+            'specific_address' => 'DHCT Khu 2, Duong 3/2',
+            'address_type' => 'Office',
+            'default_flag' => false,
+        ]);
+    }
+
+    private function generateCustomers() {
         Customer::create([
             'name' => 'Customer One',
             'gender' => false,

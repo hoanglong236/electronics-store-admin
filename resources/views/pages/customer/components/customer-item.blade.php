@@ -2,11 +2,11 @@
     <div class="card">
         <div class="card-header card-header-flex--space-center">
             <div class="card-title--custom">ID:&nbsp; {{ $customer->id }}</div>
-            {{-- <a href="{{ route('catalog.customer.detail', [$customer->id]) }}"> --}}
-            <button type="submit" class="btn btn-info btn-sm card-header__icon-button" title="View detail">
-                <i class="fa fa-info-circle"></i>
-            </button>
-            {{-- </a> --}}
+            <a href="{{ route('manage.customer.detail', [$customer->id]) }}">
+                <button type="button" class="btn btn-info btn-sm card-header__icon-button" title="View detail">
+                    <i class="fa fa-info-circle"></i>
+                </button>
+            </a>
         </div>
         <div class="card-body">
             <div class="mx-auto d-block">
@@ -33,7 +33,8 @@
                             @endif
                             @error('disableFlag')
                                 @if (intval(Session::get('customerId')) === $customer->id)
-                                <div class="alert alert-danger mt-1 alert--small" role="alert">{{ $message }}</div>
+                                    <div class="alert alert-danger mt-1 alert--small" role="alert">{{ $message }}
+                                    </div>
                                 @endif
                             @enderror
                         </form>
@@ -43,13 +44,6 @@
         </div>
         <div class="card-footer">
             <div class="card-action-wrapper">
-                {{-- <div class="card-action-item">
-                    <a href="{{ route('manage.customer.update', [$product->id]) }}">
-                        <button type="submit" class="btn btn-primary btn-sm">
-                            <i class="zmdi zmdi-edit"></i> Edit
-                        </button>
-                    </a>
-                </div> --}}
                 <div class="card-action-item">
                     <form method="post" action="{{ route('manage.customer.delete', [$customer->id]) }}"
                         onsubmit="return confirm('Are you sure?');">
