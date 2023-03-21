@@ -5,6 +5,7 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\RedirectIfAuthenticated;
@@ -118,5 +119,19 @@ Route::middleware('auth:admin')->group(function () {
         Route::get('/detail/{customerId}', [CustomerController::class, 'showDetail'])->name(
             'manage.customer.detail'
         );
+    });
+
+    Route::group(['prefix' => 'manage/order'], function () {
+        Route::get('', [OrderController::class, 'index'])->name('manage.order.index');
+        Route::put('/update-order-status/{orderId}', [OrderController::class, 'updateOrderStatus'])->name(
+            'manage.order.update-order-status'
+        );
+        // Route::delete('/delete/{customerId}', [CustomerController::class, 'delete'])->name(
+        //     'manage.customer.delete'
+        // );
+
+        // Route::get('/detail/{customerId}', [CustomerController::class, 'showDetail'])->name(
+        //     'manage.customer.detail'
+        // );
     });
 });

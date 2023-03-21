@@ -54,6 +54,11 @@
                         <i class="fas fa-tag"></i>Customer
                     </a>
                 </li>
+                <li class="{{ Request::routeIs('manage.order.*') ? 'active' : '' }}">
+                    <a href="{{ route('manage.order.index') }}">
+                        <i class="fas fa-tag"></i>Order
+                    </a>
+                </li>
             </ul>
         </nav>
     </div>
