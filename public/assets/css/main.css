@@ -201,10 +201,6 @@
     background-color: #ff5555;
 }
 
-.alert--small {
-    font-size: 1.3rem;
-}
-
 .table-earning--custom {
     white-space: normal;
     font-size: 1.4rem;
@@ -213,4 +209,16 @@
 .table-earning--custom tbody tr:hover td {
     color: #555;
     cursor: default;
+}
+
+.order-cancelled {
+    color: #ff5555;
+}
+
+.order-completed {
+    color: #5bad60;
+}
+
+.order-detail-link {
+    text-decoration: underline;
 }

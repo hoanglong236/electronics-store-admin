@@ -20,10 +20,9 @@ class OrderService
                 'orders.status',
                 'orders.updated_at',
                 'customers.name as customer_name',
-                'customers.phone as customer_phone',
+                'customers.email as customer_email',
                 DB::raw('sum(order_items.total_price) as total'),
             )
-            ->where(['customers.delete_flag' => false, 'customers.disable_flag' => false])
             ->groupBy('orders.id')
             ->get();
     }

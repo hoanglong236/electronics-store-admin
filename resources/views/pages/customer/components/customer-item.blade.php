@@ -3,7 +3,8 @@
         <div class="card-header card-header-flex--space-center">
             <div class="card-title--custom">ID:&nbsp; {{ $customer->id }}</div>
             <a href="{{ route('manage.customer.detail', [$customer->id]) }}">
-                <button type="button" class="btn btn-info btn-sm card-header__icon-button" title="View detail">
+                <button type="button" class="btn btn-info btn-sm card-header__icon-button" data-toggle="tooltip"
+                data-placement="top" data-html="true" title="<span class='text--normal'>Detail</span>">
                     <i class="fa fa-info-circle"></i>
                 </button>
             </a>
@@ -33,7 +34,7 @@
                             @endif
                             @error('disableFlag')
                                 @if (intval(Session::get('customerId')) === $customer->id)
-                                    <div class="alert alert-danger mt-1 alert--small" role="alert">{{ $message }}
+                                    <div class="alert alert-danger mt-1 text--small" role="alert">{{ $message }}
                                     </div>
                                 @endif
                             @enderror

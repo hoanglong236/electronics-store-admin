@@ -186,3 +186,11 @@ select.form-control:not([size]):not([multiple]) {
 select.form-select--small {
     font-size: 1.3rem;
 }
+
+.text--small {
+    font-size: 1.3rem;
+}
+
+.text--normal {
+    font-size: 1.4rem;
+}

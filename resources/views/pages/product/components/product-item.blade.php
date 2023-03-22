@@ -3,7 +3,8 @@
         <div class="card-header card-header-flex--space-center">
             <div class="card-title--custom">ID:&nbsp; {{ $product->id }}</div>
             <a href="{{ route('catalog.product.detail', [$product->id]) }}">
-                <button type="submit" class="btn btn-info btn-sm card-header__icon-button" title="View detail">
+                <button type="submit" class="btn btn-info btn-sm card-header__icon-button" data-toggle="tooltip"
+                    data-placement="top" data-html="true" title="<span class='text--normal'>Detail</span>">
                     <i class="fa fa-info-circle"></i>
                 </button>
             </a>
