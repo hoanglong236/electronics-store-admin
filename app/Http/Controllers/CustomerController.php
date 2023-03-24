@@ -24,7 +24,7 @@ class CustomerController extends Controller
     {
         $customers = $this->customerService->listCustomersPaginate(Constants::CUSTOMER_PAGE_COUNT);
 
-        return view('pages.customer.list-customers', [
+        return view('pages.customer.customers-page', [
             'pageTitle' => 'List categories',
             'customers' => $customers,
         ]);
@@ -47,11 +47,11 @@ class CustomerController extends Controller
         return redirect()->action([CustomerController::class, 'index']);
     }
 
-    public function showDetail($customerId) {
+    public function showDetails($customerId) {
         $customer = $this->customerService->findById($customerId);
         $customerAddresses = $this->customerAddressService->findByCustomerId($customerId);
 
-        return view('pages.customer.detail-customer', [
+        return view('pages.customer.customer-details-page', [
             'pageTitle' => 'Detail customer',
             'customer' => $customer,
             'customerAddresses' => $customerAddresses,

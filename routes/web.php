@@ -96,14 +96,14 @@ Route::middleware('auth:admin')->group(function () {
             'catalog.product.delete'
         );
 
-        Route::get('/detail/{productId}', [ProductController::class, 'showDetail'])->name(
-            'catalog.product.detail'
+        Route::get('/details/{productId}', [ProductController::class, 'showDetails'])->name(
+            'catalog.product.details'
         );
-        Route::post('/detail/{productId}/images/create-handler', [ProductController::class, 'createImages'])->name(
-            'catalog.product.detail.images.create.handler'
+        Route::post('/details/{productId}/images/create-handler', [ProductController::class, 'createImages'])->name(
+            'catalog.product.details.images.create.handler'
         );
-        Route::delete('/detail/{productId}/images/delete/{productImageId}', [ProductController::class, 'deleteImage'])->name(
-            'catalog.product.detail.images.delete'
+        Route::delete('/details/{productId}/images/delete/{productImageId}', [ProductController::class, 'deleteImage'])->name(
+            'catalog.product.details.images.delete'
         );
     });
 
@@ -116,8 +116,8 @@ Route::middleware('auth:admin')->group(function () {
             'manage.customer.delete'
         );
 
-        Route::get('/detail/{customerId}', [CustomerController::class, 'showDetail'])->name(
-            'manage.customer.detail'
+        Route::get('/details/{customerId}', [CustomerController::class, 'showDetails'])->name(
+            'manage.customer.details'
         );
     });
 
@@ -127,8 +127,8 @@ Route::middleware('auth:admin')->group(function () {
             'manage.order.update-order-status'
         );
 
-        Route::get('/detail/{orderId}', [OrderController::class, 'showDetails'])->name(
-            'manage.order.detail'
+        Route::get('/details/{orderId}', [OrderController::class, 'showDetails'])->name(
+            'manage.order.details'
         );
     });
 });
