@@ -22,7 +22,7 @@ class AdminController extends Controller
 
     public function index(Request $request)
     {
-        return view('pages.guest.login', ['pageTitle' => 'Login']);
+        return view('pages.guest.login-page', ['pageTitle' => 'Login']);
     }
 
     public function loginHandler(LoginRequest $loginRequest)
@@ -38,7 +38,7 @@ class AdminController extends Controller
         }
     }
 
-    public function logout(Request $request)
+    public function logout()
     {
         $this->adminService->logout();
 
@@ -46,9 +46,9 @@ class AdminController extends Controller
         return redirect()->action([AdminController::class, 'index']);
     }
 
-    public function register(Request $request)
+    public function register()
     {
-        return view('pages.guest.register', ['pageTitle' => 'Register']);
+        return view('pages.guest.register-page', ['pageTitle' => 'Register']);
     }
 
     public function registerHandler(RegisterRequest $registerRequest)
