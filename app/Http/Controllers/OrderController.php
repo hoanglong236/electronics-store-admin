@@ -47,7 +47,7 @@ class OrderController extends Controller
         $customOrderItems = $this->orderItemService->getCustomOrderItemsByOrderId($orderId);
 
         return view('pages.order.order-details-page', [
-            'pageTitle' => 'Order Detail',
+            'pageTitle' => 'Order details',
             'customOrder' => $customOrder,
             'customOrderItems' => $customOrderItems,
         ]);

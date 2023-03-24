@@ -52,7 +52,7 @@ class CustomerController extends Controller
         $customerAddresses = $this->customerAddressService->findByCustomerId($customerId);
 
         return view('pages.customer.customer-details-page', [
-            'pageTitle' => 'Detail customer',
+            'pageTitle' => 'Customer details',
             'customer' => $customer,
             'customerAddresses' => $customerAddresses,
         ]);
