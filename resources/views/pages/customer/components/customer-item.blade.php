@@ -1,9 +1,9 @@
 <div class="col-md-3">
     <div class="card">
         <div class="card-header card-header-flex--space-center">
-            <div class="card-title--custom">ID:&nbsp; {{ $customer->id }}</div>
+            <div class="card-title--medium">ID:&nbsp; {{ $customer->id }}</div>
             <a href="{{ route('manage.customer.detail', [$customer->id]) }}">
-                <button type="button" class="btn btn-info btn-sm card-header__icon-button" data-toggle="tooltip"
+                <button type="button" class="btn btn-info btn-sm icon-button" data-toggle="tooltip"
                 data-placement="top" data-html="true" title="<span class='text--normal'>Detail</span>">
                     <i class="fa fa-info-circle"></i>
                 </button>

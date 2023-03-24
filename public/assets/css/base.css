@@ -171,7 +171,7 @@ a[disabled] {
 }
 
 .form-control-label {
-    margin-bottom: 0.3rem;
+    margin-bottom: 0.25rem;
 }
 
 select.form-control:not([size]):not([multiple]) {
@@ -180,11 +180,7 @@ select.form-control:not([size]):not([multiple]) {
 }
 
 .form-group {
-    margin-bottom: 0.64rem;
-}
-
-select.form-select--small {
-    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
 }
 
 .text--small {
@@ -193,4 +189,18 @@ select.form-select--small {
 
 .text--normal {
     font-size: 1.4rem;
+}
+
+.table-radius {
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.icon-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    width: 30px;
+    height: 30px
 }

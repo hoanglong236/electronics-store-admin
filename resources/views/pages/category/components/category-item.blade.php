@@ -15,7 +15,7 @@
         <div class="card-action-wrapper--right">
             <div class="card-action-item">
                 <a href="{{ route('catalog.category.update', [$category->id]) }}">
-                    <button type="submit" class="btn btn-primary btn-sm">
+                    <button type="submit" class="btn btn-primary btn-sm icon-button">
                         <i class="zmdi zmdi-edit"></i>
                     </button>
                 </a>
@@ -25,7 +25,7 @@
                     onsubmit="return confirm('Are you sure?');">
                     @csrf
                     @method('delete')
-                    <button type="submit" class="btn btn-danger btn-sm">
+                    <button type="submit" class="btn btn-danger btn-sm icon-button">
                         <i class="fa fa-trash-o"></i>
                     </button>
                 </form>

@@ -126,12 +126,9 @@ Route::middleware('auth:admin')->group(function () {
         Route::put('/update-order-status/{orderId}', [OrderController::class, 'updateOrderStatus'])->name(
             'manage.order.update-order-status'
         );
-        // Route::delete('/delete/{customerId}', [CustomerController::class, 'delete'])->name(
-        //     'manage.customer.delete'
-        // );
 
-        // Route::get('/detail/{customerId}', [CustomerController::class, 'showDetail'])->name(
-        //     'manage.customer.detail'
-        // );
+        Route::get('/detail/{orderId}', [OrderController::class, 'showDetails'])->name(
+            'manage.order.detail'
+        );
     });
 });

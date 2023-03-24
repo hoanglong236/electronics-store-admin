@@ -1,6 +1,6 @@
 <div class="card">
     <div class="card-header card-header-flex--space-center">
-        <div class="card-title--custom">ID:&nbsp; {{ $customer->id }}</div>
+        <div class="card-title--medium">ID:&nbsp; {{ $customer->id }}</div>
     </div>
     <div class="card-body">
         <div class="mx-auto d-block">

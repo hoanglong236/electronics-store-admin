@@ -17,7 +17,6 @@ return new class extends Migration
             $table->unsignedInteger('product_id')->reference('id')->on('products');
             $table->unsignedInteger('quantity');
             $table->unsignedFloat('total_price');
-            $table->timestamps();
         });
     }
 

@@ -1,4 +1,4 @@
-<table class="table table-borderless table-data6">
+<table class="table table-borderless table-data6 table-radius">
     <thead>
         <tr>
             <th>ID</th>
@@ -7,20 +7,16 @@
             <th>Total</th>
             <th>Status</th>
             <th>Updated at</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach ($customOrders as $customOrder)
             <tr>
+                <td>{{ $customOrder->id }}</td>
                 <td>
-                    <a href="" class="order-detail-link" data-toggle="tooltip" data-placement="top"
-                        data-html="true" title="<span class='text--normal'>Detail</span>">
-                        {{ $customOrder->id }}
-                    </a>
-                </td>
-                <td>
-                    <div>{{ $customOrder->customer_name }}</div>
-                    <div>{{ $customOrder->customer_email }}</div>
+                    {{ $customOrder->customer_name }}<br>
+                    {{ $customOrder->customer_email }}
                 </td>
                 <td>{{ $customOrder->delivery_address }}</td>
                 <td>{{ '$' . number_format($customOrder->total, 2) }}</td>
@@ -34,7 +30,7 @@
                         <form action="{{ route('manage.order.update-order-status', $customOrder->id) }}" method="POST">
                             @csrf
                             @method('PUT')
-                            <select name="status" class="form-control form-select--small" onchange="this.form.submit()">
+                            <select name="status" class="form-control text--small" onchange="this.form.submit()">
                                 <option value="{{ $customOrder->status }}">{{ $customOrder->status }}</option>
                                 @foreach ($nextSelectableStatusMap[$customOrder->status] as $nextStatus)
                                     <option value="{{ $nextStatus }}">{{ $nextStatus }}</option>
@@ -50,6 +46,13 @@
                     @endif
                 </td>
                 <td>{{ $customOrder->updated_at }}</td>
+                <td>
+                    <a href="{{ route('manage.order.detail', $customOrder->id) }}">
+                        <button type="submit" class="btn btn-info btn-sm icon-button">
+                            <i class="fa fa-info-circle"></i>
+                        </button>
+                    </a>
+                </td>
             </tr>
         @endforeach
     </tbody>

@@ -145,24 +145,10 @@
     z-index: 10;
 }
 
-.card-title--custom {
-    font-size: 16px;
-    font-weight: 600;
-}
-
 .card-header-flex--space-center {
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
-
-.card-header__icon-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 6px;
-    width: 30px;
-    height: 30px
 }
 
 .carousel-indicators li {
@@ -221,4 +207,43 @@
 
 .order-detail-link {
     text-decoration: underline;
+}
+
+.btn-back {
+    background-color: #0098fd;
+    color: #fff;
+}
+
+.btn-back:hover {
+    background-color: #007acc;
+}
+
+.table-data7-wrapper {
+    padding: 16px 20px;
+    background-color: #fff;
+    border-radius: 5px;
+}
+
+.table-data7 {
+    font-size: 1.4rem;
+}
+
+.table-data7 thead th {
+    border-top: none;
+    border-bottom: 1px solid #202020;
+    font-size: 1.6rem;
+}
+
+.table-data7 tbody td {
+    border-bottom: 1px solid #b9b9b9;
+}
+
+.table-data7 tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.table-data7 thead th, .table-data7 tbody td {
+    vertical-align: middle;
+    padding-left: 8px;
+    padding-right: 8px;
 }
