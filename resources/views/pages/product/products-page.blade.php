@@ -5,13 +5,9 @@
         <div class="col-md-12">
             <h2 class="title-5 mb-4">Product</h2>
             @if (Session::has(Constants::ACTION_SUCCESS))
-                <div class="sufee-alert alert with-close alert-success alert-dismissible fade show">
-                    <span class="badge badge-pill badge-success">Success</span>
-                    {{ Session::get(Constants::ACTION_SUCCESS) }}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
+                @include('shared.components.action-success-label', [
+                    'succeeMessage' => Session::get(Constants::ACTION_SUCCESS),
+                ])
             @endif
             <div class="table-data__tool">
                 <div class="table-data__tool-left">
@@ -55,11 +51,15 @@
 
     <div class="row">
         @forelse ($products as $product)
-            @include('pages.product.components.product-item')
+            <div class="col-md-3">
+                @include('pages.product.components.product-card')
+            </div>
         @empty
-            @include('pages.product.components.product-no-item')
+            <div class="col-md-3">
+                <span>No product found.</span>
+            </div>
         @endforelse
     </div>
 
-    @include('shared.components.pagination', ['paginator' => $products])
+    @include('shared.components.pagination-nav', ['paginator' => $products])
 @endsection

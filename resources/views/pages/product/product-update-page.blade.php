@@ -5,7 +5,7 @@
 
     <div class="row mt-4">
         <div class="col-lg-8">
-            @include('pages.product.components.create-product-form')
+            @include('pages.product.components.product-update-card')
         </div>
     </div>
 @endsection

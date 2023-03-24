@@ -32,7 +32,7 @@ class ProductController extends Controller
     {
         $products = $this->productService->listProductsPaginate(Constants::PRODUCT_PAGE_COUNT);
 
-        return view('pages.product.list-products', [
+        return view('pages.product.products-page', [
             'pageTitle' => 'List products',
             'products' => $products,
         ]);
@@ -40,7 +40,7 @@ class ProductController extends Controller
 
     public function create()
     {
-        return view('pages.product.create-product', [
+        return view('pages.product.product-create-page', [
             'pageTitle' => 'Create product',
             'categoryIdNameMap' => $this->categoryService->getCategoryIdNameMap(),
             'brandIdNameMap' => $this->brandService->getBrandIdNameMap(),
@@ -60,7 +60,7 @@ class ProductController extends Controller
     {
         $product = $this->productService->findProductById($productId);
 
-        return view('pages.product.update-product', [
+        return view('pages.product.product-update-page', [
             'pageTitle' => 'Update product',
             'product' => $product,
             'categoryIdNameMap' => $this->categoryService->getCategoryIdNameMap(),
@@ -85,11 +85,11 @@ class ProductController extends Controller
         return redirect()->action([ProductController::class, 'index']);
     }
 
-    public function showDetail($productId) {
+    public function showDetails($productId) {
         $product = $this->productService->findProductById($productId);
 
-        return view('pages.product.detail-product', [
-            'pageTitle' => 'Detail product',
+        return view('pages.product.product-details-page', [
+            'pageTitle' => 'Product details',
             'product' => $product,
             'categoryIdNameMap' => $this->categoryService->getCategoryIdNameMap(),
             'brandIdNameMap' => $this->brandService->getBrandIdNameMap(),
