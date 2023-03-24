@@ -25,7 +25,7 @@ class OrderController extends Controller
         $customOrders = $this->orderService->listCustomOrderData();
         $nextSelectableStatusMap = $this->orderService->getNextSelectableStatusMap();
 
-        return view('pages.order.orders', [
+        return view('pages.order.orders-page', [
             'pageTitle' => 'Order',
             'customOrders' => $customOrders,
             'nextSelectableStatusMap' => $nextSelectableStatusMap,
@@ -46,7 +46,7 @@ class OrderController extends Controller
         $customOrder = $this->orderService->getCustomOrderById($orderId);
         $customOrderItems = $this->orderItemService->getCustomOrderItemsByOrderId($orderId);
 
-        return view('pages.order.order-details', [
+        return view('pages.order.order-details-page', [
             'pageTitle' => 'Order Detail',
             'customOrder' => $customOrder,
             'customOrderItems' => $customOrderItems,
