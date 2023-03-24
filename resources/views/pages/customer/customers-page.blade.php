@@ -47,7 +47,7 @@
     <div class="row">
         @forelse ($customers as $customer)
             <div class="col-md-3">
-                @include('pages.customer.components.customer-item-card')
+                @include('pages.customer.components.customer-card')
             </div>
         @empty
             <div class="col-md-3">
