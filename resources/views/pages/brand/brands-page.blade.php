@@ -52,7 +52,7 @@
     <div class="row">
         @forelse ($brands as $brand)
             <div class="col-md-3">
-                @include('pages.brand.components.brand-item-card')
+                @include('pages.brand.components.brand-card')
             </div>
         @empty
             <div class="col-md-3">
