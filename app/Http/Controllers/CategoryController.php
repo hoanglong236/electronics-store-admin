@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Common\Constants;
 use App\Http\Requests\CategoryRequest;
 use App\Services\CategoryService;
-use App\Services\StorageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
@@ -13,12 +12,10 @@ use Illuminate\Support\Facades\Session;
 class CategoryController extends Controller
 {
     private $categoryService;
-    private $storageService;
 
     public function __construct()
     {
         $this->categoryService = new CategoryService();
-        $this->storageService = new StorageService();
     }
 
     public function index()
@@ -29,7 +26,7 @@ class CategoryController extends Controller
             $categoryIdNameMap[$category->id] = $category->name;
         }
 
-        return view('pages.category.list-categories', [
+        return view('pages.category.categories-page', [
             'pageTitle' => 'List categories',
             'categories' => $categories,
             'categoryIdNameMap' => $categoryIdNameMap,
@@ -38,7 +35,7 @@ class CategoryController extends Controller
 
     public function create()
     {
-        return view('pages.category.create-category', [
+        return view('pages.category.category-create-page', [
             'pageTitle' => 'Create category',
             'categoryIdNameMap' => $this->categoryService->getCategoryIdNameMap(),
         ]);
@@ -55,7 +52,7 @@ class CategoryController extends Controller
 
     public function update($categoryId)
     {
-        return view('pages.category.update-category', [
+        return view('pages.category.category-update-page', [
             'pageTitle' => 'Update category',
             'category' => $this->categoryService->findById($categoryId),
             'categoryIdNameMap' => $this->categoryService->getCategoryIdNameMap(),

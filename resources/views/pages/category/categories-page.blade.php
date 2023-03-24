@@ -55,25 +55,7 @@
 
     <div class="row m-t-10">
         <div class="col-md-12">
-            <div class="table-responsive m-b-40">
-                <table class="table table-borderless table-data4">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Icon</th>
-                            <th>Name</th>
-                            <th>Slug</th>
-                            <th>Parent</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($categories as $category)
-                            @include('pages.category.components.category-item')
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
+            @include('pages.category.components.category-table')
         </div>
     </div>
 @endsection
