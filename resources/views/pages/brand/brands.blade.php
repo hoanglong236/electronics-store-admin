@@ -55,9 +55,13 @@
 
     <div class="row">
         @forelse ($brands as $brand)
-            @include('pages.brand.components.brand-item')
+            <div class="col-md-3">
+                @include('pages.brand.components.brand-item-card')
+            </div>
         @empty
-            @include('pages.brand.components.brand-no-item')
+            <div class="col-md-3">
+                <span>No brand found.</span>
+            </div>
         @endforelse
     </div>
 @endsection

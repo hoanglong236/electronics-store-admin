@@ -21,7 +21,7 @@ class BrandController extends Controller
     {
         $brands = $this->brandService->listBrands();
 
-        return view('pages.brand.list-brands', [
+        return view('pages.brand.brands', [
             'pageTitle' => 'List brands',
             'brands' => $brands
         ]);
@@ -29,7 +29,7 @@ class BrandController extends Controller
 
     public function create()
     {
-        return view('pages.brand.create-brand', ['pageTitle' => 'Create brand']);
+        return view('pages.brand.brand-create', ['pageTitle' => 'Create brand']);
     }
 
     public function createHandler(BrandRequest $brandRequest)
@@ -45,7 +45,7 @@ class BrandController extends Controller
     {
         $brand = $this->brandService->findById($brandId);
 
-        return view('pages.brand.update-brand', [
+        return view('pages.brand.brand-update', [
             'pageTitle' => 'Update brand',
             'brand' => $brand
         ]);
