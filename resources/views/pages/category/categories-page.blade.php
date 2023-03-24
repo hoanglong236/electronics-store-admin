@@ -51,7 +51,7 @@
 
     <div class="row m-t-10">
         <div class="col-md-12">
-            @include('pages.category.components.category-table')
+            @include('pages.category.components.categories-table')
         </div>
     </div>
 @endsection
