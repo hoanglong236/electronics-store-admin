@@ -5,13 +5,9 @@
         <div class="col-md-12">
             <h2 class="title-5 mb-4">Brand</h2>
             @if (Session::has(Constants::ACTION_SUCCESS))
-                <div class="sufee-alert alert with-close alert-success alert-dismissible fade show">
-                    <span class="badge badge-pill badge-success">Success</span>
-                    {{ Session::get(Constants::ACTION_SUCCESS) }}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
+                @include('shared.components.action-success-label', [
+                    'succeeMessage' => Session::get(Constants::ACTION_SUCCESS),
+                ])
             @endif
             <div class="table-data__tool">
                 <div class="table-data__tool-left">
