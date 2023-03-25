@@ -103,13 +103,13 @@ class ProductController extends Controller
         $this->productImageService->createProductImages($productImageProperties);
 
         Session::flash(Constants::ACTION_SUCCESS, Constants::CREATE_SUCCESS);
-        return redirect()->action([ProductController::class, 'showDetail'], $productId);
+        return redirect()->action([ProductController::class, 'showDetails'], $productId);
     }
 
     public function deleteImage(Request $request, $productId, $productImageId) {
         $this->productImageService->deleteProductImage($productImageId);
 
         Session::flash(Constants::ACTION_SUCCESS, Constants::DELETE_SUCCESS);
-        return redirect()->action([ProductController::class, 'showDetail'], $productId);
+        return redirect()->action([ProductController::class, 'showDetails'], $productId);
     }
 }

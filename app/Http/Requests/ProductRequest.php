@@ -29,6 +29,7 @@ class ProductRequest extends FormRequest
             'categoryId' => ['required', Rule::exists('categories', 'id')->where('delete_flag', false)],
             'brandId' => ['required', Rule::exists('brands', 'id')->where('delete_flag', false)],
             'name' => 'required|max:128',
+            'slug' => 'required|max:128',
             'price' => 'required|min:0',
             'discountPercent' => 'required|min:0|max:99',
             'quantity' => 'required|min:0',

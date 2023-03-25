@@ -23,6 +23,10 @@
                 <td style="word-wrap: break-word; white-space: normal;">{{ $product->name }}</td>
             </tr>
             <tr>
+                <td class="horizontal-table-title--small">Slug</td>
+                <td style="word-wrap: break-word; white-space: normal;">{{ $product->slug }}</td>
+            </tr>
+            <tr>
                 <td class="horizontal-table-title--small">Price ($)</td>
                 <td>{{ $product->price }}</td>
             </tr>

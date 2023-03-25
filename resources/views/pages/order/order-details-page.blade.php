@@ -4,7 +4,7 @@
     @include('shared.components.back-button', ['backUrl' => route('manage.order.index')])
 
     <div class="row mt-4 mb-4">
-        <div class="col-lg-9">
+        <div class="col-lg-8">
             @include('pages.order.components.customer-info-table', ['customerInfo' => [
                 'id' => $customOrder->customer_id,
                 'name' => $customOrder->customer_name,

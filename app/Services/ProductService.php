@@ -27,20 +27,21 @@ class ProductService
         return Product::where('delete_flag', false)->paginate($itemPerPage);
     }
 
-    public function createProduct($productPropterties)
+    public function createProduct($productProperties)
     {
         $product = new Product();
 
-        $product->category_id = $productPropterties['categoryId'];
-        $product->brand_id = $productPropterties['brandId'];
-        $product->name = $productPropterties['name'];
-        $product->price = $productPropterties['price'];
-        $product->discount_percent = $productPropterties['discountPercent'];
-        $product->quantity = $productPropterties['quantity'];
-        $product->warranty_period = $productPropterties['warrantyPeriod'];
-        $product->description = $productPropterties['description'];
+        $product->category_id = $productProperties['categoryId'];
+        $product->brand_id = $productProperties['brandId'];
+        $product->name = $productProperties['name'];
+        $product->slug = $productProperties['slug'];
+        $product->price = $productProperties['price'];
+        $product->discount_percent = $productProperties['discountPercent'];
+        $product->quantity = $productProperties['quantity'];
+        $product->warranty_period = $productProperties['warrantyPeriod'];
+        $product->description = $productProperties['description'];
         $product->main_image_path = $this->storageService->saveFile(
-            $productPropterties['mainImage'],
+            $productProperties['mainImage'],
             Constants::PRODUCT_IMAGE_PATH
         );
         $product->delete_flag = false;
@@ -49,26 +50,27 @@ class ProductService
 
         $this->productImageService->createProductImages([
             'productId' => $product->id,
-            'images' => $productPropterties['images']
+            'images' => $productProperties['images']
         ]);
     }
 
-    public function updateProduct($productPropterties, $productId)
+    public function updateProduct($productProperties, $productId)
     {
         $product = $this->findProductById($productId);
 
-        $product->category_id = $productPropterties['categoryId'];
-        $product->brand_id = $productPropterties['brandId'];
-        $product->name = $productPropterties['name'];
-        $product->price = $productPropterties['price'];
-        $product->discount_percent = $productPropterties['discountPercent'];
-        $product->quantity = $productPropterties['quantity'];
-        $product->warranty_period = $productPropterties['warrantyPeriod'];
-        $product->description = $productPropterties['description'];
-        if (isset($productPropterties['mainImage'])) {
+        $product->category_id = $productProperties['categoryId'];
+        $product->brand_id = $productProperties['brandId'];
+        $product->name = $productProperties['name'];
+        $product->slug = $productProperties['slug'];
+        $product->price = $productProperties['price'];
+        $product->discount_percent = $productProperties['discountPercent'];
+        $product->quantity = $productProperties['quantity'];
+        $product->warranty_period = $productProperties['warrantyPeriod'];
+        $product->description = $productProperties['description'];
+        if (isset($productProperties['mainImage'])) {
             $this->storageService->deleteFile($product->main_image_path);
             $product->main_image_path = $this->storageService->saveFile(
-                $productPropterties['mainImage'],
+                $productProperties['mainImage'],
                 Constants::PRODUCT_IMAGE_PATH
             );
         }

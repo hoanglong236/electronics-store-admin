@@ -46,6 +46,14 @@
                     <div class="alert alert-danger mt-1" role="alert">{{ $message }}</div>
                 @enderror
             </div>
+            <div class="form-group">
+                <label for="productSlug" class="form-control-label">Slug</label>
+                <input id="productSlug" type="text" name="slug" value="{{ $product->slug }}" class="form-control"
+                    required>
+                @error('slug')
+                    <div class="alert alert-danger mt-1" role="alert">{{ $message }}</div>
+                @enderror
+            </div>
             <div class="row">
                 <div class="col">
                     <div class="form-group">
