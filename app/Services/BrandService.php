@@ -69,4 +69,12 @@ class BrandService
 
         return $map;
     }
+
+    public function searchBrands($searchBrandProperties)
+    {
+        return Brand::where([
+            'delete_flag' => false,
+            ['name', 'LIKE', '%' . UtilsService::escapeKeyword($searchBrandProperties['keyword']) . '%']
+        ])->get();
+    }
 }

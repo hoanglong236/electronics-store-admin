@@ -57,6 +57,9 @@ Route::middleware('auth:admin')->group(function () {
         Route::delete('/delete/{brandId}', [BrandController::class, 'delete'])->name(
             'catalog.brand.delete'
         );
+        Route::get('/search', [BrandController::class, 'search'])->name(
+            'catalog.brand.search'
+        );
     });
 
     Route::group(['prefix' => 'catalog/category'], function () {

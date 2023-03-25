@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Common\Constants;
 use App\Http\Requests\BrandRequest;
+use App\Http\Requests\BrandSearchRequest;
 use App\Services\BrandService;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Log;
@@ -67,5 +68,17 @@ class BrandController extends Controller
 
         Session::flash(Constants::ACTION_SUCCESS, Constants::DELETE_SUCCESS);
         return redirect()->action([BrandController::class, 'index']);
+    }
+
+    public function search(BrandSearchRequest $brandSearchRequest)
+    {
+        $searchBrandProperties = $brandSearchRequest->validated();
+        $brands = $this->brandService->searchBrands($searchBrandProperties);
+
+        return view('pages.brand.brands-page', [
+            'pageTitle' => 'Search brands',
+            'brands' => $brands,
+            'keyword' => $searchBrandProperties['keyword'],
+        ]);
     }
 }
