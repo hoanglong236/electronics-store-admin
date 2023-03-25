@@ -105,8 +105,13 @@ select.form-control:not([size]):not([multiple]) {
     overflow: hidden;
 }
 
-.icon-button {
+.icon-btn {
     border-radius: 6px;
     width: 30px;
     height: 30px
+}
+
+.text-btn--medium {
+    font-size: 1.6rem;
+    line-height: 2rem;
 }
