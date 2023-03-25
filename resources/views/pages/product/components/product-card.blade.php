@@ -30,21 +30,14 @@
     <div class="card-footer">
         <div class="card-action-wrapper">
             <div class="card-action-item">
-                <a href="{{ route('catalog.product.update', [$product->id]) }}">
-                    <button type="submit" class="btn btn-primary btn-sm">
-                        <i class="zmdi zmdi-edit"></i> Edit
-                    </button>
-                </a>
+                @include('shared.components.buttons.edit-button', [
+                    'editUrl' => route('catalog.product.update', [$product->id]),
+                ])
             </div>
             <div class="card-action-item">
-                <form method="post" action="{{ route('catalog.product.delete', [$product->id]) }}"
-                    onsubmit="return confirm('Are you sure?');">
-                    @csrf
-                    @method('delete')
-                    <button type="submit" class="btn btn-danger btn-sm">
-                        <i class="fa fa-trash-o"></i> Delete
-                    </button>
-                </form>
+                @include('shared.components.buttons.delete-button', [
+                    'deleteUrl' => route('catalog.product.delete', [$product->id]),
+                ])
             </div>
         </div>
     </div>

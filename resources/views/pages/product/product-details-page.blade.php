@@ -1,7 +1,9 @@
 @extends('shared.layouts.catalog-layout')
 
 @section('container')
-    @include('shared.components.back-button', ['backUrl' => route('catalog.product.index')])
+    @include('shared.components.buttons.back-button', [
+        'backUrl' => route('catalog.product.index'),
+    ])
 
     <div class="row mt-4">
         <div class="col-lg-8">
@@ -15,7 +17,7 @@
         </div>
     </div>
 
-    <h4 class="title-5 mt-1 mb-4">Product sliders</h4>
+    <h4 class="title-5 mt-4 mb-4">Product sliders</h4>
     @if (Session::has(Constants::ACTION_SUCCESS))
         @include('shared.components.action-success-label', [
             'succeeMessage' => Session::get(Constants::ACTION_SUCCESS),
@@ -24,8 +26,8 @@
 
     <div class="row mt-4">
         <div class="col-lg-8">
-            @include('pages.product.components.product-images-create-card')
             @include('pages.product.components.product-images-table')
+            @include('pages.product.components.product-images-create-card')
         </div>
         <div class="col-lg-4">
             @if (count($productImages) > 0)

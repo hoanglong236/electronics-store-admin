@@ -343,4 +343,8 @@
     padding-left: 8px;
     padding-right: 8px;
 }
+
+.table-data7--custom thead th:last-child, .table-data7 tbody td:last-child {
+    width: 65%;
+}
 /* Custom table-data ---- END */

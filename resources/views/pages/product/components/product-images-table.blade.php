@@ -16,18 +16,12 @@
                             alt="{{ 'Image ' . $key }}">
                     </td>
                     <td class="text-right">
-                        <form method="post"
-                            action="{{ route('catalog.product.details.images.delete', [
+                        @include('shared.components.buttons.delete-icon-button', [
+                            'deleteUrl' => route('catalog.product.details.images.delete', [
                                 'productId' => $product->id,
                                 'productImageId' => $productImage->id,
-                            ]) }}"
-                            onsubmit="return confirm('Are you sure?');">
-                            @csrf
-                            @method('delete')
-                            <button type="submit" class="btn btn-danger btn-sm">
-                                <i class="fa fa-trash-o"></i>
-                            </button>
-                        </form>
+                            ]),
+                        ])
                     </td>
                 </tr>
             @endforeach

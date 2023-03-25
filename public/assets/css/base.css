@@ -106,9 +106,6 @@ select.form-control:not([size]):not([multiple]) {
 }
 
 .icon-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     border-radius: 6px;
     width: 30px;
     height: 30px
