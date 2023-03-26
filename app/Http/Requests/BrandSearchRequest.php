@@ -23,7 +23,17 @@ class BrandSearchRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'keyword' => 'max:64',
+            'searchKeyword' => 'max:64',
         ];
+    }
+
+    /**
+     * Override the default
+     */
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'searchKeyword' => $this->searchKeyword ?? '',
+        ]);
     }
 }

@@ -11,13 +11,10 @@
             @endif
             <div class="table-data__tool">
                 <div class="table-data__tool-left">
-                    <form class="form-header" action="{{ route('catalog.brand.search') }}" method="GET">
-                        <input class="au-input au-input--xl" type="text" name="keyword" value="{{ $keyword ?? '' }}"
-                            placeholder="Search brand name..." maxlength="64">
-                        <button class="au-btn--submit" type="submit">
-                            <i class="zmdi zmdi-search"></i>
-                        </button>
-                    </form>
+                    @include('shared.components.search-bar', [
+                        'searchFormUrl' => route('catalog.brand.search'),
+                        'searchKeyword' => $data['searchKeyword'] ?? '',
+                    ])
                 </div>
 
                 <div class="table-data__tool-right">
@@ -32,7 +29,7 @@
     </div>
 
     <div class="row">
-        @forelse ($brands as $brand)
+        @forelse ($data['brands'] as $brand)
             <div class="col-md-3">
                 @include('pages.brand.components.brand-card')
             </div>

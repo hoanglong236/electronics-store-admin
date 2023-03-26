@@ -20,17 +20,33 @@ class BrandController extends Controller
 
     public function index()
     {
-        $brands = $this->brandService->listBrands();
-
-        return view('pages.brand.brands-page', [
+        $data = [
             'pageTitle' => 'List brands',
-            'brands' => $brands
-        ]);
+            'brands' => $this->brandService->listBrands(),
+        ];
+
+        return view('pages.brand.brands-page', ['data' => $data]);
+    }
+
+    public function search(BrandSearchRequest $brandSearchRequest)
+    {
+        $searchBrandProperties = $brandSearchRequest->validated();
+        $data = [
+            'pageTitle' => 'List brands',
+            'brands' => $this->brandService->searchBrands($searchBrandProperties),
+            'searchKeyword' => $searchBrandProperties['searchKeyword'],
+        ];
+
+        return view('pages.brand.brands-page', ['data' => $data]);
     }
 
     public function create()
     {
-        return view('pages.brand.brand-create-page', ['pageTitle' => 'Create brand']);
+        $data = [
+            'pageTitle' => 'Create brand',
+        ];
+
+        return view('pages.brand.brand-create-page', ['data' => $data]);
     }
 
     public function createHandler(BrandRequest $brandRequest)
@@ -44,12 +60,12 @@ class BrandController extends Controller
 
     public function update($brandId)
     {
-        $brand = $this->brandService->findById($brandId);
-
-        return view('pages.brand.brand-update-page', [
+        $data = [
             'pageTitle' => 'Update brand',
-            'brand' => $brand
-        ]);
+            'brand' => $this->brandService->findById($brandId),
+        ];
+
+        return view('pages.brand.brand-update-page', ['data' => $data]);
     }
 
     public function updateHandler(BrandRequest $brandRequest, $brandId)
@@ -68,17 +84,5 @@ class BrandController extends Controller
 
         Session::flash(Constants::ACTION_SUCCESS, Constants::DELETE_SUCCESS);
         return redirect()->action([BrandController::class, 'index']);
-    }
-
-    public function search(BrandSearchRequest $brandSearchRequest)
-    {
-        $searchBrandProperties = $brandSearchRequest->validated();
-        $brands = $this->brandService->searchBrands($searchBrandProperties);
-
-        return view('pages.brand.brands-page', [
-            'pageTitle' => 'Search brands',
-            'brands' => $brands,
-            'keyword' => $searchBrandProperties['keyword'],
-        ]);
     }
 }
