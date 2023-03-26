@@ -2,7 +2,7 @@
     <div class="card-header card-header-flex--space-center">
         <div class="card-title--medium">ID:&nbsp; {{ $product->id }}</div>
         <a href="{{ route('catalog.product.details', [$product->id]) }}">
-            <button type="submit" class="btn btn-info btn-sm icon-button" data-toggle="tooltip" data-placement="top"
+            <button type="submit" class="btn btn-info icon-btn" data-toggle="tooltip" data-placement="top"
                 data-html="true" title="<span class='text--normal'>Details</span>">
                 <i class="fa fa-info-circle"></i>
             </button>

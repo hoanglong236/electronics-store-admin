@@ -24,8 +24,10 @@
                     <td>
                         @if (count($nextSelectableStatusMap[$customOrder->status]) === 0)
                             <span @class([
-                                'order-cancelled' => $customOrder->status === Constants::ORDER_STATUS_CANCELLED,
-                                'order-completed' => $customOrder->status === Constants::ORDER_STATUS_COMPLETED,
+                                'order-cancelled' =>
+                                    $customOrder->status === Constants::ORDER_STATUS_CANCELLED,
+                                'order-completed' =>
+                                    $customOrder->status === Constants::ORDER_STATUS_COMPLETED,
                             ])>{{ $orderStatusNameMap[$customOrder->status] }}</span>
                         @else
                             <form action="{{ route('manage.order.update-order-status', $customOrder->id) }}"
@@ -37,7 +39,9 @@
                                         {{ $orderStatusNameMap[$customOrder->status] }}
                                     </option>
                                     @foreach ($nextSelectableStatusMap[$customOrder->status] as $nextStatus)
-                                        <option value="{{ $nextStatus }}">{{ $orderStatusNameMap[$nextStatus] }}</option>
+                                        <option value="{{ $nextStatus }}">
+                                            {{ $orderStatusNameMap[$nextStatus] }}
+                                        </option>
                                     @endforeach
                                 </select>
                                 @error('status')
@@ -51,11 +55,9 @@
                     </td>
                     <td>{{ $customOrder->updated_at }}</td>
                     <td>
-                        <a href="{{ route('manage.order.details', $customOrder->id) }}">
-                            <button type="submit" class="btn btn-info icon-btn">
-                                <i class="fa fa-info-circle"></i>
-                            </button>
-                        </a>
+                        @include('shared.components.buttons.detail-icon-button', [
+                            'detailUrl' => route('manage.order.details', $customOrder->id),
+                        ])
                     </td>
                 </tr>
             @endforeach

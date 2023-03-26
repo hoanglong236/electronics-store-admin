@@ -229,7 +229,7 @@
     background: #333;
 }
 
-.table-data4 thead tr th {
+.table-data4 thead th {
     font-size: 1.5rem;
     line-height: 1.9rem;
     color: #fff;
@@ -247,12 +247,12 @@
     padding: 10px 30px;
 }
 
-.table-data4 thead tr th, .table-data4 tbody td {
+.table-data4 thead th, .table-data4 tbody td {
     padding-right: 10px;
     vertical-align: middle;
 }
 
-.table-data4 thead tr th:last-child, .table-data4 tbody tr td:last-child {
+.table-data4 thead th:last-child, .table-data4 tbody td:last-child {
     text-align: right;
     padding-right: 40px;
 }
@@ -261,7 +261,7 @@
     background: #333;
 }
 
-.table-data5 thead tr th {
+.table-data5 thead th {
     font-size: 1.5rem;
     line-height: 1.9rem;
     color: #fff;
@@ -279,12 +279,12 @@
     padding: 10px 25px;
 }
 
-.table-data5 thead tr th, .table-data5 tbody td {
+.table-data5 thead th, .table-data5 tbody td {
     padding-right: 10px;
     vertical-align: middle;
 }
 
-.table-data5 thead tr th:last-child, .table-data5 tbody tr td:last-child {
+.table-data5 thead th:last-child, .table-data5 tbody td:last-child {
     text-align: right;
     padding-right: 30px;
 }
@@ -293,7 +293,7 @@
     background: #333;
 }
 
-.table-data6 thead tr th {
+.table-data6 thead th {
     font-size: 1.5rem;
     line-height: 1.9rem;
     color: #fff;
@@ -311,12 +311,12 @@
     padding: 10px 25px;
 }
 
-.table-data6 thead tr th, .table-data6 tbody td {
+.table-data6 thead th, .table-data6 tbody td {
     padding-right: 10px;
     vertical-align: middle;
 }
 
-.table-data6 thead tr th:last-child, .table-data6 tbody tr td:last-child {
+.table-data6 thead th:last-child, .table-data6 tbody td:last-child {
     padding-right: 25px;
 }
 
