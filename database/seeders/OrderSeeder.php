@@ -13,6 +13,9 @@ use Illuminate\Database\Seeder;
 
 class OrderSeeder extends Seeder
 {
+    private $orderRandomCount = 4;
+    private $productRandomCount = 3;
+
     /**
      * Run the database seeds.
      */
@@ -21,7 +24,7 @@ class OrderSeeder extends Seeder
         $customer = $this->getFirstCustomer();
         $deliveryAddress = $this->getCustomerDeliveryAddress($customer->id);
 
-        $this->generateRandomOrders(3, $customer->id, $deliveryAddress);
+        $this->generateRandomOrders($this->orderRandomCount, $customer->id, $deliveryAddress);
     }
 
     private function generateRandomOrders($orderCount, $customerId, $deliveryAddress)
@@ -34,7 +37,7 @@ class OrderSeeder extends Seeder
                 'status' => $statusEnum[rand(0, count($statusEnum) - 1)],
             ]);
 
-            $products = $this->getRandomProducts(2);
+            $products = $this->getRandomProducts($this->productRandomCount);
             foreach ($products as $product) {
                 $quantity = rand(1, 2);
                 OrderItem::create([

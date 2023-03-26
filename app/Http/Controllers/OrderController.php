@@ -23,18 +23,11 @@ class OrderController extends Controller
 
     public function index()
     {
-        $orderStatusNameMap = [
-            OrderStatusConstants::RECEIVED => 'Received',
-            OrderStatusConstants::PROCESSING => 'Processing',
-            OrderStatusConstants::DELIVERING => 'Delivering',
-            OrderStatusConstants::COMPLETED => 'Completed',
-            OrderStatusConstants::CANCELLED => 'Cancelled',
-        ];
         $data = [
             'pageTitle' => 'Order',
             'customOrders' => $this->orderService->listCustomOrderData(),
             'nextSelectableStatusMap' => $this->orderService->getNextSelectableStatusMap(),
-            'orderStatusNameMap' => $orderStatusNameMap,
+            'orderStatusNameMap' => $this->getOrderStatusNameMap(),
         ];
 
         return view('pages.order.orders-page', ['data' => $data]);
@@ -51,13 +44,23 @@ class OrderController extends Controller
 
     public function showDetails($orderId)
     {
-        $customOrder = $this->orderService->getCustomOrderById($orderId);
-        $customOrderItems = $this->orderItemService->getCustomOrderItemsByOrderId($orderId);
-
-        return view('pages.order.order-details-page', [
+        $data = [
             'pageTitle' => 'Order details',
-            'customOrder' => $customOrder,
-            'customOrderItems' => $customOrderItems,
-        ]);
+            'customOrder' => $this->orderService->getCustomOrderById($orderId),
+            'customOrderItems' => $this->orderItemService->getCustomOrderItemsByOrderId($orderId),
+            'orderStatusNameMap' => $this->getOrderStatusNameMap(),
+        ];
+
+        return view('pages.order.order-details-page', ['data' => $data]);
+    }
+
+    private function getOrderStatusNameMap() {
+        return [
+            OrderStatusConstants::RECEIVED => 'Received',
+            OrderStatusConstants::PROCESSING => 'Processing',
+            OrderStatusConstants::DELIVERING => 'Delivering',
+            OrderStatusConstants::COMPLETED => 'Completed',
+            OrderStatusConstants::CANCELLED => 'Cancelled',
+        ];
     }
 }

@@ -9,11 +9,11 @@
         <div class="col-lg-8">
             @include('pages.order.components.customer-info-table', [
                 'customerInfo' => [
-                    'id' => $customOrder->customer_id,
-                    'name' => $customOrder->customer_name,
-                    'phone' => $customOrder->customer_phone,
-                    'email' => $customOrder->customer_email,
-                    'deliveryAddress' => $customOrder->delivery_address,
+                    'id' => $data['customOrder']->customer_id,
+                    'name' => $data['customOrder']->customer_name,
+                    'phone' => $data['customOrder']->customer_phone,
+                    'email' => $data['customOrder']->customer_email,
+                    'deliveryAddress' => $data['customOrder']->delivery_address,
                 ],
             ])
         </div>
@@ -21,17 +21,19 @@
 
     <div class="row mt-5">
         <div class="col-lg-8">
-            @include('pages.order.components.order-items-table')
+            @include('pages.order.components.order-items-table', [
+                'customOrderItems' => $data['customOrderItems'],
+            ])
         </div>
         <div class="col-lg-4">
             @include('pages.order.components.order-info-table', [
                 'orderInfo' => [
-                    'id' => $customOrder->id,
-                    'itemCount' => count($customOrderItems),
-                    'totalAmount' => $customOrder->total,
-                    'status' => $customOrder->status,
-                    'createdAt' => $customOrder->created_at,
-                    'updatedAt' => $customOrder->updated_at,
+                    'id' => $data['customOrder']->id,
+                    'itemCount' => count($data['customOrderItems']),
+                    'totalAmount' => $data['customOrder']->total,
+                    'status' => $data['orderStatusNameMap'][$data['customOrder']->status],
+                    'createdAt' => $data['customOrder']->created_at,
+                    'updatedAt' => $data['customOrder']->updated_at,
                 ],
             ])
         </div>

@@ -52,7 +52,7 @@
                     <td>{{ $customOrder->updated_at }}</td>
                     <td>
                         <a href="{{ route('manage.order.details', $customOrder->id) }}">
-                            <button type="submit" class="btn btn-info btn-sm icon-button">
+                            <button type="submit" class="btn btn-info icon-btn">
                                 <i class="fa fa-info-circle"></i>
                             </button>
                         </a>
