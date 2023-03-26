@@ -352,7 +352,7 @@
     display: flex;
 }
 
-select.search-select-input {
+.au-select-input {
     position: relative;
     right: 0;
     min-width: 65px;
@@ -366,4 +366,17 @@ select.search-select-input {
     margin-left: 0;
     padding: 5px;
     cursor: pointer;
+}
+
+.au-add-btn--small {
+    font-size: 1.4rem;
+    padding: 0 20px;
+    border: 1px solid #e5e5e5;
+}
+
+.au-input--small,
+.au-btn-custom--small,
+.au-select-input--small,
+.au-add-btn--small {
+    line-height: 4rem;
 }

@@ -18,11 +18,9 @@
                 </div>
 
                 <div class="table-data__tool-right">
-                    <a href="{{ route('catalog.brand.create') }}">
-                        <button class="au-btn au-btn-icon au-btn--green au-btn--small">
-                            <i class="zmdi zmdi-plus"></i>add item
-                        </button>
-                    </a>
+                    @include('shared.components.buttons.add-button', [
+                        'addUrl' => route('catalog.brand.create'),
+                    ])
                 </div>
             </div>
         </div>
