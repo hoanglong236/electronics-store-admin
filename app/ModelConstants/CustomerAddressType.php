@@ -4,8 +4,8 @@ namespace App\ModelConstants;
 
 class CustomerAddressType
 {
-    const HOME = 'home';
-    const OFFICE = 'office';
+    const HOME = 'Home';
+    const OFFICE = 'Office';
 
     private function __construct()
     {

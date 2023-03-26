@@ -54,17 +54,8 @@ class CustomerController extends Controller
             'pageTitle' => 'Customer details',
             'customer' => $this->customerService->findById($customerId),
             'customerAddresses' => $this->customerAddressService->findByCustomerId($customerId),
-            'customerAddressTypeMap' => $this->getCustomerAddressTypeMap(),
         ];
 
         return view('pages.customer.customer-details-page', ['data' => $data]);
-    }
-
-    private function getCustomerAddressTypeMap()
-    {
-        return [
-            CustomerAddressType::HOME => 'Home',
-            CustomerAddressType::OFFICE => 'Office',
-        ];
     }
 }

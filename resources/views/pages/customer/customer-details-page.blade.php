@@ -19,7 +19,6 @@
         <div class="col-md-12">
             @include('pages.customer.components.customer-address-table', [
                 'customerAddresses' => $data['customerAddresses'],
-                'customerAddressTypeMap' => $data['customerAddressTypeMap'],
             ])
         </div>
     </div>
