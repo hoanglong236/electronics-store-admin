@@ -20,10 +20,8 @@ class BrandController extends Controller
 
     public function index()
     {
-        $data = [
-            'pageTitle' => 'List brands',
-            'brands' => $this->brandService->listBrands(),
-        ];
+        $data = $this->getCommonDataForBrandsPage();
+        $data['brands'] = $this->brandService->listBrands();
 
         return view('pages.brand.brands-page', ['data' => $data]);
     }
@@ -31,13 +29,20 @@ class BrandController extends Controller
     public function search(BrandSearchRequest $brandSearchRequest)
     {
         $searchBrandProperties = $brandSearchRequest->validated();
-        $data = [
-            'pageTitle' => 'List brands',
-            'brands' => $this->brandService->searchBrands($searchBrandProperties),
-            'searchKeyword' => $searchBrandProperties['searchKeyword'],
-        ];
+
+        $data = $this->getCommonDataForBrandsPage();
+        $data['brands'] = $this->brandService->searchBrands($searchBrandProperties);
+        $data['searchKeyword'] = $searchBrandProperties['searchKeyword'];
 
         return view('pages.brand.brands-page', ['data' => $data]);
+    }
+
+    private function getCommonDataForBrandsPage()
+    {
+        return [
+            'pageTitle' => 'Brands',
+            'searchKeyword' => '',
+        ];
     }
 
     public function create()

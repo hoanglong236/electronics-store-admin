@@ -13,7 +13,7 @@
                 <div class="table-data__tool-left">
                     @include('shared.components.search-bar', [
                         'searchFormUrl' => route('catalog.brand.search'),
-                        'searchKeyword' => $data['searchKeyword'] ?? '',
+                        'searchKeyword' => $data['searchKeyword'],
                     ])
                 </div>
 
