@@ -9,13 +9,18 @@
 
     <div class="row mt-4">
         <div class="col-lg-5">
-            @include('pages.customer.components.customer-details-card')
+            @include('pages.customer.components.customer-details-card', [
+                'customer' => $data['customer'],
+            ])
         </div>
     </div>
 
     <div class="row m-t-10">
         <div class="col-md-12">
-            @include('pages.customer.components.customer-address-table')
+            @include('pages.customer.components.customer-address-table', [
+                'customerAddresses' => $data['customerAddresses'],
+                'customerAddressTypeMap' => $data['customerAddressTypeMap'],
+            ])
         </div>
     </div>
 @endsection

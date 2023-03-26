@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Common\Constants;
 use App\Http\Requests\CustomerRequest;
+use App\ModelConstants\CustomerAddressType;
 use App\Services\CustomerAddressService;
 use App\Services\CustomerService;
 use Illuminate\Http\Request;
@@ -22,12 +23,12 @@ class CustomerController extends Controller
 
     public function index()
     {
-        $customers = $this->customerService->listCustomersPaginate(Constants::CUSTOMER_PAGE_COUNT);
+        $data = [
+            'pageTitle' => 'Customers',
+            'customers' => $this->customerService->listCustomersPaginate(Constants::CUSTOMER_PAGE_COUNT),
+        ];
 
-        return view('pages.customer.customers-page', [
-            'pageTitle' => 'List categories',
-            'customers' => $customers,
-        ]);
+        return view('pages.customer.customers-page', ['data' => $data]);
     }
 
     public function updateDisableFlag(CustomerRequest $customerRequest, $customerId)
@@ -47,14 +48,23 @@ class CustomerController extends Controller
         return redirect()->action([CustomerController::class, 'index']);
     }
 
-    public function showDetails($customerId) {
-        $customer = $this->customerService->findById($customerId);
-        $customerAddresses = $this->customerAddressService->findByCustomerId($customerId);
-
-        return view('pages.customer.customer-details-page', [
+    public function showDetails($customerId)
+    {
+        $data = [
             'pageTitle' => 'Customer details',
-            'customer' => $customer,
-            'customerAddresses' => $customerAddresses,
-        ]);
+            'customer' => $this->customerService->findById($customerId),
+            'customerAddresses' => $this->customerAddressService->findByCustomerId($customerId),
+            'customerAddressTypeMap' => $this->getCustomerAddressTypeMap(),
+        ];
+
+        return view('pages.customer.customer-details-page', ['data' => $data]);
+    }
+
+    private function getCustomerAddressTypeMap()
+    {
+        return [
+            CustomerAddressType::HOME => 'Home',
+            CustomerAddressType::OFFICE => 'Office',
+        ];
     }
 }

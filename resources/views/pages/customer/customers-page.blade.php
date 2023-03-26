@@ -45,7 +45,7 @@
     </div>
 
     <div class="row">
-        @forelse ($customers as $customer)
+        @forelse ($data['customers'] as $customer)
             <div class="col-md-3">
                 @include('pages.customer.components.customer-card')
             </div>
@@ -56,5 +56,7 @@
         @endforelse
     </div>
 
-    @include('shared.components.pagination-nav', ['paginator' => $customers])
+    @include('shared.components.pagination-nav', [
+        'paginator' => $data['customers'],
+    ])
 @endsection

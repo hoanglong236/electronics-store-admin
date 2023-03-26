@@ -1,12 +1,9 @@
 <div class="card">
     <div class="card-header card-header-flex--space-center">
         <div class="card-title--medium">ID:&nbsp; {{ $customer->id }}</div>
-        <a href="{{ route('manage.customer.details', [$customer->id]) }}">
-            <button type="button" class="btn btn-info btn-sm icon-button" data-toggle="tooltip" data-placement="top"
-                data-html="true" title="<span class='text--normal'>Details</span>">
-                <i class="fa fa-info-circle"></i>
-            </button>
-        </a>
+        @include('shared.components.buttons.detail-icon-button', [
+            'detailUrl' => route('manage.customer.details', [$customer->id]),
+        ])
     </div>
     <div class="card-body">
         <div class="mx-auto d-block">
@@ -44,14 +41,9 @@
     <div class="card-footer">
         <div class="card-action-wrapper">
             <div class="card-action-item">
-                <form method="post" action="{{ route('manage.customer.delete', [$customer->id]) }}"
-                    onsubmit="return confirm('Are you sure?');">
-                    @csrf
-                    @method('delete')
-                    <button type="submit" class="btn btn-danger btn-sm">
-                        <i class="fa fa-trash-o"></i> Delete
-                    </button>
-                </form>
+                @include('shared.components.buttons.delete-button', [
+                    'deleteUrl' => route('manage.customer.delete', [$customer->id]),
+                ])
             </div>
         </div>
     </div>
