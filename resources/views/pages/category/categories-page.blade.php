@@ -14,7 +14,7 @@
                     @include('shared.components.dropdown-search-bar', [
                         'searchFormUrl' => route('catalog.category.search'),
                         'searchFieldMap' => $data['categorySearchFieldMap'],
-                        'searchKeyword' => $data['searchKeyword'] ?? '',
+                        'searchKeyword' => $data['searchKeyword'],
                         'searchField' => $data['searchField'],
                     ])
                 </div>

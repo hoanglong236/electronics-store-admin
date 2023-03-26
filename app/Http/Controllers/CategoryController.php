@@ -53,6 +53,8 @@ class CategoryController extends Controller
             'pageTitle' => 'Categories',
             'categoryIdNameMap' => $categoryIdNameMap,
             'categorySearchFieldMap' => $categorySearchFieldMap,
+            'searchKeyword' => '',
+            'searchField' => CategoryConstants::SEARCH_ALL,
         ];
     }
 

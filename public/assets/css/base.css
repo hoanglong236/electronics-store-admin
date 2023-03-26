@@ -108,7 +108,9 @@ select.form-control:not([size]):not([multiple]) {
 .icon-btn {
     border-radius: 6px;
     width: 30px;
-    height: 30px
+    height: 30px;
+    font-size: 1.6rem;
+    line-height: 2rem;
 }
 
 .text-btn--medium {

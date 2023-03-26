@@ -24,7 +24,7 @@ class Constants
     const PRODUCT_PAGE_COUNT = 8;
     const CUSTOMER_PAGE_COUNT = 8;
 
-    const MAX_LENGTH_SEARCH_KEYWORD = 64;
+    const SEARCH_KEYWORD_MAX_LENGTH = 64;
 
     private function __construct()
     {

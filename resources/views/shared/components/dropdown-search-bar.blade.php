@@ -6,8 +6,8 @@
             @endforeach
         </select>
         <input class="au-input au-input--xl au-input--custom" type="text" name="searchKeyword"
-            value="{{ $searchKeyword ?? '' }}" placeholder="Search..."
-            maxlength="{{ $maxLengthKeyword ?? Constants::MAX_LENGTH_SEARCH_KEYWORD }}">
+            value="{{ $searchKeyword }}" placeholder="Search..."
+            maxlength="{{ $searchKeywordMaxLength ?? Constants::SEARCH_KEYWORD_MAX_LENGTH }}">
         <button class="au-btn--submit" type="submit">
             <i class="zmdi zmdi-search"></i>
         </button>

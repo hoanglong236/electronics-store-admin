@@ -29,21 +29,14 @@
                     <td>
                         <div class="card-action-wrapper--right">
                             <div class="card-action-item">
-                                <a href="{{ route('catalog.category.update', [$category->id]) }}">
-                                    <button type="submit" class="btn btn-primary btn-sm icon-button">
-                                        <i class="zmdi zmdi-edit"></i>
-                                    </button>
-                                </a>
+                                @include('shared.components.buttons.edit-icon-button', [
+                                    'editUrl' => route('catalog.category.update', [$category->id]),
+                                ])
                             </div>
                             <div class="card-action-item">
-                                <form method="post" action="{{ route('catalog.category.delete', [$category->id]) }}"
-                                    onsubmit="return confirm('Are you sure?');">
-                                    @csrf
-                                    @method('delete')
-                                    <button type="submit" class="btn btn-danger btn-sm icon-button">
-                                        <i class="fa fa-trash-o"></i>
-                                    </button>
-                                </form>
+                                @include('shared.components.buttons.delete-icon-button', [
+                                    'deleteUrl' => route('catalog.category.delete', [$category->id]),
+                                ])
                             </div>
                         </div>
                     </td>
