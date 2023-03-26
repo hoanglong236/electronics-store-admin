@@ -20,7 +20,7 @@
         <div class="col">
             <div class="form-group">
                 <input class="au-input au-input--full" type="password" name="confirmPassword"
-                    placeholder="Confirm your Password" required>
+                    placeholder="Confirm password" required>
                 @error('confirmPassword')
                     <div class="alert alert-danger mt-1" role="alert">{{ $message }}</div>
                 @enderror
