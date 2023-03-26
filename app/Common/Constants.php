@@ -2,8 +2,8 @@
 
 namespace App\Common;
 
-class Constants {
-
+class Constants
+{
     const ACTION_SUCCESS = 'success_message';
     const ACTION_ERROR = 'error_message';
 
@@ -23,4 +23,10 @@ class Constants {
 
     const PRODUCT_PAGE_COUNT = 8;
     const CUSTOMER_PAGE_COUNT = 8;
+
+    const MAX_LENGTH_SEARCH_KEYWORD = 64;
+
+    private function __construct()
+    {
+    }
 }

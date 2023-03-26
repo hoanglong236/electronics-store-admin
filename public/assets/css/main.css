@@ -348,3 +348,22 @@
     width: 65%;
 }
 /* Custom table-data ---- END */
+.search-bar-wrapper {
+    display: flex;
+}
+
+select.search-select-input {
+    position: relative;
+    right: 0;
+    min-width: 65px;
+    line-height: 43px;
+    border: 1px solid #e5e5e5;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    background: #4272d7;
+    color: #fff;
+    margin-left: 0;
+    padding: 5px;
+    cursor: pointer;
+}

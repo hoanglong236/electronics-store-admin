@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Common\Constants;
+use App\ModelConstants\CategoryConstants;
 use App\Models\Category;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
@@ -29,11 +30,11 @@ class CategoryService
     public function createCategory($categoryProperties)
     {
         $iconPath = $this->storageService->saveFile($categoryProperties['icon'], Constants::CATEGORY_ICON_PATH);
-        $parentCateogryId = $categoryProperties['parentId'] === Constants::NONE_VALUE
+        $parentCategoryId = $categoryProperties['parentId'] === Constants::NONE_VALUE
             ? null : $categoryProperties['parentId'];
 
         Category::create([
-            'parent_id' => $parentCateogryId,
+            'parent_id' => $parentCategoryId,
             'name' => $categoryProperties['name'],
             'slug' => $categoryProperties['slug'],
             'icon_path' => $iconPath,
@@ -91,5 +92,47 @@ class CategoryService
         }
 
         return $map;
+    }
+
+    public function searchCategory($categorySearchProperties)
+    {
+        $searchField = $categorySearchProperties['searchField'];
+        $searchKeyword = $categorySearchProperties['searchKeyword'];
+
+        switch ($searchField) {
+            case CategoryConstants::SEARCH_ALL:
+                return $this->searchCategoryByAll($searchKeyword);
+            case CategoryConstants::SEARCH_NAME:
+                return $this->searchCategoryByName($searchKeyword);
+            case CategoryConstants::SEARCH_SLUG:
+                return $this->searchCategoryBySlug($searchKeyword);
+            default:
+                return [];
+        }
+    }
+
+    private function searchCategoryByAll($searchKeyword)
+    {
+        return Category::where('delete_flag', false)
+            ->where(function ($query) use ($searchKeyword) {
+                $query->where('name', 'LIKE', '%' . UtilsService::escapeKeyword($searchKeyword) . '%')
+                    ->orWhere('slug', 'LIKE', '%' . UtilsService::escapeKeyword($searchKeyword) . '%');
+            })->get();
+    }
+
+    private function searchCategoryByName($searchKeyword)
+    {
+        return Category::where([
+            'delete_flag' => false,
+            ['name', 'LIKE', '%' . UtilsService::escapeKeyword($searchKeyword) . '%']
+        ])->get();
+    }
+
+    private function searchCategoryBySlug($searchKeyword)
+    {
+        return Category::where([
+            'delete_flag' => false,
+            ['slug', 'LIKE', '%' . UtilsService::escapeKeyword($searchKeyword) . '%']
+        ])->get();
     }
 }

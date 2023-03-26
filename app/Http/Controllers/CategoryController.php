@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Common\Constants;
 use App\Http\Requests\CategoryRequest;
+use App\Http\Requests\CategorySearchRequest;
+use App\ModelConstants\CategoryConstants;
 use App\Services\CategoryService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -20,25 +22,48 @@ class CategoryController extends Controller
 
     public function index()
     {
-        $categories = $this->categoryService->listCategories();
-        $categoryIdNameMap = [];
-        foreach ($categories as $category) {
-            $categoryIdNameMap[$category->id] = $category->name;
-        }
+        $data = $this->getCommonDataForCategoriesPage();
+        $data['categories'] = $this->categoryService->listCategories();
 
-        return view('pages.category.categories-page', [
-            'pageTitle' => 'List categories',
-            'categories' => $categories,
+        return view('pages.category.categories-page', ['data' => $data]);
+    }
+
+    public function search(CategorySearchRequest $categorySearchRequest)
+    {
+        $categorySearchProperties = $categorySearchRequest->validated();
+
+        $data = $this->getCommonDataForCategoriesPage();
+        $data['categories'] = $this->categoryService->searchCategory($categorySearchProperties);
+        $data['searchKeyword'] = $categorySearchProperties['searchKeyword'];
+        $data['searchField'] = $categorySearchProperties['searchField'];
+
+        return view('pages.category.categories-page', ['data' => $data]);
+    }
+
+    private function getCommonDataForCategoriesPage()
+    {
+        $categoryIdNameMap = $this->categoryService->getCategoryIdNameMap();
+        $categorySearchFieldMap = [
+            CategoryConstants::SEARCH_ALL => 'All',
+            CategoryConstants::SEARCH_NAME => 'Name',
+            CategoryConstants::SEARCH_SLUG => 'Slug',
+        ];
+
+        return [
+            'pageTitle' => 'Categories',
             'categoryIdNameMap' => $categoryIdNameMap,
-        ]);
+            'categorySearchFieldMap' => $categorySearchFieldMap,
+        ];
     }
 
     public function create()
     {
-        return view('pages.category.category-create-page', [
+        $data = [
             'pageTitle' => 'Create category',
             'categoryIdNameMap' => $this->categoryService->getCategoryIdNameMap(),
-        ]);
+        ];
+
+        return view('pages.category.category-create-page', ['data' => $data]);
     }
 
     public function createHandler(CategoryRequest $categoryRequest)
@@ -52,11 +77,13 @@ class CategoryController extends Controller
 
     public function update($categoryId)
     {
-        return view('pages.category.category-update-page', [
+        $data = [
             'pageTitle' => 'Update category',
             'category' => $this->categoryService->findById($categoryId),
             'categoryIdNameMap' => $this->categoryService->getCategoryIdNameMap(),
-        ]);
+        ];
+
+        return view('pages.category.category-update-page', ['data' => $data]);
     }
 
     public function updateHandler(CategoryRequest $categoryRequest, $categoryId)

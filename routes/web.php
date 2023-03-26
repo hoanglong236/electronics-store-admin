@@ -79,6 +79,9 @@ Route::middleware('auth:admin')->group(function () {
         Route::delete('/delete/{categoryId}', [CategoryController::class, 'delete'])->name(
             'catalog.category.delete'
         );
+        Route::get('/search', [CategoryController::class, 'search'])->name(
+            'catalog.category.search'
+        );
     });
 
     Route::group(['prefix' => 'catalog/product'], function () {

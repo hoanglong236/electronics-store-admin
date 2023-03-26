@@ -10,7 +10,7 @@
     <meta name="keywords" content="au theme template"> --}}
 
     <!-- Title Page-->
-    <title>{{ $pageTitle }}</title>
+    <title>{{ $data['pageTitle'] }}</title>
 
     <!-- Fontfaces CSS-->
     <link href="{{ asset('assets/css/font-face.css') }}" rel="stylesheet" media="all">

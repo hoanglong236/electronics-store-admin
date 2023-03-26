@@ -51,4 +51,8 @@
             @endforeach
         </tbody>
     </table>
+
+    @if (count($categories) === 0)
+        <div class="mt-3">No category found.</div>
+    @endif
 </div>
