@@ -31,4 +31,14 @@ class CategorySearchRequest extends FormRequest
             ]
         ];
     }
+
+    /**
+     * Override the default
+     */
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'searchKeyword' => $this->searchKeyword ?? '',
+        ]);
+    }
 }
