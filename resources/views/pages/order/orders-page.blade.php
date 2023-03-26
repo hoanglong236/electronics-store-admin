@@ -50,7 +50,6 @@
             @include('pages.order.components.order-table', [
                 'customOrders' => $data['customOrders'],
                 'nextSelectableStatusMap' => $data['nextSelectableStatusMap'],
-                'orderStatusNameMap' => $data['orderStatusNameMap']
             ])
         </div>
     </div>

@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Common\Constants;
 use App\Http\Requests\OrderStatusRequest;
-use App\ModelConstants\OrderStatusConstants;
 use App\Services\OrderItemService;
 use App\Services\OrderService;
 use Illuminate\Http\Request;
@@ -27,7 +26,6 @@ class OrderController extends Controller
             'pageTitle' => 'Order',
             'customOrders' => $this->orderService->listCustomOrderData(),
             'nextSelectableStatusMap' => $this->orderService->getNextSelectableStatusMap(),
-            'orderStatusNameMap' => $this->getOrderStatusNameMap(),
         ];
 
         return view('pages.order.orders-page', ['data' => $data]);
@@ -48,19 +46,8 @@ class OrderController extends Controller
             'pageTitle' => 'Order details',
             'customOrder' => $this->orderService->getCustomOrderById($orderId),
             'customOrderItems' => $this->orderItemService->getCustomOrderItemsByOrderId($orderId),
-            'orderStatusNameMap' => $this->getOrderStatusNameMap(),
         ];
 
         return view('pages.order.order-details-page', ['data' => $data]);
-    }
-
-    private function getOrderStatusNameMap() {
-        return [
-            OrderStatusConstants::RECEIVED => 'Received',
-            OrderStatusConstants::PROCESSING => 'Processing',
-            OrderStatusConstants::DELIVERING => 'Delivering',
-            OrderStatusConstants::COMPLETED => 'Completed',
-            OrderStatusConstants::CANCELLED => 'Cancelled',
-        ];
     }
 }

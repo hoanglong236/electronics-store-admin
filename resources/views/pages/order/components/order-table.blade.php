@@ -28,7 +28,7 @@
                                     $customOrder->status === Constants::ORDER_STATUS_CANCELLED,
                                 'order-completed' =>
                                     $customOrder->status === Constants::ORDER_STATUS_COMPLETED,
-                            ])>{{ $orderStatusNameMap[$customOrder->status] }}</span>
+                            ])>{{ $customOrder->status }}</span>
                         @else
                             <form action="{{ route('manage.order.update-order-status', $customOrder->id) }}"
                                 method="POST">
@@ -36,11 +36,11 @@
                                 @method('PUT')
                                 <select name="status" class="form-control text--small" onchange="this.form.submit()">
                                     <option value="{{ $customOrder->status }}">
-                                        {{ $orderStatusNameMap[$customOrder->status] }}
+                                        {{ $customOrder->status }}
                                     </option>
                                     @foreach ($nextSelectableStatusMap[$customOrder->status] as $nextStatus)
                                         <option value="{{ $nextStatus }}">
-                                            {{ $orderStatusNameMap[$nextStatus] }}
+                                            {{ $nextStatus }}
                                         </option>
                                     @endforeach
                                 </select>

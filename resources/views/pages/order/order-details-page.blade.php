@@ -31,7 +31,7 @@
                     'id' => $data['customOrder']->id,
                     'itemCount' => count($data['customOrderItems']),
                     'totalAmount' => $data['customOrder']->total,
-                    'status' => $data['orderStatusNameMap'][$data['customOrder']->status],
+                    'status' => $data['customOrder']->status,
                     'createdAt' => $data['customOrder']->created_at,
                     'updatedAt' => $data['customOrder']->updated_at,
                 ],

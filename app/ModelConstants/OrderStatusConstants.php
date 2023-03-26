@@ -4,11 +4,11 @@ namespace App\ModelConstants;
 
 class OrderStatusConstants
 {
-    const RECEIVED = 'received';
-    const PROCESSING = 'processing';
-    const DELIVERING = 'delivering';
-    const COMPLETED = 'completed';
-    const CANCELLED = 'cancelled';
+    const RECEIVED = 'Received';
+    const PROCESSING = 'Processing';
+    const DELIVERING = 'Delivering';
+    const COMPLETED = 'Completed';
+    const CANCELLED = 'Cancelled';
 
     private function __construct()
     {
