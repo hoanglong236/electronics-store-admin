@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\ModelConstants\CategorySearchConstants;
+use App\ModelConstants\CategorySearchOptionConstants;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -25,9 +25,9 @@ class CategorySearchRequest extends FormRequest
     {
         return [
             'searchKeyword' => 'max:64',
-            'searchField' => [
+            'searchOption' => [
                 'required',
-                Rule::in(CategorySearchConstants::toArray()),
+                Rule::in(CategorySearchOptionConstants::toArray()),
             ]
         ];
     }

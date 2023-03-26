@@ -1,8 +1,8 @@
 <form class="form-header" action="{{ $searchFormUrl }}" method="GET">
     <div class="search-bar-wrapper">
-        <select class="search-select-input" name="searchField">
-            @foreach ($searchFieldMap as $key => $value) {
-                <option value="{{ $key }}" @selected($key === $searchField)>{{ $value }}</option>
+        <select class="search-select-input" name="searchOption">
+            @foreach ($searchOptionMap as $key => $value) {
+                <option value="{{ $key }}" @selected($key === $searchOption)>{{ $value }}</option>
             @endforeach
         </select>
         <input class="au-input au-input--xl au-input--custom" type="text" name="searchKeyword"

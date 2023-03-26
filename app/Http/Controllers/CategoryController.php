@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Common\Constants;
 use App\Http\Requests\CategoryRequest;
 use App\Http\Requests\CategorySearchRequest;
-use App\ModelConstants\CategorySearchConstants;
+use App\ModelConstants\CategorySearchOptionConstants;
 use App\Services\CategoryService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -35,7 +35,7 @@ class CategoryController extends Controller
         $data = $this->getCommonDataForCategoriesPage();
         $data['categories'] = $this->categoryService->searchCategory($categorySearchProperties);
         $data['searchKeyword'] = $categorySearchProperties['searchKeyword'];
-        $data['searchField'] = $categorySearchProperties['searchField'];
+        $data['searchOption'] = $categorySearchProperties['searchOption'];
 
         return view('pages.category.categories-page', ['data' => $data]);
     }
@@ -43,18 +43,18 @@ class CategoryController extends Controller
     private function getCommonDataForCategoriesPage()
     {
         $categoryIdNameMap = $this->categoryService->getCategoryIdNameMap();
-        $categorySearchFieldMap = [
-            CategorySearchConstants::SEARCH_ALL => 'All',
-            CategorySearchConstants::SEARCH_NAME => 'Name',
-            CategorySearchConstants::SEARCH_SLUG => 'Slug',
+        $categorySearchOptionMap = [
+            CategorySearchOptionConstants::SEARCH_ALL => 'All',
+            CategorySearchOptionConstants::SEARCH_NAME => 'Name',
+            CategorySearchOptionConstants::SEARCH_SLUG => 'Slug',
         ];
 
         return [
             'pageTitle' => 'Categories',
             'categoryIdNameMap' => $categoryIdNameMap,
-            'categorySearchFieldMap' => $categorySearchFieldMap,
+            'categorySearchOptionMap' => $categorySearchOptionMap,
             'searchKeyword' => '',
-            'searchField' => CategorySearchConstants::SEARCH_ALL,
+            'searchOption' => CategorySearchOptionConstants::SEARCH_ALL,
         ];
     }
 
