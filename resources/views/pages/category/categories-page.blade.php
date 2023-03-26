@@ -13,9 +13,9 @@
                 <div class="table-data__tool-left">
                     @include('shared.components.dropdown-search-bar', [
                         'searchFormUrl' => route('catalog.category.search'),
-                        'searchOptionMap' => $data['categorySearchOptionMap'],
                         'searchKeyword' => $data['searchKeyword'],
-                        'searchOption' => $data['searchOption'],
+                        'searchOptions' => $data['searchOptions'],
+                        'currentSearchOption' => $data['currentSearchOption'],
                     ])
                 </div>
                 <div class="table-data__tool-right">

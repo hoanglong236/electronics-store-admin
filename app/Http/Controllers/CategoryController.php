@@ -35,7 +35,7 @@ class CategoryController extends Controller
         $data = $this->getCommonDataForCategoriesPage();
         $data['categories'] = $this->categoryService->searchCategory($categorySearchProperties);
         $data['searchKeyword'] = $categorySearchProperties['searchKeyword'];
-        $data['searchOption'] = $categorySearchProperties['searchOption'];
+        $data['currentSearchOption'] = $categorySearchProperties['searchOption'];
 
         return view('pages.category.categories-page', ['data' => $data]);
     }
@@ -43,18 +43,13 @@ class CategoryController extends Controller
     private function getCommonDataForCategoriesPage()
     {
         $categoryIdNameMap = $this->categoryService->getCategoryIdNameMap();
-        $categorySearchOptionMap = [
-            CategorySearchOptionConstants::SEARCH_ALL => 'All',
-            CategorySearchOptionConstants::SEARCH_NAME => 'Name',
-            CategorySearchOptionConstants::SEARCH_SLUG => 'Slug',
-        ];
 
         return [
             'pageTitle' => 'Categories',
             'categoryIdNameMap' => $categoryIdNameMap,
-            'categorySearchOptionMap' => $categorySearchOptionMap,
             'searchKeyword' => '',
-            'searchOption' => CategorySearchOptionConstants::SEARCH_ALL,
+            'searchOptions' => CategorySearchOptionConstants::toArray(),
+            'currentSearchOption' => CategorySearchOptionConstants::SEARCH_ALL,
         ];
     }
 

@@ -4,9 +4,9 @@ namespace App\ModelConstants;
 
 class CategorySearchOptionConstants
 {
-    const SEARCH_ALL = 'all';
-    const SEARCH_NAME = 'name';
-    const SEARCH_SLUG = 'slug';
+    const SEARCH_ALL = 'All';
+    const SEARCH_NAME = 'Name';
+    const SEARCH_SLUG = 'Slug';
 
     private function __construct()
     {
