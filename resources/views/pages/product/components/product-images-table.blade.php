@@ -18,7 +18,7 @@
                     <td class="text-right">
                         @include('shared.components.buttons.delete-icon-button', [
                             'deleteUrl' => route('catalog.product.details.images.delete', [
-                                'productId' => $product->id,
+                                'productId' => $productId,
                                 'productImageId' => $productImage->id,
                             ]),
                         ])

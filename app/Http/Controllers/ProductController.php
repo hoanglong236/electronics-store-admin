@@ -30,21 +30,23 @@ class ProductController extends Controller
 
     public function index()
     {
-        $products = $this->productService->listProductsPaginate(Constants::PRODUCT_PAGE_COUNT);
+        $data = [
+            'pageTitle' => 'Products',
+            'products' => $this->productService->listProductsPaginate(Constants::PRODUCT_PAGE_COUNT),
+        ];
 
-        return view('pages.product.products-page', [
-            'pageTitle' => 'List products',
-            'products' => $products,
-        ]);
+        return view('pages.product.products-page', ['data' => $data]);
     }
 
     public function create()
     {
-        return view('pages.product.product-create-page', [
+        $data = [
             'pageTitle' => 'Create product',
             'categoryIdNameMap' => $this->categoryService->getCategoryIdNameMap(),
             'brandIdNameMap' => $this->brandService->getBrandIdNameMap(),
-        ]);
+        ];
+
+        return view('pages.product.product-create-page', ['data' => $data]);
     }
 
     public function createHandler(ProductRequest $productRequest)
@@ -58,14 +60,14 @@ class ProductController extends Controller
 
     public function update($productId)
     {
-        $product = $this->productService->findProductById($productId);
-
-        return view('pages.product.product-update-page', [
+        $data = [
             'pageTitle' => 'Update product',
-            'product' => $product,
             'categoryIdNameMap' => $this->categoryService->getCategoryIdNameMap(),
             'brandIdNameMap' => $this->brandService->getBrandIdNameMap(),
-        ]);
+            'product' => $this->productService->findProductById($productId),
+        ];
+
+        return view('pages.product.product-update-page', ['data' => $data]);
     }
 
     public function updateHandler(ProductRequest $productRequest, $productId)
@@ -85,19 +87,19 @@ class ProductController extends Controller
         return redirect()->action([ProductController::class, 'index']);
     }
 
-    public function showDetails($productId) {
-        $product = $this->productService->findProductById($productId);
-
-        return view('pages.product.product-details-page', [
+    public function showDetails($productId)
+    {
+        $data = [
             'pageTitle' => 'Product details',
-            'product' => $product,
-            'categoryIdNameMap' => $this->categoryService->getCategoryIdNameMap(),
-            'brandIdNameMap' => $this->brandService->getBrandIdNameMap(),
+            'customProduct' => $this->productService->getCustomProductById($productId),
             'productImages' => $this->productImageService->listProductImagesInProduct($productId),
-        ]);
+        ];
+
+        return view('pages.product.product-details-page', ['data' => $data]);
     }
 
-    public function createImages(ProductImageRequest $productImageRequest, $productId) {
+    public function createImages(ProductImageRequest $productImageRequest, $productId)
+    {
         $productImageProperties = $productImageRequest->validated();
         $productImageProperties['productId'] = $productId;
         $this->productImageService->createProductImages($productImageProperties);
@@ -106,7 +108,8 @@ class ProductController extends Controller
         return redirect()->action([ProductController::class, 'showDetails'], $productId);
     }
 
-    public function deleteImage(Request $request, $productId, $productImageId) {
+    public function deleteImage($productId, $productImageId)
+    {
         $this->productImageService->deleteProductImage($productImageId);
 
         Session::flash(Constants::ACTION_SUCCESS, Constants::DELETE_SUCCESS);

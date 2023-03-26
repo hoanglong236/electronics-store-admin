@@ -48,7 +48,7 @@
     </div>
 
     <div class="row">
-        @forelse ($products as $product)
+        @forelse ($data['products'] as $product)
             <div class="col-md-3">
                 @include('pages.product.components.product-card')
             </div>
@@ -59,5 +59,5 @@
         @endforelse
     </div>
 
-    @include('shared.components.pagination-nav', ['paginator' => $products])
+    @include('shared.components.pagination-nav', ['paginator' => $data['products']])
 @endsection
