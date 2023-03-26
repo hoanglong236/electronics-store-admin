@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\ModelConstants\OrderStatusConstants;
 use App\Models\Customer;
 use App\Models\CustomerAddress;
 use App\Models\Order;
@@ -25,7 +26,7 @@ class OrderSeeder extends Seeder
 
     private function generateRandomOrders($orderCount, $customerId, $deliveryAddress)
     {
-        $statusEnum = ['Received', 'Processing', 'Delivering', 'Completed', 'Cancelled'];
+        $statusEnum = OrderStatusConstants::toArray();
         for ($i = 0; $i < $orderCount; $i++) {
             $order = Order::create([
                 'customer_id' => $customerId,

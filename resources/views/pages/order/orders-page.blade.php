@@ -47,7 +47,11 @@
 
     <div class="row m-t-10">
         <div class="col-md-12">
-            @include('pages.order.components.order-table')
+            @include('pages.order.components.order-table', [
+                'customOrders' => $data['customOrders'],
+                'nextSelectableStatusMap' => $data['nextSelectableStatusMap'],
+                'orderStatusNameMap' => $data['orderStatusNameMap']
+            ])
         </div>
     </div>
 @endsection

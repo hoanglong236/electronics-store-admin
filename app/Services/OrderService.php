@@ -2,13 +2,15 @@
 
 namespace App\Services;
 
+use App\ModelConstants\OrderStatusConstants;
 use App\Models\Order;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class OrderService
 {
-    public function getCustomOrderById($orderId) {
+    public function getCustomOrderById($orderId)
+    {
         return DB::table('orders')
             ->join('customers', 'customers.id', '=', 'orders.customer_id')
             ->join('order_items', 'order_items.order_id', '=', 'orders.id')
@@ -59,11 +61,11 @@ class OrderService
     public function getNextSelectableStatusMap()
     {
         return [
-            'Received' => ['Processing', 'Cancelled'],
-            'Processing' => ['Delivering', 'Cancelled'],
-            'Delivering' => ['Completed', 'Cancelled'],
-            'Completed' => [],
-            'Cancelled' => [],
+            OrderStatusConstants::RECEIVED => [OrderStatusConstants::PROCESSING, OrderStatusConstants::CANCELLED],
+            OrderStatusConstants::PROCESSING => [OrderStatusConstants::DELIVERING, OrderStatusConstants::CANCELLED],
+            OrderStatusConstants::DELIVERING => [OrderStatusConstants::COMPLETED, OrderStatusConstants::CANCELLED],
+            OrderStatusConstants::COMPLETED => [],
+            OrderStatusConstants::CANCELLED => [],
         ];
     }
 }

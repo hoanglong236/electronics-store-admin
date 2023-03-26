@@ -24,18 +24,20 @@
                     <td>
                         @if (count($nextSelectableStatusMap[$customOrder->status]) === 0)
                             <span @class([
-                                'order-cancelled' => $customOrder->status === 'Cancelled',
-                                'order-completed' => $customOrder->status === 'Completed',
-                            ])>{{ $customOrder->status }}</span>
+                                'order-cancelled' => $customOrder->status === Constants::ORDER_STATUS_CANCELLED,
+                                'order-completed' => $customOrder->status === Constants::ORDER_STATUS_COMPLETED,
+                            ])>{{ $orderStatusNameMap[$customOrder->status] }}</span>
                         @else
                             <form action="{{ route('manage.order.update-order-status', $customOrder->id) }}"
                                 method="POST">
                                 @csrf
                                 @method('PUT')
                                 <select name="status" class="form-control text--small" onchange="this.form.submit()">
-                                    <option value="{{ $customOrder->status }}">{{ $customOrder->status }}</option>
+                                    <option value="{{ $customOrder->status }}">
+                                        {{ $orderStatusNameMap[$customOrder->status] }}
+                                    </option>
                                     @foreach ($nextSelectableStatusMap[$customOrder->status] as $nextStatus)
-                                        <option value="{{ $nextStatus }}">{{ $nextStatus }}</option>
+                                        <option value="{{ $nextStatus }}">{{ $orderStatusNameMap[$nextStatus] }}</option>
                                     @endforeach
                                 </select>
                                 @error('status')

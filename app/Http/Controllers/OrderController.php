@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Common\Constants;
 use App\Http\Requests\OrderStatusRequest;
+use App\ModelConstants\OrderStatusConstants;
 use App\Services\OrderItemService;
 use App\Services\OrderService;
 use Illuminate\Http\Request;
@@ -22,14 +23,21 @@ class OrderController extends Controller
 
     public function index()
     {
-        $customOrders = $this->orderService->listCustomOrderData();
-        $nextSelectableStatusMap = $this->orderService->getNextSelectableStatusMap();
-
-        return view('pages.order.orders-page', [
+        $orderStatusNameMap = [
+            OrderStatusConstants::RECEIVED => 'Received',
+            OrderStatusConstants::PROCESSING => 'Processing',
+            OrderStatusConstants::DELIVERING => 'Delivering',
+            OrderStatusConstants::COMPLETED => 'Completed',
+            OrderStatusConstants::CANCELLED => 'Cancelled',
+        ];
+        $data = [
             'pageTitle' => 'Order',
-            'customOrders' => $customOrders,
-            'nextSelectableStatusMap' => $nextSelectableStatusMap,
-        ]);
+            'customOrders' => $this->orderService->listCustomOrderData(),
+            'nextSelectableStatusMap' => $this->orderService->getNextSelectableStatusMap(),
+            'orderStatusNameMap' => $orderStatusNameMap,
+        ];
+
+        return view('pages.order.orders-page', ['data' => $data]);
     }
 
     public function updateOrderStatus(OrderStatusRequest $orderStatusRequest, $orderId)

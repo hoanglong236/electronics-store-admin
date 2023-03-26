@@ -1,5 +1,6 @@
 <?php
 
+use App\ModelConstants\OrderStatusConstants;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedInteger('customer_id')->reference('id')->on('customers');
             $table->string('delivery_address');
-            $table->enum('status', ['Received', 'Processing', 'Delivering', 'Completed', 'Cancelled'])->default('Received');
+            $table->enum('status', OrderStatusConstants::toArray())->default('Received');
             $table->timestamps();
         });
     }

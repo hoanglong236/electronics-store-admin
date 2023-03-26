@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\ModelConstants\OrderStatusConstants;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Session;
@@ -27,8 +28,8 @@ class OrderStatusRequest extends FormRequest
         return [
             'status' => [
                 'required',
-                Rule::in('Received', 'Processing', 'Delivering', 'Completed', 'Cancelled'),
-            ]
+                Rule::in(OrderStatusConstants::toArray()),
+            ],
         ];
     }
 

@@ -2,6 +2,8 @@
 
 namespace App\Common;
 
+use App\ModelConstants\OrderStatusConstants;
+
 class Constants
 {
     const ACTION_SUCCESS = 'success_message';
@@ -25,6 +27,9 @@ class Constants
     const CUSTOMER_PAGE_COUNT = 8;
 
     const SEARCH_KEYWORD_MAX_LENGTH = 64;
+
+    const ORDER_STATUS_COMPLETED = OrderStatusConstants::COMPLETED;
+    const ORDER_STATUS_CANCELLED = OrderStatusConstants::CANCELLED;
 
     private function __construct()
     {
