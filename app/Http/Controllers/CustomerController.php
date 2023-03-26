@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Common\Constants;
 use App\Http\Requests\CustomerRequest;
-use App\ModelConstants\CustomerAddressType;
 use App\Services\CustomerAddressService;
 use App\Services\CustomerService;
 use Illuminate\Http\Request;
