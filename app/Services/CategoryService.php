@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Common\Constants;
-use App\ModelConstants\CategoryConstants;
+use App\ModelConstants\CategorySearchConstants;
 use App\Models\Category;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
@@ -100,11 +100,11 @@ class CategoryService
         $searchKeyword = $categorySearchProperties['searchKeyword'];
 
         switch ($searchField) {
-            case CategoryConstants::SEARCH_ALL:
+            case CategorySearchConstants::SEARCH_ALL:
                 return $this->searchCategoryByAll($searchKeyword);
-            case CategoryConstants::SEARCH_NAME:
+            case CategorySearchConstants::SEARCH_NAME:
                 return $this->searchCategoryByName($searchKeyword);
-            case CategoryConstants::SEARCH_SLUG:
+            case CategorySearchConstants::SEARCH_SLUG:
                 return $this->searchCategoryBySlug($searchKeyword);
             default:
                 return [];

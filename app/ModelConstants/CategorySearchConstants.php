@@ -2,7 +2,7 @@
 
 namespace App\ModelConstants;
 
-class CategoryConstants
+class CategorySearchConstants
 {
     const SEARCH_ALL = 'all';
     const SEARCH_NAME = 'name';

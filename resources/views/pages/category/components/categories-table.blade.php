@@ -1,5 +1,5 @@
 <div class="table-responsive m-b-40">
-    <table class="table table-borderless table-data4">
+    <table class="table table-borderless table-data4 table-radius">
         <thead>
             <tr>
                 <th>ID</th>

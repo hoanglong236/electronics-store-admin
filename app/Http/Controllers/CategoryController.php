@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Common\Constants;
 use App\Http\Requests\CategoryRequest;
 use App\Http\Requests\CategorySearchRequest;
-use App\ModelConstants\CategoryConstants;
+use App\ModelConstants\CategorySearchConstants;
 use App\Services\CategoryService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -44,9 +44,9 @@ class CategoryController extends Controller
     {
         $categoryIdNameMap = $this->categoryService->getCategoryIdNameMap();
         $categorySearchFieldMap = [
-            CategoryConstants::SEARCH_ALL => 'All',
-            CategoryConstants::SEARCH_NAME => 'Name',
-            CategoryConstants::SEARCH_SLUG => 'Slug',
+            CategorySearchConstants::SEARCH_ALL => 'All',
+            CategorySearchConstants::SEARCH_NAME => 'Name',
+            CategorySearchConstants::SEARCH_SLUG => 'Slug',
         ];
 
         return [
@@ -54,7 +54,7 @@ class CategoryController extends Controller
             'categoryIdNameMap' => $categoryIdNameMap,
             'categorySearchFieldMap' => $categorySearchFieldMap,
             'searchKeyword' => '',
-            'searchField' => CategoryConstants::SEARCH_ALL,
+            'searchField' => CategorySearchConstants::SEARCH_ALL,
         ];
     }
 
