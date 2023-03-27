@@ -33,7 +33,7 @@ class CategoryController extends Controller
         $categorySearchProperties = $categorySearchRequest->validated();
 
         $data = $this->getCommonDataForCategoriesPage();
-        $data['categories'] = $this->categoryService->searchCategory($categorySearchProperties);
+        $data['categories'] = $this->categoryService->searchCategories($categorySearchProperties);
         $data['searchKeyword'] = $categorySearchProperties['searchKeyword'];
         $data['currentSearchOption'] = $categorySearchProperties['searchOption'];
 

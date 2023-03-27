@@ -94,7 +94,7 @@ class CategoryService
         return $map;
     }
 
-    public function searchCategory($categorySearchProperties)
+    public function searchCategories($categorySearchProperties)
     {
         $searchOption = $categorySearchProperties['searchOption'];
         $searchKeyword = $categorySearchProperties['searchKeyword'];
@@ -106,7 +106,7 @@ class CategoryService
                 return $this->searchCategoriesByName($searchKeyword);
             case CategorySearchOptionConstants::SEARCH_SLUG:
                 return $this->searchCategoriesBySlug($searchKeyword);
-            case CategorySearchOptionConstants::SEARCH_PARENT_NAME:
+            case CategorySearchOptionConstants::SEARCH_PARENT:
                 return $this->searchCategoriesByParentName($searchKeyword);
             default:
                 return [];
