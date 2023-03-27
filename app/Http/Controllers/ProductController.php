@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use App\Common\Constants;
 use App\Http\Requests\ProductImageRequest;
 use App\Http\Requests\ProductRequest;
+use App\Http\Requests\ProductSearchRequest;
+use App\ModelConstants\ProductSearchOptionConstants;
 use App\Services\BrandService;
 use App\Services\CategoryService;
 use App\Services\ProductImageService;
 use App\Services\ProductService;
+use App\Services\UtilsService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
@@ -30,12 +33,36 @@ class ProductController extends Controller
 
     public function index()
     {
-        $data = [
-            'pageTitle' => 'Products',
-            'products' => $this->productService->listProductsPaginate(Constants::PRODUCT_PAGE_COUNT),
-        ];
+        $data = $this->getCommonDataForProductsPage();
+        $data['products'] = $this->productService->listProductsPaginate(Constants::PRODUCT_PAGE_COUNT);
 
         return view('pages.product.products-page', ['data' => $data]);
+    }
+
+    public function search(ProductSearchRequest $productSearchRequest)
+    {
+        $productSearchProperties = $productSearchRequest->validated();
+
+        $data = $this->getCommonDataForProductsPage();
+        $data['products'] = $this->productService->searchProductsPaginate(
+            $productSearchProperties,
+            Constants::PRODUCT_PAGE_COUNT
+        );
+        $data['products']->withPath('search?' . UtilsService::convertMapToParamsString($productSearchProperties));
+        $data['searchKeyword'] = $productSearchProperties['searchKeyword'];
+        $data['currentSearchOption'] = $productSearchProperties['searchOption'];
+
+        return view('pages.product.products-page', ['data' => $data]);
+    }
+
+    private function getCommonDataForProductsPage()
+    {
+        return [
+            'pageTitle' => 'Products',
+            'searchKeyword' => '',
+            'searchOptions' => ProductSearchOptionConstants::toArray(),
+            'currentSearchOption' => ProductSearchOptionConstants::SEARCH_ALL,
+        ];
     }
 
     public function create()

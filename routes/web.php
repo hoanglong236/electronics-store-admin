@@ -101,6 +101,9 @@ Route::middleware('auth:admin')->group(function () {
         Route::delete('/delete/{productId}', [ProductController::class, 'delete'])->name(
             'catalog.product.delete'
         );
+        Route::get('/search', [ProductController::class, 'search'])->name(
+            'catalog.product.search'
+        );
 
         Route::get('/details/{productId}', [ProductController::class, 'showDetails'])->name(
             'catalog.product.details'

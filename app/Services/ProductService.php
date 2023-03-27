@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Common\Constants;
+use App\ModelConstants\ProductSearchOptionConstants;
 use Illuminate\Support\Facades\Log;
 use App\Models\Product;
 use Illuminate\Support\Facades\DB;
@@ -100,5 +101,79 @@ class ProductService
         $product->delete_flag = true;
 
         $product->save();
+    }
+
+    public function searchProductsPaginate($productSearchProperties, $itemPerPage)
+    {
+        $searchOption = $productSearchProperties['searchOption'];
+        $searchKeyword = $productSearchProperties['searchKeyword'];
+
+        switch ($searchOption) {
+            case ProductSearchOptionConstants::SEARCH_ALL:
+                return $this->searchProductsByAll($searchKeyword, $itemPerPage);
+            case ProductSearchOptionConstants::SEARCH_NAME:
+                return $this->searchProductsByName($searchKeyword, $itemPerPage);
+            case ProductSearchOptionConstants::SEARCH_SLUG:
+                return $this->searchProductsBySlug($searchKeyword, $itemPerPage);
+            case ProductSearchOptionConstants::SEARCH_CATEGORY:
+                return $this->searchProductsByCategoryName($searchKeyword, $itemPerPage);
+            case ProductSearchOptionConstants::SEARCH_BRAND:
+                return $this->searchProductsByBrandName($searchKeyword, $itemPerPage);
+            default:
+                return [];
+        }
+    }
+
+    private function searchProductsByAll($searchKeyword, $itemPerPage)
+    {
+        return $this->getBaseSearchProductsQueryBuilder()
+            ->where(function ($query) use ($searchKeyword) {
+                $query->where('products.name', 'LIKE', '%' . UtilsService::escapeKeyword($searchKeyword) . '%')
+                    ->orWhere('products.slug', 'LIKE', '%' . UtilsService::escapeKeyword($searchKeyword) . '%')
+                    ->orWhere('categories.name', 'LIKE', '%' . UtilsService::escapeKeyword($searchKeyword) . '%')
+                    ->orWhere('brands.name', 'LIKE', '%' . UtilsService::escapeKeyword($searchKeyword) . '%');
+            })
+            ->paginate($itemPerPage);
+    }
+
+    private function searchProductsByName($searchKeyword, $itemPerPage)
+    {
+        return $this->getBaseSearchProductsQueryBuilder()
+            ->where('products.name', 'LIKE', '%' . UtilsService::escapeKeyword($searchKeyword) . '%')
+            ->paginate($itemPerPage);
+    }
+
+    private function searchProductsBySlug($searchKeyword, $itemPerPage)
+    {
+        return $this->getBaseSearchProductsQueryBuilder()
+            ->where('products.slug', 'LIKE', '%' . UtilsService::escapeKeyword($searchKeyword) . '%')
+            ->paginate($itemPerPage);
+    }
+
+    private function searchProductsByCategoryName($searchKeyword, $itemPerPage)
+    {
+        return $this->getBaseSearchProductsQueryBuilder()
+            ->where('categories.name', 'LIKE', '%' . UtilsService::escapeKeyword($searchKeyword) . '%')
+            ->paginate($itemPerPage);
+    }
+
+    private function searchProductsByBrandName($searchKeyword, $itemPerPage)
+    {
+        return $this->getBaseSearchProductsQueryBuilder()
+            ->where('brands.name', 'LIKE', '%' . UtilsService::escapeKeyword($searchKeyword) . '%')
+            ->paginate($itemPerPage);
+    }
+
+    private function getBaseSearchProductsQueryBuilder()
+    {
+        return DB::table('products')
+            ->join('categories', 'categories.id', '=', 'products.category_id')
+            ->join('brands', 'brands.id', '=', 'products.brand_id')
+            ->select(
+                'products.*',
+                'categories.name as category_name',
+                'brands.name as brand_name',
+            )
+            ->where('products.delete_flag', false);
     }
 }
