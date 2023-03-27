@@ -1,12 +1,9 @@
 <div class="card card-hover">
     <div class="card-header card-header-flex--space-center">
         <div class="card-title--medium">ID:&nbsp; {{ $product->id }}</div>
-        <a href="{{ route('catalog.product.details', [$product->id]) }}">
-            <button type="submit" class="btn btn-info icon-btn" data-toggle="tooltip" data-placement="top"
-                data-html="true" title="<span class='text--normal'>Details</span>">
-                <i class="fa fa-info-circle"></i>
-            </button>
-        </a>
+        @include('shared.components.buttons.detail-icon-button', [
+            'detailUrl' => route('catalog.product.details', [$product->id]),
+        ])
     </div>
     <img class="card-img-top card-image--medium" src="{{ asset('storage/' . $product->main_image_path) }}"
         alt="Product image">
