@@ -3,19 +3,10 @@
 namespace App\Http\Requests;
 
 use App\ModelConstants\CategorySearchOptionConstants;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class CategorySearchRequest extends FormRequest
+class CategorySearchRequest extends BaseSearchRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return true;
-    }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -30,15 +21,5 @@ class CategorySearchRequest extends FormRequest
                 Rule::in(CategorySearchOptionConstants::toArray()),
             ]
         ];
-    }
-
-    /**
-     * Override the default
-     */
-    protected function prepareForValidation()
-    {
-        $this->merge([
-            'searchKeyword' => $this->searchKeyword ?? '',
-        ]);
     }
 }

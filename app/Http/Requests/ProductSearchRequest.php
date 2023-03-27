@@ -3,19 +3,10 @@
 namespace App\Http\Requests;
 
 use App\ModelConstants\ProductSearchOptionConstants;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class ProductSearchRequest extends FormRequest
+class ProductSearchRequest extends BaseSearchRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return true;
-    }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -30,15 +21,5 @@ class ProductSearchRequest extends FormRequest
                 Rule::in(ProductSearchOptionConstants::toArray()),
             ]
         ];
-    }
-
-    /**
-     * Override the default
-     */
-    protected function prepareForValidation()
-    {
-        $this->merge([
-            'searchKeyword' => $this->searchKeyword ?? '',
-        ]);
     }
 }
