@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Common\Constants;
-use App\ModelConstants\CategorySearchOptionConstants;
+use App\DataFilterConstants\CategorySearchOptionConstants;
 use App\Models\Category;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;

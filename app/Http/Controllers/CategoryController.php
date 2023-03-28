@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Common\Constants;
+use App\DataFilterConstants\CategorySearchOptionConstants;
 use App\Http\Requests\CategoryRequest;
 use App\Http\Requests\CategorySearchRequest;
-use App\ModelConstants\CategorySearchOptionConstants;
 use App\Services\CategoryService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;

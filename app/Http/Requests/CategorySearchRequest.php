@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\ModelConstants\CategorySearchOptionConstants;
+use App\DataFilterConstants\CategorySearchOptionConstants;
 use Illuminate\Validation\Rule;
 
 class CategorySearchRequest extends BaseSearchRequest
