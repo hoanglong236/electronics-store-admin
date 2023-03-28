@@ -379,6 +379,7 @@
 .au-btn-custom--small,
 .au-select-input--small,
 .au-add-btn--small {
+    font-size: 1.4rem;
     line-height: 3.8rem;
 }
 
