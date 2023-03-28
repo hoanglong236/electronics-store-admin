@@ -3,10 +3,10 @@
 namespace App\Services;
 
 use App\Common\Constants;
-use App\ModelConstants\ProductSearchOptionConstants;
-use Illuminate\Support\Facades\Log;
+use App\DataFilterConstants\ProductSearchOptionConstants;
 use App\Models\Product;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ProductService
 {

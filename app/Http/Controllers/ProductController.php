@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Common\Constants;
+use App\DataFilterConstants\ProductSearchOptionConstants;
 use App\Http\Requests\ProductImageRequest;
 use App\Http\Requests\ProductRequest;
 use App\Http\Requests\ProductSearchRequest;
-use App\ModelConstants\ProductSearchOptionConstants;
 use App\Services\BrandService;
 use App\Services\CategoryService;
 use App\Services\ProductImageService;

@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\ModelConstants\ProductSearchOptionConstants;
+use App\DataFilterConstants\ProductSearchOptionConstants;
 use Illuminate\Validation\Rule;
 
 class ProductSearchRequest extends BaseSearchRequest
