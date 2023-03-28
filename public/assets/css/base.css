@@ -66,12 +66,15 @@ a[disabled] {
     font-size: 1.4rem;
 }
 
-.form-control, .form-control-label, .form-control-file {
+.form-control,
+.form-control-label,
+.form-control-file {
     font-size: 1.4rem;
     line-height: 2rem;
 }
 
-.form-control, .form-control-file {
+.form-control,
+.form-control-file {
     height: calc(2.8rem + 2px);
 }
 

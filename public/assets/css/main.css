@@ -68,7 +68,7 @@
 @media (max-width: 991px) {
     .main-content {
         padding-top: 50px;
-	    padding-bottom: 100px;
+        padding-bottom: 100px;
     }
 }
 
@@ -118,7 +118,7 @@
     color: #ff5858;
 }
 
-.account-item > .content > a:after {
+.account-item>.content>a:after {
     margin-left: 8px;
 }
 
@@ -138,7 +138,7 @@
     display: -webkit-box;
     overflow: hidden;
     height: 35px;
-    width:100%;
+    width: 100%;
     font-size: 14px;
     font-weight: 600;
     position: relative;
@@ -170,7 +170,8 @@
     border-radius: 50%;
 }
 
-.btn-enable, .btn-disable {
+.btn-enable,
+.btn-disable {
     font-size: 1.4rem;
     line-height: 1.6rem;
     height: 26px;
@@ -247,12 +248,14 @@
     padding: 10px 30px;
 }
 
-.table-data4 thead th, .table-data4 tbody td {
+.table-data4 thead th,
+.table-data4 tbody td {
     padding-right: 10px;
     vertical-align: middle;
 }
 
-.table-data4 thead th:last-child, .table-data4 tbody td:last-child {
+.table-data4 thead th:last-child,
+.table-data4 tbody td:last-child {
     text-align: right;
     padding-right: 40px;
 }
@@ -279,12 +282,14 @@
     padding: 10px 25px;
 }
 
-.table-data5 thead th, .table-data5 tbody td {
+.table-data5 thead th,
+.table-data5 tbody td {
     padding-right: 10px;
     vertical-align: middle;
 }
 
-.table-data5 thead th:last-child, .table-data5 tbody td:last-child {
+.table-data5 thead th:last-child,
+.table-data5 tbody td:last-child {
     text-align: right;
     padding-right: 30px;
 }
@@ -311,12 +316,14 @@
     padding: 10px 25px;
 }
 
-.table-data6 thead th, .table-data6 tbody td {
+.table-data6 thead th,
+.table-data6 tbody td {
     padding-right: 10px;
     vertical-align: middle;
 }
 
-.table-data6 thead th:last-child, .table-data6 tbody td:last-child {
+.table-data6 thead th:last-child,
+.table-data6 tbody td:last-child {
     padding-right: 25px;
 }
 
@@ -338,15 +345,18 @@
     border-bottom: none;
 }
 
-.table-data7 thead th, .table-data7 tbody td {
+.table-data7 thead th,
+.table-data7 tbody td {
     vertical-align: middle;
     padding-left: 8px;
     padding-right: 8px;
 }
 
-.table-data7--custom thead th:last-child, .table-data7 tbody td:last-child {
+.table-data7--custom thead th:last-child,
+.table-data7 tbody td:last-child {
     width: 65%;
 }
+
 /* Custom table-data ---- END */
 .search-bar-wrapper {
     display: flex;
