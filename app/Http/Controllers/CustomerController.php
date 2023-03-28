@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Common\Constants;
+use App\DataFilterConstants\CustomerSearchOptionConstants;
 use App\Http\Requests\CustomerRequest;
 use App\Http\Requests\CustomerSearchRequest;
-use App\ModelConstants\CustomerSearchOptionConstants;
 use App\Services\CustomerAddressService;
 use App\Services\CustomerService;
 use App\Services\UtilsService;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\ModelConstants;
+namespace App\DataFilterConstants;
 
 class CustomerSearchOptionConstants
 {

@@ -18,8 +18,6 @@
                         'currentSearchOption' => $data['currentSearchOption'],
                     ])
                 </div>
-                <div class="table-data__tool-right">
-                </div>
             </div>
         </div>
     </div>

@@ -350,6 +350,7 @@
 /* Custom table-data ---- END */
 .search-bar-wrapper {
     display: flex;
+    height: 40px;
 }
 
 .au-select-input {
@@ -378,5 +379,21 @@
 .au-btn-custom--small,
 .au-select-input--small,
 .au-add-btn--small {
+    line-height: 3.8rem;
+}
+
+.filter-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 40px;
+}
+
+.filter-wrapper span {
     line-height: 4rem;
+    height: 100%;
+}
+
+.filter-wrapper select {
+    height: 100%;
 }

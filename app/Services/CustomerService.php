@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\ModelConstants\CustomerSearchOptionConstants;
+use App\DataFilterConstants\CustomerSearchOptionConstants;
 use App\Models\Customer;
 use Illuminate\Support\Facades\Log;
 
