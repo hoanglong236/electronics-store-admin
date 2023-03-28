@@ -352,7 +352,7 @@
     padding-right: 8px;
 }
 
-.table-data7--custom thead th:last-child,
+.table-data7 thead th:last-child,
 .table-data7 tbody td:last-child {
     width: 65%;
 }

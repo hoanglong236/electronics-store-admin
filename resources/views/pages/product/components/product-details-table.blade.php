@@ -1,5 +1,5 @@
 <div class="table-data7-wrapper mb-4">
-    <table class="table table-data7 table-data7--custom">
+    <table class="table table-data7">
         <thead>
             <tr>
                 <th>#</th>
