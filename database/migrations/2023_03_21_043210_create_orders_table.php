@@ -1,6 +1,7 @@
 <?php
 
 use App\ModelConstants\OrderStatusConstants;
+use App\ModelConstants\PaymentMethodConstants;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,7 +17,10 @@ return new class extends Migration
             $table->id();
             $table->unsignedInteger('customer_id')->reference('id')->on('customers');
             $table->string('delivery_address');
-            $table->enum('status', OrderStatusConstants::toArray())->default('Received');
+            $table->enum('status', OrderStatusConstants::toArray())
+                ->default(OrderStatusConstants::RECEIVED);
+            $table->enum('payment_method', PaymentMethodConstants::toArray())
+                ->default(PaymentMethodConstants::COD);
             $table->timestamps();
         });
     }

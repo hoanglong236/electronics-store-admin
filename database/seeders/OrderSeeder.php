@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\ModelConstants\OrderStatusConstants;
+use App\ModelConstants\PaymentMethodConstants;
 use App\Models\Customer;
 use App\Models\CustomerAddress;
 use App\Models\Order;
@@ -13,7 +14,7 @@ use Illuminate\Database\Seeder;
 
 class OrderSeeder extends Seeder
 {
-    private $orderRandomCount = 4;
+    private $orderRandomCount = 5;
     private $productRandomCount = 3;
 
     /**
@@ -29,12 +30,14 @@ class OrderSeeder extends Seeder
 
     private function generateRandomOrders($orderCount, $customerId, $deliveryAddress)
     {
-        $statusEnum = OrderStatusConstants::toArray();
+        $orderStatusArray = OrderStatusConstants::toArray();
+        $paymentMethods = PaymentMethodConstants::toArray();
         for ($i = 0; $i < $orderCount; $i++) {
             $order = Order::create([
                 'customer_id' => $customerId,
                 'delivery_address' => $deliveryAddress,
-                'status' => $statusEnum[rand(0, count($statusEnum) - 1)],
+                'status' => $orderStatusArray[rand(0, count($orderStatusArray) - 1)],
+                'payment_method' => $paymentMethods[rand(0, count($paymentMethods) - 1)],
             ]);
 
             $products = $this->getRandomProducts($this->productRandomCount);

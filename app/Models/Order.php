@@ -13,5 +13,6 @@ class Order extends Model
         'customer_id',
         'delivery_address',
         'status',
+        'payment_method',
     ];
 }
