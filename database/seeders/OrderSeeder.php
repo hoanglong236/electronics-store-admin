@@ -35,7 +35,8 @@ class OrderSeeder extends Seeder
         for ($i = 0; $i < $orderCount; $i++) {
             $order = Order::create([
                 'customer_id' => $customerId,
-                'delivery_address' => $deliveryAddress,
+                'delivery_address' => $deliveryAddress['address'],
+                'address_type' => $deliveryAddress['address_type'],
                 'status' => $orderStatusArray[rand(0, count($orderStatusArray) - 1)],
                 'payment_method' => $paymentMethods[rand(0, count($paymentMethods) - 1)],
             ]);
@@ -66,9 +67,12 @@ class OrderSeeder extends Seeder
     private function getCustomerDeliveryAddress($customerId)
     {
         $customerAddress = CustomerAddress::where('customer_id', $customerId)->first();
-        return $customerAddress->specific_address . ', '
-            . $customerAddress->ward . ', '
-            . $customerAddress->district . ', '
-            . $customerAddress->city;
+        return [
+            'address' => $customerAddress->specific_address . ', '
+                . $customerAddress->ward . ', '
+                . $customerAddress->district . ', '
+                . $customerAddress->city,
+            'address_type' => $customerAddress->address_type,
+        ];
     }
 }

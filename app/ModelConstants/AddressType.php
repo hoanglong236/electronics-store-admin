@@ -2,7 +2,7 @@
 
 namespace App\ModelConstants;
 
-class CustomerAddressType
+class AddressType
 {
     const HOME = 'Home';
     const OFFICE = 'Office';

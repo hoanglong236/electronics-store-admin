@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\ModelConstants\CustomerAddressType;
+use App\ModelConstants\AddressType;
 use App\Models\Customer;
 use App\Models\CustomerAddress;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -37,7 +37,7 @@ class CustomerSeeder extends Seeder
             'district' => 'Quan Tan Binh',
             'ward' => 'Phuong 2',
             'specific_address' => 'Toa nha Waseco',
-            'address_type' => CustomerAddressType::HOME,
+            'address_type' => AddressType::HOME,
             'default_flag' => true,
         ]);
         CustomerAddress::create([
@@ -46,7 +46,7 @@ class CustomerSeeder extends Seeder
             'district' => 'Quan Ninh Kieu',
             'ward' => 'Phuong Xuan Khanh',
             'specific_address' => 'DHCT Khu 2, Duong 3/2',
-            'address_type' => CustomerAddressType::OFFICE,
+            'address_type' => AddressType::OFFICE,
             'default_flag' => false,
         ]);
     }

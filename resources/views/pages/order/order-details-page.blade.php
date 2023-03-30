@@ -14,6 +14,7 @@
                     'phone' => $data['customOrder']->customer_phone,
                     'email' => $data['customOrder']->customer_email,
                     'deliveryAddress' => $data['customOrder']->delivery_address,
+                    'addressType' => $data['customOrder']->address_type,
                 ],
             ])
         </div>
@@ -32,6 +33,7 @@
                     'itemCount' => count($data['customOrderItems']),
                     'totalAmount' => $data['customOrder']->total,
                     'status' => $data['customOrder']->status,
+                    'paymentMethod' => $data['customOrder']->payment_method,
                     'createdAt' => $data['customOrder']->created_at,
                     'updatedAt' => $data['customOrder']->updated_at,
                 ],

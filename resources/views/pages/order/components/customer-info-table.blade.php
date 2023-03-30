@@ -31,7 +31,7 @@
                 <td>5</td>
                 <td>Delivery Address</td>
                 <td>
-                    <span style="font-weight: 600;">(Office)</span>&nbsp;
+                    <span style="font-weight: 600;">({{ $customerInfo['addressType'] }})</span>&nbsp;
                     {{ $customerInfo['deliveryAddress'] }}
                 </td>
             </tr>

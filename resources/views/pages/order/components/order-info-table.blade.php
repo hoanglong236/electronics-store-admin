@@ -29,11 +29,16 @@
             </tr>
             <tr>
                 <td>5</td>
+                <td>Payment method</td>
+                <td>{{ $orderInfo['paymentMethod'] }}</td>
+            </tr>
+            <tr>
+                <td>6</td>
                 <td>Created At</td>
                 <td>{{ $orderInfo['createdAt'] }}</td>
             </tr>
             <tr>
-                <td>6</td>
+                <td>7</td>
                 <td>Updated At</td>
                 <td>{{ $orderInfo['updatedAt'] }}</td>
             </tr>

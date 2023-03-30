@@ -1,5 +1,6 @@
 <?php
 
+use App\ModelConstants\AddressType;
 use App\ModelConstants\OrderStatusConstants;
 use App\ModelConstants\PaymentMethodConstants;
 use Illuminate\Database\Migrations\Migration;
@@ -17,6 +18,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedInteger('customer_id')->reference('id')->on('customers');
             $table->string('delivery_address');
+            $table->enum('address_type', AddressType::toArray());
             $table->enum('status', OrderStatusConstants::toArray())
                 ->default(OrderStatusConstants::RECEIVED);
             $table->enum('payment_method', PaymentMethodConstants::toArray())

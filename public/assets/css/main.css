@@ -392,3 +392,13 @@
     font-size: 1.4rem;
     line-height: 3.8rem;
 }
+
+.filter-wrapper {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.filter-wrapper span {
+    font-size: 1.4rem;
+}

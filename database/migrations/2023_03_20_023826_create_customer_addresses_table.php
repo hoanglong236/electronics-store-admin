@@ -1,6 +1,6 @@
 <?php
 
-use App\ModelConstants\CustomerAddressType;
+use App\ModelConstants\AddressType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('district', 64);
             $table->string('ward', 64);
             $table->string('specific_address', 64);
-            $table->enum('address_type', CustomerAddressType::toArray());
+            $table->enum('address_type', AddressType::toArray());
             $table->boolean('default_flag');
             $table->timestamps();
         });

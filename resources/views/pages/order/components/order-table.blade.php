@@ -17,10 +17,16 @@
                     <td>{{ $customOrder->id }}</td>
                     <td>
                         {{ $customOrder->customer_name }}<br>
-                        {{ $customOrder->customer_email }}
+                        {{ $customOrder->customer_email }}<br>
+                        {{ $customOrder->customer_phone }}
                     </td>
-                    <td>{{ $customOrder->delivery_address }}</td>
-                    <td>{{ '$' . number_format($customOrder->total, 2) }}</td>
+                    <td>
+                        {{ $customOrder->delivery_address }}
+                    </td>
+                    <td>
+                        {{ '$' . number_format($customOrder->total, 2) }}
+                        {{ ' (' . $customOrder->payment_method . ')' }}
+                    </td>
                     <td>
                         @if (count($nextSelectableStatusMap[$customOrder->status]) === 0)
                             <span @class([
