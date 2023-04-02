@@ -10,23 +10,23 @@ use Illuminate\Support\Facades\Log;
 
 class AdminService
 {
-    public function login($loginProperties) {
+    public function login($loginProperties)
+    {
         return Auth::guard('admin')->attempt($loginProperties);
     }
 
-    public function logout() {
+    public function logout()
+    {
         Auth::logout();
         Session::invalidate();
     }
 
     public function register($registerProperties)
     {
-        $admin = new Admin();
-
-        $admin->email = $registerProperties['email'];
-        $admin->password = Hash::make($registerProperties['password']);
-        $admin->name = $registerProperties['name'];
-
-        $admin->save();
+        Admin::create([
+            'email' => $registerProperties['email'],
+            'password' => Hash::make($registerProperties['password']),
+            'name' => $registerProperties['name'],
+        ]);
     }
 }
