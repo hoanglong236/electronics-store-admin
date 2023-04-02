@@ -24,9 +24,8 @@ use App\Http\Middleware\RedirectIfAuthenticated;
 Route::middleware([RedirectIfAuthenticated::class])->group(function () {
     Route::get('', [AdminController::class, 'index']);
 
-    // for redirect when admin user are not authenticated.
+    // Redirect when admin user is not authenticated
     Route::get('/login', [AdminController::class, 'index'])->name('login');
-
     Route::post('/login-handler', [AdminController::class, 'loginHandler'])->name(
         'login.handler'
     );
