@@ -15,13 +15,4 @@
         @enderror
     </div>
     <button class="au-btn au-btn--block au-btn--green m-b-10 m-t-20" type="submit">Sign in</button>
-    @if (Session::has(Constants::ACTION_ERROR))
-        <div class="alert alert-danger" role="alert">
-            {{ Session::get(Constants::ACTION_ERROR) }}
-        </div>
-    @elseif (Session::has(Constants::ACTION_SUCCESS))
-        <div class="alert alert-success" role="alert">
-            {{ Session::get(Constants::ACTION_SUCCESS) }}
-        </div>
-    @endif
 </form>

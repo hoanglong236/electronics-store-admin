@@ -10,8 +10,7 @@
     <div class="row">
         <div class="col">
             <div class="form-group">
-                <input class="au-input au-input--full" type="password" name="password"
-                    placeholder="Password" required>
+                <input class="au-input au-input--full" type="password" name="password" placeholder="Password" required>
                 @error('password')
                     <div class="alert alert-danger mt-1" role="alert">{{ $message }}</div>
                 @enderror
@@ -35,6 +34,4 @@
         @enderror
     </div>
     <button class="au-btn au-btn--block au-btn--green m-b-10 m-t-20" type="submit">Register</button>
-    {{ Session::get('error_mess_register') }}
-
 </form>
