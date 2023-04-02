@@ -1,6 +1,6 @@
 @extends('shared.layouts.catalog-layout')
 
-@section('container')
+@section('container-content')
     @include('shared.components.buttons.back-button', [
         'backUrl' => route('manage.order.index'),
     ])

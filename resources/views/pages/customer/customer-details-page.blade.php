@@ -1,6 +1,6 @@
 @extends('shared.layouts.catalog-layout')
 
-@section('container')
+@section('container-content')
     <a href="{{ route('manage.customer.index') }}">
         <button type="button" class="btn btn-info">
             <i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;Back

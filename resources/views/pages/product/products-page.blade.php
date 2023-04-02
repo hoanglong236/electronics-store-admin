@@ -1,6 +1,6 @@
 @extends('shared.layouts.catalog-layout')
 
-@section('container')
+@section('container-content')
     <div class="row">
         <div class="col-md-12">
             <h2 class="title-5 mb-4">Product</h2>

@@ -40,8 +40,7 @@
 
 <body class="animsition">
     <div class="page-wrapper">
-        @section('page-content')
-        @show
+        @yield('page-content')
     </div>
 
     <!-- Jquery JS -->
