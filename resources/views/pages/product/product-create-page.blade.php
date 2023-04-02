@@ -7,7 +7,10 @@
 
     <div class="row mt-4">
         <div class="col-lg-8">
-            @include('pages.product.components.product-create-card')
+            @include('pages.product.components.product-create-card', [
+                'categoryIdNameMap' => $data['categoryIdNameMap'],
+                'brandIdNameMap' => $data['brandIdNameMap'],
+            ])
         </div>
     </div>
 @endsection
