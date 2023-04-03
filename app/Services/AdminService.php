@@ -19,6 +19,7 @@ class AdminService
     {
         Auth::logout();
         Session::invalidate();
+        Session::regenerateToken();
     }
 
     public function register($registerProperties)

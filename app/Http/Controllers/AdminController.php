@@ -36,10 +36,10 @@ class AdminController extends Controller
 
         if ($isLoggedIn) {
             return redirect()->action([DashboardController::class, 'index']);
-        } else {
-            Session::flash(Constants::ACTION_ERROR, Constants::LOGIN_DETAIL_INVALID);
-            return redirect()->action([AdminController::class, 'index'])->withInput();
         }
+
+        Session::flash(Constants::ACTION_ERROR, Constants::LOGIN_DETAIL_INVALID);
+        return redirect()->action([AdminController::class, 'index'])->withInput();
     }
 
     public function logout()

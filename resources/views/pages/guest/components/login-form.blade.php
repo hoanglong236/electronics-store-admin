@@ -8,8 +8,8 @@
         @enderror
     </div>
     <div class="form-group">
-        <input class="au-input au-input--full au-input--small" type="password" name="password"
-            value="{{ old('password') }}" placeholder="Password" required>
+        <input class="au-input au-input--full au-input--small" type="password" name="password" placeholder="Password"
+            required>
         @error('password')
             <div class="alert alert-danger mt-1" role="alert">{{ $message }}</div>
         @enderror
