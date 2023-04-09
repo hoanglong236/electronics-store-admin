@@ -107,60 +107,61 @@ class ProductService
     {
         $searchOption = $productSearchProperties['searchOption'];
         $searchKeyword = $productSearchProperties['searchKeyword'];
+        $escapedKeyword = UtilsService::escapeKeyword($searchKeyword);
 
         switch ($searchOption) {
             case ProductSearchOptionConstants::SEARCH_ALL:
-                return $this->searchProductsByAll($searchKeyword, $itemPerPage);
+                return $this->searchProductsByAll($escapedKeyword, $itemPerPage);
             case ProductSearchOptionConstants::SEARCH_NAME:
-                return $this->searchProductsByName($searchKeyword, $itemPerPage);
+                return $this->searchProductsByName($escapedKeyword, $itemPerPage);
             case ProductSearchOptionConstants::SEARCH_SLUG:
-                return $this->searchProductsBySlug($searchKeyword, $itemPerPage);
+                return $this->searchProductsBySlug($escapedKeyword, $itemPerPage);
             case ProductSearchOptionConstants::SEARCH_CATEGORY:
-                return $this->searchProductsByCategoryName($searchKeyword, $itemPerPage);
+                return $this->searchProductsByCategoryName($escapedKeyword, $itemPerPage);
             case ProductSearchOptionConstants::SEARCH_BRAND:
-                return $this->searchProductsByBrandName($searchKeyword, $itemPerPage);
+                return $this->searchProductsByBrandName($escapedKeyword, $itemPerPage);
             default:
                 return [];
         }
     }
 
-    private function searchProductsByAll($searchKeyword, $itemPerPage)
+    private function searchProductsByAll($escapedKeyword, $itemPerPage)
     {
         return $this->getBaseSearchProductsQueryBuilder()
-            ->where(function ($query) use ($searchKeyword) {
-                $query->where('products.name', 'LIKE', '%' . UtilsService::escapeKeyword($searchKeyword) . '%')
-                    ->orWhere('products.slug', 'LIKE', '%' . UtilsService::escapeKeyword($searchKeyword) . '%')
-                    ->orWhere('categories.name', 'LIKE', '%' . UtilsService::escapeKeyword($searchKeyword) . '%')
-                    ->orWhere('brands.name', 'LIKE', '%' . UtilsService::escapeKeyword($searchKeyword) . '%');
+            ->where(function ($query) use ($escapedKeyword) {
+                $query->where('products.name', 'LIKE', '%' . $escapedKeyword . '%')
+                    ->orWhere('products.slug', 'LIKE', '%' . $escapedKeyword . '%')
+                    ->orWhere('categories.name', 'LIKE', '%' . $escapedKeyword . '%')
+                    ->orWhere('brands.name', 'LIKE', '%' . $escapedKeyword . '%');
             })
             ->paginate($itemPerPage);
     }
 
-    private function searchProductsByName($searchKeyword, $itemPerPage)
+    private function searchProductsByName($escapedKeyword, $itemPerPage)
     {
         return $this->getBaseSearchProductsQueryBuilder()
-            ->where('products.name', 'LIKE', '%' . UtilsService::escapeKeyword($searchKeyword) . '%')
+            ->where('products.name', 'LIKE', '%' . $escapedKeyword . '%')
             ->paginate($itemPerPage);
     }
 
-    private function searchProductsBySlug($searchKeyword, $itemPerPage)
+    private function searchProductsBySlug($escapedKeyword, $itemPerPage)
     {
         return $this->getBaseSearchProductsQueryBuilder()
-            ->where('products.slug', 'LIKE', '%' . UtilsService::escapeKeyword($searchKeyword) . '%')
+            ->where('products.slug', 'LIKE', '%' . $escapedKeyword . '%')
             ->paginate($itemPerPage);
     }
 
-    private function searchProductsByCategoryName($searchKeyword, $itemPerPage)
+    private function searchProductsByCategoryName($escapedKeyword, $itemPerPage)
     {
         return $this->getBaseSearchProductsQueryBuilder()
-            ->where('categories.name', 'LIKE', '%' . UtilsService::escapeKeyword($searchKeyword) . '%')
+            ->where('categories.name', 'LIKE', '%' . $escapedKeyword . '%')
             ->paginate($itemPerPage);
     }
 
-    private function searchProductsByBrandName($searchKeyword, $itemPerPage)
+    private function searchProductsByBrandName($escapedKeyword, $itemPerPage)
     {
         return $this->getBaseSearchProductsQueryBuilder()
-            ->where('brands.name', 'LIKE', '%' . UtilsService::escapeKeyword($searchKeyword) . '%')
+            ->where('brands.name', 'LIKE', '%' . $escapedKeyword . '%')
             ->paginate($itemPerPage);
     }
 

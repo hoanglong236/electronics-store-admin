@@ -98,57 +98,58 @@ class CategoryService
     {
         $searchOption = $categorySearchProperties['searchOption'];
         $searchKeyword = $categorySearchProperties['searchKeyword'];
+        $escapedKeyword = UtilsService::escapeKeyword($searchKeyword);
 
         switch ($searchOption) {
             case CategorySearchOptionConstants::SEARCH_ALL:
-                return $this->searchCategoriesByAll($searchKeyword);
+                return $this->searchCategoriesByAll($escapedKeyword);
             case CategorySearchOptionConstants::SEARCH_NAME:
-                return $this->searchCategoriesByName($searchKeyword);
+                return $this->searchCategoriesByName($escapedKeyword);
             case CategorySearchOptionConstants::SEARCH_SLUG:
-                return $this->searchCategoriesBySlug($searchKeyword);
+                return $this->searchCategoriesBySlug($escapedKeyword);
             case CategorySearchOptionConstants::SEARCH_PARENT:
-                return $this->searchCategoriesByParentName($searchKeyword);
+                return $this->searchCategoriesByParentName($escapedKeyword);
             default:
                 return [];
         }
     }
 
-    private function searchCategoriesByAll($searchKeyword)
+    private function searchCategoriesByAll($escapedKeyword)
     {
         return DB::table('categories')
             ->leftJoin('categories as parent', 'parent.id', '=', 'categories.parent_id')
             ->select('categories.*')
             ->where('categories.delete_flag', false)
-            ->where(function ($query) use ($searchKeyword) {
-                $query->where('categories.name', 'LIKE', '%' . UtilsService::escapeKeyword($searchKeyword) . '%')
-                    ->orWhere('categories.slug', 'LIKE', '%' . UtilsService::escapeKeyword($searchKeyword) . '%')
-                    ->orWhere('parent.name', 'LIKE', '%' . UtilsService::escapeKeyword($searchKeyword) . '%');
+            ->where(function ($query) use ($escapedKeyword) {
+                $query->where('categories.name', 'LIKE', '%' . $escapedKeyword . '%')
+                    ->orWhere('categories.slug', 'LIKE', '%' . $escapedKeyword . '%')
+                    ->orWhere('parent.name', 'LIKE', '%' . $escapedKeyword . '%');
             })->get();
     }
 
-    private function searchCategoriesByName($searchKeyword)
+    private function searchCategoriesByName($escapedKeyword)
     {
         return Category::where([
             'delete_flag' => false,
-            ['name', 'LIKE', '%' . UtilsService::escapeKeyword($searchKeyword) . '%']
+            ['name', 'LIKE', '%' . $escapedKeyword . '%']
         ])->get();
     }
 
-    private function searchCategoriesBySlug($searchKeyword)
+    private function searchCategoriesBySlug($escapedKeyword)
     {
         return Category::where([
             'delete_flag' => false,
-            ['slug', 'LIKE', '%' . UtilsService::escapeKeyword($searchKeyword) . '%']
+            ['slug', 'LIKE', '%' . $escapedKeyword . '%']
         ])->get();
     }
 
-    private function searchCategoriesByParentName($searchKeyword)
+    private function searchCategoriesByParentName($escapedKeyword)
     {
         return DB::table('categories')
             ->join('categories as parent', 'parent.id', '=', 'categories.parent_id')
             ->select('categories.*')
             ->where('categories.delete_flag', false)
-            ->where('parent.name', 'LIKE', '%' . UtilsService::escapeKeyword($searchKeyword) . '%')
+            ->where('parent.name', 'LIKE', '%' . $escapedKeyword . '%')
             ->get();
     }
 }

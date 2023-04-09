@@ -73,10 +73,12 @@ class BrandService
     public function searchBrands($searchBrandProperties)
     {
         $searchKeyword = $searchBrandProperties['searchKeyword'];
+        $escapedKeyword = UtilsService::escapeKeyword($searchKeyword);
+
         return Brand::where('delete_flag', false)
-            ->where(function ($query) use ($searchKeyword) {
-                $query->where('name', 'LIKE', '%' . UtilsService::escapeKeyword($searchKeyword) . '%')
-                    ->orWhere('slug', 'LIKE', '%' . UtilsService::escapeKeyword($searchKeyword) . '%');
+            ->where(function ($query) use ($escapedKeyword) {
+                $query->where('name', 'LIKE', '%' . $escapedKeyword . '%')
+                    ->orWhere('slug', 'LIKE', '%' . $escapedKeyword . '%');
             })->get();
     }
 }

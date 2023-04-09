@@ -38,50 +38,51 @@ class CustomerService
     {
         $searchOption = $customerSearchProperties['searchOption'];
         $searchKeyword = $customerSearchProperties['searchKeyword'];
+        $escapedKeyword = UtilsService::escapeKeyword($searchKeyword);
 
         switch ($searchOption) {
             case CustomerSearchOptionConstants::SEARCH_ALL:
-                return $this->searchCustomersByAll($searchKeyword, $itemPerPage);
+                return $this->searchCustomersByAll($escapedKeyword, $itemPerPage);
             case CustomerSearchOptionConstants::SEARCH_NAME:
-                return $this->searchCustomersByName($searchKeyword, $itemPerPage);
+                return $this->searchCustomersByName($escapedKeyword, $itemPerPage);
             case CustomerSearchOptionConstants::SEARCH_EMAIL:
-                return $this->searchCustomersByEmail($searchKeyword, $itemPerPage);
+                return $this->searchCustomersByEmail($escapedKeyword, $itemPerPage);
             case CustomerSearchOptionConstants::SEARCH_PHONE:
-                return $this->searchCustomersByPhone($searchKeyword, $itemPerPage);
+                return $this->searchCustomersByPhone($escapedKeyword, $itemPerPage);
             default:
                 return [];
         }
     }
 
-    private function searchCustomersByAll($searchKeyword, $itemPerPage)
+    private function searchCustomersByAll($escapedKeyword, $itemPerPage)
     {
         return Customer::where('delete_flag', false)
-            ->where(function ($query) use ($searchKeyword) {
-                $query->where('name', 'LIKE', '%' . UtilsService::escapeKeyword($searchKeyword) . '%')
-                    ->orWhere('email', 'LIKE', '%' . UtilsService::escapeKeyword($searchKeyword) . '%')
-                    ->orWhere('phone', 'LIKE', '%' . UtilsService::escapeKeyword($searchKeyword) . '%');
+            ->where(function ($query) use ($escapedKeyword) {
+                $query->where('name', 'LIKE', '%' . $escapedKeyword . '%')
+                    ->orWhere('email', 'LIKE', '%' . $escapedKeyword . '%')
+                    ->orWhere('phone', 'LIKE', '%' . $escapedKeyword . '%');
             })
             ->paginate($itemPerPage);
     }
 
-    private function searchCustomersByName($searchKeyword, $itemPerPage)
+    private function searchCustomersByName($escapedKeyword, $itemPerPage)
     {
         return Customer::where('delete_flag', false)
-            ->where('name', 'LIKE', '%' . UtilsService::escapeKeyword($searchKeyword) . '%')
+            ->where('name', 'LIKE', '%' . $escapedKeyword . '%')
             ->paginate($itemPerPage);
     }
 
-    private function searchCustomersByEmail($searchKeyword, $itemPerPage)
+    private function searchCustomersByEmail($escapedKeyword, $itemPerPage)
     {
         return Customer::where('delete_flag', false)
-            ->where('email', 'LIKE', '%' . UtilsService::escapeKeyword($searchKeyword) . '%')
+            ->where('email', 'LIKE', '%' . $escapedKeyword . '%')
             ->paginate($itemPerPage);
     }
 
-    private function searchCustomersByPhone($searchKeyword, $itemPerPage)
+    private function searchCustomersByPhone($escapedKeyword, $itemPerPage)
     {
         return Customer::where('delete_flag', false)
-            ->where('phone', 'LIKE', '%' . UtilsService::escapeKeyword($searchKeyword) . '%')
+            ->where('phone', 'LIKE', '%' . $escapedKeyword . '%')
             ->paginate($itemPerPage);
     }
 }

@@ -58,61 +58,63 @@ class OrderService
     public function filterCustomOrders($orderFilterProperties)
     {
         $searchKeyword = $orderFilterProperties['searchKeyword'];
+        $escapedKeyword = UtilsService::escapeKeyword($searchKeyword);
+
         $searchOption = $orderFilterProperties['searchOption'];
         $statusFilter = $orderFilterProperties['statusFilter'];
         $paymentFilter = $orderFilterProperties['paymentFilter'];
 
-        return $this->searchAndFilterCustomOrders($searchKeyword, $searchOption, $statusFilter, $paymentFilter);
+        return $this->searchAndFilterCustomOrders($escapedKeyword, $searchOption, $statusFilter, $paymentFilter);
     }
 
     private function searchAndFilterCustomOrders(
-        $searchKeyword,
+        $escapedKeyword,
         $searchOption,
         $statusFilter = OrderStatusFilterConstants::ALL,
         $paymentFilter = OrderPaymentFilterConstants::ALL
     ) {
         switch ($searchOption) {
             case OrderSearchOptionConstants::ALL:
-                return $this->searchCustomOrdersByAll($searchKeyword, $statusFilter, $paymentFilter);
+                return $this->searchCustomOrdersByAll($escapedKeyword, $statusFilter, $paymentFilter);
             case OrderSearchOptionConstants::CUSTOMER:
-                return $this->searchCustomOrdersByCustomerInfo($searchKeyword, $statusFilter, $paymentFilter);
+                return $this->searchCustomOrdersByCustomerInfo($escapedKeyword, $statusFilter, $paymentFilter);
             case OrderSearchOptionConstants::ADDRESS:
-                return $this->searchCustomOrdersByDeliveryAddress($searchKeyword, $statusFilter, $paymentFilter);
+                return $this->searchCustomOrdersByDeliveryAddress($escapedKeyword, $statusFilter, $paymentFilter);
             default:
                 return [];
         }
     }
 
-    private function searchCustomOrdersByAll($searchKeyword, $statusFilter, $paymentFilter)
+    private function searchCustomOrdersByAll($escapedKeyword, $statusFilter, $paymentFilter)
     {
         $queryBuilder = $this->getBaseCustomOrdersQueryBuilder();
-        $queryBuilder->where(function ($query) use ($searchKeyword) {
-            $query->where('customers.name', 'LIKE', '%' . UtilsService::escapeKeyword($searchKeyword) . '%')
-                ->orWhere('customers.email', 'LIKE', '%' . UtilsService::escapeKeyword($searchKeyword) . '%')
-                ->orWhere('customers.phone', 'LIKE', '%' . UtilsService::escapeKeyword($searchKeyword) . '%')
-                ->orWhere('orders.delivery_address', 'LIKE', '%' . UtilsService::escapeKeyword($searchKeyword) . '%');
+        $queryBuilder->where(function ($query) use ($escapedKeyword) {
+            $query->where('customers.name', 'LIKE', '%' . $escapedKeyword . '%')
+                ->orWhere('customers.email', 'LIKE', '%' . $escapedKeyword . '%')
+                ->orWhere('customers.phone', 'LIKE', '%' . $escapedKeyword . '%')
+                ->orWhere('orders.delivery_address', 'LIKE', '%' . $escapedKeyword . '%');
         });
 
         return $this->filterCustomOrdersAfterSearch($queryBuilder, $statusFilter, $paymentFilter);
     }
 
-    private function searchCustomOrdersByCustomerInfo($searchKeyword, $statusFilter, $paymentFilter)
+    private function searchCustomOrdersByCustomerInfo($escapedKeyword, $statusFilter, $paymentFilter)
     {
         $queryBuilder = $this->getBaseCustomOrdersQueryBuilder();
-        $queryBuilder->where(function ($query) use ($searchKeyword) {
-            $query->where('customers.name', 'LIKE', '%' . UtilsService::escapeKeyword($searchKeyword) . '%')
-                ->orWhere('customers.email', 'LIKE', '%' . UtilsService::escapeKeyword($searchKeyword) . '%')
-                ->orWhere('customers.phone', 'LIKE', '%' . UtilsService::escapeKeyword($searchKeyword) . '%');
+        $queryBuilder->where(function ($query) use ($escapedKeyword) {
+            $query->where('customers.name', 'LIKE', '%' . $escapedKeyword . '%')
+                ->orWhere('customers.email', 'LIKE', '%' . $escapedKeyword . '%')
+                ->orWhere('customers.phone', 'LIKE', '%' . $escapedKeyword . '%');
         });
 
         return $this->filterCustomOrdersAfterSearch($queryBuilder, $statusFilter, $paymentFilter);
     }
 
-    private function searchCustomOrdersByDeliveryAddress($searchKeyword, $statusFilter, $paymentFilter)
+    private function searchCustomOrdersByDeliveryAddress($escapedKeyword, $statusFilter, $paymentFilter)
     {
         $queryBuilder = $this->getBaseCustomOrdersQueryBuilder();
-        $queryBuilder->where(function ($query) use ($searchKeyword) {
-            $query->where('orders.delivery_address', 'LIKE', '%' . UtilsService::escapeKeyword($searchKeyword) . '%');
+        $queryBuilder->where(function ($query) use ($escapedKeyword) {
+            $query->where('orders.delivery_address', 'LIKE', '%' . $escapedKeyword . '%');
         });
 
         return $this->filterCustomOrdersAfterSearch($queryBuilder, $statusFilter, $paymentFilter);
@@ -136,7 +138,7 @@ class OrderService
     }
 
     /**
-     * Must be used in conjunction with the groupBy method
+     * Must be used in conjunction with the groupBy('orders.id') method
      */
     private function getBaseCustomOrdersQueryBuilder()
     {
