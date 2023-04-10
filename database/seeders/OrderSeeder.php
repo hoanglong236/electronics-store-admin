@@ -30,14 +30,18 @@ class OrderSeeder extends Seeder
         }
     }
 
+    /**
+     * Get random customers have a delivery address
+     */
     private function getRandomCustomers($customerCount)
     {
         return DB::table('customers')
             ->join('customer_addresses', 'customer_id', '=', 'customers.id')
             ->select('customers.*')
+            ->distinct()
             ->where([
                 'delete_flag' => false,
-                'disable_flag' => false
+                'disable_flag' => false,
             ])
             ->inRandomOrder()
             ->limit($customerCount)
