@@ -9,7 +9,7 @@ class StorageService
 {
     public function saveFile($file, $path)
     {
-        $fileName = rand() . time() . '.' . $file->getClientOriginalExtension();
+        $fileName = mt_rand() . time() . '.' . $file->getClientOriginalExtension();
         $filePath = Storage::putFileAs($path, $file, $fileName);
         return $filePath;
     }

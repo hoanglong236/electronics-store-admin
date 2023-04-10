@@ -85,11 +85,11 @@ class OrderService
         }
 
         $statusFilter = $orderFilterProperties['statusFilter'];
-        $paymentFilter = $orderFilterProperties['paymentFilter'];
-
         if ($statusFilter !== OrderStatusFilterConstants::ALL) {
             $queryBuilder->where('orders.status', $statusFilter);
         }
+
+        $paymentFilter = $orderFilterProperties['paymentFilter'];
         if ($paymentFilter !== OrderPaymentFilterConstants::ALL) {
             $queryBuilder->where('orders.payment_method', $paymentFilter);
         }

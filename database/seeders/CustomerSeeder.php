@@ -3,14 +3,19 @@
 namespace Database\Seeders;
 
 use App\ModelConstants\AddressType;
+use App\Models\Cart;
+use App\Models\CartItem;
 use App\Models\Customer;
 use App\Models\CustomerAddress;
+use App\Models\Product;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
 class CustomerSeeder extends Seeder
 {
+    private $productRandomCount = 3;
+
     /**
      * Run the database seeds.
      */
@@ -20,7 +25,8 @@ class CustomerSeeder extends Seeder
         $this->generateCustomers();
     }
 
-    private function generateMainCustomer() {
+    private function generateMainCustomer()
+    {
         $customer = Customer::create([
             'name' => 'Customer Zero',
             'gender' => true,
@@ -31,8 +37,14 @@ class CustomerSeeder extends Seeder
             'delete_flag' => false,
         ]);
 
+        $this->generateCustomerAddresses($customer->id);
+        $this->generateCustomerCartAndCartItems($customer->id);
+    }
+
+    private function generateCustomerAddresses($customerId)
+    {
         CustomerAddress::create([
-            'customer_id' => $customer->id,
+            'customer_id' => $customerId,
             'city' => 'Thanh pho Ho Chi Minh',
             'district' => 'Quan Tan Binh',
             'ward' => 'Phuong 2',
@@ -41,7 +53,7 @@ class CustomerSeeder extends Seeder
             'default_flag' => true,
         ]);
         CustomerAddress::create([
-            'customer_id' => $customer->id,
+            'customer_id' => $customerId,
             'city' => 'Thanh pho Can Tho',
             'district' => 'Quan Ninh Kieu',
             'ward' => 'Phuong Xuan Khanh',
@@ -51,78 +63,43 @@ class CustomerSeeder extends Seeder
         ]);
     }
 
-    private function generateCustomers() {
-        Customer::create([
-            'name' => 'Customer One',
-            'gender' => false,
-            'phone' => '1234567891',
-            'email' => 'customer-one@gmail.com',
-            'password' => Hash::make('Abc12345'),
-            'disable_flag' => false,
-            'delete_flag' => false,
+    private function generateCustomerCartAndCartItems($customerId)
+    {
+        $cart = Cart::create([
+            'customer_id' => $customerId,
         ]);
-        Customer::create([
-            'name' => 'Customer Two',
-            'gender' => false,
-            'phone' => '1234567892',
-            'email' => 'customer-two@gmail.com',
-            'password' => Hash::make('Abc12345'),
-            'disable_flag' => true,
-            'delete_flag' => false,
-        ]);
-        Customer::create([
-            'name' => 'Customer Three',
-            'gender' => false,
-            'phone' => '1234567892',
-            'email' => 'customer-three@gmail.com',
-            'password' => Hash::make('Abc12345'),
-            'disable_flag' => true,
-            'delete_flag' => false,
-        ]);
-        Customer::create([
-            'name' => 'Customer Four',
-            'gender' => false,
-            'phone' => '1234567892',
-            'email' => 'customer-fout@gmail.com',
-            'password' => Hash::make('Abc12345'),
-            'disable_flag' => true,
-            'delete_flag' => false,
-        ]);
-        Customer::create([
-            'name' => 'Customer Five',
-            'gender' => false,
-            'phone' => '1234567892',
-            'email' => 'customer-five@gmail.com',
-            'password' => Hash::make('Abc12345'),
-            'disable_flag' => true,
-            'delete_flag' => false,
-        ]);
-        Customer::create([
-            'name' => 'Customer Six',
-            'gender' => false,
-            'phone' => '1234567892',
-            'email' => 'customer-six@gmail.com',
-            'password' => Hash::make('Abc12345'),
-            'disable_flag' => true,
-            'delete_flag' => false,
-        ]);
-        Customer::create([
-            'name' => 'Customer Seven',
-            'gender' => false,
-            'phone' => '1234567892',
-            'email' => 'customer-seven@gmail.com',
-            'password' => Hash::make('Abc12345'),
-            'disable_flag' => true,
-            'delete_flag' => false,
-        ]);
-        Customer::create([
-            'name' => 'Customer Eight',
-            'gender' => false,
-            'phone' => '1234567892',
-            'email' => 'customer-eight@gmail.com',
-            'password' => Hash::make('Abc12345'),
-            'disable_flag' => true,
-            'delete_flag' => false,
-        ]);
+
+        $products = $this->getRandomProducts($this->productRandomCount);
+        foreach ($products as $product) {
+            $quantity = mt_rand(1, 2);
+            CartItem::create([
+                'cart_id' => $cart->id,
+                'product_id' => $product->id,
+                'quantity' => $quantity,
+            ]);
+        }
+    }
+
+    private function getRandomProducts($productCount)
+    {
+        return Product::where('delete_flag', false)->inRandomOrder()->limit($productCount)->get();
+    }
+
+    private function generateCustomers()
+    {
+        $customerCount = 10;
+        $password = Hash::make('Abc12345');
+
+        for ($i = 0; $i < $customerCount; $i++) {
+            Customer::create([
+                'name' => 'Customer ' . ($i + 1),
+                'gender' => mt_rand(0, 1) === 1,
+                'phone' => '123456789' . ($i + 1),
+                'email' => 'customer' . ($i + 1) . '@gmail.com',
+                'password' => $password,
+                'disable_flag' => mt_rand(0, 1) === 1,
+                'delete_flag' => false,
+            ]);
+        }
     }
 }

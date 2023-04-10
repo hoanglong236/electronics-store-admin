@@ -37,13 +37,13 @@ class OrderSeeder extends Seeder
                 'customer_id' => $customerId,
                 'delivery_address' => $deliveryAddress['address'],
                 'address_type' => $deliveryAddress['address_type'],
-                'status' => $orderStatusArray[rand(0, count($orderStatusArray) - 1)],
-                'payment_method' => $paymentMethods[rand(0, count($paymentMethods) - 1)],
+                'status' => $orderStatusArray[mt_rand(0, count($orderStatusArray) - 1)],
+                'payment_method' => $paymentMethods[mt_rand(0, count($paymentMethods) - 1)],
             ]);
 
             $products = $this->getRandomProducts($this->productRandomCount);
             foreach ($products as $product) {
-                $quantity = rand(1, 2);
+                $quantity = mt_rand(1, 2);
                 OrderItem::create([
                     'order_id' => $order->id,
                     'product_id' => $product->id,
