@@ -9,7 +9,6 @@ use App\Http\Requests\ProductRequest;
 use App\Http\Requests\ProductSearchRequest;
 use App\Services\BrandService;
 use App\Services\CategoryService;
-use App\Services\ProductImageService;
 use App\Services\ProductService;
 use App\Services\UtilsService;
 use Illuminate\Http\Request;
@@ -21,14 +20,12 @@ class ProductController extends Controller
     private $productService;
     private $categoryService;
     private $brandService;
-    private $productImageService;
 
     public function __construct()
     {
         $this->productService = new ProductService();
         $this->categoryService = new CategoryService();
         $this->brandService = new BrandService();
-        $this->productImageService = new ProductImageService();
     }
 
     public function index()
@@ -67,10 +64,13 @@ class ProductController extends Controller
 
     public function create()
     {
+        $categoryIdNameMap = $this->categoryService->getCategoryIdNameMap();
+        $brandIdNameMap = $this->brandService->getBrandIdNameMap();
+
         $data = [
             'pageTitle' => 'Create product',
-            'categoryIdNameMap' => $this->categoryService->getCategoryIdNameMap(),
-            'brandIdNameMap' => $this->brandService->getBrandIdNameMap(),
+            'categoryIdNameMap' => $categoryIdNameMap,
+            'brandIdNameMap' => $brandIdNameMap,
         ];
 
         return view('pages.product.product-create-page', ['data' => $data]);
@@ -87,11 +87,15 @@ class ProductController extends Controller
 
     public function update($productId)
     {
+        $categoryIdNameMap = $this->categoryService->getCategoryIdNameMap();
+        $brandIdNameMap = $this->brandService->getBrandIdNameMap();
+        $product = $this->productService->getProductById($productId);
+
         $data = [
             'pageTitle' => 'Update product',
-            'categoryIdNameMap' => $this->categoryService->getCategoryIdNameMap(),
-            'brandIdNameMap' => $this->brandService->getBrandIdNameMap(),
-            'product' => $this->productService->findProductById($productId),
+            'categoryIdNameMap' => $categoryIdNameMap,
+            'brandIdNameMap' => $brandIdNameMap,
+            'product' => $product,
         ];
 
         return view('pages.product.product-update-page', ['data' => $data]);
@@ -116,10 +120,13 @@ class ProductController extends Controller
 
     public function showDetails($productId)
     {
+        $customProduct = $this->productService->getCustomProductById($productId);
+        $productImages = $this->productService->getProductImagesByProductId($productId);
+
         $data = [
             'pageTitle' => 'Product details',
-            'customProduct' => $this->productService->getCustomProductById($productId),
-            'productImages' => $this->productImageService->listProductImagesInProduct($productId),
+            'customProduct' => $customProduct,
+            'productImages' => $productImages,
         ];
 
         return view('pages.product.product-details-page', ['data' => $data]);
@@ -129,7 +136,7 @@ class ProductController extends Controller
     {
         $productImageProperties = $productImageRequest->validated();
         $productImageProperties['productId'] = $productId;
-        $this->productImageService->createProductImages($productImageProperties);
+        $this->productService->createProductImages($productImageProperties);
 
         Session::flash(Constants::ACTION_SUCCESS, Constants::CREATE_SUCCESS);
         return redirect()->action([ProductController::class, 'showDetails'], $productId);
@@ -137,7 +144,7 @@ class ProductController extends Controller
 
     public function deleteImage($productId, $productImageId)
     {
-        $this->productImageService->deleteProductImage($productImageId);
+        $this->productService->deleteProductImage($productImageId);
 
         Session::flash(Constants::ACTION_SUCCESS, Constants::DELETE_SUCCESS);
         return redirect()->action([ProductController::class, 'showDetails'], $productId);

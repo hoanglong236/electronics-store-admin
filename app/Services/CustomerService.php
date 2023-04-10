@@ -4,11 +4,12 @@ namespace App\Services;
 
 use App\DataFilterConstants\CustomerSearchOptionConstants;
 use App\Models\Customer;
+use App\Models\CustomerAddress;
 use Illuminate\Support\Facades\Log;
 
 class CustomerService
 {
-    public function findById($customerId)
+    public function getCustomerById($customerId)
     {
         return Customer::where(['id' => $customerId, 'delete_flag' => false])->first();
     }
@@ -20,7 +21,7 @@ class CustomerService
 
     public function updateDisableFlagCustomer($customerProperties, $customerId)
     {
-        $customer = $this->findById($customerId);
+        $customer = $this->getCustomerById($customerId);
         $customer->disable_flag = $customerProperties['disableFlag'];
 
         $customer->save();
@@ -28,7 +29,7 @@ class CustomerService
 
     public function deleteCustomer($customerId)
     {
-        $customer = $this->findById($customerId);
+        $customer = $this->getCustomerById($customerId);
         $customer->delete_flag = true;
 
         $customer->save();
@@ -84,5 +85,10 @@ class CustomerService
         return Customer::where('delete_flag', false)
             ->where('phone', 'LIKE', '%' . $escapedKeyword . '%')
             ->paginate($itemPerPage);
+    }
+
+    public function getCustomerAddressesByCustomerId($customerId)
+    {
+        return CustomerAddress::where(['customer_id' => $customerId])->get();
     }
 }

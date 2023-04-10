@@ -20,7 +20,7 @@ class OrderService
             ->first();
     }
 
-    public function listCustomOrderData()
+    public function listCustomOrders()
     {
         $queryBuilder = $this->getBaseCustomOrdersQueryBuilder();
         return $queryBuilder->groupBy('orders.id')
@@ -39,9 +39,18 @@ class OrderService
     public function getNextSelectableStatusMap()
     {
         return [
-            OrderStatusConstants::RECEIVED => [OrderStatusConstants::PROCESSING, OrderStatusConstants::CANCELLED],
-            OrderStatusConstants::PROCESSING => [OrderStatusConstants::DELIVERING, OrderStatusConstants::CANCELLED],
-            OrderStatusConstants::DELIVERING => [OrderStatusConstants::COMPLETED, OrderStatusConstants::CANCELLED],
+            OrderStatusConstants::RECEIVED => [
+                OrderStatusConstants::PROCESSING,
+                OrderStatusConstants::CANCELLED,
+            ],
+            OrderStatusConstants::PROCESSING => [
+                OrderStatusConstants::DELIVERING,
+                OrderStatusConstants::CANCELLED,
+            ],
+            OrderStatusConstants::DELIVERING => [
+                OrderStatusConstants::COMPLETED,
+                OrderStatusConstants::CANCELLED,
+            ],
             OrderStatusConstants::COMPLETED => [],
             OrderStatusConstants::CANCELLED => [],
         ];
@@ -51,41 +60,61 @@ class OrderService
     {
         $searchKeyword = $orderSearchProperties['searchKeyword'];
         $searchOption = $orderSearchProperties['searchOption'];
+        $escapedKeyword = UtilsService::escapeKeyword($searchKeyword);
 
-        return $this->searchAndFilterCustomOrders($searchKeyword, $searchOption);
+        $queryBuilder = $this->getSearchCustomOrdersQueryBuilder($escapedKeyword, $searchOption);
+        if (is_null($queryBuilder)) {
+            return [];
+        }
+
+        return $queryBuilder
+            ->groupBy('orders.id')
+            ->orderByDesc('orders.created_at')
+            ->get();
     }
 
     public function filterCustomOrders($orderFilterProperties)
     {
         $searchKeyword = $orderFilterProperties['searchKeyword'];
+        $searchOption = $orderFilterProperties['searchOption'];
         $escapedKeyword = UtilsService::escapeKeyword($searchKeyword);
 
-        $searchOption = $orderFilterProperties['searchOption'];
+        $queryBuilder = $this->getSearchCustomOrdersQueryBuilder($escapedKeyword, $searchOption);
+        if (is_null($queryBuilder)) {
+            return [];
+        }
+
         $statusFilter = $orderFilterProperties['statusFilter'];
         $paymentFilter = $orderFilterProperties['paymentFilter'];
 
-        return $this->searchAndFilterCustomOrders($escapedKeyword, $searchOption, $statusFilter, $paymentFilter);
+        if ($statusFilter !== OrderStatusFilterConstants::ALL) {
+            $queryBuilder->where('orders.status', $statusFilter);
+        }
+        if ($paymentFilter !== OrderPaymentFilterConstants::ALL) {
+            $queryBuilder->where('orders.payment_method', $paymentFilter);
+        }
+
+        return $queryBuilder
+            ->groupBy('orders.id')
+            ->orderByDesc('orders.created_at')
+            ->get();
     }
 
-    private function searchAndFilterCustomOrders(
-        $escapedKeyword,
-        $searchOption,
-        $statusFilter = OrderStatusFilterConstants::ALL,
-        $paymentFilter = OrderPaymentFilterConstants::ALL
-    ) {
+    private function getSearchCustomOrdersQueryBuilder($escapedKeyword, $searchOption)
+    {
         switch ($searchOption) {
             case OrderSearchOptionConstants::ALL:
-                return $this->searchCustomOrdersByAll($escapedKeyword, $statusFilter, $paymentFilter);
+                return $this->getSearchCustomOrdersByAllQueryBuilder($escapedKeyword);
             case OrderSearchOptionConstants::CUSTOMER:
-                return $this->searchCustomOrdersByCustomerInfo($escapedKeyword, $statusFilter, $paymentFilter);
+                return $this->getSearchCustomOrdersByCustomerInfoQueryBuilder($escapedKeyword);
             case OrderSearchOptionConstants::ADDRESS:
-                return $this->searchCustomOrdersByDeliveryAddress($escapedKeyword, $statusFilter, $paymentFilter);
+                return $this->getSearchCustomOrdersByDeliveryAddressQueryBuilder($escapedKeyword);
             default:
-                return [];
+                return null;
         }
     }
 
-    private function searchCustomOrdersByAll($escapedKeyword, $statusFilter, $paymentFilter)
+    private function getSearchCustomOrdersByAllQueryBuilder($escapedKeyword)
     {
         $queryBuilder = $this->getBaseCustomOrdersQueryBuilder();
         $queryBuilder->where(function ($query) use ($escapedKeyword) {
@@ -95,10 +124,10 @@ class OrderService
                 ->orWhere('orders.delivery_address', 'LIKE', '%' . $escapedKeyword . '%');
         });
 
-        return $this->filterCustomOrdersAfterSearch($queryBuilder, $statusFilter, $paymentFilter);
+        return $queryBuilder;
     }
 
-    private function searchCustomOrdersByCustomerInfo($escapedKeyword, $statusFilter, $paymentFilter)
+    private function getSearchCustomOrdersByCustomerInfoQueryBuilder($escapedKeyword)
     {
         $queryBuilder = $this->getBaseCustomOrdersQueryBuilder();
         $queryBuilder->where(function ($query) use ($escapedKeyword) {
@@ -107,34 +136,17 @@ class OrderService
                 ->orWhere('customers.phone', 'LIKE', '%' . $escapedKeyword . '%');
         });
 
-        return $this->filterCustomOrdersAfterSearch($queryBuilder, $statusFilter, $paymentFilter);
+        return $queryBuilder;
     }
 
-    private function searchCustomOrdersByDeliveryAddress($escapedKeyword, $statusFilter, $paymentFilter)
+    private function getSearchCustomOrdersByDeliveryAddressQueryBuilder($escapedKeyword)
     {
         $queryBuilder = $this->getBaseCustomOrdersQueryBuilder();
         $queryBuilder->where(function ($query) use ($escapedKeyword) {
             $query->where('orders.delivery_address', 'LIKE', '%' . $escapedKeyword . '%');
         });
 
-        return $this->filterCustomOrdersAfterSearch($queryBuilder, $statusFilter, $paymentFilter);
-    }
-
-    private function filterCustomOrdersAfterSearch(
-        $searchCustomOrdersQueryBuilder,
-        $statusFilter,
-        $paymentFilter
-    ) {
-        if ($statusFilter !== OrderStatusFilterConstants::ALL) {
-            $searchCustomOrdersQueryBuilder->where('orders.status', $statusFilter);
-        }
-        if ($paymentFilter !== OrderPaymentFilterConstants::ALL) {
-            $searchCustomOrdersQueryBuilder->where('orders.payment_method', $paymentFilter);
-        }
-
-        return $searchCustomOrdersQueryBuilder->groupBy('orders.id')
-            ->orderByDesc('orders.created_at')
-            ->get();
+        return $queryBuilder;
     }
 
     /**
@@ -159,5 +171,20 @@ class OrderService
                 'customers.email as customer_email',
                 DB::raw('sum(order_items.total_price) as total'),
             );
+    }
+
+    public function getCustomOrderItemsByOrderId($orderId)
+    {
+        return DB::table('order_items')
+            ->join('products', 'products.id', '=', 'order_items.product_id')
+            ->select(
+                'products.name as product_name',
+                'products.main_image_path as product_image_path',
+                'order_items.product_id',
+                'order_items.quantity',
+                'order_items.total_price',
+            )
+            ->where(['order_items.order_id' => $orderId])
+            ->get();
     }
 }

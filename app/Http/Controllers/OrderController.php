@@ -9,7 +9,6 @@ use App\DataFilterConstants\OrderStatusFilterConstants;
 use App\Http\Requests\OrderFilterRequest;
 use App\Http\Requests\OrderSearchRequest;
 use App\Http\Requests\OrderStatusRequest;
-use App\Services\OrderItemService;
 use App\Services\OrderService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -17,18 +16,16 @@ use Illuminate\Support\Facades\Session;
 class OrderController extends Controller
 {
     private $orderService;
-    private $orderItemService;
 
     public function __construct()
     {
         $this->orderService = new OrderService();
-        $this->orderItemService = new OrderItemService();
     }
 
     public function index()
     {
         $data = $this->getCommonDataForOrdersPage();
-        $data['customOrders'] = $this->orderService->listCustomOrderData();
+        $data['customOrders'] = $this->orderService->listCustomOrders();
 
         return view('pages.order.orders-page', ['data' => $data]);
     }
@@ -61,9 +58,11 @@ class OrderController extends Controller
 
     private function getCommonDataForOrdersPage()
     {
+        $nextSelectableStatusMap = $this->orderService->getNextSelectableStatusMap();
+
         return [
             'pageTitle' => 'Order',
-            'nextSelectableStatusMap' => $this->orderService->getNextSelectableStatusMap(),
+            'nextSelectableStatusMap' => $nextSelectableStatusMap,
             'searchKeyword' => '',
             'searchOptions' => OrderSearchOptionConstants::toArray(),
             'currentSearchOption' => OrderSearchOptionConstants::ALL,
@@ -85,10 +84,13 @@ class OrderController extends Controller
 
     public function showDetails($orderId)
     {
+        $customOrder = $this->orderService->getCustomOrderById($orderId);
+        $customOrderItems = $this->orderService->getCustomOrderItemsByOrderId($orderId);
+
         $data = [
             'pageTitle' => 'Order details',
-            'customOrder' => $this->orderService->getCustomOrderById($orderId),
-            'customOrderItems' => $this->orderItemService->getCustomOrderItemsByOrderId($orderId),
+            'customOrder' => $customOrder,
+            'customOrderItems' => $customOrderItems,
         ];
 
         return view('pages.order.order-details-page', ['data' => $data]);

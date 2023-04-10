@@ -5,21 +5,20 @@ namespace App\Services;
 use App\Common\Constants;
 use App\DataFilterConstants\ProductSearchOptionConstants;
 use App\Models\Product;
+use App\Models\ProductImage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class ProductService
 {
     private $storageService;
-    private $productImageService;
 
     public function __construct()
     {
         $this->storageService = new StorageService();
-        $this->productImageService = new ProductImageService();
     }
 
-    public function findProductById($productId)
+    public function getProductById($productId)
     {
         return Product::where(['id' => $productId, 'delete_flag' => false])->first();
     }
@@ -62,7 +61,7 @@ class ProductService
             'delete_flag' => false,
         ]);
 
-        $this->productImageService->createProductImages([
+        $this->createProductImages([
             'productId' => $product->id,
             'images' => $productProperties['images']
         ]);
@@ -70,7 +69,7 @@ class ProductService
 
     public function updateProduct($productProperties, $productId)
     {
-        $product = $this->findProductById($productId);
+        $product = $this->getProductById($productId);
 
         $product->category_id = $productProperties['categoryId'];
         $product->brand_id = $productProperties['brandId'];
@@ -81,6 +80,7 @@ class ProductService
         $product->quantity = $productProperties['quantity'];
         $product->warranty_period = $productProperties['warrantyPeriod'];
         $product->description = $productProperties['description'];
+
         if (isset($productProperties['mainImage'])) {
             $this->storageService->deleteFile($product->main_image_path);
             $product->main_image_path = $this->storageService->saveFile(
@@ -94,10 +94,10 @@ class ProductService
 
     public function deleteProduct($productId)
     {
-        $product = $this->findProductById($productId);
+        $product = $this->getProductById($productId);
 
         $this->storageService->deleteFile($product->main_image_path);
-        $this->productImageService->deleteProductImagesInProduct($productId);
+        $this->deleteProductImagesInProduct($productId);
         $product->delete_flag = true;
 
         $product->save();
@@ -176,5 +176,41 @@ class ProductService
                 'brands.name as brand_name',
             )
             ->where('products.delete_flag', false);
+    }
+
+    public function getProductImagesByProductId($productId)
+    {
+        return ProductImage::where('product_id', $productId)->get();
+    }
+
+    public function createProductImages($productImageProperties)
+    {
+        $images = $productImageProperties['images'];
+
+        foreach ($images as $image) {
+            $imagePath = $this->storageService->saveFile($image, Constants::PRODUCT_IMAGE_PATH);
+
+            ProductImage::create([
+                'product_id' => $productImageProperties['productId'],
+                'image_path' => $imagePath,
+            ]);
+        }
+    }
+
+    public function deleteProductImage($productImageId)
+    {
+        $productImage = ProductImage::find($productImageId);
+        $this->storageService->deleteFile($productImage->image_path);
+        $productImage->delete();
+    }
+
+    private function deleteProductImagesInProduct($productId)
+    {
+        $productImages = ProductImage::where('product_id', $productId)->get();
+
+        foreach ($productImages as $productImage) {
+            $this->storageService->deleteFile($productImage->image_path);
+            $productImage->delete();
+        }
     }
 }

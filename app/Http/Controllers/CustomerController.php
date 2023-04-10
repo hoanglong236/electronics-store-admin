@@ -6,7 +6,6 @@ use App\Common\Constants;
 use App\DataFilterConstants\CustomerSearchOptionConstants;
 use App\Http\Requests\CustomerRequest;
 use App\Http\Requests\CustomerSearchRequest;
-use App\Services\CustomerAddressService;
 use App\Services\CustomerService;
 use App\Services\UtilsService;
 use Illuminate\Http\Request;
@@ -15,12 +14,10 @@ use Illuminate\Support\Facades\Session;
 class CustomerController extends Controller
 {
     private $customerService;
-    private $customerAddressService;
 
     public function __construct()
     {
         $this->customerService = new CustomerService();
-        $this->customerAddressService = new CustomerAddressService();
     }
 
     public function index()
@@ -40,7 +37,8 @@ class CustomerController extends Controller
             $customerSearchProperties,
             Constants::CUSTOMER_PAGE_COUNT
         );
-        $data['customers']->withPath('search?' . UtilsService::convertMapToParamsString($customerSearchProperties));
+        $data['customers']->withPath('search?' .
+            UtilsService::convertMapToParamsString($customerSearchProperties));
         $data['searchKeyword'] = $customerSearchProperties['searchKeyword'];
         $data['currentSearchOption'] = $customerSearchProperties['searchOption'];
 
@@ -76,10 +74,13 @@ class CustomerController extends Controller
 
     public function showDetails($customerId)
     {
+        $customer = $this->customerService->getCustomerById($customerId);
+        $customerAddresses = $this->customerService->getCustomerAddressesByCustomerId($customerId);
+
         $data = [
             'pageTitle' => 'Customer details',
-            'customer' => $this->customerService->findById($customerId),
-            'customerAddresses' => $this->customerAddressService->findByCustomerId($customerId),
+            'customer' => $customer,
+            'customerAddresses' => $customerAddresses,
         ];
 
         return view('pages.customer.customer-details-page', ['data' => $data]);
