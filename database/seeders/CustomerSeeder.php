@@ -14,7 +14,8 @@ use Illuminate\Support\Facades\Hash;
 
 class CustomerSeeder extends Seeder
 {
-    private $productRandomCount = 3;
+    private $randomProductCount = 3;
+    private $randomCustomerCount = 8;
 
     /**
      * Run the database seeds.
@@ -43,24 +44,40 @@ class CustomerSeeder extends Seeder
 
     private function generateCustomerAddresses($customerId)
     {
-        CustomerAddress::create([
-            'customer_id' => $customerId,
-            'city' => 'Thanh pho Ho Chi Minh',
-            'district' => 'Quan Tan Binh',
-            'ward' => 'Phuong 2',
-            'specific_address' => 'Toa nha Waseco',
-            'address_type' => AddressType::HOME,
-            'default_flag' => true,
-        ]);
-        CustomerAddress::create([
-            'customer_id' => $customerId,
-            'city' => 'Thanh pho Can Tho',
-            'district' => 'Quan Ninh Kieu',
-            'ward' => 'Phuong Xuan Khanh',
-            'specific_address' => 'DHCT Khu 2, Duong 3/2',
-            'address_type' => AddressType::OFFICE,
-            'default_flag' => false,
-        ]);
+        $baseAddresses = [
+            [
+                'city' => 'Thanh pho Ho Chi Minh',
+                'district' => 'Quan Tan Binh',
+                'ward' => 'Phuong 2',
+                'specific_address' => 'Toa nha Waseco',
+                'address_type' => AddressType::HOME,
+                'default_flag' => true,
+            ],
+            [
+                'city' => 'Thanh pho Can Tho',
+                'district' => 'Quan Ninh Kieu',
+                'ward' => 'Phuong Xuan Khanh',
+                'specific_address' => 'DHCT Khu 2, Duong 3/2',
+                'address_type' => AddressType::OFFICE,
+                'default_flag' => false,
+            ],
+            [
+                'city' => 'Thanh pho Can Tho',
+                'district' => 'Quan Ninh Kieu',
+                'ward' => 'Phuong An Binh',
+                'specific_address' => 'Dai hoc FPT, 600, Duong Nguyen Van Cu (noi dai),',
+                'address_type' => AddressType::OFFICE,
+                'default_flag' => false,
+            ],
+        ];
+
+        $addressCount = mt_rand(1, count($baseAddresses));
+        for ($i = 0; $i < $addressCount; $i++) {
+            $address = $baseAddresses[$i];
+            $address['customer_id'] = $customerId;
+
+            CustomerAddress::create($address);
+        }
     }
 
     private function generateCustomerCartAndCartItems($customerId)
@@ -69,7 +86,7 @@ class CustomerSeeder extends Seeder
             'customer_id' => $customerId,
         ]);
 
-        $products = $this->getRandomProducts($this->productRandomCount);
+        $products = $this->getRandomProducts($this->randomProductCount);
         foreach ($products as $product) {
             $quantity = mt_rand(1, 2);
             CartItem::create([
@@ -82,16 +99,17 @@ class CustomerSeeder extends Seeder
 
     private function getRandomProducts($productCount)
     {
-        return Product::where('delete_flag', false)->inRandomOrder()->limit($productCount)->get();
+        return Product::where('delete_flag', false)
+            ->inRandomOrder()
+            ->limit($productCount)
+            ->get();
     }
 
     private function generateCustomers()
     {
-        $customerCount = 10;
         $password = Hash::make('Abc12345');
-
-        for ($i = 0; $i < $customerCount; $i++) {
-            Customer::create([
+        for ($i = 0; $i < $this->randomCustomerCount; $i++) {
+            $customer = Customer::create([
                 'name' => 'Customer ' . ($i + 1),
                 'gender' => mt_rand(0, 1) === 1,
                 'phone' => '123456789' . ($i + 1),
@@ -100,6 +118,7 @@ class CustomerSeeder extends Seeder
                 'disable_flag' => mt_rand(0, 1) === 1,
                 'delete_flag' => false,
             ]);
+            $this->generateCustomerAddresses($customer->id);
         }
     }
 }
