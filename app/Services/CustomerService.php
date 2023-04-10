@@ -41,50 +41,56 @@ class CustomerService
         $searchKeyword = $customerSearchProperties['searchKeyword'];
         $escapedKeyword = UtilsService::escapeKeyword($searchKeyword);
 
+        $queryBuilder = $this->getSearchCustomersQueryBuilder($escapedKeyword, $searchOption);
+        if (is_null($queryBuilder)) {
+            return [];
+        }
+
+        return $queryBuilder->paginate($itemPerPage);
+    }
+
+    private function getSearchCustomersQueryBuilder($escapedKeyword, $searchOption)
+    {
         switch ($searchOption) {
             case CustomerSearchOptionConstants::SEARCH_ALL:
-                return $this->searchCustomersByAll($escapedKeyword, $itemPerPage);
+                return $this->getSearchCustomersByAllQueryBuilder($escapedKeyword);
             case CustomerSearchOptionConstants::SEARCH_NAME:
-                return $this->searchCustomersByName($escapedKeyword, $itemPerPage);
+                return $this->getSearchCustomersByNameQueryBuilder($escapedKeyword);
             case CustomerSearchOptionConstants::SEARCH_EMAIL:
-                return $this->searchCustomersByEmail($escapedKeyword, $itemPerPage);
+                return $this->getSearchCustomersByEmailQueryBuilder($escapedKeyword);
             case CustomerSearchOptionConstants::SEARCH_PHONE:
-                return $this->searchCustomersByPhone($escapedKeyword, $itemPerPage);
+                return $this->getSearchCustomersByPhoneQueryBuilder($escapedKeyword);
             default:
-                return [];
+                return null;
         }
     }
 
-    private function searchCustomersByAll($escapedKeyword, $itemPerPage)
+    private function getSearchCustomersByAllQueryBuilder($escapedKeyword)
     {
         return Customer::where('delete_flag', false)
             ->where(function ($query) use ($escapedKeyword) {
                 $query->where('name', 'LIKE', '%' . $escapedKeyword . '%')
                     ->orWhere('email', 'LIKE', '%' . $escapedKeyword . '%')
                     ->orWhere('phone', 'LIKE', '%' . $escapedKeyword . '%');
-            })
-            ->paginate($itemPerPage);
+            });
     }
 
-    private function searchCustomersByName($escapedKeyword, $itemPerPage)
+    private function getSearchCustomersByNameQueryBuilder($escapedKeyword)
     {
         return Customer::where('delete_flag', false)
-            ->where('name', 'LIKE', '%' . $escapedKeyword . '%')
-            ->paginate($itemPerPage);
+            ->where('name', 'LIKE', '%' . $escapedKeyword . '%');
     }
 
-    private function searchCustomersByEmail($escapedKeyword, $itemPerPage)
+    private function getSearchCustomersByEmailQueryBuilder($escapedKeyword)
     {
         return Customer::where('delete_flag', false)
-            ->where('email', 'LIKE', '%' . $escapedKeyword . '%')
-            ->paginate($itemPerPage);
+            ->where('email', 'LIKE', '%' . $escapedKeyword . '%');
     }
 
-    private function searchCustomersByPhone($escapedKeyword, $itemPerPage)
+    private function getSearchCustomersByPhoneQueryBuilder($escapedKeyword)
     {
         return Customer::where('delete_flag', false)
-            ->where('phone', 'LIKE', '%' . $escapedKeyword . '%')
-            ->paginate($itemPerPage);
+            ->where('phone', 'LIKE', '%' . $escapedKeyword . '%');
     }
 
     public function getCustomerAddressesByCustomerId($customerId)

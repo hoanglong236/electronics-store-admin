@@ -17,9 +17,12 @@ class CategoryService
         $this->storageService = new StorageService();
     }
 
-    public function findById($categoryId)
+    public function getCategoryById($categoryId)
     {
-        return Category::where(['id' => $categoryId, 'delete_flag' => false])->first();
+        return Category::where([
+            'delete_flag' => false,
+            'id' => $categoryId,
+        ])->first();
     }
 
     public function listCategories()
@@ -29,7 +32,10 @@ class CategoryService
 
     public function createCategory($categoryProperties)
     {
-        $iconPath = $this->storageService->saveFile($categoryProperties['icon'], Constants::CATEGORY_ICON_PATH);
+        $iconPath = $this->storageService->saveFile(
+            $categoryProperties['icon'],
+            Constants::CATEGORY_ICON_PATH
+        );
         $parentCategoryId = $categoryProperties['parentId'] === Constants::NONE_VALUE
             ? null : $categoryProperties['parentId'];
 
@@ -44,7 +50,7 @@ class CategoryService
 
     public function updateCategory($categoryProperties, $categoryId)
     {
-        $category = $this->findById($categoryId);
+        $category = $this->getCategoryById($categoryId);
 
         $category->parent_id = $categoryProperties['parentId'] === Constants::NONE_VALUE
             ? null : $categoryProperties['parentId'];
@@ -60,7 +66,7 @@ class CategoryService
 
     public function deleteCategory($categoryId)
     {
-        $category = $this->findById($categoryId);
+        $category = $this->getCategoryById($categoryId);
         $category->delete_flag = true;
 
         $category->save();
@@ -96,25 +102,35 @@ class CategoryService
 
     public function searchCategories($categorySearchProperties)
     {
-        $searchOption = $categorySearchProperties['searchOption'];
         $searchKeyword = $categorySearchProperties['searchKeyword'];
+        $searchOption = $categorySearchProperties['searchOption'];
         $escapedKeyword = UtilsService::escapeKeyword($searchKeyword);
 
+        $queryBuilder = $this->getSearchCategoriesQueryBuilder($escapedKeyword, $searchOption);
+        if (is_null($queryBuilder)) {
+            return [];
+        }
+
+        return $queryBuilder->get();
+    }
+
+    private function getSearchCategoriesQueryBuilder($escapedKeyword, $searchOption)
+    {
         switch ($searchOption) {
             case CategorySearchOptionConstants::SEARCH_ALL:
-                return $this->searchCategoriesByAll($escapedKeyword);
+                return $this->getSearchCategoriesByAllQueryBuilder($escapedKeyword);
             case CategorySearchOptionConstants::SEARCH_NAME:
-                return $this->searchCategoriesByName($escapedKeyword);
+                return $this->getSearchCategoriesByNameQueryBuilder($escapedKeyword);
             case CategorySearchOptionConstants::SEARCH_SLUG:
-                return $this->searchCategoriesBySlug($escapedKeyword);
+                return $this->getSearchCategoriesBySlugQueryBuilder($escapedKeyword);
             case CategorySearchOptionConstants::SEARCH_PARENT:
-                return $this->searchCategoriesByParentName($escapedKeyword);
+                return $this->getSearchCategoriesByParentNameQueryBuilder($escapedKeyword);
             default:
-                return [];
+                return null;
         }
     }
 
-    private function searchCategoriesByAll($escapedKeyword)
+    private function getSearchCategoriesByAllQueryBuilder($escapedKeyword)
     {
         return DB::table('categories')
             ->leftJoin('categories as parent', 'parent.id', '=', 'categories.parent_id')
@@ -124,32 +140,31 @@ class CategoryService
                 $query->where('categories.name', 'LIKE', '%' . $escapedKeyword . '%')
                     ->orWhere('categories.slug', 'LIKE', '%' . $escapedKeyword . '%')
                     ->orWhere('parent.name', 'LIKE', '%' . $escapedKeyword . '%');
-            })->get();
+            });
     }
 
-    private function searchCategoriesByName($escapedKeyword)
+    private function getSearchCategoriesByNameQueryBuilder($escapedKeyword)
     {
         return Category::where([
             'delete_flag' => false,
             ['name', 'LIKE', '%' . $escapedKeyword . '%']
-        ])->get();
+        ]);
     }
 
-    private function searchCategoriesBySlug($escapedKeyword)
+    private function getSearchCategoriesBySlugQueryBuilder($escapedKeyword)
     {
         return Category::where([
             'delete_flag' => false,
             ['slug', 'LIKE', '%' . $escapedKeyword . '%']
-        ])->get();
+        ]);
     }
 
-    private function searchCategoriesByParentName($escapedKeyword)
+    private function getSearchCategoriesByParentNameQueryBuilder($escapedKeyword)
     {
         return DB::table('categories')
             ->join('categories as parent', 'parent.id', '=', 'categories.parent_id')
             ->select('categories.*')
             ->where('categories.delete_flag', false)
-            ->where('parent.name', 'LIKE', '%' . $escapedKeyword . '%')
-            ->get();
+            ->where('parent.name', 'LIKE', '%' . $escapedKeyword . '%');
     }
 }

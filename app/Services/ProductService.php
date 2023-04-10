@@ -109,23 +109,33 @@ class ProductService
         $searchKeyword = $productSearchProperties['searchKeyword'];
         $escapedKeyword = UtilsService::escapeKeyword($searchKeyword);
 
+        $queryBuilder = $this->getSearchProductsQueryBuilder($escapedKeyword, $searchOption);
+        if (is_null($queryBuilder)) {
+            return [];
+        }
+
+        return $queryBuilder->paginate($itemPerPage);
+    }
+
+    private function getSearchProductsQueryBuilder($escapedKeyword, $searchOption)
+    {
         switch ($searchOption) {
             case ProductSearchOptionConstants::SEARCH_ALL:
-                return $this->searchProductsByAll($escapedKeyword, $itemPerPage);
+                return $this->getSearchProductsByAllQueryBuilder($escapedKeyword);
             case ProductSearchOptionConstants::SEARCH_NAME:
-                return $this->searchProductsByName($escapedKeyword, $itemPerPage);
+                return $this->getSearchProductsByNameQueryBuilder($escapedKeyword);
             case ProductSearchOptionConstants::SEARCH_SLUG:
-                return $this->searchProductsBySlug($escapedKeyword, $itemPerPage);
+                return $this->getSearchProductsBySlugQueryBuilder($escapedKeyword);
             case ProductSearchOptionConstants::SEARCH_CATEGORY:
-                return $this->searchProductsByCategoryName($escapedKeyword, $itemPerPage);
+                return $this->getSearchProductsByCategoryNameQueryBuilder($escapedKeyword);
             case ProductSearchOptionConstants::SEARCH_BRAND:
-                return $this->searchProductsByBrandName($escapedKeyword, $itemPerPage);
+                return $this->getSearchProductsByBrandNameQueryBuilder($escapedKeyword);
             default:
-                return [];
+                return null;
         }
     }
 
-    private function searchProductsByAll($escapedKeyword, $itemPerPage)
+    private function getSearchProductsByAllQueryBuilder($escapedKeyword)
     {
         return $this->getBaseSearchProductsQueryBuilder()
             ->where(function ($query) use ($escapedKeyword) {
@@ -133,36 +143,31 @@ class ProductService
                     ->orWhere('products.slug', 'LIKE', '%' . $escapedKeyword . '%')
                     ->orWhere('categories.name', 'LIKE', '%' . $escapedKeyword . '%')
                     ->orWhere('brands.name', 'LIKE', '%' . $escapedKeyword . '%');
-            })
-            ->paginate($itemPerPage);
+            });
     }
 
-    private function searchProductsByName($escapedKeyword, $itemPerPage)
+    private function getSearchProductsByNameQueryBuilder($escapedKeyword)
     {
         return $this->getBaseSearchProductsQueryBuilder()
-            ->where('products.name', 'LIKE', '%' . $escapedKeyword . '%')
-            ->paginate($itemPerPage);
+            ->where('products.name', 'LIKE', '%' . $escapedKeyword . '%');
     }
 
-    private function searchProductsBySlug($escapedKeyword, $itemPerPage)
+    private function getSearchProductsBySlugQueryBuilder($escapedKeyword)
     {
         return $this->getBaseSearchProductsQueryBuilder()
-            ->where('products.slug', 'LIKE', '%' . $escapedKeyword . '%')
-            ->paginate($itemPerPage);
+            ->where('products.slug', 'LIKE', '%' . $escapedKeyword . '%');
     }
 
-    private function searchProductsByCategoryName($escapedKeyword, $itemPerPage)
+    private function getSearchProductsByCategoryNameQueryBuilder($escapedKeyword)
     {
         return $this->getBaseSearchProductsQueryBuilder()
-            ->where('categories.name', 'LIKE', '%' . $escapedKeyword . '%')
-            ->paginate($itemPerPage);
+            ->where('categories.name', 'LIKE', '%' . $escapedKeyword . '%');
     }
 
-    private function searchProductsByBrandName($escapedKeyword, $itemPerPage)
+    private function getSearchProductsByBrandNameQueryBuilder($escapedKeyword)
     {
         return $this->getBaseSearchProductsQueryBuilder()
-            ->where('brands.name', 'LIKE', '%' . $escapedKeyword . '%')
-            ->paginate($itemPerPage);
+            ->where('brands.name', 'LIKE', '%' . $escapedKeyword . '%');
     }
 
     private function getBaseSearchProductsQueryBuilder()

@@ -43,7 +43,6 @@ class CategoryController extends Controller
     private function getCommonDataForCategoriesPage()
     {
         $categoryIdNameMap = $this->categoryService->getCategoryIdNameMap();
-
         return [
             'pageTitle' => 'Categories',
             'categoryIdNameMap' => $categoryIdNameMap,
@@ -55,9 +54,10 @@ class CategoryController extends Controller
 
     public function create()
     {
+        $categoryIdNameMap = $this->categoryService->getCategoryIdNameMap();
         $data = [
             'pageTitle' => 'Create category',
-            'categoryIdNameMap' => $this->categoryService->getCategoryIdNameMap(),
+            'categoryIdNameMap' => $categoryIdNameMap(),
         ];
 
         return view('pages.category.category-create-page', ['data' => $data]);
@@ -74,10 +74,13 @@ class CategoryController extends Controller
 
     public function update($categoryId)
     {
+        $category = $this->categoryService->getCategoryById($categoryId);
+        $categoryIdNameMap = $this->categoryService->getCategoryIdNameMap();
+
         $data = [
             'pageTitle' => 'Update category',
-            'category' => $this->categoryService->findById($categoryId),
-            'categoryIdNameMap' => $this->categoryService->getCategoryIdNameMap(),
+            'category' => $category,
+            'categoryIdNameMap' => $categoryIdNameMap,
         ];
 
         return view('pages.category.category-update-page', ['data' => $data]);
@@ -92,7 +95,6 @@ class CategoryController extends Controller
         return redirect()->action([CategoryController::class, 'index']);
     }
 
-    // TODO: validate here
     public function delete($categoryId)
     {
         $this->categoryService->deleteCategory($categoryId);
