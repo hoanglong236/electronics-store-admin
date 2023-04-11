@@ -9,10 +9,12 @@ use Illuminate\Support\Facades\Log;
 class BrandService
 {
     private $storageService;
+    private $firebaseStorageService;
 
     public function __construct()
     {
         $this->storageService = new StorageService();
+        $this->firebaseStorageService = new FirebaseStorageService();
     }
 
     public function findById($brandId)
@@ -35,6 +37,7 @@ class BrandService
             'logo_path' => $logoPath,
             'delete_flag' => false,
         ]);
+        $this->firebaseStorageService->uploadImage($logoPath);
     }
 
     public function updateBrand($brandProperties, $brandId)
@@ -45,7 +48,13 @@ class BrandService
         $brand->slug = $brandProperties['slug'];
         if (isset($brandProperties['logo'])) {
             $this->storageService->deleteFile($brand->logo_path);
-            $brand->logo_path = $this->storageService->saveFile($brandProperties['logo'], Constants::BRAND_LOGO_PATH);
+            $this->firebaseStorageService->deleteImage($brand->logo_path);
+
+            $brand->logo_path = $this->storageService->saveFile(
+                $brandProperties['logo'],
+                Constants::BRAND_LOGO_PATH
+            );
+            $this->firebaseStorageService->uploadImage($brand->logo_path);
         }
 
         $brand->save();

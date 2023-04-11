@@ -12,12 +12,12 @@ use Illuminate\Support\Facades\Log;
 class ProductService
 {
     private $storageService;
-    private $firebaseService;
+    private $firebaseStorageService;
 
     public function __construct()
     {
         $this->storageService = new StorageService();
-        $this->firebaseService = new FirebaseService();
+        $this->firebaseStorageService = new FirebaseStorageService();
     }
 
     public function getProductById($productId)
@@ -46,6 +46,10 @@ class ProductService
 
     public function createProduct($productProperties)
     {
+        $productMainImage = $this->storageService->saveFile(
+            $productProperties['mainImage'],
+            Constants::PRODUCT_IMAGE_PATH
+        );
         $product = Product::create([
             'category_id' => $productProperties['categoryId'],
             'brand_id' => $productProperties['brandId'],
@@ -56,12 +60,10 @@ class ProductService
             'quantity' => $productProperties['quantity'],
             'warranty_period' => $productProperties['warrantyPeriod'],
             'description' => $productProperties['description'],
-            'main_image_path' => $this->storageService->saveFile(
-                $productProperties['mainImage'],
-                Constants::PRODUCT_IMAGE_PATH
-            ),
+            'main_image_path' => $productMainImage,
             'delete_flag' => false,
         ]);
+        $this->firebaseStorageService->uploadImage($productMainImage);
 
         $this->createProductImages([
             'productId' => $product->id,
@@ -196,7 +198,7 @@ class ProductService
 
         foreach ($images as $image) {
             $imagePath = $this->storageService->saveFile($image, Constants::PRODUCT_IMAGE_PATH);
-            $this->firebaseService->uploadImage($imagePath);
+            $this->firebaseStorageService->uploadImage($imagePath);
 
             ProductImage::create([
                 'product_id' => $productImageProperties['productId'],
@@ -208,8 +210,10 @@ class ProductService
     public function deleteProductImage($productImageId)
     {
         $productImage = ProductImage::find($productImageId);
+
         $this->storageService->deleteFile($productImage->image_path);
-        $this->firebaseService->deleteImage($productImage->image_path);
+        $this->firebaseStorageService->deleteImage($productImage->image_path);
+
         $productImage->delete();
     }
 
@@ -219,6 +223,8 @@ class ProductService
 
         foreach ($productImages as $productImage) {
             $this->storageService->deleteFile($productImage->image_path);
+            $this->firebaseStorageService->deleteImage($productImage->image_path);
+
             $productImage->delete();
         }
     }

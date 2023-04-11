@@ -12,15 +12,14 @@ use Kreait\Firebase\Factory;
  * - Put json file above to the \storage\app\public\credentials\json-file-name.json
  * - Put FIREBASE_CREDENTIALS = \storage\app\public\credentials\json-file-name.json to .env file
  */
-class FirebaseService
+class FirebaseStorageService
 {
     private $firebaseStorage;
     private $firebaseBucket;
 
     public function __construct()
     {
-        $this->firebaseStorage = (new Factory)
-            ->withServiceAccount(base_path(env('FIREBASE_CREDENTIALS')))
+        $this->firebaseStorage = (new Factory)->withServiceAccount(base_path(env('FIREBASE_CREDENTIALS')))
             ->createStorage();
         $this->firebaseBucket = $this->firebaseStorage->getBucket();
     }
