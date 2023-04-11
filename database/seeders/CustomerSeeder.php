@@ -65,7 +65,7 @@ class CustomerSeeder extends Seeder
                 'city' => 'Thanh pho Can Tho',
                 'district' => 'Quan Ninh Kieu',
                 'ward' => 'Phuong An Binh',
-                'specific_address' => 'Dai hoc FPT, 600, Duong Nguyen Van Cu (noi dai),',
+                'specific_address' => 'Dai hoc FPT, Duong Nguyen Van Cu',
                 'address_type' => AddressType::OFFICE,
                 'default_flag' => false,
             ],

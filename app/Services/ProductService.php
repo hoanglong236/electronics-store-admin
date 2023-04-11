@@ -12,10 +12,12 @@ use Illuminate\Support\Facades\Log;
 class ProductService
 {
     private $storageService;
+    private $firebaseService;
 
     public function __construct()
     {
         $this->storageService = new StorageService();
+        $this->firebaseService = new FirebaseService();
     }
 
     public function getProductById($productId)
@@ -194,6 +196,7 @@ class ProductService
 
         foreach ($images as $image) {
             $imagePath = $this->storageService->saveFile($image, Constants::PRODUCT_IMAGE_PATH);
+            $this->firebaseService->uploadImage($imagePath);
 
             ProductImage::create([
                 'product_id' => $productImageProperties['productId'],
@@ -206,6 +209,7 @@ class ProductService
     {
         $productImage = ProductImage::find($productImageId);
         $this->storageService->deleteFile($productImage->image_path);
+        $this->firebaseService->deleteImage($productImage->image_path);
         $productImage->delete();
     }
 

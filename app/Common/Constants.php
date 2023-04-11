@@ -31,6 +31,8 @@ class Constants
     const ORDER_STATUS_COMPLETED = OrderStatusConstants::COMPLETED;
     const ORDER_STATUS_CANCELLED = OrderStatusConstants::CANCELLED;
 
+    const FIREBASE_STORAGE_IMAGES_PATH = 'project_images/';
+
     private function __construct()
     {
     }
