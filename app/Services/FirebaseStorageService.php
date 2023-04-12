@@ -8,7 +8,8 @@ use Kreait\Firebase\Factory;
 /**
  * Firebase configuration steps:
  * - Require firebase library: composer require kreait/laravel-firebase
- * - Download service accounts private key: ... > Project settings > Service accounts > Pick Node js > Generate new private key
+ * - Download service accounts private key:
+ *   ... > Project settings > Service accounts > Pick Node js > Generate new private key => json file
  * - Put json file above to the \storage\app\public\credentials\ folder
  * - Put FIREBASE_CREDENTIALS = \storage\app\public\credentials\<json-file-name>.json to .env file
  */
