@@ -46,6 +46,7 @@ class BrandService
 
         $brand->name = $brandProperties['name'];
         $brand->slug = $brandProperties['slug'];
+
         if (isset($brandProperties['logo'])) {
             $this->storageService->deleteFile($brand->logo_path);
             $this->firebaseStorageService->deleteImage($brand->logo_path);

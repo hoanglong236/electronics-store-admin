@@ -87,10 +87,13 @@ class ProductService
 
         if (isset($productProperties['mainImage'])) {
             $this->storageService->deleteFile($product->main_image_path);
+            $this->firebaseStorageService->deleteImage($product->main_image_path);
+
             $product->main_image_path = $this->storageService->saveFile(
                 $productProperties['mainImage'],
                 Constants::PRODUCT_IMAGE_PATH
             );
+            $this->firebaseStorageService->uploadImage($product->main_image_path);
         }
 
         $product->save();
@@ -99,9 +102,6 @@ class ProductService
     public function deleteProduct($productId)
     {
         $product = $this->getProductById($productId);
-
-        $this->storageService->deleteFile($product->main_image_path);
-        $this->deleteProductImagesInProduct($productId);
         $product->delete_flag = true;
 
         $product->save();
@@ -215,17 +215,5 @@ class ProductService
         $this->firebaseStorageService->deleteImage($productImage->image_path);
 
         $productImage->delete();
-    }
-
-    private function deleteProductImagesInProduct($productId)
-    {
-        $productImages = ProductImage::where('product_id', $productId)->get();
-
-        foreach ($productImages as $productImage) {
-            $this->storageService->deleteFile($productImage->image_path);
-            $this->firebaseStorageService->deleteImage($productImage->image_path);
-
-            $productImage->delete();
-        }
     }
 }
