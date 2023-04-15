@@ -120,6 +120,7 @@ class CustomerSeeder extends Seeder
                 'delete_flag' => false,
             ]);
             $this->generateCustomerAddresses($customer->id);
+            $this->generateCustomerCartAndCartItems($customer->id);
         }
     }
 }
