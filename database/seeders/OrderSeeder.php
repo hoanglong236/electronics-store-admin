@@ -14,19 +14,19 @@ use Illuminate\Support\Facades\DB;
 
 class OrderSeeder extends Seeder
 {
-    private $randomOrderCount = 4;
-    private $randomProductCount = 4;
-    private $randomCustomerCount = 4;
+    const RANDOM_ORDER_COUNT = 4;
+    const RANDOM_PRODUCT_COUNT = 4;
+    const RANDOM_CUSTOMER_COUNT = 4;
 
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        $customers = $this->getRandomCustomers($this->randomCustomerCount);
+        $customers = $this->getRandomCustomers(static::RANDOM_CUSTOMER_COUNT);
         foreach ($customers as $customer) {
             $deliveryAddress = $this->getCustomerDeliveryAddress($customer->id);
-            $this->generateRandomOrders($this->randomOrderCount, $customer->id, $deliveryAddress);
+            $this->generateRandomOrders(static::RANDOM_ORDER_COUNT, $customer->id, $deliveryAddress);
         }
     }
 
@@ -76,7 +76,7 @@ class OrderSeeder extends Seeder
                 'payment_method' => $paymentMethods[mt_rand(0, count($paymentMethods) - 1)],
             ]);
 
-            $products = $this->getRandomProducts($this->randomProductCount);
+            $products = $this->getRandomProducts(static::RANDOM_PRODUCT_COUNT);
             foreach ($products as $product) {
                 $quantity = mt_rand(1, 2);
                 OrderItem::create([

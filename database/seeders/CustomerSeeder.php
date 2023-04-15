@@ -14,8 +14,9 @@ use Illuminate\Support\Facades\Hash;
 
 class CustomerSeeder extends Seeder
 {
-    private $randomProductCount = 3;
-    private $randomCustomerCount = 8;
+    const RANDOM_PRODUCT_COUNT = 3;
+    const RANDOM_CUSTOMER_COUNT = 8;
+    const NON_HASH_PASSWORD = 'Abc12345';
 
     /**
      * Run the database seeds.
@@ -33,7 +34,7 @@ class CustomerSeeder extends Seeder
             'gender' => true,
             'phone' => '1234567890',
             'email' => 'customer@gmail.com',
-            'password' => Hash::make('Abc12345'),
+            'password' => Hash::make(static::NON_HASH_PASSWORD),
             'disable_flag' => false,
             'delete_flag' => false,
         ]);
@@ -86,7 +87,7 @@ class CustomerSeeder extends Seeder
             'customer_id' => $customerId,
         ]);
 
-        $products = $this->getRandomProducts($this->randomProductCount);
+        $products = $this->getRandomProducts(static::RANDOM_PRODUCT_COUNT);
         foreach ($products as $product) {
             $quantity = mt_rand(1, 2);
             CartItem::create([
@@ -107,8 +108,8 @@ class CustomerSeeder extends Seeder
 
     private function generateCustomers()
     {
-        $password = Hash::make('Abc12345');
-        for ($i = 0; $i < $this->randomCustomerCount; $i++) {
+        $password = Hash::make(static::NON_HASH_PASSWORD);
+        for ($i = 0; $i < static::RANDOM_CUSTOMER_COUNT; $i++) {
             $customer = Customer::create([
                 'name' => 'Customer ' . ($i + 1),
                 'gender' => mt_rand(0, 1) === 1,
