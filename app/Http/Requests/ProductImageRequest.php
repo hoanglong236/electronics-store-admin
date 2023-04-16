@@ -27,10 +27,13 @@ class ProductImageRequest extends FormRequest
         ];
     }
 
+    /**
+     * Override the default
+     */
     public function messages()
     {
         return [
-            'images.*.mimes' => 'Uploaded files must be images.',
+            'images.*.mimes' => 'File #:position is invalid. Upload files must be images.',
         ];
     }
 }
