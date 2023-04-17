@@ -54,13 +54,11 @@ class OrderSeeder extends Seeder
             ->inRandomOrder()
             ->first();
 
-        return [
-            'address' => $customerAddress->specific_address . ', '
-                . $customerAddress->ward . ', '
-                . $customerAddress->district . ', '
-                . $customerAddress->city,
-            'address_type' => $customerAddress->address_type,
-        ];
+        return '(' . $customerAddress->address_type . ') '
+            . $customerAddress->specific_address . ', '
+            . $customerAddress->ward . ', '
+            . $customerAddress->district . ', '
+            . $customerAddress->city;
     }
 
     private function generateRandomOrders($orderCount, $customerId, $deliveryAddress)
@@ -70,8 +68,7 @@ class OrderSeeder extends Seeder
         for ($i = 0; $i < $orderCount; $i++) {
             $order = Order::create([
                 'customer_id' => $customerId,
-                'delivery_address' => $deliveryAddress['address'],
-                'address_type' => $deliveryAddress['address_type'],
+                'delivery_address' => $deliveryAddress,
                 'status' => $orderStatusArray[mt_rand(0, count($orderStatusArray) - 1)],
                 'payment_method' => $paymentMethods[mt_rand(0, count($paymentMethods) - 1)],
             ]);

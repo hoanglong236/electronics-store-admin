@@ -57,7 +57,7 @@ class CategoryController extends Controller
         $categoryIdNameMap = $this->categoryService->getCategoryIdNameMap();
         $data = [
             'pageTitle' => 'Create category',
-            'categoryIdNameMap' => $categoryIdNameMap(),
+            'categoryIdNameMap' => $categoryIdNameMap,
         ];
 
         return view('pages.category.category-create-page', ['data' => $data]);

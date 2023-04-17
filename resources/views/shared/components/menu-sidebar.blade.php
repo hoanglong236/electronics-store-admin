@@ -13,14 +13,14 @@
                         <i class="fas fa-tachometer-alt"></i>Dashboard
                     </a>
                 </li>
-                <li class="{{ Request::routeIs('catalog.brand.*') ? 'active' : '' }}">
-                    <a href="{{ route('catalog.brand.index') }}">
-                        <i class="fas fa-tag"></i>Brand
-                    </a>
-                </li>
                 <li class="{{ Request::routeIs('catalog.category.*') ? 'active' : '' }}">
                     <a href="{{ route('catalog.category.index') }}">
                         <i class="fas fa-tag"></i>Category
+                    </a>
+                </li>
+                <li class="{{ Request::routeIs('catalog.brand.*') ? 'active' : '' }}">
+                    <a href="{{ route('catalog.brand.index') }}">
+                        <i class="fas fa-tag"></i>Brand
                     </a>
                 </li>
                 <li class="{{ Request::routeIs('catalog.product.*') ? 'active' : '' }}">
