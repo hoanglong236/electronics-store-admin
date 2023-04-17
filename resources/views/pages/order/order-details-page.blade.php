@@ -6,7 +6,7 @@
     ])
 
     <div class="row mt-4">
-        <div class="col-lg-8">
+        <div class="col-md-9">
             @include('pages.order.components.order-items-table', [
                 'customOrderItems' => $data['customOrderItems'],
             ])
@@ -14,7 +14,7 @@
     </div>
 
     <div class="row mt-5">
-        <div class="col-lg-8">
+        <div class="col-md-9">
             @include('pages.order.components.customer-info-table', [
                 'customerInfo' => [
                     'id' => $data['customOrder']->customer_id,
@@ -28,7 +28,7 @@
     </div>
 
     <div class="row mt-5">
-        <div class="col-lg-8">
+        <div class="col-md-9">
             @include('pages.order.components.order-info-table', [
                 'orderInfo' => [
                     'id' => $data['customOrder']->id,
