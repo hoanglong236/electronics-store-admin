@@ -402,3 +402,11 @@
 .filter-wrapper span {
     font-size: 1.4rem;
 }
+
+span.enable-status {
+    color: #5bad60;
+}
+
+span.disable-status {
+    color: #ff5555;
+}

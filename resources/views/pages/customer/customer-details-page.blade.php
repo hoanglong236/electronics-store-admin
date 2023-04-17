@@ -8,14 +8,14 @@
     </a>
 
     <div class="row mt-4">
-        <div class="col-lg-5">
-            @include('pages.customer.components.customer-details-card', [
+        <div class="col-md-8">
+            @include('pages.customer.components.customer-details-table', [
                 'customer' => $data['customer'],
             ])
         </div>
     </div>
 
-    <div class="row m-t-10">
+    <div class="row mt-4">
         <div class="col-md-12">
             @include('pages.customer.components.customer-address-table', [
                 'customerAddresses' => $data['customerAddresses'],

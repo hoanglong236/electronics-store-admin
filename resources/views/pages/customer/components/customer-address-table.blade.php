@@ -2,21 +2,24 @@
     <table class="table table-borderless table-data5 table-radius">
         <thead>
             <tr>
-                <th>Province</th>
-                <th>District</th>
-                <th>Ward</th>
-                <th>Specific address</th>
-                <th>Address type</th>
+                <th>#</th>
+                <th>Address</th>
+                <th>Type</th>
                 <th>Default</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($customerAddresses as $customerAddress)
+            @foreach ($customerAddresses as $index => $customerAddress)
                 <tr>
-                    <td>{{ $customerAddress->city }}</td>
-                    <td>{{ $customerAddress->district }}</td>
-                    <td>{{ $customerAddress->ward }}</td>
-                    <td>{{ $customerAddress->specific_address }}</td>
+                    <td>{{ $index + 1 }}</td>
+                    <td>{{ $customerAddress->specific_address .
+                        ', ' .
+                        $customerAddress->ward .
+                        ', ' .
+                        $customerAddress->district .
+                        ', ' .
+                        $customerAddress->city }}
+                    </td>
                     <td>{{ $customerAddress->address_type }}</td>
                     <td>
                         <div class="form-check">
