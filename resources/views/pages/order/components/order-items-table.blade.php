@@ -1,4 +1,4 @@
-<div class="table-responsive m-b-40">
+<div class="table-responsive">
     <table class="table table-borderless table-data6 table-radius">
         <thead>
             <tr>

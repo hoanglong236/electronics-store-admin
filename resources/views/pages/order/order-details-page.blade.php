@@ -5,7 +5,15 @@
         'backUrl' => route('manage.order.index'),
     ])
 
-    <div class="row mt-4 mb-4">
+    <div class="row mt-4">
+        <div class="col-lg-8">
+            @include('pages.order.components.order-items-table', [
+                'customOrderItems' => $data['customOrderItems'],
+            ])
+        </div>
+    </div>
+
+    <div class="row mt-5">
         <div class="col-lg-8">
             @include('pages.order.components.customer-info-table', [
                 'customerInfo' => [
@@ -14,7 +22,6 @@
                     'phone' => $data['customOrder']->customer_phone,
                     'email' => $data['customOrder']->customer_email,
                     'deliveryAddress' => $data['customOrder']->delivery_address,
-                    'addressType' => $data['customOrder']->address_type,
                 ],
             ])
         </div>
@@ -22,15 +29,9 @@
 
     <div class="row mt-5">
         <div class="col-lg-8">
-            @include('pages.order.components.order-items-table', [
-                'customOrderItems' => $data['customOrderItems'],
-            ])
-        </div>
-        <div class="col-lg-4">
             @include('pages.order.components.order-info-table', [
                 'orderInfo' => [
                     'id' => $data['customOrder']->id,
-                    'itemCount' => count($data['customOrderItems']),
                     'totalAmount' => $data['customOrder']->total,
                     'status' => $data['customOrder']->status,
                     'paymentMethod' => $data['customOrder']->payment_method,

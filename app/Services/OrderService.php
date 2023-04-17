@@ -161,7 +161,6 @@ class OrderService
                 'orders.id',
                 'orders.customer_id',
                 'orders.delivery_address',
-                'orders.address_type',
                 'orders.status',
                 'orders.payment_method',
                 'orders.created_at',

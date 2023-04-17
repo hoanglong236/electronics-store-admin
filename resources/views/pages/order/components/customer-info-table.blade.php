@@ -9,7 +9,7 @@
         <tbody>
             <tr>
                 <td>1</td>
-                <td>Customer Id</td>
+                <td>ID</td>
                 <td>{{ $customerInfo['id'] }}</td>
             </tr>
             <tr>
@@ -31,7 +31,6 @@
                 <td>5</td>
                 <td>Delivery Address</td>
                 <td>
-                    <span style="font-weight: 600;">({{ $customerInfo['addressType'] }})</span>&nbsp;
                     {{ $customerInfo['deliveryAddress'] }}
                 </td>
             </tr>
