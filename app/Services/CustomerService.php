@@ -14,12 +14,12 @@ class CustomerService
         return Customer::where(['id' => $customerId, 'delete_flag' => false])->first();
     }
 
-    public function listCustomersPaginate($itemPerPage)
+    public function getCustomerPaginator($itemPerPage)
     {
         return Customer::where('delete_flag', false)->paginate($itemPerPage);
     }
 
-    public function updateDisableFlagCustomer($customerDisableFlagProperties, $customerId)
+    public function updateCustomerDisableFlag($customerDisableFlagProperties, $customerId)
     {
         $customer = $this->getCustomerById($customerId);
         $customer->disable_flag = $customerDisableFlagProperties['disableFlag'];
@@ -35,7 +35,7 @@ class CustomerService
         $customer->save();
     }
 
-    public function searchCustomersPaginate($customerSearchProperties, $itemPerPage)
+    public function getSearchCustomerPaginator($customerSearchProperties, $itemPerPage)
     {
         $searchOption = $customerSearchProperties['searchOption'];
         $searchKeyword = $customerSearchProperties['searchKeyword'];

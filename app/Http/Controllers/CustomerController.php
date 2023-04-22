@@ -22,8 +22,11 @@ class CustomerController extends Controller
 
     public function index()
     {
+        $customerPaginator = $this->customerService->getCustomerPaginator(Constants::CUSTOMER_PAGE_COUNT);
+
         $data = $this->getCommonDataForCustomersPage();
-        $data['customers'] = $this->customerService->listCustomersPaginate(Constants::CUSTOMER_PAGE_COUNT);
+        $data['customers'] = $customerPaginator->items();
+        $data['customerPaginator'] = $customerPaginator;
 
         return view('pages.customer.customers-page', ['data' => $data]);
     }
@@ -31,14 +34,16 @@ class CustomerController extends Controller
     public function search(CustomerSearchRequest $customerSearchRequest)
     {
         $customerSearchProperties = $customerSearchRequest->validated();
-
-        $data = $this->getCommonDataForCustomersPage();
-        $data['customers'] = $this->customerService->searchCustomersPaginate(
+        $searchCustomerPaginator = $this->customerService->getSearchCustomerPaginator(
             $customerSearchProperties,
             Constants::CUSTOMER_PAGE_COUNT
         );
-        $data['customers']->withPath('search?' .
-            UtilsService::convertMapToParamsString($customerSearchProperties));
+
+        $data = $this->getCommonDataForCustomersPage();
+        $data['customers'] = $searchCustomerPaginator->items();
+        $data['customerPaginator'] = $searchCustomerPaginator->withPath(
+            'search?' . UtilsService::convertMapToParamsString($customerSearchProperties)
+        );
         $data['searchKeyword'] = $customerSearchProperties['searchKeyword'];
         $data['currentSearchOption'] = $customerSearchProperties['searchOption'];
 
@@ -58,7 +63,7 @@ class CustomerController extends Controller
     public function updateDisableFlag(CustomerDisableFlagRequest $customerDisableFlagRequest, $customerId)
     {
         $customerDisableFlagProperties = $customerDisableFlagRequest->validated();
-        $this->customerService->updateDisableFlagCustomer($customerDisableFlagProperties, $customerId);
+        $this->customerService->updateCustomerDisableFlag($customerDisableFlagProperties, $customerId);
 
         Session::flash(Constants::ACTION_SUCCESS, Constants::UPDATE_SUCCESS);
         return redirect()->action([CustomerController::class, 'index']);
