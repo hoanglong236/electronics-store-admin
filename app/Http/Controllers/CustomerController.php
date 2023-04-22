@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Common\Constants;
 use App\DataFilterConstants\CustomerSearchOptionConstants;
-use App\Http\Requests\CustomerRequest;
+use App\Http\Requests\CustomerDisableFlagRequest;
 use App\Http\Requests\CustomerSearchRequest;
 use App\Services\CustomerService;
 use App\Services\UtilsService;
@@ -55,10 +55,10 @@ class CustomerController extends Controller
         ];
     }
 
-    public function updateDisableFlag(CustomerRequest $customerRequest, $customerId)
+    public function updateDisableFlag(CustomerDisableFlagRequest $customerDisableFlagRequest, $customerId)
     {
-        $customerProperties = $customerRequest->validated();
-        $this->customerService->updateDisableFlagCustomer($customerProperties, $customerId);
+        $customerDisableFlagProperties = $customerDisableFlagRequest->validated();
+        $this->customerService->updateDisableFlagCustomer($customerDisableFlagProperties, $customerId);
 
         Session::flash(Constants::ACTION_SUCCESS, Constants::UPDATE_SUCCESS);
         return redirect()->action([CustomerController::class, 'index']);

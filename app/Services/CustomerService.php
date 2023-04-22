@@ -19,10 +19,10 @@ class CustomerService
         return Customer::where('delete_flag', false)->paginate($itemPerPage);
     }
 
-    public function updateDisableFlagCustomer($customerProperties, $customerId)
+    public function updateDisableFlagCustomer($customerDisableFlagProperties, $customerId)
     {
         $customer = $this->getCustomerById($customerId);
-        $customer->disable_flag = $customerProperties['disableFlag'];
+        $customer->disable_flag = $customerDisableFlagProperties['disableFlag'];
 
         $customer->save();
     }

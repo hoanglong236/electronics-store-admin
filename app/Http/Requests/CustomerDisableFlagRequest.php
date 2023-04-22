@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Contracts\Validation\Validator;
 
-class CustomerRequest extends FormRequest
+class CustomerDisableFlagRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
