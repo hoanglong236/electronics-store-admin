@@ -30,8 +30,11 @@ class ProductController extends Controller
 
     public function index()
     {
+        $productPaginator = $this->productService->getProductPaginator(Constants::PRODUCT_PAGE_COUNT);
+
         $data = $this->getCommonDataForProductsPage();
-        $data['products'] = $this->productService->listProductsPaginate(Constants::PRODUCT_PAGE_COUNT);
+        $data['products'] = $productPaginator->items();
+        $data['productPaginator'] = $productPaginator;
 
         return view('pages.product.products-page', ['data' => $data]);
     }
@@ -39,13 +42,16 @@ class ProductController extends Controller
     public function search(ProductSearchRequest $productSearchRequest)
     {
         $productSearchProperties = $productSearchRequest->validated();
-
-        $data = $this->getCommonDataForProductsPage();
-        $data['products'] = $this->productService->searchProductsPaginate(
+        $searchProductPaginator = $this->productService->getSearchProductPaginator(
             $productSearchProperties,
             Constants::PRODUCT_PAGE_COUNT
         );
-        $data['products']->withPath('search?' . UtilsService::convertMapToParamsString($productSearchProperties));
+
+        $data = $this->getCommonDataForProductsPage();
+        $data['products'] = $searchProductPaginator->items();
+        $data['productPaginator'] = $searchProductPaginator->withPath(
+            'search?' . UtilsService::convertMapToParamsString($productSearchProperties)
+        );
         $data['searchKeyword'] = $productSearchProperties['searchKeyword'];
         $data['currentSearchOption'] = $productSearchProperties['searchOption'];
 

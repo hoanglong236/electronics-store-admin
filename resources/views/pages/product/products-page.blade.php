@@ -39,5 +39,5 @@
         @endforelse
     </div>
 
-    @include('shared.components.pagination-nav', ['paginator' => $data['products']])
+    @include('shared.components.pagination-nav', ['paginator' => $data['productPaginator']])
 @endsection

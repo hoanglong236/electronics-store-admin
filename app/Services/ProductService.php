@@ -39,7 +39,7 @@ class ProductService
             ->first();
     }
 
-    public function listProductsPaginate($itemPerPage)
+    public function getProductPaginator($itemPerPage)
     {
         return Product::where('delete_flag', false)->paginate($itemPerPage);
     }
@@ -107,7 +107,7 @@ class ProductService
         $product->save();
     }
 
-    public function searchProductsPaginate($productSearchProperties, $itemPerPage)
+    public function getSearchProductPaginator($productSearchProperties, $itemPerPage)
     {
         $searchOption = $productSearchProperties['searchOption'];
         $searchKeyword = $productSearchProperties['searchKeyword'];
