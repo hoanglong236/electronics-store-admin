@@ -8,8 +8,8 @@
     <div class="menu-sidebar__content js-scrollbar1">
         <nav class="navbar-sidebar">
             <ul class="list-unstyled navbar__list">
-                <li class="has-sub">
-                    <a href="#">
+                <li class="{{ Request::routeIs('dashboard.*') ? 'active' : '' }}">
+                    <a href="{{ route('dashboard.index') }}">
                         <i class="fas fa-tachometer-alt"></i>Dashboard
                     </a>
                 </li>

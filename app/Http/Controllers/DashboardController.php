@@ -12,6 +12,6 @@ class DashboardController extends Controller
             'pageTitle' => 'Dashboard'
         ];
 
-        return view('pages.dashboard-page', ['data' => $data]);
+        return view('pages.dashboard.dashboard-page', ['data' => $data]);
     }
 }
