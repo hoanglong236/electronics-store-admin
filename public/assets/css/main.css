@@ -118,7 +118,7 @@
     color: #ff5858;
 }
 
-.account-item>.content>a:after {
+.account-item > .content > a:after {
     margin-left: 8px;
 }
 
