@@ -28,7 +28,9 @@ class Constants
 
     const SEARCH_KEYWORD_MAX_LENGTH = 64;
 
-    const ORDER_STATUS_INCOMPLETE = 'Incomplete';
+    const ORDER_STATUS_RECEIVED = OrderStatusConstants::RECEIVED;
+    const ORDER_STATUS_PROCESSING = OrderStatusConstants::PROCESSING;
+    const ORDER_STATUS_DELIVERING = OrderStatusConstants::DELIVERING;
     const ORDER_STATUS_COMPLETED = OrderStatusConstants::COMPLETED;
     const ORDER_STATUS_CANCELLED = OrderStatusConstants::CANCELLED;
 

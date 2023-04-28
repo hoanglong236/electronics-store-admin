@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Common\Constants;
 use App\ModelConstants\OrderStatusConstants;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -34,35 +33,25 @@ class DashboardService
     private function getInitialOrderStatusCount()
     {
         return [
-            Constants::ORDER_STATUS_COMPLETED => 0,
-            Constants::ORDER_STATUS_CANCELLED => 0,
-            Constants::ORDER_STATUS_INCOMPLETE => 0,
+            OrderStatusConstants::RECEIVED => 0,
+            OrderStatusConstants::PROCESSING => 0,
+            OrderStatusConstants::DELIVERING => 0,
+            OrderStatusConstants::COMPLETED => 0,
+            OrderStatusConstants::CANCELLED => 0,
         ];
     }
 
     public function getOrderStatisticData($fromDate, $toDate)
     {
         $orderStatusCount = $this->getInitialOrderStatusCount();
-        $totalEarning = 0;
         $customOrders = $this->getCustomOrdersInRange($fromDate, $toDate);
 
         foreach ($customOrders as $customOrder) {
-            switch ($customOrder->status) {
-                case OrderStatusConstants::COMPLETED:
-                    $orderStatusCount[Constants::ORDER_STATUS_COMPLETED]++;
-                    $totalEarning += $customOrder->total;
-                    break;
-                case OrderStatusConstants::CANCELLED:
-                    $orderStatusCount[Constants::ORDER_STATUS_CANCELLED]++;
-                    break;
-                default:
-                    $orderStatusCount[Constants::ORDER_STATUS_INCOMPLETE]++;
-            }
+            $orderStatusCount[$customOrder->status]++;
         }
 
         $orderStatisticData = [
             'statusCount' => $orderStatusCount,
-            'totalEarning' => $totalEarning,
         ];
         return $orderStatisticData;
     }

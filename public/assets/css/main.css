@@ -467,3 +467,24 @@ span.disable-status {
 .dashboard-search-btn:hover {
     background: #3868cd;
 }
+
+.dot--completed {
+    background-color: rgb(91, 173, 96);
+}
+
+.dot--incomplete {
+    background-color: rgb(64, 127, 246);
+}
+
+.dot--cancelled {
+    background-color: rgb(255, 85, 85);
+}
+
+table.order-chart-legend-table {
+    font-size: 1.3rem;
+    line-height: 1.6rem;
+}
+
+table.order-chart-legend-table td {
+    border-top: unset;
+}

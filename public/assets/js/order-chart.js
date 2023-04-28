@@ -1,4 +1,4 @@
-const labels = ["Completed", "Incomplete", "Cancelled"];
+const labels = [" Completed", " Incomplete", " Cancelled"];
 const chartType = "doughnut";
 
 const completedOrderBgColor = "rgb(91, 173, 96)";
