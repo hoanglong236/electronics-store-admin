@@ -488,3 +488,30 @@ table.order-chart-legend-table {
 table.order-chart-legend-table td {
     border-top: unset;
 }
+
+.chart-legend-explain-wrapper {
+    font-size: 1.2rem;
+}
+
+.incomplete-legend-explain {
+    color: rgb(64, 127, 246);
+}
+
+.order-chart-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.excel-btn {
+    background-color: #ddd;
+    border: 1px solid #777;
+}
+
+.excel-btn:hover {
+    background-color: #cfcfcf;
+}
+
+.excel-btn > img {
+    width: 30px;
+}

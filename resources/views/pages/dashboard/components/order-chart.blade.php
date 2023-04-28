@@ -31,12 +31,17 @@
                 </tr>
             </tbody>
         </table>
+
+        <div class="chart-legend-explain-wrapper my-5">
+            <span class="incomplete-legend-explain">
+                *Incomplete orders include: <i>received, processing, delivering</i> orders
+            </span>
+        </div>
     </div>
     <div class="col-lg-8">
         <canvas id="orderChart"></canvas>
     </div>
 </div>
-
 
 @push('scripts')
     <script src="{{ asset('assets/js/order-chart.js') }}"></script>

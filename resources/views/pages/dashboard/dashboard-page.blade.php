@@ -34,7 +34,15 @@
         <div class="col-lg-9">
             <div class="au-card m-b-30">
                 <div class="au-card-inner">
-                    <h3 class="title-2 m-b-40">Order Chart</h3>
+                    <div class="order-chart-header m-b-40">
+                        <h3 class="title-2 ">Order Chart</h3>
+                        <div class="order-chart-action-wrapper">
+                            @include('shared.components.buttons.excel-button', [
+                                'excelUrl' => '',
+                            ])
+                        </div>
+                    </div>
+
                     @include('pages.dashboard.components.order-chart', [
                         'orderStatisticData' => $data['orderStatisticData'],
                     ])
