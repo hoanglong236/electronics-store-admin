@@ -3,6 +3,7 @@
 namespace App\Libs\Excel;
 
 use App\Libs\Excel\Constants\ExcelBorderLineStyle;
+use App\Libs\Excel\Constants\ExcelFillType;
 
 class ExcelCellStyle
 {
@@ -20,7 +21,7 @@ class ExcelCellStyle
      *     'strikethrough' => true,
      * ]
      */
-    private $fontProps;
+    private $fontProps = [];
 
     /**
      * Example:
@@ -31,7 +32,7 @@ class ExcelCellStyle
      *     ],
      * ]
      */
-    private $borderProps;
+    private $borderProps = [];
 
     /**
      * Example:
@@ -42,7 +43,16 @@ class ExcelCellStyle
      *     'indent' => 1,
      * ]
      */
-    private $alignmentProps;
+    private $alignmentProps = [];
+
+    /**
+     * Example:
+     * [
+     *     'fillType' => ExcelFillType::SOLID,
+     *     'color' => ['rgb' => '000000']
+     * ]
+     */
+    private $fillProps = [];
 
     public function __construct()
     {
@@ -143,5 +153,21 @@ class ExcelCellStyle
     {
         $this->alignmentProps['indent'] = $indent;
         return $this;
+    }
+
+    public function setFillProps($hexColor, $fillType = ExcelFillType::SOLID)
+    {
+        $this->fillProps = [
+            'color' => [
+                'rgb' => $hexColor,
+            ],
+            'fillType' => $fillType,
+        ];
+        return $this;
+    }
+
+    public function getFillProps()
+    {
+        return $this->fillProps;
     }
 }

@@ -46,6 +46,11 @@ class ExcelWorksheet
             $cellStyle->getAlignment()->applyFromArray($alignmentPropsToApply);
         }
 
+        $fillPropsToApply = $style->getFillProps();
+        if ($fillPropsToApply) {
+            $cellStyle->getFill()->applyFromArray($fillPropsToApply);
+        }
+
         return $this;
     }
 
