@@ -39,7 +39,10 @@ Route::middleware([RedirectIfAuthenticated::class])->group(function () {
 Route::middleware('auth:admin')->group(function () {
     Route::post('/logout', [AdminController::class, 'logout'])->name('logout');
 
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+    Route::group(['prefix' => 'dashboard'], function () {
+        Route::get('', [DashboardController::class, 'index'])->name('dashboard.index');
+        Route::post('export', [DashboardController::class, 'export'])->name('dashboard.export');
+    });
 
     Route::group(['prefix' => 'catalog/brand'], function () {
         Route::get('', [BrandController::class, 'index'])->name('catalog.brand.index');

@@ -38,7 +38,7 @@
                         <h3 class="title-2 ">Order Chart</h3>
                         <div class="order-chart-action-wrapper">
                             @include('shared.components.buttons.excel-button', [
-                                'excelUrl' => '',
+                                'excelUrl' => route('dashboard.export'),
                             ])
                         </div>
                     </div>
