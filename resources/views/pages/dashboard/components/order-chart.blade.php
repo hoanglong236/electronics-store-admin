@@ -8,18 +8,18 @@
         <table class="table order-chart-legend-table">
             <tbody>
                 <tr>
+                    <td><span class="dot dot--incomplete"></span></td>
+                    <td>Incomplete</td>
+                    <td>{{ $incompleteOrderCount }}</td>
+                    <td>{{ round(($incompleteOrderCount / $totalOrderCount) * 100, 2) }}%</td>
+                </tr>
+                <tr>
                     <td><span class="dot dot--completed"></span></td>
                     <td>Completed</td>
                     <td>{{ $orderStatisticData['statusCount'][Constants::ORDER_STATUS_COMPLETED] }}</td>
                     <td>
                         {{ round(($orderStatisticData['statusCount'][Constants::ORDER_STATUS_COMPLETED] / $totalOrderCount) * 100, 2) }}%
                     </td>
-                </tr>
-                <tr>
-                    <td><span class="dot dot--incomplete"></span></td>
-                    <td>Incomplete</td>
-                    <td>{{ $incompleteOrderCount }}</td>
-                    <td>{{ round(($incompleteOrderCount / $totalOrderCount) * 100, 2) }}%</td>
                 </tr>
                 <tr>
                     <td><span class="dot dot--cancelled"></span></td>
@@ -47,8 +47,8 @@
     <script src="{{ asset('assets/js/order-chart.js') }}"></script>
     <script>
         drawOrderChart(
-            {{ $orderStatisticData['statusCount'][Constants::ORDER_STATUS_COMPLETED] }},
             {{ $incompleteOrderCount }},
+            {{ $orderStatisticData['statusCount'][Constants::ORDER_STATUS_COMPLETED] }},
             {{ $orderStatisticData['statusCount'][Constants::ORDER_STATUS_CANCELLED] }}
         );
     </script>

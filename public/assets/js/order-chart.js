@@ -20,8 +20,8 @@ const optionsConfig = {
 };
 
 const drawOrderChart = (
-    completedOrderCount,
     incompleteOrderCount,
+    completedOrderCount,
     cancelledOrderCount
 ) => {
     const ctx = document.getElementById("orderChart");
@@ -35,13 +35,13 @@ const drawOrderChart = (
                 datasets: [
                     {
                         data: [
-                            completedOrderCount,
                             incompleteOrderCount,
+                            completedOrderCount,
                             cancelledOrderCount,
                         ],
                         backgroundColor: [
-                            completedOrderBgColor,
                             incompleteOrderBgColor,
+                            completedOrderBgColor,
                             cancelledOrderBgColor,
                         ],
                         hoverOffset: 4,
