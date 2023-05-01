@@ -104,11 +104,27 @@ class ExcelWorksheet
         $this->worksheet->getDefaultRowDimension()->setRowHeight($height);
     }
 
+    /**
+     * Insert a new row, updating all possible related data.
+     *
+     * @param int $before Insert before this row
+     * @param int $numberOfRows Number of new rows to insert
+     *
+     * @return $this
+     */
     public function insertRowBefore(int $before, int $numberOfRows = 1)
     {
         $this->worksheet->insertNewRowBefore($before + 1, $numberOfRows);
     }
 
+    /**
+     * Insert a new column, updating all possible related data.
+     *
+     * @param string $before Insert before this column
+     * @param int $numberOfColumns Number of new columns to insert
+     *
+     * @return $this
+     */
     public function insertColumnBefore(int $before, int $numberOfCols = 1)
     {
         $this->worksheet->insertNewColumnBeforeByIndex($before + 1, $numberOfCols);

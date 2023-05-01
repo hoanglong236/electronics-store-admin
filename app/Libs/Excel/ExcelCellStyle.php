@@ -2,7 +2,7 @@
 
 namespace App\Libs\Excel;
 
-use App\Libs\Excel\Constants\ExcelBorderLineStyle;
+use App\Libs\Excel\Constants\ExcelBorderConstants;
 use App\Libs\Excel\Constants\ExcelFillType;
 
 class ExcelCellStyle
@@ -26,8 +26,8 @@ class ExcelCellStyle
     /**
      * Example:
      * [
-     *     ExcelBorderPosition::ALL => [
-     *         'borderStyle' => ExcelBorderLineStyle::THIN,
+     *     ExcelBorderConstants::POSITION_ALL => [
+     *         'borderStyle' => ExcelBorderConstants::LINE_STYLE_THIN,
      *         'color' => ['rgb' => '000000'],
      *     ],
      * ]
@@ -91,25 +91,25 @@ class ExcelCellStyle
         return $this;
     }
 
-    public function setFontBold(bool $bold)
+    public function setFontBold(bool $bold = true)
     {
         $this->fontProps['bold'] = $bold;
         return $this;
     }
 
-    public function setFontItalic(bool $italic)
+    public function setFontItalic(bool $italic = true)
     {
         $this->fontProps['italic'] = $italic;
         return $this;
     }
 
-    public function setFontUnderline(bool $underline)
+    public function setFontUnderline(bool $underline = true)
     {
         $this->fontProps['underline'] = $underline;
         return $this;
     }
 
-    public function setFontStrikethrough(bool $strikethrough)
+    public function setFontStrikethrough(bool $strikethrough = true)
     {
         $this->fontProps['strikethrough'] = $strikethrough;
         return $this;
@@ -120,9 +120,18 @@ class ExcelCellStyle
         return $this->borderProps;
     }
 
-    public function setBorderProp(
-        string $position,
-        string $borderLineStyle = ExcelBorderLineStyle::THIN,
+    /**
+     * Set the border properties
+     *
+     * @param string $position see ExcelBorderConstants::POSITION_*
+     * @param string $borderLineStyle see ExcelBorderConstants::LINE_STYLE_*
+     * @param string $hexColor Color of the border (hex code)
+     *
+     * @return $this
+     */
+    public function setBorder(
+        string $position = ExcelBorderConstants::POSITION_ALL,
+        string $borderLineStyle = ExcelBorderConstants::LINE_STYLE_THIN,
         string $hexColor = '000000'
     ) {
         $this->borderProps[$position] = [
@@ -139,19 +148,33 @@ class ExcelCellStyle
         return $this->alignmentProps;
     }
 
+    /**
+     * Set the horizontal align
+     *
+     * @param string $align see ExcelTextAlignmentType::HORIZONTAL_*
+     *
+     * @return $this
+     */
     public function setHorizontalAlign(string $align)
     {
         $this->alignmentProps['horizontal'] = $align;
         return $this;
     }
 
+    /**
+     * Set the vertical align
+     *
+     * @param string $align see ExcelTextAlignmentType::VERTICAL_*
+     *
+     * @return $this
+     */
     public function setVerticalAlign(string $align)
     {
         $this->alignmentProps['vertical'] = $align;
         return $this;
     }
 
-    public function setTextWrap(bool $wrap)
+    public function setTextWrap(bool $wrap = true)
     {
         $this->alignmentProps['wrapText'] = $wrap;
         return $this;
@@ -163,7 +186,13 @@ class ExcelCellStyle
         return $this;
     }
 
-    public function setFillProps($hexColor, $fillType = ExcelFillType::SOLID)
+    /**
+     * Set the fill color (background color)
+     *
+     * @param string $hexColor Color of the fill (hex code)
+     * @param string $fillType see ExcelFillType::*
+     */
+    public function setFillProps(string $hexColor, string $fillType = ExcelFillType::SOLID)
     {
         $this->fillProps = [
             'color' => [
@@ -179,7 +208,14 @@ class ExcelCellStyle
         return $this->fillProps;
     }
 
-    public function setNumberFormatProps($formatCode)
+    /**
+     * Set number format.
+     *
+     * @param string $formatCode Can be a custom string or a value in ExcelNumberFormatType::*
+     *
+     * @return $this
+     */
+    public function setNumberFormat(string $formatCode)
     {
         $this->numberFormatProps = [
             'formatCode' => $formatCode,

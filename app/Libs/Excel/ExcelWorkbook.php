@@ -27,11 +27,13 @@ class ExcelWorkbook
         $writer->save('php://output');
     }
 
-    public function createExcelWorksheet() {
+    public function createExcelWorksheet()
+    {
         return new ExcelWorksheet($this->spreadsheet->createSheet());
     }
 
-    public function getActiveWorksheet() {
+    public function getActiveWorksheet()
+    {
         return new ExcelWorksheet($this->spreadsheet->getActiveSheet());
     }
 }
