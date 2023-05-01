@@ -22,15 +22,12 @@ class ExcelWorksheet
         string $dataType = ExcelCellValueType::STRING
     ) {
         $this->worksheet->setCellValueExplicit([$col + 1, $row + 1], $value, $dataType);
-        return $this;
     }
 
     public function setCellStyle(int $row, int $col, ExcelCellStyle $excelCellStyle)
     {
         $styleToApply = $this->worksheet->getStyle([$col + 1, $row + 1]);
         $this->applyStyleFromExcelCellStyle($styleToApply, $excelCellStyle);
-
-        return $this;
     }
 
     public function setRangeStyle(
@@ -42,8 +39,6 @@ class ExcelWorksheet
     ) {
         $styleToApply = $this->worksheet->getStyle([$colStart + 1, $rowStart + 1, $colEnd + 1, $rowEnd + 1]);
         $this->applyStyleFromExcelCellStyle($styleToApply, $excelCellStyle);
-
-        return $this;
     }
 
     private function applyStyleFromExcelCellStyle(Style &$styleToApply, ExcelCellStyle $excelCellStyle)
@@ -104,29 +99,8 @@ class ExcelWorksheet
         $this->worksheet->getDefaultRowDimension()->setRowHeight($height);
     }
 
-    /**
-     * Insert a new row, updating all possible related data.
-     *
-     * @param int $before Insert before this row
-     * @param int $numberOfRows Number of new rows to insert
-     *
-     * @return $this
-     */
-    public function insertRowBefore(int $before, int $numberOfRows = 1)
+    public function setTitle($title)
     {
-        $this->worksheet->insertNewRowBefore($before + 1, $numberOfRows);
-    }
-
-    /**
-     * Insert a new column, updating all possible related data.
-     *
-     * @param string $before Insert before this column
-     * @param int $numberOfColumns Number of new columns to insert
-     *
-     * @return $this
-     */
-    public function insertColumnBefore(int $before, int $numberOfCols = 1)
-    {
-        $this->worksheet->insertNewColumnBeforeByIndex($before + 1, $numberOfCols);
+        $this->worksheet->setTitle($title);
     }
 }

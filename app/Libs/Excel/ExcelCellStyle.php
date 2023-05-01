@@ -192,7 +192,7 @@ class ExcelCellStyle
      * @param string $hexColor Color of the fill (hex code)
      * @param string $fillType see ExcelFillType::*
      */
-    public function setFillProps(string $hexColor, string $fillType = ExcelFillType::SOLID)
+    public function setFillColor(string $hexColor, string $fillType = ExcelFillType::SOLID)
     {
         $this->fillProps = [
             'color' => [
