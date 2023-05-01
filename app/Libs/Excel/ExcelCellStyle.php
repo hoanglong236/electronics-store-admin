@@ -54,6 +54,14 @@ class ExcelCellStyle
      */
     private $fillProps = [];
 
+    /**
+     * Example:
+     * [
+     *     'formatCode' => any string or ExcelNumberFormatCode::GENERAL
+     * ]
+     */
+    private $numberFormatProps = [];
+
     public function __construct()
     {
     }
@@ -169,5 +177,18 @@ class ExcelCellStyle
     public function getFillProps()
     {
         return $this->fillProps;
+    }
+
+    public function setNumberFormatProps($formatCode)
+    {
+        $this->numberFormatProps = [
+            'formatCode' => $formatCode,
+        ];
+        return $this;
+    }
+
+    public function getNumberFormatProps()
+    {
+        return $this->numberFormatProps;
     }
 }

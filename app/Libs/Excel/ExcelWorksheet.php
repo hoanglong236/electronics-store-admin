@@ -48,24 +48,29 @@ class ExcelWorksheet
 
     private function applyStyleFromExcelCellStyle(Style &$styleToApply, ExcelCellStyle $excelCellStyle)
     {
-        $fontPropsToApply = $excelCellStyle->getFontProps();
-        if (count($fontPropsToApply) > 0) {
-            $styleToApply->getFont()->applyFromArray($fontPropsToApply);
+        $fontProps = $excelCellStyle->getFontProps();
+        if (count($fontProps) > 0) {
+            $styleToApply->getFont()->applyFromArray($fontProps);
         }
 
-        $borderPropsToApply = $excelCellStyle->getBorderProps();
-        if (count($borderPropsToApply) > 0) {
-            $styleToApply->getBorders()->applyFromArray($borderPropsToApply);
+        $borderProps = $excelCellStyle->getBorderProps();
+        if (count($borderProps) > 0) {
+            $styleToApply->getBorders()->applyFromArray($borderProps);
         }
 
-        $alignmentPropsToApply = $excelCellStyle->getAlignmentProps();
-        if ($alignmentPropsToApply) {
-            $styleToApply->getAlignment()->applyFromArray($alignmentPropsToApply);
+        $alignmentProps = $excelCellStyle->getAlignmentProps();
+        if ($alignmentProps) {
+            $styleToApply->getAlignment()->applyFromArray($alignmentProps);
         }
 
-        $fillPropsToApply = $excelCellStyle->getFillProps();
-        if ($fillPropsToApply) {
-            $styleToApply->getFill()->applyFromArray($fillPropsToApply);
+        $fillProps = $excelCellStyle->getFillProps();
+        if ($fillProps) {
+            $styleToApply->getFill()->applyFromArray($fillProps);
+        }
+
+        $numberFormatProps = $excelCellStyle->getNumberFormatProps();
+        if ($numberFormatProps) {
+            $styleToApply->getNumberFormat()->applyFromArray($numberFormatProps);
         }
     }
 
