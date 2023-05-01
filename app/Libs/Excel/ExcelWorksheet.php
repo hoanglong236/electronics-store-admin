@@ -78,4 +78,39 @@ class ExcelWorksheet
     {
         $this->worksheet->mergeCells([$colStart + 1, $rowStart + 1, $colEnd + 1, $rowEnd + 1]);
     }
+
+    public function setAutoFitColumnWidth(int $col)
+    {
+        $this->worksheet->getColumnDimensionByColumn($col + 1)->setAutoSize(true);
+    }
+
+    public function setColumnWidth(int $col, float $width)
+    {
+        $this->worksheet->getColumnDimensionByColumn($col + 1)->setWidth($width);
+    }
+
+    public function setDefaultColumnWidth(float $width)
+    {
+        $this->worksheet->getDefaultColumnDimension()->setWidth($width);
+    }
+
+    public function setRowHeight(int $row, float $height = -1)
+    {
+        $this->worksheet->getRowDimension($row + 1)->setRowHeight($height);
+    }
+
+    public function setDefaultRowHeight(float $height)
+    {
+        $this->worksheet->getDefaultRowDimension()->setRowHeight($height);
+    }
+
+    public function insertRowBefore(int $before, int $numberOfRows = 1)
+    {
+        $this->worksheet->insertNewRowBefore($before + 1, $numberOfRows);
+    }
+
+    public function insertColumnBefore(int $before, int $numberOfCols = 1)
+    {
+        $this->worksheet->insertNewColumnBeforeByIndex($before + 1, $numberOfCols);
+    }
 }
