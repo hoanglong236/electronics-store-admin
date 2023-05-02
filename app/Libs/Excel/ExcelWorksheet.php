@@ -3,6 +3,8 @@
 namespace App\Libs\Excel;
 
 use App\Libs\Excel\Constants\ExcelCellValueType;
+use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
+use PhpOffice\PhpSpreadsheet\Cell\Hyperlink;
 use PhpOffice\PhpSpreadsheet\Style\Style;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
@@ -22,6 +24,32 @@ class ExcelWorksheet
         string $dataType = ExcelCellValueType::STRING
     ) {
         $this->worksheet->setCellValueExplicit([$col + 1, $row + 1], $value, $dataType);
+    }
+
+    /**
+     * Set a HyperLink.
+     *
+     * @param string $url Url to link the cell to
+     * @param string $tooltip Tooltip to display on the hyperlink
+     */
+    public function setHyperlink(
+        int $row,
+        int $col,
+        string $value,
+        bool $addLinkStyle,
+        string $url,
+        string $tooltip = '',
+    ) {
+        $this->setCellValue($row, $col, $value);
+        if ($addLinkStyle) {
+            $hyperLinkStyle = (new ExcelCellStyle())
+                ->setFontColor('4287f5')
+                ->setFontUnderline();
+            $this->setCellStyle($row, $col, $hyperLinkStyle);
+        }
+
+        $cellAddress = static::getCellAddress($row, $col);
+        $this->worksheet->setHyperlink($cellAddress, new Hyperlink($url, $tooltip));
     }
 
     public function setCellStyle(int $row, int $col, ExcelCellStyle $excelCellStyle)
@@ -99,8 +127,21 @@ class ExcelWorksheet
         $this->worksheet->getDefaultRowDimension()->setRowHeight($height);
     }
 
-    public function setTitle($title)
+    public function setTitle(string $title)
     {
         $this->worksheet->setTitle($title);
+    }
+
+    public function setPageSetup(ExcelPageSetup $pageSetup)
+    {
+        $this->worksheet->setPageSetup($pageSetup->getPageSetup());
+        $this->worksheet->setPageMargins($pageSetup->getPageMargins());
+        $this->worksheet->setHeaderFooter($pageSetup->getHeaderFooter());
+        $this->worksheet->setPrintGridlines($pageSetup->getPrintGridLines());
+    }
+
+    public static function getCellAddress(int $row, int $col)
+    {
+        return Coordinate::stringFromColumnIndex($col + 1) . ($row + 1);
     }
 }
