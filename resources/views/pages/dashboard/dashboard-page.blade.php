@@ -39,32 +39,15 @@
 
     <div class="row">
         <div class="col-md-12">
-            @include('pages.dashboard.components.order-section', [
-                'fromDate' => $data['fromDate'],
-                'toDate' => $data['toDate'],
-                'orderStatisticData' => $data['orderStatisticData'],
-            ])
-        </div>
-    </div>
-
-    <div class="row mt-4">
-        <div class="col-md-4">
-            @include('pages.dashboard.components.best-selling-products-section', [
-                'fromDate' => $data['fromDate'],
-                'toDate' => $data['toDate'],
-            ])
-        </div>
-        <div class="col-md-4">
-            @include('pages.dashboard.components.best-selling-categories-section', [
-                'fromDate' => $data['fromDate'],
-                'toDate' => $data['toDate'],
-            ])
-        </div>
-        <div class="col-md-4">
-            @include('pages.dashboard.components.best-selling-brands-section', [
-                'fromDate' => $data['fromDate'],
-                'toDate' => $data['toDate'],
-            ])
+            @if ($data['placedOrderCount'] > 0)
+                @include('pages.dashboard.components.order-section', [
+                    'fromDate' => $data['fromDate'],
+                    'toDate' => $data['toDate'],
+                    'orderStatisticData' => $data['orderStatisticData'],
+                ])
+            @else
+                <div>No data.</div>
+            @endif
         </div>
     </div>
 @endsection
