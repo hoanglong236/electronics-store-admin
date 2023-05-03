@@ -1,4 +1,4 @@
-<form action="{{ route('login.handler') }}" method="POST">
+<form action="{{ route('login-handler') }}" method="POST">
     @csrf
     <div class="form-group">
         <input class="au-input au-input--full au-input--small" type="email" name="email" value="{{ old('email') }}"

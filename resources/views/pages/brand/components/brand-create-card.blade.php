@@ -2,7 +2,7 @@
     <div class="card-header">
         <span class="card-title--medium">Create brand</span>
     </div>
-    <form action="{{ route('catalog.brand.create.handler') }}" method="post" enctype="multipart/form-data"
+    <form action="{{ route('catalog.brand.create-handler') }}" method="post" enctype="multipart/form-data"
         class="form-horizontal">
         @csrf
         <div class="card-body card-block">

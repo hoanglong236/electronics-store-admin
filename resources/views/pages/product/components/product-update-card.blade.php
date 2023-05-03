@@ -2,7 +2,7 @@
     <div class="card-header">
         <strong>Update Product</strong>
     </div>
-    <form action="{{ route('catalog.product.update.handler', $product->id) }}" method="post" enctype="multipart/form-data"
+    <form action="{{ route('catalog.product.update-handler', $product->id) }}" method="post" enctype="multipart/form-data"
         class="form-horizontal">
         @csrf
         @method('PUT')

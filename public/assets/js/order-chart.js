@@ -27,7 +27,7 @@ const drawOrderChart = (
     const ctx = document.getElementById("orderChart");
 
     if (ctx) {
-        ctx.height = 200;
+        ctx.height = 180;
         const myChart = new Chart(ctx, {
             type: chartType,
             data: {

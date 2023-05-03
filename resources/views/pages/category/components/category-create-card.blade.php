@@ -2,7 +2,7 @@
     <div class="card-header card-header-flex">
         <span class="form-title">Create category</span>
     </div>
-    <form action="{{ route('catalog.category.create.handler') }}" method="post" enctype="multipart/form-data"
+    <form action="{{ route('catalog.category.create-handler') }}" method="post" enctype="multipart/form-data"
         class="form-horizontal">
         @csrf
         <div class="card-body card-block">

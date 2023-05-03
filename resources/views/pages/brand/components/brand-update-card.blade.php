@@ -2,7 +2,7 @@
     <div class="card-header">
         <span class="card-title--medium">Update brand</span>
     </div>
-    <form action="{{ route('catalog.brand.update.handler', $brand->id) }}" method="post" enctype="multipart/form-data"
+    <form action="{{ route('catalog.brand.update-handler', $brand->id) }}" method="post" enctype="multipart/form-data"
         class="form-horizontal">
         @csrf
         @method('PUT')

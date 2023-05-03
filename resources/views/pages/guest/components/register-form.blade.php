@@ -1,4 +1,4 @@
-<form id="registerForm" action="{{ route('register.handler') }}" method="POST">
+<form id="registerForm" action="{{ route('register-handler') }}" method="POST">
     @csrf
     <div class="form-group">
         <input class="au-input au-input--full" type="email" name="email" value="{{ old('email') }}" placeholder="Email"

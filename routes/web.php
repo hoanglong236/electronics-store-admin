@@ -28,12 +28,12 @@ Route::middleware([RedirectIfAuthenticated::class])->group(function () {
     Route::get('/login', [AdminController::class, 'index'])
         ->name('login');
     Route::post('/login-handler', [AdminController::class, 'loginHandler'])
-        ->name('login.handler');
+        ->name('login-handler');
 
     Route::get('/register', [AdminController::class, 'register'])
         ->name('register');
     Route::post('/register-handler', [AdminController::class, 'registerHandler'])
-        ->name('register.handler');
+        ->name('register-handler');
 });
 
 Route::middleware('auth:admin')->group(function () {
@@ -55,11 +55,11 @@ Route::middleware('auth:admin')->group(function () {
         Route::get('/create', [BrandController::class, 'create'])
             ->name('catalog.brand.create');
         Route::post('/create-handler', [BrandController::class, 'createHandler'])
-            ->name('catalog.brand.create.handler');
+            ->name('catalog.brand.create-handler');
         Route::get('/update/{brandId}', [BrandController::class, 'update'])
             ->name('catalog.brand.update');
         Route::put('/update-handler/{brandId}', [BrandController::class, 'updateHandler'])
-            ->name('catalog.brand.update.handler');
+            ->name('catalog.brand.update-handler');
         Route::delete('/delete/{brandId}', [BrandController::class, 'delete'])
             ->name('catalog.brand.delete');
         Route::get('/search', [BrandController::class, 'search'])
@@ -72,11 +72,11 @@ Route::middleware('auth:admin')->group(function () {
         Route::get('/create', [CategoryController::class, 'create'])
             ->name('catalog.category.create');
         Route::post('/create-handler', [CategoryController::class, 'createHandler'])
-            ->name('catalog.category.create.handler');
+            ->name('catalog.category.create-handler');
         Route::get('/update/{categoryId}', [CategoryController::class, 'update'])
             ->name('catalog.category.update');
         Route::put('/update-handler/{categoryId}', [CategoryController::class, 'updateHandler'])
-            ->name('catalog.category.update.handler');
+            ->name('catalog.category.update-handler');
         Route::delete('/delete/{categoryId}', [CategoryController::class, 'delete'])
             ->name('catalog.category.delete');
         Route::get('/search', [CategoryController::class, 'search'])
@@ -89,11 +89,11 @@ Route::middleware('auth:admin')->group(function () {
         Route::get('/create', [ProductController::class, 'create'])
             ->name('catalog.product.create');
         Route::post('/create-handler', [ProductController::class, 'createHandler'])
-            ->name('catalog.product.create.handler');
+            ->name('catalog.product.create-handler');
         Route::get('/update/{productId}', [ProductController::class, 'update'])
             ->name('catalog.product.update');
         Route::put('/update-handler/{productId}', [ProductController::class, 'updateHandler'])
-            ->name('catalog.product.update.handler');
+            ->name('catalog.product.update-handler');
         Route::delete('/delete/{productId}', [ProductController::class, 'delete'])
             ->name('catalog.product.delete');
         Route::get('/search', [ProductController::class, 'search'])
@@ -102,7 +102,7 @@ Route::middleware('auth:admin')->group(function () {
         Route::get('/details/{productId}', [ProductController::class, 'showDetails'])
             ->name('catalog.product.details');
         Route::post('/details/{productId}/images/create-handler', [ProductController::class, 'createImages'])
-            ->name('catalog.product.details.images.create.handler');
+            ->name('catalog.product.details.images.create-handler');
         Route::delete('/details/{productId}/images/delete/{productImageId}', [ProductController::class, 'deleteImage'])
             ->name('catalog.product.details.images.delete');
     });
