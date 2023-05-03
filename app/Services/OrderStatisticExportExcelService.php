@@ -13,7 +13,7 @@ use App\Libs\Excel\ExcelWorksheet;
 use App\ModelConstants\OrderStatusConstants;
 use App\Services\DashboardService;
 
-class DashboardExportExcelService extends BaseExcelService
+class OrderStatisticExportExcelService extends BaseExcelService
 {
     private $dashboardService;
 
