@@ -39,15 +39,17 @@
 
     <div class="row">
         <div class="col-md-12">
-            @if ($data['placedOrderCount'] > 0)
-                @include('pages.dashboard.components.order-section', [
-                    'fromDate' => $data['fromDate'],
-                    'toDate' => $data['toDate'],
-                    'orderStatisticData' => $data['orderStatisticData'],
-                ])
-            @else
-                <div>No data.</div>
-            @endif
+            <div class="au-card m-b-30">
+                @if ($data['placedOrderCount'] > 0)
+                    @include('pages.dashboard.components.order-section', [
+                        'fromDate' => $data['fromDate'],
+                        'toDate' => $data['toDate'],
+                        'orderStatisticData' => $data['orderStatisticData'],
+                    ])
+                @else
+                    <div>No data.</div>
+                @endif
+            </div>
         </div>
     </div>
 @endsection
