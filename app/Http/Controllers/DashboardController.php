@@ -24,8 +24,9 @@ class DashboardController extends Controller
     {
         $newCustomerCount = $this->dashboardService->getNewCustomerCount($fromDate, $toDate);
         $placedOrderCount = $this->dashboardService->getPlacedOrderCount($fromDate, $toDate);
-        $solidItemCount = $this->dashboardService->getSolidItemCount($fromDate, $toDate);
+        $soldItemCount = $this->dashboardService->getSoldItemCount($fromDate, $toDate);
         $orderStatisticData = $this->dashboardService->getOrderStatisticData($fromDate, $toDate);
+        $bestSellingStatisticData = $this->dashboardService->getBestSellingStatisticData($fromDate, $toDate);
 
         return [
             'pageTitle' => 'Dashboard',
@@ -33,8 +34,9 @@ class DashboardController extends Controller
             'toDate' => $toDate,
             'newCustomerCount' => $newCustomerCount,
             'placedOrderCount' => $placedOrderCount,
-            'solidItemCount' => $solidItemCount,
+            'soldItemCount' => $soldItemCount,
             'orderStatisticData' => $orderStatisticData,
+            'bestSellingStatisticData' => $bestSellingStatisticData,
         ];
     }
 
@@ -65,5 +67,9 @@ class DashboardController extends Controller
             $dashboardExportExcelProperties['fromDate'],
             $dashboardExportExcelProperties['toDate'],
         );
+    }
+
+    public function categoryStatisticExportExcel(DashboardExportExcelRequest $dashboardExportExcelRequest)
+    {
     }
 }

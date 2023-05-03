@@ -31,8 +31,8 @@
             ])
         </div>
         <div class="col-md-4">
-            @include('pages.dashboard.components.items-solid-overview-area', [
-                'overviewData' => $data['solidItemCount'],
+            @include('pages.dashboard.components.items-sold-overview-area', [
+                'overviewData' => $data['soldItemCount'],
             ])
         </div>
     </div>
@@ -45,6 +45,23 @@
                         'fromDate' => $data['fromDate'],
                         'toDate' => $data['toDate'],
                         'orderStatisticData' => $data['orderStatisticData'],
+                    ])
+                @else
+                    <div>No data.</div>
+                @endif
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="au-card m-b-30">
+                @if ($data['placedOrderCount'] > 0)
+                    @include('pages.dashboard.components.category-statistic-section', [
+                        'fromDate' => $data['fromDate'],
+                        'toDate' => $data['toDate'],
+                        'categories' => $data['bestSellingStatisticData']['bestSellingCategories'],
+                        'totalSoldQuantity' => $data['soldItemCount']
                     ])
                 @else
                     <div>No data.</div>

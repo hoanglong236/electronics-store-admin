@@ -47,6 +47,8 @@ Route::middleware('auth:admin')->group(function () {
             ->name('dashboard.search');
         Route::post('/order-statistic/export-excel', [DashboardController::class, 'orderStatisticExportExcel'])
             ->name('dashboard.order-statistic.export-excel');
+        Route::post('/category-statistic/export-excel', [DashboardController::class, 'categoryStatisticExportExcel'])
+            ->name('dashboard.category-statistic.export-excel');
     });
 
     Route::group(['prefix' => 'catalog/brand'], function () {

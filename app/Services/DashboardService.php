@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Common\Constants;
 use App\ModelConstants\OrderStatusConstants;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -97,15 +98,79 @@ class DashboardService
         return $result->placedOrderCount;
     }
 
-    public function getSolidItemCount($fromDate, $toDate)
+    public function getSoldItemCount($fromDate, $toDate)
     {
         $result = DB::table('order_items')
             ->join('orders', 'orders.id', '=', 'order_items.order_id')
-            ->selectRaw('IFNULL(sum(order_items.quantity), 0) as solidItemCount')
+            ->selectRaw('IFNULL(sum(order_items.quantity), 0) as soldItemCount')
             ->whereBetween('orders.created_at', [$fromDate, $toDate])
             ->where('orders.status', OrderStatusConstants::COMPLETED)
             ->first();
 
-        return intval($result->solidItemCount);
+        return intval($result->soldItemCount);
+    }
+
+    private function getBestSellingCategories($fromDate, $toDate, $limit)
+    {
+        return DB::table('orders')
+            ->join('order_items', 'order_items.order_id', '=', 'orders.id')
+            ->join('products', 'products.id', '=', 'order_items.product_id')
+            ->join('categories', 'categories.id', '=', 'products.category_id')
+            ->select(
+                'categories.id',
+                'categories.name',
+                DB::raw('sum(order_items.quantity) as soldQuantity'),
+            )
+            ->whereBetween('orders.created_at', [$fromDate, $toDate])
+            ->where('orders.status', OrderStatusConstants::COMPLETED)
+            ->groupBy('categories.id', 'categories.name')
+            ->orderByRaw('soldQuantity desc')
+            ->limit($limit)
+            ->get();
+    }
+
+    private function getBestSellingBrandsFromCategories($fromDate, $toDate, $categories, $limit)
+    {
+        $brands = [];
+        foreach ($categories as $category) {
+            $brands[$category->id] = DB::table('orders')
+                ->join('order_items', 'order_items.order_id', '=', 'orders.id')
+                ->join('products', 'products.id', '=', 'order_items.product_id')
+                ->join('brands', 'brands.id', '=', 'products.brand_id')
+                ->select(
+                    'products.category_id',
+                    'brands.id',
+                    'brands.name',
+                    DB::raw('sum(order_items.quantity) as soldQuantity'),
+                )
+                ->whereBetween('orders.created_at', [$fromDate, $toDate])
+                ->where('orders.status', OrderStatusConstants::COMPLETED)
+                ->where('products.category_id', $category->id)
+                ->groupBy('products.category_id', 'brands.id', 'brands.name')
+                ->orderByRaw('soldQuantity desc')
+                ->limit($limit)
+                ->get();
+        }
+        return $brands;
+    }
+
+    public function getBestSellingStatisticData($fromDate, $toDate)
+    {
+        $bestSellingCategories = $this->getBestSellingCategories(
+            $fromDate,
+            $toDate,
+            Constants::BEST_SELLING_CATEGORIES_LIMIT
+        );
+        $bestSellingBrandsMap = $this->getBestSellingBrandsFromCategories(
+            $fromDate,
+            $toDate,
+            $bestSellingCategories,
+            Constants::BEST_SELLING_BRANDS_LIMIT
+        );
+
+        return [
+            'bestSellingCategories' => $bestSellingCategories,
+            'bestSellingBrandsMap' => $bestSellingBrandsMap,
+        ];
     }
 }

@@ -2,5 +2,5 @@
     'overviewItemCSSClass' => 'overview-item--c2',
     'overviewIconCSSClass' => 'zmdi zmdi-shopping-cart',
     'overviewData' => $overviewData,
-    'overviewTitle' => 'items solid',
+    'overviewTitle' => 'items sold',
 ])

@@ -36,6 +36,9 @@ class Constants
 
     const FIREBASE_STORAGE_IMAGES_PATH = 'project_images/';
 
+    const BEST_SELLING_CATEGORIES_LIMIT = 3;
+    const BEST_SELLING_BRANDS_LIMIT = 3;
+
     private function __construct()
     {
     }
