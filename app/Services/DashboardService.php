@@ -26,6 +26,7 @@ class DashboardService
                 'customers.email as customer_email',
                 DB::raw('sum(order_items.total_price) as total'),
             )
+            ->whereBetween('orders.created_at', [$fromDate, $toDate])
             ->groupBy('orders.id')
             ->get();
     }
@@ -46,6 +47,10 @@ class DashboardService
         $orderStatusCount = $this->getInitialOrderStatusCount();
         $customOrders = $this->getCustomOrdersInRange($fromDate, $toDate);
 
+        if (count($customOrders) === 0) {
+            return [];
+        }
+
         foreach ($customOrders as $customOrder) {
             $orderStatusCount[$customOrder->status]++;
         }
@@ -54,5 +59,53 @@ class DashboardService
             'statusCount' => $orderStatusCount,
         ];
         return $orderStatisticData;
+    }
+
+    public function getOrderStatisticExportData($fromDate, $toDate)
+    {
+        $orderStatusCount = $this->getInitialOrderStatusCount();
+        $customOrders = $this->getCustomOrdersInRange($fromDate, $toDate);
+
+        foreach ($customOrders as $customOrder) {
+            $orderStatusCount[$customOrder->status]++;
+        }
+
+        $orderStatisticData = [
+            'statusCount' => $orderStatusCount,
+            'customOrders' => $customOrders,
+        ];
+        return $orderStatisticData;
+    }
+
+    public function getNewCustomerCount($fromDate, $toDate)
+    {
+        $result = DB::table('customers')
+            ->selectRaw('count(*) as newCustomerCount')
+            ->whereBetween('created_at', [$fromDate, $toDate])
+            ->first();
+
+        return $result->newCustomerCount;
+    }
+
+    public function getPlacedOrderCount($fromDate, $toDate)
+    {
+        $result = DB::table('orders')
+            ->selectRaw('count(*) as placedOrderCount')
+            ->whereBetween('orders.created_at', [$fromDate, $toDate])
+            ->first();
+
+        return $result->placedOrderCount;
+    }
+
+    public function getSolidItemCount($fromDate, $toDate)
+    {
+        $result = DB::table('order_items')
+            ->join('orders', 'orders.id', '=', 'order_items.order_id')
+            ->selectRaw('IFNULL(sum(order_items.quantity), 0) as solidItemCount')
+            ->whereBetween('orders.created_at', [$fromDate, $toDate])
+            ->where('orders.status', OrderStatusConstants::COMPLETED)
+            ->first();
+
+        return intval($result->solidItemCount);
     }
 }

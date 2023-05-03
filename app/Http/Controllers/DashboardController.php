@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DashboardExportExcelRequest;
+use App\Http\Requests\DashboardSearchRequest;
 use App\Services\DashboardExportExcelService;
 use App\Services\DashboardService;
 use Illuminate\Http\Request;
@@ -18,23 +20,50 @@ class DashboardController extends Controller
         $this->dashboardExportExcelService = new DashboardExportExcelService();
     }
 
-    public function index()
+    private function getCommonDataForDashboardPage($fromDate, $toDate)
     {
-        $firstDayOfMonth = Carbon::now()->firstOfMonth();
-        $currentDay = Carbon::now();
-        $orderStatisticData = $this->dashboardService->getOrderStatisticData($firstDayOfMonth, $currentDay);
+        $newCustomerCount = $this->dashboardService->getNewCustomerCount($fromDate, $toDate);
+        $placedOrderCount = $this->dashboardService->getPlacedOrderCount($fromDate, $toDate);
+        $solidItemCount = $this->dashboardService->getSolidItemCount($fromDate, $toDate);
+        $orderStatisticData = $this->dashboardService->getOrderStatisticData($fromDate, $toDate);
 
-        $data = [
+        return [
             'pageTitle' => 'Dashboard',
+            'fromDate' => $fromDate,
+            'toDate' => $toDate,
+            'newCustomerCount' => $newCustomerCount,
+            'placedOrderCount' => $placedOrderCount,
+            'solidItemCount' => $solidItemCount,
             'orderStatisticData' => $orderStatisticData,
         ];
+    }
+
+    public function index()
+    {
+        $firstDayOfMonth = Carbon::now()->firstOfMonth()->toDateString();
+        $currentDay = Carbon::now()->toDateString();
+
+        $data = $this->getCommonDataForDashboardPage($firstDayOfMonth, $currentDay);
         return view('pages.dashboard.dashboard-page', ['data' => $data]);
     }
 
-    public function export()
+    public function search(DashboardSearchRequest $dashboardSearchRequest)
     {
-        $firstDayOfMonth = Carbon::now()->firstOfMonth();
-        $currentDay = Carbon::now();
-        $this->dashboardExportExcelService->export($firstDayOfMonth, $currentDay);
+        $dashboardSearchProperties = $dashboardSearchRequest->validated();
+
+        $data = $this->getCommonDataForDashboardPage(
+            $dashboardSearchProperties['fromDate'],
+            $dashboardSearchProperties['toDate']
+        );
+        return view('pages.dashboard.dashboard-page', ['data' => $data]);
+    }
+
+    public function exportExcel(DashboardExportExcelRequest $dashboardExportExcelRequest)
+    {
+        $dashboardExportExcelProperties = $dashboardExportExcelRequest->validated();
+        $this->dashboardExportExcelService->export(
+            $dashboardExportExcelProperties['fromDate'],
+            $dashboardExportExcelProperties['toDate'],
+        );
     }
 }
