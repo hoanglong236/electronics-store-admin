@@ -134,10 +134,25 @@ class ExcelWorksheet
 
     public function setPageSetup(ExcelPageSetup $pageSetup)
     {
-        $this->worksheet->setPageSetup($pageSetup->getPageSetup());
-        $this->worksheet->setPageMargins($pageSetup->getPageMargins());
-        $this->worksheet->setHeaderFooter($pageSetup->getHeaderFooter());
-        $this->worksheet->setPrintGridlines($pageSetup->getPrintGridLines());
+        $pageSetupToSet = $pageSetup->getPageSetup();
+        if ($pageSetupToSet) {
+            $this->worksheet->setPageSetup($pageSetupToSet);
+        }
+
+        $pageMarginsToSet = $pageSetup->getPageMargins();
+        if ($pageMarginsToSet) {
+            $this->worksheet->setPageMargins($pageMarginsToSet);
+        }
+
+        $headerFooterToSet = $pageSetup->getHeaderFooter();
+        if ($headerFooterToSet) {
+            $this->worksheet->setHeaderFooter($headerFooterToSet);
+        }
+
+        $printGirdLines = $pageSetup->getPrintGridLines();
+        if ($printGirdLines) {
+            $this->worksheet->setPrintGridLines($printGirdLines);
+        }
     }
 
     public static function getCellAddress(int $row, int $col)
