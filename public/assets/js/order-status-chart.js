@@ -19,12 +19,12 @@ const optionsConfig = {
     },
 };
 
-const drawOrderChart = (
+const drawOrderStatusChart = (
     incompleteOrderCount,
     completedOrderCount,
     cancelledOrderCount
 ) => {
-    const ctx = document.getElementById("orderChart");
+    const ctx = document.getElementById("orderStatusChart");
 
     if (ctx) {
         ctx.height = 180;

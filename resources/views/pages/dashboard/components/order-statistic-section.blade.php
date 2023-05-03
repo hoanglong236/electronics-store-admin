@@ -1,9 +1,9 @@
-<div class="order-chart-wrapper">
-    <div class="order-chart-header m-b-40">
-        <h3 class="title-2 ">Order Status</h3>
-        <div class="order-chart-action-wrapper">
+<div class="chart-wrapper">
+    <div class="chart-header m-b-40">
+        <h3 class="title-2 ">Order Statistic</h3>
+        <div class="chart-action-wrapper">
             @include('shared.components.buttons.excel-button', [
-                'excelUrl' => route('dashboard.order-details.export-excel'),
+                'excelUrl' => route('dashboard.order-statistic.export-excel'),
                 'conditionFields' => [
                     'fromDate' => $fromDate,
                     'toDate' => $toDate,

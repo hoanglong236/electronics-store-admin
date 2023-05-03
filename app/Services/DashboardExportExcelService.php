@@ -25,10 +25,11 @@ class DashboardExportExcelService extends BaseExcelService
     public function export(string $fromDate, string $toDate)
     {
         $orderStatisticData = $this->dashboardService->getOrderStatisticExportData($fromDate, $toDate);
+        $currentDate = date('Y-m-d');
 
-        $workbook = new ExcelWorkbook("order_details.xlsx");
+        $workbook = new ExcelWorkbook("order_statistic_data_{$currentDate}.xlsx");
         $worksheet = $workbook->getActiveWorksheet();
-        $worksheet->setTitle('Order Details');
+        $worksheet->setTitle('Order Statistic');
         $worksheet->setPageSetup($this->generatePageSetup($fromDate, $toDate));
 
         $row = 0;
@@ -60,7 +61,7 @@ class DashboardExportExcelService extends BaseExcelService
             ->setPaperSize(ExcelPageSetupConstants::PAPER_SIZE_A4)
             ->setTopMargin(1)
             ->setBottomMargin(1)
-            ->setHeader("&C&B&14 ORDER DETAILS" . "&L\n\nFrom: {$fromDate} - To: {$toDate}")
+            ->setHeader("&C&B&14 ORDER STATISTIC" . "&L\n\nFrom: {$fromDate} - To: {$toDate}")
             ->setFooter("&L&D &T" . "&R&P of &N")
             ->setRepeatRows(0, 9);
     }

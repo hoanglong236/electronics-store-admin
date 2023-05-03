@@ -497,7 +497,7 @@ table.order-chart-legend-table td {
     color: rgb(64, 127, 246);
 }
 
-.order-chart-header {
+.chart-header {
     display: flex;
     align-items: center;
     justify-content: space-between;

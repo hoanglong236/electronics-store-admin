@@ -41,7 +41,7 @@
         <div class="col-md-12">
             <div class="au-card m-b-30">
                 @if ($data['placedOrderCount'] > 0)
-                    @include('pages.dashboard.components.order-section', [
+                    @include('pages.dashboard.components.order-statistic-section', [
                         'fromDate' => $data['fromDate'],
                         'toDate' => $data['toDate'],
                         'orderStatisticData' => $data['orderStatisticData'],

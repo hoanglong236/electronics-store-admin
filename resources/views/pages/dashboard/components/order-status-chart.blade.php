@@ -39,14 +39,14 @@
         </div>
     </div>
     <div class="col-md-8">
-        <canvas id="orderChart"></canvas>
+        <canvas id="orderStatusChart"></canvas>
     </div>
 </div>
 
 @push('scripts')
-    <script src="{{ asset('assets/js/order-chart.js') }}"></script>
+    <script src="{{ asset('assets/js/order-status-chart.js') }}"></script>
     <script>
-        drawOrderChart(
+        drawOrderStatusChart(
             {{ $incompleteOrderCount }},
             {{ $orderStatusCountArray[Constants::ORDER_STATUS_COMPLETED] }},
             {{ $orderStatusCountArray[Constants::ORDER_STATUS_CANCELLED] }}
