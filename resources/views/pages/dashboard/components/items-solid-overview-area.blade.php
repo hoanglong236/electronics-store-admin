@@ -3,5 +3,4 @@
     'overviewIconCSSClass' => 'zmdi zmdi-shopping-cart',
     'overviewData' => $overviewData,
     'overviewTitle' => 'items solid',
-    'overviewCharId' => 'widgetChart2',
 ])

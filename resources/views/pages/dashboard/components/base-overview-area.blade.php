@@ -9,8 +9,6 @@
                 <span>{{ $overviewTitle }}</span>
             </div>
         </div>
-        <div class="overview-chart">
-            <canvas id="{{ $overviewCharId }}"></canvas>
-        </div>
+        <div class="py-4"></div>
     </div>
 </div>

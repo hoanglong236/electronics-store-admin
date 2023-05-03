@@ -3,5 +3,4 @@
     'overviewIconCSSClass' => 'zmdi zmdi-account-o',
     'overviewData' => $overviewData,
     'overviewTitle' => 'new memebers',
-    'overviewCharId' => 'widgetChart1',
 ])

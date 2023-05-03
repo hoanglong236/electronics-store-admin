@@ -58,7 +58,7 @@ class DashboardController extends Controller
         return view('pages.dashboard.dashboard-page', ['data' => $data]);
     }
 
-    public function exportExcel(DashboardExportExcelRequest $dashboardExportExcelRequest)
+    public function exportExcelForOrderDetails(DashboardExportExcelRequest $dashboardExportExcelRequest)
     {
         $dashboardExportExcelProperties = $dashboardExportExcelRequest->validated();
         $this->dashboardExportExcelService->export(

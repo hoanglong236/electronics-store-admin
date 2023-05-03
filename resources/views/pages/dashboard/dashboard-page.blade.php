@@ -38,31 +38,33 @@
     </div>
 
     <div class="row">
-        <div class="col-lg-9">
-            <div class="au-card m-b-30">
-                @if ($data['orderStatisticData'])
-                    <div class="au-card-inner">
-                        <div class="order-chart-header m-b-40">
-                            <h3 class="title-2 ">Order Chart</h3>
-                            <div class="order-chart-action-wrapper">
-                                @include('shared.components.buttons.excel-button', [
-                                    'excelUrl' => route('dashboard.export.excel'),
-                                    'conditionFields' => [
-                                        'fromDate' => $data['fromDate'],
-                                        'toDate' => $data['toDate'],
-                                    ],
-                                ])
-                            </div>
-                        </div>
+        <div class="col-md-12">
+            @include('pages.dashboard.components.order-section', [
+                'fromDate' => $data['fromDate'],
+                'toDate' => $data['toDate'],
+                'orderStatisticData' => $data['orderStatisticData'],
+            ])
+        </div>
+    </div>
 
-                        @include('pages.dashboard.components.order-chart', [
-                            'orderStatisticData' => $data['orderStatisticData'],
-                        ])
-                    </div>
-                @else
-                    <div>No data.</div>
-                @endif
-            </div>
+    <div class="row mt-4">
+        <div class="col-md-4">
+            @include('pages.dashboard.components.best-selling-products-section', [
+                'fromDate' => $data['fromDate'],
+                'toDate' => $data['toDate'],
+            ])
+        </div>
+        <div class="col-md-4">
+            @include('pages.dashboard.components.best-selling-categories-section', [
+                'fromDate' => $data['fromDate'],
+                'toDate' => $data['toDate'],
+            ])
+        </div>
+        <div class="col-md-4">
+            @include('pages.dashboard.components.best-selling-brands-section', [
+                'fromDate' => $data['fromDate'],
+                'toDate' => $data['toDate'],
+            ])
         </div>
     </div>
 @endsection

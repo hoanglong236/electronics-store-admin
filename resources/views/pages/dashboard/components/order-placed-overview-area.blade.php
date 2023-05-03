@@ -3,5 +3,4 @@
     'overviewIconCSSClass' => 'zmdi zmdi-calendar-note',
     'overviewData' => $overviewData,
     'overviewTitle' => 'orders placed',
-    'overviewCharId' => 'widgetChart3',
 ])
