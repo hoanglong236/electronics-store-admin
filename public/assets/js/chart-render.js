@@ -1,17 +1,3 @@
-const pieChartOptionsConfig = {
-    responsive: true,
-    legend: {
-        display: false,
-    },
-    tooltips: {
-        titleFontFamily: "Poppins",
-        xPadding: 15,
-        yPadding: 10,
-        caretPadding: 0,
-        bodyFontSize: 16,
-    },
-};
-
 const renderPieChart = ({
     canvasId = "",
     height = 180,
@@ -19,8 +5,27 @@ const renderPieChart = ({
     labels = [],
     data = [],
     colors = [],
+    chartTitle = "",
 }) => {
     const ctx = document.getElementById(canvasId);
+    const pieChartOptionsConfig = {
+        responsive: true,
+        legend: {
+            display: false,
+        },
+        tooltips: {
+            titleFontFamily: "Poppins",
+            xPadding: 15,
+            yPadding: 10,
+            caretPadding: 0,
+            bodyFontSize: 16,
+        },
+        title: {
+            display: chartTitle ?? false,
+            text: chartTitle,
+            position: "bottom",
+        },
+    };
 
     if (ctx) {
         ctx.height = height;
