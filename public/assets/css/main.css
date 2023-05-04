@@ -469,15 +469,15 @@ span.disable-status {
 }
 
 .dot--completed {
-    background-color: rgb(91, 173, 96);
+    background-color: #5BAD60;
 }
 
 .dot--incomplete {
-    background-color: rgb(64, 127, 246);
+    background-color: #407FF6;
 }
 
 .dot--cancelled {
-    background-color: rgb(255, 85, 85);
+    background-color: #FF5555;
 }
 
 table.order-chart-legend-table {
@@ -494,7 +494,7 @@ table.order-chart-legend-table td {
 }
 
 .incomplete-legend-explain {
-    color: rgb(64, 127, 246);
+    color: #407FF6;
 }
 
 .chart-header {
