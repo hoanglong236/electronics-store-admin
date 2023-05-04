@@ -23,7 +23,7 @@ class ExcelWorksheet
         $value,
         string $dataType = ExcelCellValueType::STRING
     ) {
-        $this->worksheet->setCellValueExplicit([$col + 1, $row + 1], $value, $dataType);
+        $this->worksheet->setCellValueExplicit([$col, $row], $value, $dataType);
     }
 
     /**
@@ -54,7 +54,7 @@ class ExcelWorksheet
 
     public function setCellStyle(int $row, int $col, ExcelCellStyle $excelCellStyle)
     {
-        $styleToApply = $this->worksheet->getStyle([$col + 1, $row + 1]);
+        $styleToApply = $this->worksheet->getStyle([$col, $row]);
         $this->applyStyleFromExcelCellStyle($styleToApply, $excelCellStyle);
     }
 
@@ -65,7 +65,7 @@ class ExcelWorksheet
         int $colEnd,
         ExcelCellStyle $excelCellStyle
     ) {
-        $styleToApply = $this->worksheet->getStyle([$colStart + 1, $rowStart + 1, $colEnd + 1, $rowEnd + 1]);
+        $styleToApply = $this->worksheet->getStyle([$colStart, $rowStart, $colEnd, $rowEnd]);
         $this->applyStyleFromExcelCellStyle($styleToApply, $excelCellStyle);
     }
 
@@ -99,17 +99,17 @@ class ExcelWorksheet
 
     public function mergeCells(int $rowStart, int $rowEnd, int $colStart, int $colEnd)
     {
-        $this->worksheet->mergeCells([$colStart + 1, $rowStart + 1, $colEnd + 1, $rowEnd + 1]);
+        $this->worksheet->mergeCells([$colStart, $rowStart, $colEnd, $rowEnd]);
     }
 
     public function setAutoFitColumnWidth(int $col)
     {
-        $this->worksheet->getColumnDimensionByColumn($col + 1)->setAutoSize(true);
+        $this->worksheet->getColumnDimensionByColumn($col)->setAutoSize(true);
     }
 
     public function setColumnWidth(int $col, float $width)
     {
-        $this->worksheet->getColumnDimensionByColumn($col + 1)->setWidth($width);
+        $this->worksheet->getColumnDimensionByColumn($col)->setWidth($width);
     }
 
     public function setDefaultColumnWidth(float $width)
@@ -119,7 +119,7 @@ class ExcelWorksheet
 
     public function setRowHeight(int $row, float $height = -1)
     {
-        $this->worksheet->getRowDimension($row + 1)->setRowHeight($height);
+        $this->worksheet->getRowDimension($row)->setRowHeight($height);
     }
 
     public function setDefaultRowHeight(float $height)
@@ -157,6 +157,6 @@ class ExcelWorksheet
 
     public static function getCellAddress(int $row, int $col)
     {
-        return Coordinate::stringFromColumnIndex($col + 1) . ($row + 1);
+        return Coordinate::stringFromColumnIndex($col) . ($row);
     }
 }

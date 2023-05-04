@@ -151,14 +151,14 @@ class ExcelPageSetup
 
     public function setRepeatRows($rowStart, $rowEnd)
     {
-        $this->pageSetup->setRowsToRepeatAtTopByStartAndEnd($rowStart + 1, $rowEnd + 1);
+        $this->pageSetup->setRowsToRepeatAtTopByStartAndEnd($rowStart, $rowEnd);
         return $this;
     }
 
     public function setRepeatColumns($colStart, $colEnd)
     {
-        $colStartString = Coordinate::stringFromColumnIndex($colStart + 1);
-        $colEndString = Coordinate::stringFromColumnIndex($colEnd + 1);
+        $colStartString = Coordinate::stringFromColumnIndex($colStart);
+        $colEndString = Coordinate::stringFromColumnIndex($colEnd);
 
         $this->pageSetup->setColumnsToRepeatAtLeftByStartAndEnd($colStartString, $colEndString);
         return $this;

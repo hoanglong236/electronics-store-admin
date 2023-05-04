@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Libs\Excel\Constants\ExcelCellValueType;
-use App\Libs\Excel\Constants\ExcelNumberFormatType;
 use App\Libs\Excel\Constants\ExcelPageSetupConstants;
 use App\Libs\Excel\Constants\ExcelTextAlignmentType;
 use App\Libs\Excel\ExcelCellStyle;
@@ -32,7 +31,7 @@ class OrderStatisticExportExcelService extends BaseExcelService
         $worksheet->setTitle('Order Statistic');
         $worksheet->setPageSetup($this->generatePageSetup($fromDate, $toDate));
 
-        $row = 0;
+        $row = 1;
         $row += $this->generateTotalOrderStatusTable($row, $worksheet, $orderStatisticData['statusCount']);
 
         // skip next 2 rows
@@ -40,15 +39,15 @@ class OrderStatisticExportExcelService extends BaseExcelService
 
         $row += $this->generateCustomOrdersTable($row, $worksheet, $orderStatisticData['customOrders']);
 
-        $col = 0;
+        $col = 1;
         $worksheet->setColumnWidth($col + 2, 20);
         $worksheet->setColumnWidth($col + 3, 12);
         $worksheet->setColumnWidth($col + 4, 15);
         $worksheet->setColumnWidth($col + 5, 30);
         $worksheet->setColumnWidth($col + 6, 12);
-        $worksheet->setColumnWidth($col + 8, 12);
+        $worksheet->setColumnWidth($col + 8, 11);
         $worksheet->setColumnWidth($col + 9, 11);
-        $worksheet->setColumnWidth($col + 10, 11);
+        $worksheet->setColumnWidth($col + 10, 13);
 
         $workbook->download();
     }
@@ -63,12 +62,12 @@ class OrderStatisticExportExcelService extends BaseExcelService
             ->setBottomMargin(1)
             ->setHeader("&C&B&14 ORDER STATISTIC" . "&L\n\nFrom: {$fromDate} - To: {$toDate}")
             ->setFooter("&L&D &T" . "&R&P of &N")
-            ->setRepeatRows(0, 9);
+            ->setRepeatRows(1, 10);
     }
 
     private function generateTotalOrderStatusTable(int $rowStart, ExcelWorksheet $worksheet, array $orderStatusCountArray)
     {
-        $col = 9;
+        $col = 10;
         $row = $rowStart;
         $tableHeaderStyle = $this->generateTableHeaderStyle();
 
@@ -77,17 +76,12 @@ class OrderStatisticExportExcelService extends BaseExcelService
         $worksheet->setRangeStyle($row, $row, $col, $col + 1, $tableHeaderStyle);
         $row++;
 
-        $tableMainCellLeftStyle = (new ExcelCellStyle())->setFontBold()
-            ->setBorder()
-            ->setHorizontalAlign(ExcelTextAlignmentType::HORIZONTAL_LEFT);
-        $tableMainCellCenterStyle = (new ExcelCellStyle())->setFontBold()
-            ->setBorder()
-            ->setHorizontalAlign(ExcelTextAlignmentType::HORIZONTAL_CENTER);
+        $tableMainCellLeftStyle = $this->generateTableBodyBoldLeftStyle();
+        $tableMainCellCenterStyle = $this->generateTableBodyBoldCenterStyle();
         $tableSubCellIndentStyle = (new ExcelCellStyle())->setBorder()
             ->setHorizontalAlign(ExcelTextAlignmentType::HORIZONTAL_LEFT)
             ->setIndent(1);
-        $tableSubCellCenterStyle = (new ExcelCellStyle())->setBorder()
-            ->setHorizontalAlign(ExcelTextAlignmentType::HORIZONTAL_CENTER);
+        $tableSubCellCenterStyle = $this->generateTableBodyCenterStyle();
 
         $worksheet->setCellValue($row, $col, 'Incomplete');
         $worksheet->setCellStyle($row, $col, $tableMainCellLeftStyle);
@@ -119,7 +113,7 @@ class OrderStatisticExportExcelService extends BaseExcelService
 
     private function generateCustomOrdersTable(int $rowStart, ExcelWorksheet $worksheet, $customOrders)
     {
-        $col = 0;
+        $col = 1;
         $row = $rowStart;
 
         $tableHeaderStyle = $this->generateTableHeaderStyle();
@@ -131,43 +125,65 @@ class OrderStatisticExportExcelService extends BaseExcelService
         $worksheet->setCellValue($row, $col + 5, 'Delivery Address');
         $worksheet->setCellValue($row, $col + 6, 'Status');
         $worksheet->setCellValue($row, $col + 7, 'Payment Method');
-        $worksheet->setCellValue($row, $col + 8, 'Total');
-        $worksheet->setCellValue($row, $col + 9, 'Created At');
-        $worksheet->setCellValue($row, $col + 10, 'Updated At');
+        $worksheet->setCellValue($row, $col + 8, 'Created At');
+        $worksheet->setCellValue($row, $col + 9, 'Updated At');
+        $worksheet->setCellValue($row, $col + 10, 'Total');
         $worksheet->setRangeStyle($row, $row, $col, $col + 10, $tableHeaderStyle);
         $row++;
 
-        $tableBodyCellLeftStyle = $this->generateTableBodyLeftStyle();
-        $tableBodyCellCenterStyle = $this->generateTableBodyCenterStyle();
-        $tableBodyCellMoneyStyle = (new ExcelCellStyle())->setBorder()
-            ->setHorizontalAlign(ExcelTextAlignmentType::HORIZONTAL_CENTER)
-            ->setVerticalAlign(ExcelTextAlignmentType::VERTICAL_CENTER)
-            ->setNumberFormat(ExcelNumberFormatType::CURRENCY_USD);
+        $tableBodyLeftStyle = $this->generateTableBodyLeftStyle();
+        $tableBodyCenterStyle = $this->generateTableBodyCenterStyle();
+        $tableBodyCurrencyStyle = $this->generateTableBodyCurrencyStyle();
 
         foreach ($customOrders as $index => $customOrder) {
             $worksheet->setCellValue($row, $col, $index + 1, ExcelCellValueType::NUMERIC);
             $worksheet->setCellValue($row, $col + 1, $customOrder->id, ExcelCellValueType::NUMERIC);
-            $worksheet->setRangeStyle($row, $row, $col, $col + 1, $tableBodyCellCenterStyle);
+            $worksheet->setRangeStyle($row, $row, $col, $col + 1, $tableBodyCenterStyle);
 
             $worksheet->setCellValue($row, $col + 2, $customOrder->customer_email);
             $worksheet->setCellValue($row, $col + 3, $customOrder->customer_phone);
             $worksheet->setCellValue($row, $col + 4, $customOrder->customer_name);
             $worksheet->setCellValue($row, $col + 5, $customOrder->delivery_address);
-            $worksheet->setRangeStyle($row, $row, $col + 2, $col + 5, $tableBodyCellLeftStyle);
+            $worksheet->setRangeStyle($row, $row, $col + 2, $col + 5, $tableBodyLeftStyle);
 
             $worksheet->setCellValue($row, $col + 6, $customOrder->status);
             $worksheet->setCellValue($row, $col + 7, $customOrder->payment_method);
-            $worksheet->setRangeStyle($row, $row, $col + 6, $col + 7, $tableBodyCellCenterStyle);
+            $worksheet->setRangeStyle($row, $row, $col + 6, $col + 7, $tableBodyCenterStyle);
 
-            $worksheet->setCellValue($row, $col + 8, $customOrder->total, ExcelCellValueType::NUMERIC);
-            $worksheet->setCellStyle($row, $col + 8, $tableBodyCellMoneyStyle);
+            $worksheet->setCellValue($row, $col + 8, $customOrder->created_at);
+            $worksheet->setCellValue($row, $col + 9, $customOrder->updated_at);
+            $worksheet->setRangeStyle($row, $row, $col + 8, $col + 9, $tableBodyLeftStyle);
 
-            $worksheet->setCellValue($row, $col + 9, $customOrder->created_at);
-            $worksheet->setCellValue($row, $col + 10, $customOrder->updated_at);
-            $worksheet->setRangeStyle($row, $row, $col + 9, $col + 10, $tableBodyCellLeftStyle);
+            $worksheet->setCellValue($row, $col + 10, $customOrder->total, ExcelCellValueType::NUMERIC);
+            $worksheet->setCellStyle($row, $col + 10, $tableBodyCurrencyStyle);
 
             $row++;
         }
+
+        $customOrderCount = count($customOrders);
+        $tableBodyRowStart = $row - $customOrderCount;
+        $tableBodyRowEnd = $row - 1;
+
+        $tableBodyCenterBoldFillStyle = $this->generateTableBodyBoldCenterStyle()
+            ->setFillColor('ffff99');
+        $tableBodyTotalStyle = $this->generateTableBodyBoldRightStyle()
+            ->setFontSize(12)
+            ->setFillColor('ffff99')
+            ->setIndent(1);
+        $tableBodyCurrencyTotalStyle = $this->generateTableBodyBoldCurrencyStyle()
+            ->setFillColor('ffff99');
+
+        $worksheet->setCellValue($row, $col, $customOrderCount + 1, ExcelCellValueType::NUMERIC);
+        $worksheet->setCellStyle($row, $col, $tableBodyCenterBoldFillStyle);
+        $worksheet->mergeCells($row, $row, $col + 1, $col + 9);
+        $worksheet->setCellValue($row, $col + 1, "Total amount of completed orders:");
+        $worksheet->setRangeStyle($row, $row, $col + 1, $col + 9, $tableBodyTotalStyle);
+
+        $sumIfFormula = "=SUMIF(G" . $tableBodyRowStart . ":G" . $tableBodyRowEnd .
+            ', "Completed", K' . $tableBodyRowStart . ":K" . $tableBodyRowEnd . ")";
+        $worksheet->setCellValue($row, $col + 10, $sumIfFormula, ExcelCellValueType::FORMULA);
+        $worksheet->setCellStyle($row, $col + 10, $tableBodyCurrencyTotalStyle);
+        $row++;
 
         $usedRowCount = $row - $rowStart;
         return $usedRowCount;
