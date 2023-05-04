@@ -531,3 +531,15 @@ table.order-chart-legend-table td {
 .dot--custom-4 {
     background-color: #8c8e91;
 }
+
+.au-card {
+    padding: 35px;
+}
+
+.small-au-card .title-2 {
+    font-size: 2rem;
+}
+
+.small-au-card .table td {
+    padding: 0.5rem;
+}

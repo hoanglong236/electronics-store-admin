@@ -53,20 +53,33 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="au-card m-b-30">
-                @if ($data['placedOrderCount'] > 0)
+    @if ($data['placedOrderCount'] > 0)
+        <div class="row">
+            <div class="col-md-12">
+                <div class="au-card m-b-30">
                     @include('pages.dashboard.components.category-statistic-section', [
                         'fromDate' => $data['fromDate'],
                         'toDate' => $data['toDate'],
                         'categories' => $data['bestSellingStatisticData']['bestSellingCategories'],
-                        'totalSoldQuantity' => $data['soldItemCount']
+                        'totalSoldQuantity' => $data['soldItemCount'],
                     ])
-                @else
-                    <div>No data.</div>
-                @endif
+                </div>
             </div>
         </div>
-    </div>
+
+        <div class="row">
+            @foreach ($data['bestSellingStatisticData']['bestSellingCategories'] as $category)
+                <div class="col-md-4">
+                    <div class="au-card small-au-card m-b-30">
+                        @include('pages.dashboard.components.brand-statistic-section', [
+                            'fromDate' => $data['fromDate'],
+                            'toDate' => $data['toDate'],
+                            'brands' => $data['bestSellingStatisticData']['bestSellingBrandsMap'][$category->id],
+                            'category' => $category,
+                        ])
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    @endif
 @endsection
