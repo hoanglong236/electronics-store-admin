@@ -1,7 +1,13 @@
 @php
-    $otherQuantity = $totalQuantity;
+    $othersSoldQuantity = $totalSoldQuantity;
+    $drawChartParams = '';
+
     foreach ($categories as $category) {
-        $otherQuantity -= $category->quantity;
+        $othersSoldQuantity -= $category->soldQuantity;
+        $drawChartParams .= "'" . $category->name . "', " . $category->soldQuantity . ', ';
+    }
+    if ($othersSoldQuantity > 0) {
+        $drawChartParams .= "'Others', " . $othersSoldQuantity;
     }
 @endphp
 
@@ -13,10 +19,18 @@
                     <tr>
                         <td><span class="dot dot--custom-{{ $index + 1 }}"></span></td>
                         <td>{{ $category->name }}</td>
-                        <td>{{ $category->totalQuantity }}</td>
-                        <td>{{ round(($category->totalQuantity / $totalQuantity) * 100, 2) }}%</td>
+                        <td>{{ $category->soldQuantity }}</td>
+                        <td>{{ round(($category->soldQuantity / $totalSoldQuantity) * 100, 2) }}%</td>
                     </tr>
                 @endforeach
+                @if ($othersSoldQuantity > 0)
+                    <tr>
+                        <td><span class="dot dot--custom-{{ Constants::BEST_SELLING_CATEGORIES_LIMIT + 1 }}"></span></td>
+                        <td>Others</td>
+                        <td>{{ $othersSoldQuantity }}</td>
+                        <td>{{ round(($othersSoldQuantity / $totalSoldQuantity) * 100, 2) }}%</td>
+                    </tr>
+                @endif
             </tbody>
         </table>
 
@@ -29,12 +43,8 @@
 </div>
 
 @push('scripts')
-    {{-- <script src="{{ asset('assets/js/best-selling-categories-chart.js') }}"></script>
+    <script src="{{ asset('assets/js/best-selling-categories-chart.js') }}"></script>
     <script>
-        drawBestSellingCategoriesChart(
-            {{ $incompleteOrderCount }},
-            {{ $orderStatusCountArray[Constants::ORDER_STATUS_COMPLETED] }},
-            {{ $orderStatusCountArray[Constants::ORDER_STATUS_CANCELLED] }}
-        );
-    </script> --}}
+        drawBestSellingCategoriesChart({!! $drawChartParams !!});
+    </script>
 @endpush

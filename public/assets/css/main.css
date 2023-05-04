@@ -515,3 +515,19 @@ table.order-chart-legend-table td {
 .excel-btn > img {
     width: 30px;
 }
+
+.dot--custom-1 {
+    background-color: #5BAD60;
+}
+
+.dot--custom-2 {
+    background-color: #407FF6;
+}
+
+.dot--custom-3 {
+    background-color: #FF5555;
+}
+
+.dot--custom-4 {
+    background-color: #8c8e91;
+}
