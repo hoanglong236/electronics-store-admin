@@ -39,7 +39,7 @@
 
     <div class="row">
         <div class="col-md-12">
-            <div class="au-card m-b-30">
+            <div class="au-card m-b-30 p-30">
                 @if ($data['placedOrderCount'] > 0)
                     @include('pages.dashboard.components.order-statistic-section', [
                         'fromDate' => $data['fromDate'],
@@ -56,7 +56,7 @@
     @if ($data['placedOrderCount'] > 0)
         <div class="row">
             <div class="col-md-12">
-                <div class="au-card m-b-30">
+                <div class="au-card m-b-30 p-30">
                     @include('pages.dashboard.components.category-statistic-section', [
                         'fromDate' => $data['fromDate'],
                         'toDate' => $data['toDate'],
@@ -70,7 +70,7 @@
         <div class="row">
             @foreach ($data['bestSellingStatisticData']['bestSellingCategories'] as $category)
                 <div class="col-md-4">
-                    <div class="au-card small-au-card m-b-30">
+                    <div class="au-card m-b-30 p-30">
                         @include('pages.dashboard.components.brand-statistic-section', [
                             'fromDate' => $data['fromDate'],
                             'toDate' => $data['toDate'],

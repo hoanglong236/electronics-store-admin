@@ -468,35 +468,6 @@ span.disable-status {
     background: #3868cd;
 }
 
-.dot--completed {
-    background-color: #5BAD60;
-}
-
-.dot--incomplete {
-    background-color: #407FF6;
-}
-
-.dot--cancelled {
-    background-color: #FF5555;
-}
-
-table.order-chart-legend-table {
-    font-size: 1.3rem;
-    line-height: 1.6rem;
-}
-
-table.order-chart-legend-table td {
-    border-top: unset;
-}
-
-.chart-legend-explain-wrapper {
-    font-size: 1.2rem;
-}
-
-.incomplete-legend-explain {
-    color: #407FF6;
-}
-
 .chart-header {
     display: flex;
     align-items: center;
@@ -516,30 +487,42 @@ table.order-chart-legend-table td {
     width: 30px;
 }
 
+.chart-legend-table {
+    font-size: 1.3rem;
+    line-height: 1.6rem;
+}
+
+table.chart-legend-table tbody td {
+    border-top: none;
+}
+
+.chart-legend-explain-wrapper {
+    font-size: 1.2rem;
+}
+
+.incomplete-legend-explain {
+    color: #407ff6;
+}
+
 .dot--custom-1 {
-    background-color: #5BAD60;
+    background-color: #5bad60;
 }
 
 .dot--custom-2 {
-    background-color: #407FF6;
+    background-color: #407ff6;
 }
 
 .dot--custom-3 {
-    background-color: #FF5555;
+    background-color: #ff5555;
 }
 
 .dot--custom-4 {
     background-color: #8c8e91;
 }
 
-.au-card {
-    padding: 35px;
-}
-
-.small-au-card .title-2 {
+.sm-title-2 {
+    text-transform: capitalize;
+    font-weight: 400;
     font-size: 2rem;
-}
-
-.small-au-card .table td {
-    padding: 0.5rem;
+    line-height: 1;
 }

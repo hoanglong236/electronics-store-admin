@@ -12,5 +12,5 @@
         </div>
     </div>
 
-    @include('pages.dashboard.components.best-selling-categories-chart')
+    @include('pages.dashboard.components.category-chart')
 </div>

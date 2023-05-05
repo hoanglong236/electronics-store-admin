@@ -121,3 +121,7 @@ select.form-control:not([size]):not([multiple]) {
     font-size: 1.6rem;
     line-height: 2rem;
 }
+
+.p-30 {
+    padding: 30px;
+}
