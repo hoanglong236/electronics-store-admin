@@ -1,38 +1,43 @@
 @php
     // Require variables: $notEmptyChartElements, $dotCssClassArray, $chartElementCount
     $notEmptyChartElementCount = count($notEmptyChartElements);
-    $defaultDotCssClassArray = [];
     $total = 0;
-    foreach ($notEmptyChartElements as $index => $element) {
+    foreach ($notEmptyChartElements as $element) {
         $total += $element['value'];
-        $defaultDotCssClassArray[] = 'dot dot--custom-' . ($index + 1);
     }
-    $dotCssClassArray = $dotCssClassArray ?? $defaultDotCssClassArray;
+
+    if ($dotCssClassArray ?? true) {
+        $defaultDotCssClassArray = [];
+        for ($i = 0; $i < $chartElementCount; $i++) {
+            $defaultDotCssClassArray[] = 'dot dot--custom-' . ($i + 1);
+        }
+
+        $dotCssClassArray = $defaultDotCssClassArray;
+    }
+
 @endphp
 
 <table class="table chart-legend-table">
     <tbody>
-        @foreach ($notEmptyChartElements as $element)
+        @foreach ($notEmptyChartElements as $index => $element)
             <tr>
                 <td>
-                    <span class="{{ $dotCssClassArray[$loop->index] }}"></span>
+                    <span class="{{ $dotCssClassArray[$index] }}"></span>
                 </td>
-                <td>
-                    <div class="text-truncate">{{ $element['label'] }}</div>
-                </td>
+                <td>{{ $element['label'] }}</td>
                 <td>{{ $element['value'] }}</td>
                 <td>{{ round(($element['value'] / $total) * 100, 2) }}%</td>
             </tr>
         @endforeach
         @for ($i = $notEmptyChartElementCount; $i < $chartElementCount; $i++)
-            <div class="row">
+            <tr>
                 <td>
                     <span class="{{ $dotCssClassArray[$i] }}"></span>
                 </td>
                 <td>-</td>
                 <td>-</td>
                 <td>-</td>
-            </div>
+            </tr>
         @endfor
     </tbody>
 </table>

@@ -3,7 +3,7 @@
         <h3 class="sm-title-2">{{ $category->name }} Statistic</h3>
     </div>
 
-    @include('pages.dashboard.components.best-selling-brands-chart', [
+    @include('pages.dashboard.components.brand-chart', [
         'category' => $category,
         'brands' => $brands
     ])
