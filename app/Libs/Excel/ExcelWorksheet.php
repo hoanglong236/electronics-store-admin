@@ -69,7 +69,7 @@ class ExcelWorksheet
         $this->applyStyleFromExcelCellStyle($styleToApply, $excelCellStyle);
     }
 
-    private function applyStyleFromExcelCellStyle(Style &$styleToApply, ExcelCellStyle $excelCellStyle)
+    private function applyStyleFromExcelCellStyle(Style $styleToApply, ExcelCellStyle $excelCellStyle)
     {
         $fontProps = $excelCellStyle->getFontProps();
         if (count($fontProps) > 0) {
