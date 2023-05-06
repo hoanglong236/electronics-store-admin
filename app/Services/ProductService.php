@@ -187,9 +187,10 @@ class ProductService
             ->where('products.delete_flag', false);
     }
 
-    public function getProductImagesByProductId($productId)
+    public function getProductImagesByProductId($productId, $resultAsCollection = false)
     {
-        return ProductImage::where('product_id', $productId)->get();
+        $result = ProductImage::where('product_id', $productId)->get();
+        return $resultAsCollection ? $result : $result->all();
     }
 
     public function createProductImages($productImageProperties)

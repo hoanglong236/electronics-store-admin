@@ -22,9 +22,10 @@ class BrandService
         return Brand::where(['id' => $brandId, 'delete_flag' => false])->first();
     }
 
-    public function listBrands()
+    public function listBrands($resultAsCollection = false)
     {
-        return Brand::where('delete_flag', false)->get();
+        $result = Brand::where('delete_flag', false)->get();
+        return $resultAsCollection ? $result : $result->all();
     }
 
     public function createBrand($brandProperties)
@@ -80,15 +81,16 @@ class BrandService
         return $map;
     }
 
-    public function searchBrands($searchBrandProperties)
+    public function searchBrands($searchBrandProperties, $resultAsCollection = false)
     {
         $searchKeyword = $searchBrandProperties['searchKeyword'];
         $escapedKeyword = UtilsService::escapeKeyword($searchKeyword);
 
-        return Brand::where('delete_flag', false)
+        $result = Brand::where('delete_flag', false)
             ->where(function ($query) use ($escapedKeyword) {
                 $query->where('name', 'LIKE', '%' . $escapedKeyword . '%')
                     ->orWhere('slug', 'LIKE', '%' . $escapedKeyword . '%');
             })->get();
+        return $resultAsCollection ? $result : $result->all();
     }
 }

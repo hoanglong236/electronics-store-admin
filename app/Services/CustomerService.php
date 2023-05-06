@@ -93,8 +93,9 @@ class CustomerService
             ->where('phone', 'LIKE', '%' . $escapedKeyword . '%');
     }
 
-    public function getCustomerAddressesByCustomerId($customerId)
+    public function getCustomerAddressesByCustomerId($customerId, $resultAsCollection = false)
     {
-        return CustomerAddress::where(['customer_id' => $customerId])->get();
+        $result = CustomerAddress::where(['customer_id' => $customerId])->get();
+        return $resultAsCollection ? $result : $result->all();
     }
 }

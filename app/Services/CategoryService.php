@@ -27,9 +27,10 @@ class CategoryService
         ])->first();
     }
 
-    public function listCategories()
+    public function listCategories($resultAsCollection = false)
     {
-        return Category::where('delete_flag', false)->get();
+        $result = Category::where('delete_flag', false)->get();
+        return $resultAsCollection ? $result : $result->all();
     }
 
     public function createCategory($categoryProperties)
@@ -93,7 +94,7 @@ class CategoryService
         return $map;
     }
 
-    public function searchCategories($categorySearchProperties)
+    public function searchCategories($categorySearchProperties, $resultAsCollection = false)
     {
         $searchKeyword = $categorySearchProperties['searchKeyword'];
         $searchOption = $categorySearchProperties['searchOption'];
@@ -104,7 +105,8 @@ class CategoryService
             return [];
         }
 
-        return $queryBuilder->get();
+        $result = $queryBuilder->get();
+        return $resultAsCollection ? $result : $result->all();
     }
 
     private function getSearchCategoriesQueryBuilder($escapedKeyword, $searchOption)
