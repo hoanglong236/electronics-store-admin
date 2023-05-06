@@ -112,7 +112,7 @@ class DashboardService
 
     private function getBestSellingCategories($fromDate, $toDate, $limit)
     {
-        return DB::table('orders')
+        $result = DB::table('orders')
             ->join('order_items', 'order_items.order_id', '=', 'orders.id')
             ->join('products', 'products.id', '=', 'order_items.product_id')
             ->join('categories', 'categories.id', '=', 'products.category_id')
@@ -127,50 +127,60 @@ class DashboardService
             ->orderByRaw('soldQuantity desc')
             ->limit($limit)
             ->get();
-    }
 
-    private function getBestSellingBrandsFromCategories($fromDate, $toDate, $categories, $limit)
-    {
-        $brands = [];
-        foreach ($categories as $category) {
-            $brands[$category->id] = DB::table('orders')
-                ->join('order_items', 'order_items.order_id', '=', 'orders.id')
-                ->join('products', 'products.id', '=', 'order_items.product_id')
-                ->join('brands', 'brands.id', '=', 'products.brand_id')
-                ->select(
-                    'products.category_id',
-                    'brands.id',
-                    'brands.name',
-                    DB::raw('sum(order_items.quantity) as soldQuantity'),
-                )
-                ->whereBetween('orders.created_at', [$fromDate, $toDate])
-                ->where('orders.status', OrderStatusConstants::COMPLETED)
-                ->where('products.category_id', $category->id)
-                ->groupBy('products.category_id', 'brands.id', 'brands.name')
-                ->orderByRaw('soldQuantity desc')
-                ->limit($limit)
-                ->get();
+
+        $bestSellingCategories = [];
+        foreach ($result as $row) {
+            $bestSellingCategories[] = (array) $row;
         }
-        return $brands;
+        return $bestSellingCategories;
     }
 
-    public function getBestSellingStatisticData($fromDate, $toDate)
+    private function getBestSellingBrandsByCategory($fromDate, $toDate, $categoryId, $limit)
+    {
+        $result = DB::table('orders')
+            ->join('order_items', 'order_items.order_id', '=', 'orders.id')
+            ->join('products', 'products.id', '=', 'order_items.product_id')
+            ->join('brands', 'brands.id', '=', 'products.brand_id')
+            ->select(
+                'brands.id',
+                'brands.name',
+                DB::raw('sum(order_items.quantity) as soldQuantity'),
+            )
+            ->whereBetween('orders.created_at', [$fromDate, $toDate])
+            ->where('orders.status', OrderStatusConstants::COMPLETED)
+            ->where('products.category_id', $categoryId)
+            ->groupBy('products.category_id', 'brands.id', 'brands.name')
+            ->orderByRaw('soldQuantity desc')
+            ->limit($limit)
+            ->get();
+
+
+        $bestSellingBrands = [];
+        foreach ($result as $row) {
+            $bestSellingBrands[] = (array) $row;
+        }
+        return $bestSellingBrands;
+    }
+
+    public function getCatalogStatisticData($fromDate, $toDate)
     {
         $bestSellingCategories = $this->getBestSellingCategories(
             $fromDate,
             $toDate,
             Constants::BEST_SELLING_CATEGORIES_LIMIT
         );
-        $bestSellingBrandsMap = $this->getBestSellingBrandsFromCategories(
-            $fromDate,
-            $toDate,
-            $bestSellingCategories,
-            Constants::BEST_SELLING_BRANDS_LIMIT
-        );
+        for ($i = 0; $i < count($bestSellingCategories); $i++) {
+            $bestSellingCategories[$i]['bestSellingBrands'] = $this->getBestSellingBrandsByCategory(
+                $fromDate,
+                $toDate,
+                $bestSellingCategories[$i]['id'],
+                Constants::BEST_SELLING_BRANDS_LIMIT
+            );
+        }
 
         return [
             'bestSellingCategories' => $bestSellingCategories,
-            'bestSellingBrandsMap' => $bestSellingBrandsMap,
         ];
     }
 }

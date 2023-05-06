@@ -26,7 +26,7 @@ class DashboardController extends Controller
         $placedOrderCount = $this->dashboardService->getPlacedOrderCount($fromDate, $toDate);
         $soldItemCount = $this->dashboardService->getSoldItemCount($fromDate, $toDate);
         $orderStatisticData = $this->dashboardService->getOrderStatisticData($fromDate, $toDate);
-        $bestSellingStatisticData = $this->dashboardService->getBestSellingStatisticData($fromDate, $toDate);
+        $catalogStatisticData = $this->dashboardService->getCatalogStatisticData($fromDate, $toDate);
 
         return [
             'pageTitle' => 'Dashboard',
@@ -36,7 +36,7 @@ class DashboardController extends Controller
             'placedOrderCount' => $placedOrderCount,
             'soldItemCount' => $soldItemCount,
             'orderStatisticData' => $orderStatisticData,
-            'bestSellingStatisticData' => $bestSellingStatisticData,
+            'catalogStatisticData' => $catalogStatisticData,
         ];
     }
 

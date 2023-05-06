@@ -60,7 +60,7 @@
                     @include('pages.dashboard.components.category-statistic-section', [
                         'fromDate' => $data['fromDate'],
                         'toDate' => $data['toDate'],
-                        'categories' => $data['bestSellingStatisticData']['bestSellingCategories'],
+                        'bestSellingCategories' => $data['catalogStatisticData']['bestSellingCategories'],
                         'totalSoldQuantity' => $data['soldItemCount'],
                     ])
                 </div>
@@ -68,14 +68,13 @@
         </div>
 
         <div class="row">
-            @foreach ($data['bestSellingStatisticData']['bestSellingCategories'] as $category)
+            @foreach ($data['catalogStatisticData']['bestSellingCategories'] as $bestSellingCategory)
                 <div class="col-md-4">
                     <div class="au-card m-b-30 p-30">
-                        @include('pages.dashboard.components.brand-statistic-section', [
+                        @include('pages.dashboard.components.brand-by-category-statistics-section', [
                             'fromDate' => $data['fromDate'],
                             'toDate' => $data['toDate'],
-                            'brands' => $data['bestSellingStatisticData']['bestSellingBrandsMap'][$category->id],
-                            'category' => $category,
+                            'bestSellingCategory' => $bestSellingCategory,
                         ])
                     </div>
                 </div>

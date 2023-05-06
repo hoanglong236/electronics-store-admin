@@ -1,19 +1,19 @@
 @php
-    $totalSoldQuantity = $category->soldQuantity;
+    $totalSoldQuantity = $bestSellingCategory['soldQuantity'];
     $othersSoldQuantity = $totalSoldQuantity;
 
-    $chartElementId = 'bestSellingBrandsChart' . $category->id;
-    $chartTitle = 'Best-selling Brands In ' . $category->name;
+    $chartElementId = 'bestSellingBrandChart' . $bestSellingCategory['id'];
+    $chartTitle = 'Best-selling Brands In ' . $bestSellingCategory['name'];
     $drawChartParamsString = "'{$chartElementId}', '{$chartTitle}', ";
 
     $brandChartElements = [];
 
-    foreach ($brands as $brand) {
-        $othersSoldQuantity -= $brand->soldQuantity;
-        $drawChartParamsString .= "'" . $brand->name . "', " . $brand->soldQuantity . ', ';
+    foreach ($bestSellingCategory['bestSellingBrands'] as $bestSellingBrand) {
+        $othersSoldQuantity -= $bestSellingBrand['soldQuantity'];
+        $drawChartParamsString .= "'" . $bestSellingBrand['name'] . "', " . $bestSellingBrand['soldQuantity'] . ', ';
         $brandChartElements[] = [
-            'label' => $brand->name,
-            'value' => $brand->soldQuantity,
+            'label' => $bestSellingBrand['name'],
+            'value' => $bestSellingBrand['soldQuantity'],
         ];
     }
     if ($othersSoldQuantity > 0) {
@@ -33,7 +33,7 @@
         ])
     </div>
     <div class="col-md-12">
-        <canvas id="bestSellingBrandsChart{{ $category->id }}"></canvas>
+        <canvas id="bestSellingBrandChart{{ $bestSellingCategory['id'] }}"></canvas>
     </div>
 </div>
 
@@ -42,6 +42,6 @@
         <script src="{{ asset('assets/js/best-selling-brands-chart.js') }}"></script>
     @endonce
     <script>
-        drawBestSellingBrandsChart({!! $drawChartParamsString !!});
+        drawBestSellingBrandChart({!! $drawChartParamsString !!});
     </script>
 @endpush

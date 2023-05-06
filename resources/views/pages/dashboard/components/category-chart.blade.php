@@ -1,14 +1,15 @@
 @php
+    // Require variables: $totalSoldQuantity, $categoryInfoArray
     $othersSoldQuantity = $totalSoldQuantity;
     $drawChartParamsString = '';
     $categoryChartElements = [];
 
-    foreach ($categories as $category) {
-        $othersSoldQuantity -= $category->soldQuantity;
-        $drawChartParamsString .= "'" . $category->name . "', " . $category->soldQuantity . ', ';
+    foreach ($categoryInfoArray as $categoryInfo) {
+        $othersSoldQuantity -= $categoryInfo['soldQuantity'];
+        $drawChartParamsString .= "'" . $categoryInfo['name'] . "', " . $categoryInfo['soldQuantity'] . ', ';
         $categoryChartElements[] = [
-            'label' => $category->name,
-            'value' => $category->soldQuantity,
+            'label' => $categoryInfo['name'],
+            'value' => $categoryInfo['soldQuantity'],
         ];
     }
     if ($othersSoldQuantity > 0) {

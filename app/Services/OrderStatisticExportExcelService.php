@@ -52,7 +52,7 @@ class OrderStatisticExportExcelService extends BaseExcelService
         $workbook->download();
     }
 
-    private function generatePageSetup($fromDate, $toDate)
+    private function generatePageSetup(string $fromDate, string $toDate)
     {
         return (new ExcelPageSetup())
             ->setOrientation(ExcelPageSetupConstants::ORIENTATION_LANDSCAPE)

@@ -1,4 +1,4 @@
-const drawBestSellingBrandsChart = (
+const drawBestSellingBrandChart = (
     canvasId,
     chartTitle,
     firstCategoryLabel,
