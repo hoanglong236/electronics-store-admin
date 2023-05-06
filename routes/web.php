@@ -45,10 +45,10 @@ Route::middleware('auth:admin')->group(function () {
             ->name('dashboard.index');
         Route::get('search', [DashboardController::class, 'search'])
             ->name('dashboard.search');
-        Route::post('/order-statistic/export-excel', [DashboardController::class, 'orderStatisticExportExcel'])
-            ->name('dashboard.order-statistic.export-excel');
-        Route::post('/category-statistic/export-excel', [DashboardController::class, 'categoryStatisticExportExcel'])
-            ->name('dashboard.category-statistic.export-excel');
+        Route::post('/order-statistics/export-excel', [DashboardController::class, 'orderStatisticsExportExcel'])
+            ->name('dashboard.order-statistics.export-excel');
+        Route::post('/category-statistics/export-excel', [DashboardController::class, 'categoryStatisticsExportExcel'])
+            ->name('dashboard.category-statistics.export-excel');
     });
 
     Route::group(['prefix' => 'catalog/brand'], function () {

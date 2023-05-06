@@ -5,19 +5,19 @@ namespace App\Http\Controllers;
 use App\Http\Requests\DashboardExportExcelRequest;
 use App\Http\Requests\DashboardSearchRequest;
 use App\Services\DashboardService;
-use App\Services\OrderStatisticExportExcelService;
+use App\Services\OrderStatisticsExportExcelService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
 class DashboardController extends Controller
 {
     private $dashboardService;
-    private $orderStatisticExportExcelService;
+    private $orderStatisticsExportExcelService;
 
     public function __construct()
     {
         $this->dashboardService = new DashboardService();
-        $this->orderStatisticExportExcelService = new OrderStatisticExportExcelService();
+        $this->orderStatisticsExportExcelService = new OrderStatisticsExportExcelService();
     }
 
     private function getCommonDataForDashboardPage($fromDate, $toDate)
@@ -25,8 +25,8 @@ class DashboardController extends Controller
         $newCustomerCount = $this->dashboardService->getNewCustomerCount($fromDate, $toDate);
         $placedOrderCount = $this->dashboardService->getPlacedOrderCount($fromDate, $toDate);
         $soldItemCount = $this->dashboardService->getSoldItemCount($fromDate, $toDate);
-        $orderStatisticData = $this->dashboardService->getOrderStatisticData($fromDate, $toDate);
-        $catalogStatisticData = $this->dashboardService->getCatalogStatisticData($fromDate, $toDate);
+        $orderStatisticsData = $this->dashboardService->getOrderStatisticsData($fromDate, $toDate);
+        $catalogStatisticsData = $this->dashboardService->getCatalogStatisticsData($fromDate, $toDate);
 
         return [
             'pageTitle' => 'Dashboard',
@@ -35,8 +35,8 @@ class DashboardController extends Controller
             'newCustomerCount' => $newCustomerCount,
             'placedOrderCount' => $placedOrderCount,
             'soldItemCount' => $soldItemCount,
-            'orderStatisticData' => $orderStatisticData,
-            'catalogStatisticData' => $catalogStatisticData,
+            'orderStatisticsData' => $orderStatisticsData,
+            'catalogStatisticsData' => $catalogStatisticsData,
         ];
     }
 
@@ -60,16 +60,16 @@ class DashboardController extends Controller
         return view('pages.dashboard.dashboard-page', ['data' => $data]);
     }
 
-    public function orderStatisticExportExcel(DashboardExportExcelRequest $dashboardExportExcelRequest)
+    public function orderStatisticsExportExcel(DashboardExportExcelRequest $dashboardExportExcelRequest)
     {
         $dashboardExportExcelProperties = $dashboardExportExcelRequest->validated();
-        $this->orderStatisticExportExcelService->export(
+        $this->orderStatisticsExportExcelService->export(
             $dashboardExportExcelProperties['fromDate'],
             $dashboardExportExcelProperties['toDate'],
         );
     }
 
-    public function categoryStatisticExportExcel(DashboardExportExcelRequest $dashboardExportExcelRequest)
+    public function categoryStatisticsExportExcel(DashboardExportExcelRequest $dashboardExportExcelRequest)
     {
     }
 }

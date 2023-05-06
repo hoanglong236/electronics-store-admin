@@ -43,7 +43,7 @@ class DashboardService
         ];
     }
 
-    public function getOrderStatisticData($fromDate, $toDate)
+    public function getOrderStatisticsData($fromDate, $toDate)
     {
         $orderStatusCount = $this->getInitialOrderStatusCount();
         $customOrders = $this->getCustomOrdersInRange($fromDate, $toDate);
@@ -56,13 +56,12 @@ class DashboardService
             $orderStatusCount[$customOrder->status]++;
         }
 
-        $orderStatisticData = [
+        return [
             'statusCount' => $orderStatusCount,
         ];
-        return $orderStatisticData;
     }
 
-    public function getOrderStatisticExportData($fromDate, $toDate)
+    public function getOrderStatisticsExportData($fromDate, $toDate)
     {
         $orderStatusCount = $this->getInitialOrderStatusCount();
         $customOrders = $this->getCustomOrdersInRange($fromDate, $toDate);
@@ -71,11 +70,10 @@ class DashboardService
             $orderStatusCount[$customOrder->status]++;
         }
 
-        $orderStatisticData = [
+        return [
             'statusCount' => $orderStatusCount,
             'customOrders' => $customOrders,
         ];
-        return $orderStatisticData;
     }
 
     public function getNewCustomerCount($fromDate, $toDate)
@@ -163,7 +161,7 @@ class DashboardService
         return $bestSellingBrands;
     }
 
-    public function getCatalogStatisticData($fromDate, $toDate)
+    public function getCatalogStatisticsData($fromDate, $toDate)
     {
         $bestSellingCategories = $this->getBestSellingCategories(
             $fromDate,

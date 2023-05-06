@@ -12,7 +12,7 @@ use App\Libs\Excel\ExcelWorksheet;
 use App\ModelConstants\OrderStatusConstants;
 use App\Services\DashboardService;
 
-class OrderStatisticExportExcelService extends BaseExcelService
+class OrderStatisticsExportExcelService extends BaseExcelService
 {
     private $dashboardService;
 
@@ -23,21 +23,21 @@ class OrderStatisticExportExcelService extends BaseExcelService
 
     public function export(string $fromDate, string $toDate)
     {
-        $orderStatisticData = $this->dashboardService->getOrderStatisticExportData($fromDate, $toDate);
+        $orderStatisticsData = $this->dashboardService->getOrderStatisticsExportData($fromDate, $toDate);
         $currentDate = date('Y-m-d');
 
-        $workbook = new ExcelWorkbook("order_statistic_data_{$currentDate}.xlsx");
+        $workbook = new ExcelWorkbook("order_statistics_data_{$currentDate}.xlsx");
         $worksheet = $workbook->getActiveWorksheet();
-        $worksheet->setTitle('Order Statistic');
+        $worksheet->setTitle('Order Statistics');
         $worksheet->setPageSetup($this->generatePageSetup($fromDate, $toDate));
 
         $row = 1;
-        $row += $this->generateTotalOrderStatusTable($row, $worksheet, $orderStatisticData['statusCount']);
+        $row += $this->generateTotalOrderStatusTable($row, $worksheet, $orderStatisticsData['statusCount']);
 
         // skip next 2 rows
         $row += 2;
 
-        $row += $this->generateCustomOrdersTable($row, $worksheet, $orderStatisticData['customOrders']);
+        $row += $this->generateCustomOrdersTable($row, $worksheet, $orderStatisticsData['customOrders']);
 
         $col = 1;
         $worksheet->setColumnWidth($col + 2, 20);
@@ -60,7 +60,7 @@ class OrderStatisticExportExcelService extends BaseExcelService
             ->setPaperSize(ExcelPageSetupConstants::PAPER_SIZE_A4)
             ->setTopMargin(1)
             ->setBottomMargin(1)
-            ->setHeader("&C&B&14 ORDER STATISTIC" . "&L\n\nFrom: {$fromDate} - To: {$toDate}")
+            ->setHeader("&C&B&14 ORDER STATISTICS" . "&L\n\nFrom: {$fromDate} - To: {$toDate}")
             ->setFooter("&L&D &T" . "&R&P of &N")
             ->setRepeatRows(1, 10);
     }
