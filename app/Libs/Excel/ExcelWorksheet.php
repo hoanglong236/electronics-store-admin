@@ -36,14 +36,14 @@ class ExcelWorksheet
         int $row,
         int $col,
         string $value,
-        bool $addLinkStyle,
         string $url,
         string $tooltip = '',
+        bool $addLinkStyle = false,
     ) {
         $this->setCellValue($row, $col, $value);
         if ($addLinkStyle) {
             $hyperLinkStyle = (new ExcelCellStyle())
-                ->setFontColor('4287f5')
+                ->setFontColor('0000ff')
                 ->setFontUnderline();
             $this->setCellStyle($row, $col, $hyperLinkStyle);
         }
