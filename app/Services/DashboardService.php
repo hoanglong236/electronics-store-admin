@@ -9,9 +9,9 @@ use Illuminate\Support\Facades\Log;
 
 class DashboardService
 {
-    private function getCustomOrdersInRange($fromDate, $toDate)
+    private function getCustomOrdersInRange($fromDate, $toDate, $resultAsCollection = false)
     {
-        return DB::table('orders')
+        $result = DB::table('orders')
             ->join('customers', 'customers.id', '=', 'orders.customer_id')
             ->join('order_items', 'order_items.order_id', '=', 'orders.id')
             ->select(
@@ -30,6 +30,8 @@ class DashboardService
             ->whereBetween('orders.created_at', [$fromDate, $toDate])
             ->groupBy('orders.id')
             ->get();
+
+        return $resultAsCollection ? $result : $result->all();
     }
 
     private function getInitialOrderStatusCount()
@@ -121,11 +123,10 @@ class DashboardService
             )
             ->whereBetween('orders.created_at', [$fromDate, $toDate])
             ->where('orders.status', OrderStatusConstants::COMPLETED)
-            ->groupBy('categories.id', 'categories.name')
+            ->groupBy('categories.id')
             ->orderByRaw('soldQuantity desc')
             ->limit($limit)
             ->get();
-
 
         $bestSellingCategories = [];
         foreach ($result as $row) {
@@ -148,11 +149,10 @@ class DashboardService
             ->whereBetween('orders.created_at', [$fromDate, $toDate])
             ->where('orders.status', OrderStatusConstants::COMPLETED)
             ->where('products.category_id', $categoryId)
-            ->groupBy('products.category_id', 'brands.id', 'brands.name')
+            ->groupBy('brands.id')
             ->orderByRaw('soldQuantity desc')
             ->limit($limit)
             ->get();
-
 
         $bestSellingBrands = [];
         foreach ($result as $row) {
@@ -169,12 +169,71 @@ class DashboardService
             Constants::BEST_SELLING_CATEGORIES_LIMIT
         );
         for ($i = 0; $i < count($bestSellingCategories); $i++) {
-            $bestSellingCategories[$i]['bestSellingBrands'] = $this->getBestSellingBrandsByCategory(
+            $bestSellingBrands = $this->getBestSellingBrandsByCategory(
                 $fromDate,
                 $toDate,
                 $bestSellingCategories[$i]['id'],
                 Constants::BEST_SELLING_BRANDS_LIMIT
             );
+            $bestSellingCategories[$i]['bestSellingBrands'] = $bestSellingBrands;
+        }
+
+        return [
+            'bestSellingCategories' => $bestSellingCategories,
+        ];
+    }
+
+    private function getBestSellingProductsByBrandAndCategory($fromDate, $toDate, $categoryId, $brandId, $limit)
+    {
+        $result = DB::table('orders')
+            ->join('order_items', 'order_items.order_id', '=', 'orders.id')
+            ->join('products', 'products.id', '=', 'order_items.product_id')
+            ->select(
+                'products.id',
+                'products.name',
+                DB::raw('sum(order_items.quantity) as soldQuantity'),
+            )
+            ->whereBetween('orders.created_at', [$fromDate, $toDate])
+            ->where('orders.status', OrderStatusConstants::COMPLETED)
+            ->where('products.category_id', $categoryId)
+            ->where('products.brand_id', $brandId)
+            ->groupBy('products.id')
+            ->orderByRaw('soldQuantity desc')
+            ->limit($limit)
+            ->get();
+
+        $bestSellingProducts = [];
+        foreach ($result as $row) {
+            $bestSellingProducts[] = (array) $row;
+        }
+        return $bestSellingProducts;
+    }
+
+    public function getCatalogStatisticsExportData($fromDate, $toDate)
+    {
+        $bestSellingCategories = $this->getBestSellingCategories(
+            $fromDate,
+            $toDate,
+            Constants::BEST_SELLING_CATEGORIES_LIMIT
+        );
+        for ($i = 0; $i < count($bestSellingCategories); $i++) {
+            $bestSellingBrands = $this->getBestSellingBrandsByCategory(
+                $fromDate,
+                $toDate,
+                $bestSellingCategories[$i]['id'],
+                Constants::BEST_SELLING_BRANDS_LIMIT
+            );
+            for ($j = 0; $j < count($bestSellingBrands); $j++) {
+                $bestSellingProducts = $this->getBestSellingProductsByBrandAndCategory(
+                    $fromDate,
+                    $toDate,
+                    $bestSellingCategories[$i]['id'],
+                    $bestSellingBrands[$j]['id'],
+                    3
+                );
+                $bestSellingBrands[$j]['bestSellingProducts'] = $bestSellingProducts;
+            }
+            $bestSellingCategories[$i]['bestSellingBrands'] = $bestSellingBrands;
         }
 
         return [

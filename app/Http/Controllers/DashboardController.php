@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\DashboardExportExcelRequest;
 use App\Http\Requests\DashboardSearchRequest;
+use App\Services\CatalogStatisticsExportExcelService;
 use App\Services\DashboardService;
 use App\Services\OrderStatisticsExportExcelService;
 use Illuminate\Http\Request;
@@ -13,11 +14,13 @@ class DashboardController extends Controller
 {
     private $dashboardService;
     private $orderStatisticsExportExcelService;
+    private $catalogStatisticsExportExcelService;
 
     public function __construct()
     {
         $this->dashboardService = new DashboardService();
         $this->orderStatisticsExportExcelService = new OrderStatisticsExportExcelService();
+        $this->catalogStatisticsExportExcelService = new CatalogStatisticsExportExcelService();
     }
 
     private function getCommonDataForDashboardPage($fromDate, $toDate)
@@ -69,7 +72,12 @@ class DashboardController extends Controller
         );
     }
 
-    public function categoryStatisticsExportExcel(DashboardExportExcelRequest $dashboardExportExcelRequest)
+    public function catalogStatisticsExportExcel(DashboardExportExcelRequest $dashboardExportExcelRequest)
     {
+        $dashboardExportExcelProperties = $dashboardExportExcelRequest->validated();
+        $this->catalogStatisticsExportExcelService->export(
+            $dashboardExportExcelProperties['fromDate'],
+            $dashboardExportExcelProperties['toDate'],
+        );
     }
 }
