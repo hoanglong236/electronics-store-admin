@@ -101,8 +101,8 @@
             </div>
             <div class="form-group">
                 <label for="productDescription" class="form-control-label">Description</label>
-                <input id="productDescription" type="text" name="description" value="{{ $product->description }}"
-                    class="form-control" required>
+                <input id="productDescription" type="text" name="description"
+                    value="{{ $product->description }}" class="form-control" required>
                 @error('description')
                     <div class="alert alert-danger mt-1" role="alert">{{ $message }}</div>
                 @enderror

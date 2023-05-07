@@ -20,7 +20,7 @@
             <tr>
                 <td>3</td>
                 <td>Total amount</td>
-                <td>{{ '$' .number_format($orderInfo['totalAmount'], 2) }}</td>
+                <td>{{ '$' . number_format($orderInfo['totalAmount'], 2) }}</td>
             </tr>
             <tr>
                 <td>4</td>

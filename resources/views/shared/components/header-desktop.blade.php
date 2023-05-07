@@ -143,7 +143,8 @@
                                 <div class="info clearfix">
                                     <div class="image">
                                         <a href="#">
-                                            <img src="{{ asset('assets/images/icon/user-avatar.png') }}" alt="User avatar" />
+                                            <img src="{{ asset('assets/images/icon/user-avatar.png') }}"
+                                                alt="User avatar" />
                                         </a>
                                     </div>
                                     <div class="content">

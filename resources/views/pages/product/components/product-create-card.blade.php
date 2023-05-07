@@ -12,7 +12,8 @@
                         <label for="category" class="form-control-label">Category</label>
                         <select id="category" name="categoryId" class="form-control">
                             @foreach ($categoryIdNameMap as $categoryId => $categoryName)
-                                <option value="{{ $categoryId }}" @selected(intval(old('categoryId')) === $categoryId)>{{ $categoryName }}
+                                <option value="{{ $categoryId }}" @selected(intval(old('categoryId')) === $categoryId)>
+                                    {{ $categoryName }}
                                 </option>
                             @endforeach
                         </select>

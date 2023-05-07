@@ -11,7 +11,9 @@
                 <select id="parentCategoryId" name="parentId" class="form-control">
                     <option value="{{ Constants::NONE_VALUE }}">None</option>
                     @foreach ($categoryIdNameMap as $categoryId => $categoryName)
-                        <option value="{{ $categoryId }}" @selected(intval(old('parentId')) === $categoryId)>{{ $categoryName }}</option>
+                        <option value="{{ $categoryId }}" @selected(intval(old('parentId')) === $categoryId)>
+                            {{ $categoryName }}
+                        </option>
                     @endforeach
                 </select>
                 @error('parentId')
@@ -20,14 +22,16 @@
             </div>
             <div class="form-group">
                 <label for="categoryName" class="form-control-label">Category name</label>
-                <input id="categoryName" type="text" name="name" value="{{ old('name') }}" class="form-control" required>
+                <input id="categoryName" type="text" name="name" value="{{ old('name') }}" class="form-control"
+                    required>
                 @error('name')
                     <div class="alert alert-danger mt-1" role="alert">{{ $message }}</div>
                 @enderror
             </div>
             <div class="form-group">
                 <label for="categorySlug" class="form-control-label">Category slug</label>
-                <input id="categorySlug" type="text" name="slug" value="{{ old('slug') }}" class="form-control" required>
+                <input id="categorySlug" type="text" name="slug" value="{{ old('slug') }}" class="form-control"
+                    required>
                 @error('slug')
                     <div class="alert alert-danger mt-1" role="alert">{{ $message }}</div>
                 @enderror

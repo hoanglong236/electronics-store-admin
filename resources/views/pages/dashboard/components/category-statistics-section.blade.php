@@ -14,6 +14,6 @@
 
     @include('pages.dashboard.components.category-chart', [
         'totalSoldQuantity' => $totalSoldQuantity,
-        'categoryInfoArray' => $bestSellingCategories
+        'categoryInfoArray' => $bestSellingCategories,
     ])
 </div>

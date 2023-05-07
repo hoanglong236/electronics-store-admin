@@ -1,16 +1,17 @@
 <div class="card card-radius">
     <div id="carouselExampleIndicators" class="carousel slide d-block m-3" data-ride="carousel">
         <ol class="carousel-indicators">
-            @foreach ($productImages as $key => $productImage)
-                <li data-target="#carouselExampleIndicators" data-slide-to="{{ $key }}" class="{{ $key === 0 ? 'active' : '' }}">
+            @foreach ($productImages as $index => $productImage)
+                <li data-target="#carouselExampleIndicators" data-slide-to="{{ $index }}"
+                    class="{{ $index === 0 ? 'active' : '' }}">
                 </li>
             @endforeach
         </ol>
         <div class="carousel-inner">
-            @foreach ($productImages as $key => $productImage)
-                <div class="carousel-item {{ $key === 0 ? 'active' : '' }}">
+            @foreach ($productImages as $index => $productImage)
+                <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
                     <img class="d-block w-100" src="{{ asset('storage/' . $productImage->image_path) }}"
-                        alt="Slide {{ $key }}">
+                        alt="Slide {{ $index }}">
                 </div>
             @endforeach
         </div>

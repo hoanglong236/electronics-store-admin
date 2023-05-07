@@ -8,14 +8,16 @@
         <div class="card-body card-block">
             <div class="form-group">
                 <label for="brandName" class="form-control-label">Brand name</label>
-                <input id="brandName" type="text" name="name" value="{{ old('name') }}" class="form-control" required>
+                <input id="brandName" type="text" name="name" value="{{ old('name') }}" class="form-control"
+                    required>
                 @error('name')
                     <div class="alert alert-danger mt-1" role="alert">{{ $message }}</div>
                 @enderror
             </div>
             <div class="form-group">
                 <label for="brandSlug" class="form-control-label">Brand slug</label>
-                <input id="brandSlug" type="text" name="slug" value="{{ old('slug') }}" class="form-control" required>
+                <input id="brandSlug" type="text" name="slug" value="{{ old('slug') }}" class="form-control"
+                    required>
                 @error('slug')
                     <div class="alert alert-danger mt-1" role="alert">{{ $message }}</div>
                 @enderror

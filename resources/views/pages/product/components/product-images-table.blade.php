@@ -8,12 +8,12 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($productImages as $key => $productImage)
+            @foreach ($productImages as $index => $productImage)
                 <tr>
-                    <td>{{ $key + 1 }}</td>
+                    <td>{{ $index + 1 }}</td>
                     <td>
                         <img class="product-image--small" src="{{ asset('/storage' . '/' . $productImage->image_path) }}"
-                            alt="{{ 'Image ' . $key }}">
+                            alt="{{ 'Image ' . $index }}">
                     </td>
                     <td class="text-right">
                         @include('shared.components.buttons.delete-icon-button', [
