@@ -94,7 +94,8 @@ class OrderStatisticsExportExcelService extends BaseExcelService
         $row++;
 
         $tableBodyBoldLeftStyle = $this->generateTableBodyBoldLeftStyle();
-        $tableBodyBoldCenterStyle = $this->generateTableBodyBoldCenterStyle();
+        $tableBodyBoldRightStyle = $this->generateTableBodyBoldRightStyle();
+        $tableBodyRightStyle = $this->generateTableBodyRightStyle();
         $tableBodyIndentLeftStyle = (new ExcelCellStyle())->setBorder()
             ->setHorizontalAlign(ExcelTextAlignmentType::HORIZONTAL_LEFT)
             ->setVerticalAlign(ExcelTextAlignmentType::VERTICAL_CENTER)
@@ -106,16 +107,16 @@ class OrderStatisticsExportExcelService extends BaseExcelService
             + $orderStatusCountArray[OrderStatusConstants::PROCESSING]
             + $orderStatusCountArray[OrderStatusConstants::DELIVERING];
         $worksheet->setCellValue($row, $col + 1, $incompleteOrderCount, ExcelCellValueType::NUMERIC);
-        $worksheet->setCellStyle($row, $col + 1, $tableBodyBoldCenterStyle);
+        $worksheet->setCellStyle($row, $col + 1, $tableBodyBoldRightStyle);
         $row++;
 
         foreach ($orderStatusCountArray as $orderStatus => $orderStatusCount) {
             $statusColumnStyle = $tableBodyIndentLeftStyle;
-            $totalOrdersColumnStyle = $this->tableBodyCenterStyle;
+            $totalOrdersColumnStyle = $tableBodyRightStyle;
 
             if ($orderStatus === OrderStatusConstants::COMPLETED || $orderStatus === OrderStatusConstants::CANCELLED) {
                 $statusColumnStyle = $tableBodyBoldLeftStyle;
-                $totalOrdersColumnStyle = $tableBodyBoldCenterStyle;
+                $totalOrdersColumnStyle = $tableBodyBoldRightStyle;
             }
 
             $worksheet->setCellValue($row, $col, $orderStatus);
@@ -193,9 +194,15 @@ class OrderStatisticsExportExcelService extends BaseExcelService
         $worksheet->setCellValue($row, $col + 1, "Total amount of completed orders:");
         $worksheet->setRangeStyle($row, $row, $col + 1, $col + 6, $tableBodyTotalStyle);
 
-        $sumIfFormula = "=SUMIF(G" . $tableBodyRowStart . ":G" . $tableBodyRowEnd .
-            ', "Completed", K' . $tableBodyRowStart . ":K" . $tableBodyRowEnd . ")";
-        $worksheet->setCellValue($row, $col + 7, $sumIfFormula, ExcelCellValueType::FORMULA);
+        $statusCellAddressStart = ExcelWorksheet::getCellAddress($tableBodyRowStart, $col + 4);
+        $statusCellAddressEnd = ExcelWorksheet::getCellAddress($tableBodyRowEnd, $col + 4);
+
+        $totalCellAddressStart = ExcelWorksheet::getCellAddress($tableBodyRowStart, $col + 7);
+        $totalCellAddressEnd = ExcelWorksheet::getCellAddress($tableBodyRowEnd, $col + 7);
+
+        $totalCompletedOrdersFormula = "=SUMIF({$statusCellAddressStart}:{$statusCellAddressEnd}" .
+            ', "Completed", ' . "{$totalCellAddressStart}:{$totalCellAddressEnd})";
+        $worksheet->setCellValue($row, $col + 7, $totalCompletedOrdersFormula, ExcelCellValueType::FORMULA);
         $worksheet->setCellStyle($row, $col + 7, $tableBodyCurrencyTotalStyle);
         $row++;
 
