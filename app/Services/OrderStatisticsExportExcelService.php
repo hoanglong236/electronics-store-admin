@@ -57,14 +57,11 @@ class OrderStatisticsExportExcelService extends BaseExcelService
         $row += $this->generateCustomOrdersTable($worksheet, $row, $orderStatisticsData['customOrders']);
 
         $col = 1;
-        $worksheet->setColumnWidth($col + 2, 20);
-        $worksheet->setColumnWidth($col + 3, 12);
-        $worksheet->setColumnWidth($col + 4, 15);
-        $worksheet->setColumnWidth($col + 5, 30);
-        $worksheet->setColumnWidth($col + 6, 12);
-        $worksheet->setColumnWidth($col + 8, 11);
-        $worksheet->setColumnWidth($col + 9, 11);
-        $worksheet->setColumnWidth($col + 10, 13);
+        $worksheet->setColumnWidth($col + 2, 25);
+        $worksheet->setColumnWidth($col + 3, 35);
+        $worksheet->setColumnWidth($col + 4, 12);
+        $worksheet->setColumnWidth($col + 6, 11);
+        $worksheet->setColumnWidth($col + 7, 13);
 
         $workbook->download();
     }
@@ -73,7 +70,7 @@ class OrderStatisticsExportExcelService extends BaseExcelService
     {
         return (new ExcelPageSetup())
             ->setOrientation(ExcelPageSetupConstants::ORIENTATION_LANDSCAPE)
-            ->setPrintScale(85)
+            ->setPrintScale(100)
             ->setPaperSize(ExcelPageSetupConstants::PAPER_SIZE_A4)
             ->setTopMargin(1)
             ->setBottomMargin(1)
@@ -88,11 +85,11 @@ class OrderStatisticsExportExcelService extends BaseExcelService
         int $rowStart,
         array $orderStatusCountArray
     ) {
-        $col = 10;
+        $col = 7;
         $row = $rowStart;
 
         $worksheet->setCellValue($row, $col, 'Status');
-        $worksheet->setCellValue($row, $col + 1, 'Total');
+        $worksheet->setCellValue($row, $col + 1, 'Total Orders');
         $worksheet->setRangeStyle($row, $row, $col, $col + 1, $this->tableHeaderStyle);
         $row++;
 
@@ -113,16 +110,19 @@ class OrderStatisticsExportExcelService extends BaseExcelService
         $row++;
 
         foreach ($orderStatusCountArray as $orderStatus => $orderStatusCount) {
-            $worksheet->setCellValue($row, $col, $orderStatus);
-            $worksheet->setCellValue($row, $col + 1, $orderStatusCount, ExcelCellValueType::NUMERIC);
+            $statusColumnStyle = $tableBodyIndentLeftStyle;
+            $totalOrdersColumnStyle = $this->tableBodyCenterStyle;
 
             if ($orderStatus === OrderStatusConstants::COMPLETED || $orderStatus === OrderStatusConstants::CANCELLED) {
-                $worksheet->setCellStyle($row, $col, $tableBodyBoldLeftStyle);
-                $worksheet->setCellStyle($row, $col + 1, $tableBodyBoldCenterStyle);
-            } else {
-                $worksheet->setCellStyle($row, $col, $tableBodyIndentLeftStyle);
-                $worksheet->setCellStyle($row, $col + 1, $this->tableBodyCenterStyle);
+                $statusColumnStyle = $tableBodyBoldLeftStyle;
+                $totalOrdersColumnStyle = $tableBodyBoldCenterStyle;
             }
+
+            $worksheet->setCellValue($row, $col, $orderStatus);
+            $worksheet->setCellStyle($row, $col, $statusColumnStyle);
+
+            $worksheet->setCellValue($row, $col + 1, $orderStatusCount, ExcelCellValueType::NUMERIC);
+            $worksheet->setCellStyle($row, $col + 1, $totalOrdersColumnStyle);
 
             $row++;
         }
@@ -142,17 +142,13 @@ class OrderStatisticsExportExcelService extends BaseExcelService
         $worksheet->setCellValue($row, $col, '#');
         $worksheet->setCellValue($row, $col + 1, 'Order ID');
         $worksheet->setCellValue($row, $col + 2, 'Email');
-        $worksheet->setCellValue($row, $col + 3, 'Phone');
-        $worksheet->setCellValue($row, $col + 4, 'Customer Name');
-        $worksheet->setCellValue($row, $col + 5, 'Delivery Address');
-        $worksheet->setCellValue($row, $col + 6, 'Status');
-        $worksheet->setCellValue($row, $col + 7, 'Payment Method');
-        $worksheet->setCellValue($row, $col + 8, 'Created At');
-        $worksheet->setCellValue($row, $col + 9, 'Updated At');
-        $worksheet->setCellValue($row, $col + 10, 'Total');
-        $worksheet->setRangeStyle($row, $row, $col, $col + 10, $this->tableHeaderStyle);
+        $worksheet->setCellValue($row, $col + 3, 'Delivery Address');
+        $worksheet->setCellValue($row, $col + 4, 'Status');
+        $worksheet->setCellValue($row, $col + 5, 'Payment Method');
+        $worksheet->setCellValue($row, $col + 6, 'Created At');
+        $worksheet->setCellValue($row, $col + 7, 'Total');
+        $worksheet->setRangeStyle($row, $row, $col, $col + 7, $this->tableHeaderStyle);
         $row++;
-
 
         $tableBodyCurrencyStyle = $this->generateTableBodyCurrencyStyle();
 
@@ -162,21 +158,18 @@ class OrderStatisticsExportExcelService extends BaseExcelService
             $worksheet->setRangeStyle($row, $row, $col, $col + 1, $this->tableBodyCenterStyle);
 
             $worksheet->setCellValue($row, $col + 2, $customOrder->customer_email);
-            $worksheet->setCellValue($row, $col + 3, $customOrder->customer_phone);
-            $worksheet->setCellValue($row, $col + 4, $customOrder->customer_name);
-            $worksheet->setCellValue($row, $col + 5, $customOrder->delivery_address);
-            $worksheet->setRangeStyle($row, $row, $col + 2, $col + 5, $this->tableBodyLeftStyle);
+            $worksheet->setCellValue($row, $col + 3, $customOrder->delivery_address);
+            $worksheet->setRangeStyle($row, $row, $col + 2, $col + 3, $this->tableBodyLeftStyle);
 
-            $worksheet->setCellValue($row, $col + 6, $customOrder->status);
-            $worksheet->setCellValue($row, $col + 7, $customOrder->payment_method);
-            $worksheet->setRangeStyle($row, $row, $col + 6, $col + 7, $this->tableBodyCenterStyle);
+            $worksheet->setCellValue($row, $col + 4, $customOrder->status);
+            $worksheet->setCellValue($row, $col + 5, $customOrder->payment_method);
+            $worksheet->setRangeStyle($row, $row, $col + 4, $col + 5, $this->tableBodyCenterStyle);
 
-            $worksheet->setCellValue($row, $col + 8, $customOrder->created_at);
-            $worksheet->setCellValue($row, $col + 9, $customOrder->updated_at);
-            $worksheet->setRangeStyle($row, $row, $col + 8, $col + 9, $this->tableBodyLeftStyle);
+            $worksheet->setCellValue($row, $col + 6, $customOrder->created_at);
+            $worksheet->setCellStyle($row, $col + 6, $this->tableBodyLeftStyle);
 
-            $worksheet->setCellValue($row, $col + 10, $customOrder->total, ExcelCellValueType::NUMERIC);
-            $worksheet->setCellStyle($row, $col + 10, $tableBodyCurrencyStyle);
+            $worksheet->setCellValue($row, $col + 7, $customOrder->total, ExcelCellValueType::NUMERIC);
+            $worksheet->setCellStyle($row, $col + 7, $tableBodyCurrencyStyle);
 
             $row++;
         }
@@ -196,14 +189,14 @@ class OrderStatisticsExportExcelService extends BaseExcelService
 
         $worksheet->setCellValue($row, $col, $customOrderCount + 1, ExcelCellValueType::NUMERIC);
         $worksheet->setCellStyle($row, $col, $tableBodyCenterBoldFillStyle);
-        $worksheet->mergeCells($row, $row, $col + 1, $col + 9);
+        $worksheet->mergeCells($row, $row, $col + 1, $col + 6);
         $worksheet->setCellValue($row, $col + 1, "Total amount of completed orders:");
-        $worksheet->setRangeStyle($row, $row, $col + 1, $col + 9, $tableBodyTotalStyle);
+        $worksheet->setRangeStyle($row, $row, $col + 1, $col + 6, $tableBodyTotalStyle);
 
         $sumIfFormula = "=SUMIF(G" . $tableBodyRowStart . ":G" . $tableBodyRowEnd .
             ', "Completed", K' . $tableBodyRowStart . ":K" . $tableBodyRowEnd . ")";
-        $worksheet->setCellValue($row, $col + 10, $sumIfFormula, ExcelCellValueType::FORMULA);
-        $worksheet->setCellStyle($row, $col + 10, $tableBodyCurrencyTotalStyle);
+        $worksheet->setCellValue($row, $col + 7, $sumIfFormula, ExcelCellValueType::FORMULA);
+        $worksheet->setCellStyle($row, $col + 7, $tableBodyCurrencyTotalStyle);
         $row++;
 
         $usedRowCount = $row - $rowStart;
