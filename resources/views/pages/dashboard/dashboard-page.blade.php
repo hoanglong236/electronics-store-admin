@@ -21,18 +21,27 @@
 
     <div class="row m-t-25">
         <div class="col-md-4">
-            @include('pages.dashboard.components.new-members-overview-area', [
+            @include('pages.dashboard.components.overview-area', [
+                'overviewItemCSSClass' => 'overview-item--c1',
+                'overviewIconCSSClass' => 'zmdi zmdi-account-o',
                 'overviewData' => $data['newCustomerCount'],
+                'overviewTitle' => 'new memebers',
             ])
         </div>
         <div class="col-md-4">
-            @include('pages.dashboard.components.order-placed-overview-area', [
+            @include('pages.dashboard.components.overview-area', [
+                'overviewItemCSSClass' => 'overview-item--c2',
+                'overviewIconCSSClass' => 'zmdi zmdi-calendar-note',
                 'overviewData' => $data['placedOrderCount'],
+                'overviewTitle' => 'orders placed',
             ])
         </div>
         <div class="col-md-4">
-            @include('pages.dashboard.components.items-sold-overview-area', [
+            @include('pages.dashboard.components.overview-area', [
+                'overviewItemCSSClass' => 'overview-item--c3',
+                'overviewIconCSSClass' => 'zmdi zmdi-shopping-cart',
                 'overviewData' => $data['soldItemCount'],
+                'overviewTitle' => 'items sold',
             ])
         </div>
     </div>
