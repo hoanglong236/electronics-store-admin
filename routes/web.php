@@ -5,6 +5,7 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MonthlyReportController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
@@ -49,6 +50,11 @@ Route::middleware('auth:admin')->group(function () {
             ->name('dashboard.order-statistics.export-excel');
         Route::post('/catalog-statistics/export-excel', [DashboardController::class, 'catalogStatisticsExportExcel'])
             ->name('dashboard.catalog-statistics.export-excel');
+    });
+
+    Route::group(['prefix' => 'monthly-report'], function () {
+        Route::get('', [MonthlyReportController::class, 'index'])
+            ->name('monthly-report.index');
     });
 
     Route::group(['prefix' => 'catalog/brand'], function () {

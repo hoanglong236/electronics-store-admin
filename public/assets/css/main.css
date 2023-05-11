@@ -536,3 +536,21 @@ table.chart-legend-table tbody td {
     padding: 30px;
     overflow: hidden;
 }
+
+.report-form-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.report-form-conditions {
+    width: 50%;
+}
+
+.month-report-input {
+    width: 60px;
+}
+
+.year-report-input {
+    width: 80px;
+}

@@ -13,6 +13,11 @@
                         <i class="fas fa-tachometer-alt"></i>Dashboard
                     </a>
                 </li>
+                <li class="{{ Request::routeIs('monthly-report.*') ? 'active' : '' }}">
+                    <a href="{{ route('monthly-report.index') }}">
+                        <i class="fas fa-tachometer-alt"></i>Monthly Report
+                    </a>
+                </li>
                 <li class="{{ Request::routeIs('catalog.category.*') ? 'active' : '' }}">
                     <a href="{{ route('catalog.category.index') }}">
                         <i class="fas fa-tag"></i>Category
