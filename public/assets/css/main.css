@@ -415,9 +415,7 @@ span.disable-status {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    background-color: var(--white-color);
-    border-radius: 10px;
-    padding: 20px;
+    flex-wrap: wrap;
 }
 
 .dashboard-form-group {
@@ -525,4 +523,16 @@ table.chart-legend-table tbody td {
     font-weight: 400;
     font-size: 2rem;
     line-height: 1;
+}
+
+.white-bg-wrapper {
+    -webkit-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.1);
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    background-color: var(--white-color);
+    padding: 30px;
+    overflow: hidden;
 }

@@ -24,7 +24,6 @@ class CatalogStatisticsExportExcelService extends BaseExcelService
     private $tableBodyRightStyle;
     private $tableBodyLinkLeftStyle;
 
-
     public function __construct()
     {
         $this->dashboardService = new DashboardService();

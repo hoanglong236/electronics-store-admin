@@ -11,11 +11,13 @@
 
     <div class="row mt-4">
         <div class="col-md-12">
-            @include('pages.dashboard.components.dashboard-search-form', [
-                'fromDate' => $data['fromDate'],
-                'toDate' => $data['toDate'],
-                'searchUrl' => route('dashboard.search'),
-            ])
+            <div class="white-bg-wrapper">
+                @include('pages.dashboard.components.dashboard-search-form', [
+                    'fromDate' => $data['fromDate'],
+                    'toDate' => $data['toDate'],
+                    'searchUrl' => route('dashboard.search'),
+                ])
+            </div>
         </div>
     </div>
 
@@ -48,7 +50,7 @@
 
     <div class="row">
         <div class="col-md-12">
-            <div class="au-card m-b-30 p-30">
+            <div class="white-bg-wrapper m-b-30 p-30">
                 @if ($data['placedOrderCount'] > 0)
                     @include('pages.dashboard.components.order-statistics-section', [
                         'fromDate' => $data['fromDate'],
@@ -65,7 +67,7 @@
     @if ($data['placedOrderCount'] > 0)
         <div class="row">
             <div class="col-md-12">
-                <div class="au-card m-b-30 p-30">
+                <div class="white-bg-wrapper m-b-30 p-30">
                     @include('pages.dashboard.components.category-statistics-section', [
                         'fromDate' => $data['fromDate'],
                         'toDate' => $data['toDate'],
@@ -79,7 +81,7 @@
         <div class="row">
             @foreach ($data['catalogStatisticsData']['bestSellingCategories'] as $bestSellingCategory)
                 <div class="col-md-4">
-                    <div class="au-card m-b-30 p-30">
+                    <div class="white-bg-wrapper m-b-30 p-30">
                         @include('pages.dashboard.components.brand-by-category-statistics-section', [
                             'fromDate' => $data['fromDate'],
                             'toDate' => $data['toDate'],
