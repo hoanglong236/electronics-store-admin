@@ -42,8 +42,8 @@ class ExcelWorkbook
         $this->prepareForDownload();
 
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment; filename="' . urlencode($this->fileName) . '"');
-        header('Cache-Control: max-age=0');
+        header('Content-Disposition: attachment; filename="' . rawurlencode($this->fileName) . '"');
+        header('Cache-Control: max-age=604800, must-revalidate');
         header('Pragma: public');
 
         $writer = new Xlsx($this->spreadsheet);
