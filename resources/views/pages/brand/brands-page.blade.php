@@ -26,15 +26,13 @@
         </div>
     </div>
 
-    <div class="row">
-        @forelse ($data['brands'] as $brand)
-            <div class="col-md-3">
-                @include('pages.brand.components.brand-card')
-            </div>
-        @empty
-            <div class="col-md-3">
-                <span>No brand found.</span>
-            </div>
-        @endforelse
+    <div class="row m-t-10">
+        <div class="col-md-12">
+            @include('pages.brand.components.brands-table', [
+                'brands' => $data['brands'],
+            ])
+        </div>
     </div>
+
+    @include('shared.components.pagination-nav', ['paginator' => $data['paginator']])
 @endsection

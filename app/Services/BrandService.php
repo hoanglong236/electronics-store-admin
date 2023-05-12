@@ -22,10 +22,11 @@ class BrandService
         return Brand::where(['id' => $brandId, 'delete_flag' => false])->first();
     }
 
-    public function listBrands($resultAsCollection = false)
+    public function getListBrandsPaginator($limit = Constants::BASE_ITEM_PAGE_COUNT)
     {
-        $result = Brand::where('delete_flag', false)->get();
-        return $resultAsCollection ? $result : $result->all();
+        return Brand::where('delete_flag', false)
+            ->latest()
+            ->paginate($limit);
     }
 
     public function createBrand($brandProperties)
@@ -81,16 +82,17 @@ class BrandService
         return $map;
     }
 
-    public function searchBrands($searchBrandProperties, $resultAsCollection = false)
+    public function getSearchBrandsPaginator($searchBrandProperties, $limit = Constants::BASE_ITEM_PAGE_COUNT)
     {
         $searchKeyword = $searchBrandProperties['searchKeyword'];
         $escapedKeyword = UtilsService::escapeKeyword($searchKeyword);
 
-        $result = Brand::where('delete_flag', false)
+        return Brand::where('delete_flag', false)
             ->where(function ($query) use ($escapedKeyword) {
                 $query->where('name', 'LIKE', '%' . $escapedKeyword . '%')
                     ->orWhere('slug', 'LIKE', '%' . $escapedKeyword . '%');
-            })->get();
-        return $resultAsCollection ? $result : $result->all();
+            })
+            ->latest()
+            ->paginate($limit);
     }
 }

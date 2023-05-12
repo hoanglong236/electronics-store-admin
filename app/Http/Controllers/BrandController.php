@@ -6,6 +6,7 @@ use App\Common\Constants;
 use App\Http\Requests\BrandRequest;
 use App\Http\Requests\BrandSearchRequest;
 use App\Services\BrandService;
+use App\Services\UtilsService;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Log;
 
@@ -20,8 +21,11 @@ class BrandController extends Controller
 
     public function index()
     {
+        $paginator = $this->brandService->getListBrandsPaginator();
+
         $data = $this->getCommonDataForBrandsPage();
-        $data['brands'] = $this->brandService->listBrands();
+        $data['brands'] = $paginator->items();
+        $data['paginator'] = $paginator;
 
         return view('pages.brand.brands-page', ['data' => $data]);
     }
@@ -29,10 +33,14 @@ class BrandController extends Controller
     public function search(BrandSearchRequest $brandSearchRequest)
     {
         $searchBrandProperties = $brandSearchRequest->validated();
+        $paginator = $this->brandService->getSearchBrandsPaginator($searchBrandProperties);
 
         $data = $this->getCommonDataForBrandsPage();
-        $data['brands'] = $this->brandService->searchBrands($searchBrandProperties);
         $data['searchKeyword'] = $searchBrandProperties['searchKeyword'];
+        $data['brands'] = $paginator->items();
+        $data['paginator'] = $paginator->withPath(
+            'search?' . UtilsService::convertMapToParamsString($searchBrandProperties)
+        );
 
         return view('pages.brand.brands-page', ['data' => $data]);
     }
