@@ -35,4 +35,6 @@
             ])
         </div>
     </div>
+
+    @include('shared.components.pagination-nav', ['paginator' => $data['paginator']])
 @endsection

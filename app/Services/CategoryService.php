@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Common\Constants;
 use App\DataFilterConstants\CategorySearchOptionConstants;
 use App\Models\Category;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 
@@ -27,10 +28,11 @@ class CategoryService
         ])->first();
     }
 
-    public function listCategories($resultAsCollection = false)
+    public function getListCategoriesPaginator($limit = Constants::DEFAULT_ITEM_PAGE_COUNT)
     {
-        $result = Category::where('delete_flag', false)->get();
-        return $resultAsCollection ? $result : $result->all();
+        return Category::where('delete_flag', false)
+            ->latest()
+            ->paginate($limit);
     }
 
     public function createCategory($categoryProperties)
@@ -85,7 +87,7 @@ class CategoryService
 
     public function getCategoryIdNameMap()
     {
-        $categories = $this->listCategories();
+        $categories = Category::where('delete_flag', false)->get();
         $map = [];
         foreach ($categories as $category) {
             $map[$category->id] = $category->name;
@@ -94,19 +96,21 @@ class CategoryService
         return $map;
     }
 
-    public function searchCategories($categorySearchProperties, $resultAsCollection = false)
-    {
+    public function getSearchCategoriesPaginator(
+        $categorySearchProperties,
+        $limit = Constants::DEFAULT_ITEM_PAGE_COUNT
+    ) {
         $searchKeyword = $categorySearchProperties['searchKeyword'];
         $searchOption = $categorySearchProperties['searchOption'];
         $escapedKeyword = UtilsService::escapeKeyword($searchKeyword);
 
         $queryBuilder = $this->getSearchCategoriesQueryBuilder($escapedKeyword, $searchOption);
         if (is_null($queryBuilder)) {
-            return [];
+            return new LengthAwarePaginator([], 0, $limit);
         }
 
-        $result = $queryBuilder->get();
-        return $resultAsCollection ? $result : $result->all();
+        return $queryBuilder->latest()
+            ->paginate($limit);
     }
 
     private function getSearchCategoriesQueryBuilder($escapedKeyword, $searchOption)

@@ -30,11 +30,11 @@ class CategoryRequest extends FormRequest
         $categoryNameUniqueRule = Rule::unique('categories', 'name')->where('delete_flag', false);
         $categorySlugUniqueRule = Rule::unique('categories', 'slug')->where('delete_flag', false);
 
+        $hasParentId = isset($this->parentId) && $this->parentId !== Constants::NONE_VALUE;
+
         return [
             'parentId' => [
-                $this->parentId !== Constants::NONE_VALUE
-                    ? Rule::exists('categories', 'id')->where('delete_flag', false)
-                    : ''
+                $hasParentId ? Rule::exists('categories', 'id')->where('delete_flag', false) : ''
             ],
             'name' => [
                 'required', 'max:60',
