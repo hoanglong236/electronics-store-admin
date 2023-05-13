@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Common\Constants;
 use App\DataFilterConstants\CustomerSearchOptionConstants;
 use App\Models\Customer;
 use App\Models\CustomerAddress;
@@ -14,9 +15,11 @@ class CustomerService
         return Customer::where(['id' => $customerId, 'delete_flag' => false])->first();
     }
 
-    public function getCustomerPaginator($itemPerPage)
+    public function getListCustomersPaginator($itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT)
     {
-        return Customer::where('delete_flag', false)->paginate($itemPerPage);
+        return Customer::where('delete_flag', false)
+            ->latest()
+            ->paginate($itemPerPage);
     }
 
     public function updateCustomerDisableFlag($customerDisableFlagProperties, $customerId)
@@ -35,18 +38,21 @@ class CustomerService
         $customer->save();
     }
 
-    public function getSearchCustomerPaginator($customerSearchProperties, $itemPerPage)
-    {
+    public function getSearchCustomersPaginator(
+        $customerSearchProperties,
+        $itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT
+    ) {
         $searchOption = $customerSearchProperties['searchOption'];
         $searchKeyword = $customerSearchProperties['searchKeyword'];
         $escapedKeyword = UtilsService::escapeKeyword($searchKeyword);
 
         $queryBuilder = $this->getSearchCustomersQueryBuilder($escapedKeyword, $searchOption);
         if (is_null($queryBuilder)) {
-            return [];
+            return new LengthAwarePaginator([], 0, $itemPerPage);;
         }
 
-        return $queryBuilder->paginate($itemPerPage);
+        return $queryBuilder->latest()
+            ->paginate($itemPerPage);
     }
 
     private function getSearchCustomersQueryBuilder($escapedKeyword, $searchOption)

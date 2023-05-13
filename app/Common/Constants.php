@@ -25,8 +25,6 @@ class Constants
 
     const DEFAULT_ITEM_PAGE_COUNT = 12;
 
-    const CUSTOMER_PAGE_COUNT = 8;
-
     const SEARCH_KEYWORD_MAX_LENGTH = 64;
 
     const ORDER_STATUS_RECEIVED = OrderStatusConstants::RECEIVED;

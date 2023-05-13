@@ -22,11 +22,11 @@ class CustomerController extends Controller
 
     public function index()
     {
-        $customerPaginator = $this->customerService->getCustomerPaginator(Constants::CUSTOMER_PAGE_COUNT);
+        $paginator = $this->customerService->getListCustomersPaginator();
 
         $data = $this->getCommonDataForCustomersPage();
-        $data['customers'] = $customerPaginator->items();
-        $data['customerPaginator'] = $customerPaginator;
+        $data['customers'] = $paginator->items();
+        $data['paginator'] = $paginator;
 
         return view('pages.customer.customers-page', ['data' => $data]);
     }
@@ -34,18 +34,15 @@ class CustomerController extends Controller
     public function search(CustomerSearchRequest $customerSearchRequest)
     {
         $customerSearchProperties = $customerSearchRequest->validated();
-        $searchCustomerPaginator = $this->customerService->getSearchCustomerPaginator(
-            $customerSearchProperties,
-            Constants::CUSTOMER_PAGE_COUNT
-        );
+        $paginator = $this->customerService->getSearchCustomersPaginator($customerSearchProperties);
 
         $data = $this->getCommonDataForCustomersPage();
-        $data['customers'] = $searchCustomerPaginator->items();
-        $data['customerPaginator'] = $searchCustomerPaginator->withPath(
-            'search?' . UtilsService::convertMapToParamsString($customerSearchProperties)
-        );
         $data['searchKeyword'] = $customerSearchProperties['searchKeyword'];
         $data['currentSearchOption'] = $customerSearchProperties['searchOption'];
+        $data['customers'] = $paginator->items();
+        $data['paginator'] = $paginator->withPath(
+            'search?' . UtilsService::convertMapToParamsString($customerSearchProperties)
+        );
 
         return view('pages.customer.customers-page', ['data' => $data]);
     }
