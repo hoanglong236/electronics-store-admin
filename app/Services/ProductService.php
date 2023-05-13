@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Common\Constants;
+use App\Config\Config;
 use App\DataFilterConstants\ProductSearchOptionConstants;
 use App\Models\Product;
 use App\Models\ProductImage;
@@ -51,7 +52,7 @@ class ProductService
     {
         $productMainImage = $this->storageService->saveFile(
             $productProperties['mainImage'],
-            Constants::PRODUCT_IMAGE_PATH
+            Config::FOLDER_PATH_PRODUCT_IMAGES,
         );
         $product = Product::create([
             'category_id' => $productProperties['categoryId'],
@@ -94,7 +95,7 @@ class ProductService
 
             $product->main_image_path = $this->storageService->saveFile(
                 $productProperties['mainImage'],
-                Constants::PRODUCT_IMAGE_PATH
+                Config::FOLDER_PATH_PRODUCT_IMAGES
             );
             $this->firebaseStorageService->uploadImage($product->main_image_path);
         }
@@ -204,7 +205,7 @@ class ProductService
         $images = $productImageProperties['images'];
 
         foreach ($images as $image) {
-            $imagePath = $this->storageService->saveFile($image, Constants::PRODUCT_IMAGE_PATH);
+            $imagePath = $this->storageService->saveFile($image, Config::FOLDER_PATH_PRODUCT_IMAGES);
             $this->firebaseStorageService->uploadImage($imagePath);
 
             ProductImage::create([

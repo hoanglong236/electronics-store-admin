@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Common\Constants;
+use App\Config\Config;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
@@ -26,10 +27,10 @@ class ProductSeeder extends Seeder
 
     private function generateSmartphones(): void
     {
-        $categoryId = Category::where(['slug' => 'phone', 'delete_flag' => false])->first()->id;
+        $category = Category::where(['slug' => 'phone', 'delete_flag' => false])->first();
         $brandSlugIdMap = $this->getBrandSlugIdMap();
 
-        $productDetailArray = [
+        $productInfoArray = [
             [
                 'name' => 'Oppo A16',
                 'slug' => 'oppo-a16',
@@ -92,30 +93,30 @@ class ProductSeeder extends Seeder
             ],
         ];
 
-        foreach ($productDetailArray as $productDetail) {
+        foreach ($productInfoArray as $productInfo) {
             $product = Product::create([
-                'category_id' => $categoryId,
-                'brand_id' => $brandSlugIdMap[$productDetail['brand_slug']],
-                'name' => $productDetail['name'],
-                'slug' => $productDetail['slug'],
+                'category_id' => $category->id,
+                'brand_id' => $brandSlugIdMap[$productInfo['brand_slug']],
+                'name' => $productInfo['name'],
+                'slug' => $productInfo['slug'],
                 'price' => mt_rand(1, 9) * 10 + mt_rand(2, 9) * 100 + mt_rand(0, 1) * 1000,
                 'discount_percent' => mt_rand(1, 4) * 10,
                 'quantity' => 1000,
                 'warranty_period' => 12,
                 'description' => 'None',
-                'main_image_path' => Constants::PRODUCT_IMAGE_PATH . '/' . $productDetail['slug'] . '.jpg',
+                'main_image_path' => Config::FOLDER_PATH_PRODUCT_IMAGES . '/' . $productInfo['slug'] . '.jpg',
                 'delete_flag' => false,
             ]);
-            $this->createProductImages($product->id, $productDetail['slug']);
+            $this->createProductImages($product->id, $productInfo['slug']);
         }
     }
 
     private function generateLaptops(): void
     {
-        $categoryId = Category::where(['slug' => 'laptop', 'delete_flag' => false])->first()->id;
+        $category = Category::where(['slug' => 'laptop', 'delete_flag' => false])->first();
         $brandSlugIdMap = $this->getBrandSlugIdMap();
 
-        $productDetailArray = [
+        $productInfoArray = [
             [
                 'name' => 'MacBook Air M1 2020 256GB',
                 'slug' => 'macbook-air-m1-2020',
@@ -188,30 +189,30 @@ class ProductSeeder extends Seeder
             ],
         ];
 
-        foreach ($productDetailArray as $productDetail) {
+        foreach ($productInfoArray as $productInfo) {
             $product = Product::create([
-                'category_id' => $categoryId,
-                'brand_id' => $brandSlugIdMap[$productDetail['brand_slug']],
-                'name' => $productDetail['name'],
-                'slug' => $productDetail['slug'],
+                'category_id' => $category->id,
+                'brand_id' => $brandSlugIdMap[$productInfo['brand_slug']],
+                'name' => $productInfo['name'],
+                'slug' => $productInfo['slug'],
                 'price' => mt_rand(1, 9) * 10 + mt_rand(4, 9) * 100 + mt_rand(0, 1) * 1000,
                 'discount_percent' => mt_rand(1, 4) * 10,
                 'quantity' => 1000,
                 'warranty_period' => 24,
                 'description' => 'None',
-                'main_image_path' => Constants::PRODUCT_IMAGE_PATH . '/' . $productDetail['slug'] . '.jpg',
+                'main_image_path' => Config::FOLDER_PATH_PRODUCT_IMAGES . '/' . $productInfo['slug'] . '.jpg',
                 'delete_flag' => false,
             ]);
-            $this->createProductImages($product->id, $productDetail['slug']);
+            $this->createProductImages($product->id, $productInfo['slug']);
         }
     }
 
     private function generateTablets(): void
     {
-        $categoryId = Category::where(['slug' => 'tablet', 'delete_flag' => false])->first()->id;
+        $category = Category::where(['slug' => 'tablet', 'delete_flag' => false])->first();
         $brandSlugIdMap = $this->getBrandSlugIdMap();
 
-        $productDetailArray = [
+        $productInfoArray = [
             [
                 'name' => 'iPad Air 5 (2022) 256GB',
                 'slug' => 'ipad-air-5-256gb',
@@ -269,30 +270,30 @@ class ProductSeeder extends Seeder
             ],
         ];
 
-        foreach ($productDetailArray as $productDetail) {
+        foreach ($productInfoArray as $productInfo) {
             $product = Product::create([
-                'category_id' => $categoryId,
-                'brand_id' => $brandSlugIdMap[$productDetail['brand_slug']],
-                'name' => $productDetail['name'],
-                'slug' => $productDetail['slug'],
+                'category_id' => $category->id,
+                'brand_id' => $brandSlugIdMap[$productInfo['brand_slug']],
+                'name' => $productInfo['name'],
+                'slug' => $productInfo['slug'],
                 'price' => mt_rand(1, 9) * 10 + mt_rand(4, 9) * 100 + mt_rand(0, 1) * 1000,
                 'discount_percent' => mt_rand(1, 4) * 10,
                 'quantity' => 1000,
                 'warranty_period' => 24,
                 'description' => 'None',
-                'main_image_path' => Constants::PRODUCT_IMAGE_PATH . '/' . $productDetail['slug'] . '.jpg',
+                'main_image_path' => Config::FOLDER_PATH_PRODUCT_IMAGES . '/' . $productInfo['slug'] . '.jpg',
                 'delete_flag' => false,
             ]);
-            $this->createProductImages($product->id, $productDetail['slug']);
+            $this->createProductImages($product->id, $productInfo['slug']);
         }
     }
 
     private function generateSmartwatches()
     {
-        $categoryId = Category::where(['slug' => 'smartwatch', 'delete_flag' => false])->first()->id;
+        $category = Category::where(['slug' => 'smartwatch', 'delete_flag' => false])->first();
         $brandSlugIdMap = $this->getBrandSlugIdMap();
 
-        $productDetailArray = [
+        $productInfoArray = [
             [
                 'name' => 'Apple Watch SE 2022 40mm',
                 'slug' => 'apple-watch-se-2022-40mm',
@@ -310,30 +311,30 @@ class ProductSeeder extends Seeder
             ],
         ];
 
-        foreach ($productDetailArray as $productDetail) {
+        foreach ($productInfoArray as $productInfo) {
             $product = Product::create([
-                'category_id' => $categoryId,
-                'brand_id' => $brandSlugIdMap[$productDetail['brand_slug']],
-                'name' => $productDetail['name'],
-                'slug' => $productDetail['slug'],
+                'category_id' => $category->id,
+                'brand_id' => $brandSlugIdMap[$productInfo['brand_slug']],
+                'name' => $productInfo['name'],
+                'slug' => $productInfo['slug'],
                 'price' => mt_rand(1, 9) * 10 + mt_rand(5, 9) * 100,
                 'discount_percent' => mt_rand(1, 4) * 10,
                 'quantity' => 1000,
                 'warranty_period' => 24,
                 'description' => 'None',
-                'main_image_path' => Constants::PRODUCT_IMAGE_PATH . '/' . $productDetail['slug'] . '.jpg',
+                'main_image_path' => Config::FOLDER_PATH_PRODUCT_IMAGES . '/' . $productInfo['slug'] . '.jpg',
                 'delete_flag' => false,
             ]);
-            $this->createProductImages($product->id, $productDetail['slug']);
+            $this->createProductImages($product->id, $productInfo['slug']);
         }
     }
 
     private function generateAccessories()
     {
-        $categoryId = Category::where(['slug' => 'accessories', 'delete_flag' => false])->first()->id;
+        $category = Category::where(['slug' => 'accessories', 'delete_flag' => false])->first();
         $brandSlugIdMap = $this->getBrandSlugIdMap();
 
-        $productDetailArray = [
+        $productInfoArray = [
             [
                 'name' => 'Wireless earphones Samsung Galaxy Buds Live',
                 'slug' => 'samsung-galaxy-buds-live',
@@ -346,21 +347,21 @@ class ProductSeeder extends Seeder
             ],
         ];
 
-        foreach ($productDetailArray as $productDetail) {
+        foreach ($productInfoArray as $productInfo) {
             $product = Product::create([
-                'category_id' => $categoryId,
-                'brand_id' => $brandSlugIdMap[$productDetail['brand_slug']],
-                'name' => $productDetail['name'],
-                'slug' => $productDetail['slug'],
+                'category_id' => $category->id,
+                'brand_id' => $brandSlugIdMap[$productInfo['brand_slug']],
+                'name' => $productInfo['name'],
+                'slug' => $productInfo['slug'],
                 'price' => mt_rand(1, 9) * 10 + mt_rand(5, 9) * 100,
                 'discount_percent' => mt_rand(1, 4) * 10,
                 'quantity' => 1000,
                 'warranty_period' => 24,
                 'description' => 'None',
-                'main_image_path' => Constants::PRODUCT_IMAGE_PATH . '/' . $productDetail['slug'] . '.jpg',
+                'main_image_path' => Config::FOLDER_PATH_PRODUCT_IMAGES . '/' . $productInfo['slug'] . '.jpg',
                 'delete_flag' => false,
             ]);
-            $this->createProductImages($product->id, $productDetail['slug']);
+            $this->createProductImages($product->id, $productInfo['slug']);
         }
     }
 
@@ -378,19 +379,19 @@ class ProductSeeder extends Seeder
     {
         ProductImage::create([
             'product_id' => $productId,
-            'image_path' => Constants::PRODUCT_IMAGE_PATH . '/' . $productSlug . '.jpg',
+            'image_path' => Config::FOLDER_PATH_PRODUCT_IMAGES . '/' . $productSlug . '.jpg',
         ]);
         ProductImage::create([
             'product_id' => $productId,
-            'image_path' => Constants::PRODUCT_IMAGE_PATH . '/' . $productSlug . '-1.jpg',
+            'image_path' => Config::FOLDER_PATH_PRODUCT_IMAGES . '/' . $productSlug . '-1.jpg',
         ]);
         ProductImage::create([
             'product_id' => $productId,
-            'image_path' => Constants::PRODUCT_IMAGE_PATH . '/' . $productSlug . '-2.jpg',
+            'image_path' => Config::FOLDER_PATH_PRODUCT_IMAGES . '/' . $productSlug . '-2.jpg',
         ]);
         ProductImage::create([
             'product_id' => $productId,
-            'image_path' => Constants::PRODUCT_IMAGE_PATH . '/' . $productSlug . '-3.jpg',
+            'image_path' => Config::FOLDER_PATH_PRODUCT_IMAGES . '/' . $productSlug . '-3.jpg',
         ]);
     }
 }
