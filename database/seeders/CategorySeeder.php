@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Common\Constants;
+use App\Config\Config;
 use App\Models\Category;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -14,87 +14,52 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-        Category::create([
-            'name' => 'Phone',
-            'slug' => 'phone',
-            'icon_path' => Constants::CATEGORY_ICON_PATH . '/phone.png',
-            'delete_flag' => false,
-        ]);
-        Category::create([
-            'name' => 'Laptop',
-            'slug' => 'laptop',
-            'icon_path' => Constants::CATEGORY_ICON_PATH . '/laptop.png',
-            'delete_flag' => false,
-        ]);
-        Category::create([
-            'name' => 'Tablet',
-            'slug' => 'tablet',
-            'icon_path' => Constants::CATEGORY_ICON_PATH . '/tablet.png',
-            'delete_flag' => false,
-        ]);
-        Category::create([
-            'name' => 'Smartwatch',
-            'slug' => 'smartwatch',
-            'icon_path' => Constants::CATEGORY_ICON_PATH . '/smartwatch.png',
-            'delete_flag' => false,
-        ]);
-        Category::create([
-            'name' => 'Sound device',
-            'slug' => 'sound-device',
-            'icon_path' => Constants::CATEGORY_ICON_PATH . '/sound-device.png',
-            'delete_flag' => false,
-        ]);
-        Category::create([
-            'name' => 'Accessories',
-            'slug' => 'accessories',
-            'icon_path' => Constants::CATEGORY_ICON_PATH . '/accessories.png',
-            'delete_flag' => false,
-        ]);
+        $categoryInfoArray = [
+            ['name' => 'Phone', 'slug' => 'phone'],
+            ['name' => 'Laptop', 'slug' => 'laptop'],
+            ['name' => 'Tablet', 'slug' => 'tablet'],
+            ['name' => 'Smartwatch', 'slug' => 'smartwatch'],
+            ['name' => 'Sound device', 'slug' => 'sound-device'],
+            ['name' => 'Accessories', 'slug' => 'accessories'],
+        ];
+        $this->generateRootCategories($categoryInfoArray);
 
         $accessoriesId = Category::where('slug', 'accessories')->first()->id;
-        Category::create([
-            'parent_id' => $accessoriesId,
-            'name' => 'Keyboard',
-            'slug' => 'keyboard',
-            'icon_path' => Constants::CATEGORY_ICON_PATH . '/keyboard.png',
-            'delete_flag' => false,
-        ]);
-        Category::create([
-            'parent_id' => $accessoriesId,
-            'name' => 'Mouse',
-            'slug' => 'mouse',
-            'icon_path' => Constants::CATEGORY_ICON_PATH . '/mouse.png',
-            'delete_flag' => false,
-        ]);
-        Category::create([
-            'parent_id' => $accessoriesId,
-            'name' => 'Adaptor',
-            'slug' => 'adaptor',
-            'icon_path' => Constants::CATEGORY_ICON_PATH . '/adaptor.png',
-            'delete_flag' => false,
-        ]);
-        Category::create([
-            'parent_id' => $accessoriesId,
-            'name' => 'Cable',
-            'slug' => 'cable',
-            'icon_path' => Constants::CATEGORY_ICON_PATH . '/cable.png',
-            'delete_flag' => false,
-        ]);
-
         $soundDeviceId = Category::where('slug', 'sound-device')->first()->id;
-        Category::create([
-            'parent_id' => $soundDeviceId,
-            'name' => 'Headphone',
-            'slug' => 'headphone',
-            'icon_path' => Constants::CATEGORY_ICON_PATH . '/headphone.png',
-            'delete_flag' => false,
-        ]);
-        Category::create([
-            'parent_id' => $soundDeviceId,
-            'name' => 'Earphone',
-            'slug' => 'earphone',
-            'icon_path' => Constants::CATEGORY_ICON_PATH . '/earphone.png',
-            'delete_flag' => false,
-        ]);
+
+        $childCategoriesInfoArray = [
+            ['name' => 'Keyboard', 'slug' => 'Keyboard', 'parentId' => $accessoriesId],
+            ['name' => 'Mouse', 'slug' => 'mouse', 'parentId' => $accessoriesId],
+            ['name' => 'Adaptor', 'slug' => 'adaptor', 'parentId' => $accessoriesId],
+            ['name' => 'Cable', 'slug' => 'cable', 'parentId' => $accessoriesId],
+            ['name' => 'Headphone', 'slug' => 'headphone', 'parentId' => $soundDeviceId],
+            ['name' => 'Earphone', 'slug' => 'earphone', 'parentId' => $soundDeviceId],
+        ];
+        $this->generateChildCategories($childCategoriesInfoArray);
+    }
+
+    private function generateRootCategories($categoryInfoArray)
+    {
+        foreach ($categoryInfoArray as $categoryInfo) {
+            Category::create([
+                'name' => $categoryInfo['name'],
+                'slug' => $categoryInfo['slug'],
+                'icon_path' => Config::FOLDER_PATH_CATEGORY_ICON . '/' . $categoryInfo['slug'] . '.png',
+                'delete_flag' => false,
+            ]);
+        }
+    }
+
+    private function generateChildCategories($categoryInfoArray)
+    {
+        foreach ($categoryInfoArray as $categoryInfo) {
+            Category::create([
+                'parent_id' => $categoryInfo['parentId'],
+                'name' => $categoryInfo['name'],
+                'slug' => $categoryInfo['slug'],
+                'icon_path' => Config::FOLDER_PATH_CATEGORY_ICON . '/' . $categoryInfo['slug'] . '.png',
+                'delete_flag' => false,
+            ]);
+        }
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Common\Constants;
+use App\Config\Config;
 use App\DataFilterConstants\CategorySearchOptionConstants;
 use App\Models\Category;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -39,7 +40,7 @@ class CategoryService
     {
         $iconPath = $this->storageService->saveFile(
             $categoryProperties['icon'],
-            Constants::CATEGORY_ICON_PATH
+            Config::FOLDER_PATH_CATEGORY_ICON,
         );
         $parentCategoryId = $categoryProperties['parentId'] === Constants::NONE_VALUE
             ? null : $categoryProperties['parentId'];
@@ -69,7 +70,7 @@ class CategoryService
 
             $category->icon_path = $this->storageService->saveFile(
                 $categoryProperties['icon'],
-                Constants::CATEGORY_ICON_PATH
+                Config::FOLDER_PATH_CATEGORY_ICON
             );
             $this->firebaseStorageService->uploadImage($category->icon_path);
         }
