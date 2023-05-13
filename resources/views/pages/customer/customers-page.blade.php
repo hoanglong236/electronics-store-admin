@@ -11,11 +11,9 @@
             @endif
             <div class="table-data__tool">
                 <div class="table-data__tool-left">
-                    @include('shared.components.dropdown-search-bar', [
+                    @include('shared.components.search-bar', [
                         'searchFormUrl' => route('manage.customer.search'),
                         'searchKeyword' => $data['searchKeyword'],
-                        'searchOptions' => $data['searchOptions'],
-                        'currentSearchOption' => $data['currentSearchOption'],
                     ])
                 </div>
             </div>

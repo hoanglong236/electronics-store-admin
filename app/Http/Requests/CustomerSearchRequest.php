@@ -2,9 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\DataFilterConstants\CustomerSearchOptionConstants;
-use Illuminate\Validation\Rule;
-
 class CustomerSearchRequest extends BaseSearchRequest
 {
     /**
@@ -16,10 +13,6 @@ class CustomerSearchRequest extends BaseSearchRequest
     {
         return [
             'searchKeyword' => 'max:64',
-            'searchOption' => [
-                'required',
-                Rule::in(CustomerSearchOptionConstants::toArray()),
-            ]
         ];
     }
 }

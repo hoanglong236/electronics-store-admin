@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Common\Constants;
-use App\DataFilterConstants\CustomerSearchOptionConstants;
 use App\Http\Requests\CustomerDisableFlagRequest;
 use App\Http\Requests\CustomerSearchRequest;
 use App\Services\CustomerService;
@@ -38,7 +37,6 @@ class CustomerController extends Controller
 
         $data = $this->getCommonDataForCustomersPage();
         $data['searchKeyword'] = $customerSearchProperties['searchKeyword'];
-        $data['currentSearchOption'] = $customerSearchProperties['searchOption'];
         $data['customers'] = $paginator->items();
         $data['paginator'] = $paginator->withPath(
             'search?' . UtilsService::convertMapToParamsString($customerSearchProperties)
@@ -52,8 +50,6 @@ class CustomerController extends Controller
         return [
             'pageTitle' => 'Customers',
             'searchKeyword' => '',
-            'searchOptions' => CustomerSearchOptionConstants::toArray(),
-            'currentSearchOption' => CustomerSearchOptionConstants::SEARCH_ALL,
         ];
     }
 
