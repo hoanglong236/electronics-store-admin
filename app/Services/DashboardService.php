@@ -30,9 +30,9 @@ class DashboardService
             ->first();
 
         $orderStatusCount = [
-            'incomplete' => $result->incomplete_count,
-            'completed' => $result->completed_count,
-            'cancelled' => $result->cancelled_count,
+            'incomplete' => intval($result->incomplete_count),
+            'completed' => intval($result->completed_count),
+            'cancelled' => intval($result->cancelled_count),
         ];
 
         return [
