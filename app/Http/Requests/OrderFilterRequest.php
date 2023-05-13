@@ -10,7 +10,7 @@ use Illuminate\Validation\Rule;
 class OrderFilterRequest extends BaseSearchRequest
 {
     /**
-     * Get the validation rules that apply to the request.
+     * Override the default.
      *
      * @return array<string, \Illuminate\Contracts\Validation\Rule|array|string>
      */

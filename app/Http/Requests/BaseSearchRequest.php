@@ -15,7 +15,19 @@ class BaseSearchRequest extends FormRequest
     }
 
     /**
-     * Override the default
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\Rule|array|string>
+     */
+    public function rules(): array
+    {
+        return [
+            'searchKeyword' => 'max:64',
+        ];
+    }
+
+    /**
+     * Override the default.
      */
     protected function prepareForValidation()
     {
