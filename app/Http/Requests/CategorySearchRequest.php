@@ -2,9 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\DataFilterConstants\CategorySearchOptionConstants;
-use Illuminate\Validation\Rule;
-
 class CategorySearchRequest extends BaseSearchRequest
 {
     /**
@@ -16,10 +13,6 @@ class CategorySearchRequest extends BaseSearchRequest
     {
         return [
             'searchKeyword' => 'max:64',
-            'searchOption' => [
-                'required',
-                Rule::in(CategorySearchOptionConstants::toArray()),
-            ]
         ];
     }
 }

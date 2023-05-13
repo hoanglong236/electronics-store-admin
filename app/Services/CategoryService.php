@@ -4,9 +4,7 @@ namespace App\Services;
 
 use App\Common\Constants;
 use App\Config\Config;
-use App\DataFilterConstants\CategorySearchOptionConstants;
 use App\Models\Category;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 
@@ -102,36 +100,8 @@ class CategoryService
         $itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT
     ) {
         $searchKeyword = $categorySearchProperties['searchKeyword'];
-        $searchOption = $categorySearchProperties['searchOption'];
         $escapedKeyword = UtilsService::escapeKeyword($searchKeyword);
 
-        $queryBuilder = $this->getSearchCategoriesQueryBuilder($escapedKeyword, $searchOption);
-        if (is_null($queryBuilder)) {
-            return new LengthAwarePaginator([], 0, $itemPerPage);
-        }
-
-        return $queryBuilder->latest()
-            ->paginate($itemPerPage);
-    }
-
-    private function getSearchCategoriesQueryBuilder($escapedKeyword, $searchOption)
-    {
-        switch ($searchOption) {
-            case CategorySearchOptionConstants::SEARCH_ALL:
-                return $this->getSearchCategoriesByAllQueryBuilder($escapedKeyword);
-            case CategorySearchOptionConstants::SEARCH_NAME:
-                return $this->getSearchCategoriesByNameQueryBuilder($escapedKeyword);
-            case CategorySearchOptionConstants::SEARCH_SLUG:
-                return $this->getSearchCategoriesBySlugQueryBuilder($escapedKeyword);
-            case CategorySearchOptionConstants::SEARCH_PARENT:
-                return $this->getSearchCategoriesByParentNameQueryBuilder($escapedKeyword);
-            default:
-                return null;
-        }
-    }
-
-    private function getSearchCategoriesByAllQueryBuilder($escapedKeyword)
-    {
         return DB::table('categories')
             ->leftJoin('categories as parent', 'parent.id', '=', 'categories.parent_id')
             ->select('categories.*')
@@ -139,32 +109,10 @@ class CategoryService
             ->where(function ($query) use ($escapedKeyword) {
                 $query->where('categories.name', 'LIKE', '%' . $escapedKeyword . '%')
                     ->orWhere('categories.slug', 'LIKE', '%' . $escapedKeyword . '%')
-                    ->orWhere('parent.name', 'LIKE', '%' . $escapedKeyword . '%');
-            });
-    }
-
-    private function getSearchCategoriesByNameQueryBuilder($escapedKeyword)
-    {
-        return Category::where([
-            'delete_flag' => false,
-            ['name', 'LIKE', '%' . $escapedKeyword . '%']
-        ]);
-    }
-
-    private function getSearchCategoriesBySlugQueryBuilder($escapedKeyword)
-    {
-        return Category::where([
-            'delete_flag' => false,
-            ['slug', 'LIKE', '%' . $escapedKeyword . '%']
-        ]);
-    }
-
-    private function getSearchCategoriesByParentNameQueryBuilder($escapedKeyword)
-    {
-        return DB::table('categories')
-            ->join('categories as parent', 'parent.id', '=', 'categories.parent_id')
-            ->select('categories.*')
-            ->where('categories.delete_flag', false)
-            ->where('parent.name', 'LIKE', '%' . $escapedKeyword . '%');
+                    ->orWhere('parent.name', 'LIKE', '%' . $escapedKeyword . '%')
+                    ->orWhere('parent.slug', 'LIKE', '%' . $escapedKeyword . '%');
+            })
+            ->latest()
+            ->paginate($itemPerPage);
     }
 }

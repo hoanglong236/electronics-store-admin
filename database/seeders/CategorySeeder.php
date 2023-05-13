@@ -28,7 +28,7 @@ class CategorySeeder extends Seeder
         $soundDeviceId = Category::where('slug', 'sound-device')->first()->id;
 
         $childCategoriesInfoArray = [
-            ['name' => 'Keyboard', 'slug' => 'Keyboard', 'parentId' => $accessoriesId],
+            ['name' => 'Keyboard', 'slug' => 'keyboard', 'parentId' => $accessoriesId],
             ['name' => 'Mouse', 'slug' => 'mouse', 'parentId' => $accessoriesId],
             ['name' => 'Adaptor', 'slug' => 'adaptor', 'parentId' => $accessoriesId],
             ['name' => 'Cable', 'slug' => 'cable', 'parentId' => $accessoriesId],

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Common\Constants;
-use App\DataFilterConstants\CategorySearchOptionConstants;
 use App\Http\Requests\CategoryRequest;
 use App\Http\Requests\CategorySearchRequest;
 use App\Services\CategoryService;
@@ -39,7 +38,6 @@ class CategoryController extends Controller
 
         $data = $this->getCommonDataForCategoriesPage();
         $data['searchKeyword'] = $categorySearchProperties['searchKeyword'];
-        $data['currentSearchOption'] = $categorySearchProperties['searchOption'];
         $data['categories'] = $paginator->items();
         $data['paginator'] = $paginator->withPath(
             'search?' . UtilsService::convertMapToParamsString($categorySearchProperties)
@@ -55,8 +53,6 @@ class CategoryController extends Controller
             'pageTitle' => 'Categories',
             'categoryIdNameMap' => $categoryIdNameMap,
             'searchKeyword' => '',
-            'searchOptions' => CategorySearchOptionConstants::toArray(),
-            'currentSearchOption' => CategorySearchOptionConstants::SEARCH_ALL,
         ];
     }
 
