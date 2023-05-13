@@ -34,7 +34,7 @@ class BrandService
     {
         $logoPath = $this->storageService->saveFile(
             $brandProperties['logo'],
-            Config::FOLDER_PATH_BRAND_LOGO
+            Config::FOLDER_PATH_BRAND_LOGOS
         );
 
         Brand::create([
@@ -59,7 +59,7 @@ class BrandService
 
             $brand->logo_path = $this->storageService->saveFile(
                 $brandProperties['logo'],
-                Config::FOLDER_PATH_BRAND_LOGO
+                Config::FOLDER_PATH_BRAND_LOGOS
             );
             $this->firebaseStorageService->uploadImage($brand->logo_path);
         }

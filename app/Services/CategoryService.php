@@ -40,7 +40,7 @@ class CategoryService
     {
         $iconPath = $this->storageService->saveFile(
             $categoryProperties['icon'],
-            Config::FOLDER_PATH_CATEGORY_ICON,
+            Config::FOLDER_PATH_CATEGORY_ICONS,
         );
         $parentCategoryId = $categoryProperties['parentId'] === Constants::NONE_VALUE
             ? null : $categoryProperties['parentId'];
@@ -70,7 +70,7 @@ class CategoryService
 
             $category->icon_path = $this->storageService->saveFile(
                 $categoryProperties['icon'],
-                Config::FOLDER_PATH_CATEGORY_ICON
+                Config::FOLDER_PATH_CATEGORY_ICONS
             );
             $this->firebaseStorageService->uploadImage($category->icon_path);
         }

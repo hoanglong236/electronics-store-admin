@@ -44,7 +44,7 @@ class CategorySeeder extends Seeder
             Category::create([
                 'name' => $categoryInfo['name'],
                 'slug' => $categoryInfo['slug'],
-                'icon_path' => Config::FOLDER_PATH_CATEGORY_ICON . '/' . $categoryInfo['slug'] . '.png',
+                'icon_path' => Config::FOLDER_PATH_CATEGORY_ICONS . '/' . $categoryInfo['slug'] . '.png',
                 'delete_flag' => false,
             ]);
         }
@@ -57,7 +57,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => $categoryInfo['parentId'],
                 'name' => $categoryInfo['name'],
                 'slug' => $categoryInfo['slug'],
-                'icon_path' => Config::FOLDER_PATH_CATEGORY_ICON . '/' . $categoryInfo['slug'] . '.png',
+                'icon_path' => Config::FOLDER_PATH_CATEGORY_ICONS . '/' . $categoryInfo['slug'] . '.png',
                 'delete_flag' => false,
             ]);
         }
