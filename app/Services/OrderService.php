@@ -2,11 +2,13 @@
 
 namespace App\Services;
 
+use App\Common\Constants;
 use App\DataFilterConstants\OrderPaymentFilterConstants;
 use App\DataFilterConstants\OrderSearchOptionConstants;
 use App\DataFilterConstants\OrderStatusFilterConstants;
 use App\ModelConstants\OrderStatusConstants;
 use App\Models\Order;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -20,12 +22,12 @@ class OrderService
             ->first();
     }
 
-    public function listCustomOrders()
+    public function getListCustomOrdersPaginator($itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT)
     {
         $queryBuilder = $this->getBaseCustomOrdersQueryBuilder();
         return $queryBuilder->groupBy('orders.id')
-            ->orderByDesc('orders.created_at')
-            ->get();
+            ->latest()
+            ->paginate($itemPerPage);
     }
 
     public function updateOrderStatus($orderStatusProperties, $orderId)
@@ -56,32 +58,35 @@ class OrderService
         ];
     }
 
-    public function searchCustomOrders($orderSearchProperties)
-    {
+    public function getSearchCustomOrdersPaginator(
+        $orderSearchProperties,
+        $itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT
+    ) {
         $searchKeyword = $orderSearchProperties['searchKeyword'];
         $searchOption = $orderSearchProperties['searchOption'];
         $escapedKeyword = UtilsService::escapeKeyword($searchKeyword);
 
         $queryBuilder = $this->getSearchCustomOrdersQueryBuilder($escapedKeyword, $searchOption);
         if (is_null($queryBuilder)) {
-            return [];
+            return new LengthAwarePaginator([], 0, $itemPerPage);
         }
 
-        return $queryBuilder
-            ->groupBy('orders.id')
-            ->orderByDesc('orders.created_at')
-            ->get();
+        return $queryBuilder->groupBy('orders.id')
+            ->latest()
+            ->paginate($itemPerPage);
     }
 
-    public function filterCustomOrders($orderFilterProperties)
-    {
+    public function getFilterCustomOrdersPaginator(
+        $orderFilterProperties,
+        $itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT
+    ) {
         $searchKeyword = $orderFilterProperties['searchKeyword'];
         $searchOption = $orderFilterProperties['searchOption'];
         $escapedKeyword = UtilsService::escapeKeyword($searchKeyword);
 
         $queryBuilder = $this->getSearchCustomOrdersQueryBuilder($escapedKeyword, $searchOption);
         if (is_null($queryBuilder)) {
-            return [];
+            return new LengthAwarePaginator([], 0, $itemPerPage);
         }
 
         $statusFilter = $orderFilterProperties['statusFilter'];
@@ -94,10 +99,9 @@ class OrderService
             $queryBuilder->where('orders.payment_method', $paymentFilter);
         }
 
-        return $queryBuilder
-            ->groupBy('orders.id')
-            ->orderByDesc('orders.created_at')
-            ->get();
+        return $queryBuilder->groupBy('orders.id')
+            ->latest()
+            ->paginate($itemPerPage);
     }
 
     private function getSearchCustomOrdersQueryBuilder($escapedKeyword, $searchOption)

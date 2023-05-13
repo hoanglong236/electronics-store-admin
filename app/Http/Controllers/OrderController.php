@@ -10,6 +10,7 @@ use App\Http\Requests\OrderFilterRequest;
 use App\Http\Requests\OrderSearchRequest;
 use App\Http\Requests\OrderStatusRequest;
 use App\Services\OrderService;
+use App\Services\UtilsService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -24,8 +25,11 @@ class OrderController extends Controller
 
     public function index()
     {
+        $paginator = $this->orderService->getListCustomOrdersPaginator();
+
         $data = $this->getCommonDataForOrdersPage();
-        $data['customOrders'] = $this->orderService->listCustomOrders();
+        $data['customOrders'] = $paginator->items();
+        $data['paginator'] = $paginator;
 
         return view('pages.order.orders-page', ['data' => $data]);
     }
@@ -33,11 +37,15 @@ class OrderController extends Controller
     public function search(OrderSearchRequest $orderSearchRequest)
     {
         $orderSearchProperties = $orderSearchRequest->validated();
+        $paginator = $this->orderService->getSearchCustomOrdersPaginator($orderSearchProperties);
 
         $data = $this->getCommonDataForOrdersPage();
-        $data['customOrders'] = $this->orderService->searchCustomOrders($orderSearchProperties);
         $data['searchKeyword'] = $orderSearchProperties['searchKeyword'];
         $data['currentSearchOption'] = $orderSearchProperties['searchOption'];
+        $data['customOrders'] = $paginator->items();
+        $data['paginator'] = $paginator->withPath(
+            'search?' . UtilsService::convertMapToParamsString($orderSearchProperties)
+        );
 
         return view('pages.order.orders-page', ['data' => $data]);
     }
@@ -45,13 +53,17 @@ class OrderController extends Controller
     public function filter(OrderFilterRequest $orderFilterRequest)
     {
         $orderFilterProperties = $orderFilterRequest->validated();
+        $paginator = $this->orderService->getFilterCustomOrdersPaginator($orderFilterProperties);
 
         $data = $this->getCommonDataForOrdersPage();
-        $data['customOrders'] = $this->orderService->filterCustomOrders($orderFilterProperties);
         $data['searchKeyword'] = $orderFilterProperties['searchKeyword'];
         $data['currentSearchOption'] = $orderFilterProperties['searchOption'];
         $data['currentStatusFilter'] = $orderFilterProperties['statusFilter'];
         $data['currentPaymentFilter'] = $orderFilterProperties['paymentFilter'];
+        $data['customOrders'] = $paginator->items();
+        $data['paginator'] = $paginator->withPath(
+            'filter?' . UtilsService::convertMapToParamsString($orderFilterProperties)
+        );
 
         return view('pages.order.orders-page', ['data' => $data]);
     }
