@@ -39,7 +39,7 @@ class CatalogStatisticsExportExcelService extends BaseExcelService
             ->setFontUnderline();
     }
 
-    public function export(string $fromDate, string $toDate)
+    public function export($fromDate, $toDate)
     {
         $this->fromDate = $fromDate;
         $this->toDate = $toDate;
@@ -65,7 +65,7 @@ class CatalogStatisticsExportExcelService extends BaseExcelService
         $workbook->download();
     }
 
-    private function generatePageSetup(string $centerHeader = '')
+    private function generatePageSetup($centerHeader = '')
     {
         return (new ExcelPageSetup())
             ->setOrientation(ExcelPageSetupConstants::ORIENTATION_PORTRAIT)
@@ -79,10 +79,8 @@ class CatalogStatisticsExportExcelService extends BaseExcelService
             ->setRepeatRows(1, 10);
     }
 
-    private function writeBestSellingCategories(
-        ExcelWorksheet $worksheet,
-        array $bestSellingCategories
-    ) {
+    private function writeBestSellingCategories($worksheet, $bestSellingCategories)
+    {
         $row = 1;
         $col = 1;
 
@@ -100,11 +98,8 @@ class CatalogStatisticsExportExcelService extends BaseExcelService
         $worksheet->setColumnWidth(3, 13);
     }
 
-    private function writeBestSellingCategoriesTable(
-        ExcelWorksheet $worksheet,
-        int $rowStart,
-        array $bestSellingCategories
-    ) {
+    private function writeBestSellingCategoriesTable($worksheet, $rowStart, $bestSellingCategories)
+    {
         $row = $rowStart;
         $col = 1;
 
@@ -141,7 +136,7 @@ class CatalogStatisticsExportExcelService extends BaseExcelService
         return $usedRowCount;
     }
 
-    private function writeBestSellingCategoryDetails(ExcelWorksheet $worksheet, array $categoryDetails)
+    private function writeBestSellingCategoryDetails($worksheet, $categoryDetails)
     {
         $row = 1;
         $col = 1;
@@ -176,14 +171,14 @@ class CatalogStatisticsExportExcelService extends BaseExcelService
             );
         }
 
-        $worksheet->setColumnWidth(2, 20);
+        $worksheet->setColumnWidth(2, 30);
     }
 
     private function writeBestSellingBrandsTable(
-        ExcelWorksheet $worksheet,
-        int $rowStart,
-        array $bestSellingBrands,
-        int $categorySoldQuantity
+        $worksheet,
+        $rowStart,
+        $bestSellingBrands,
+        $categorySoldQuantity
     ) {
         $row = $rowStart;
         $col = 1;
@@ -242,10 +237,10 @@ class CatalogStatisticsExportExcelService extends BaseExcelService
     }
 
     private function writeBestSellingProductsTable(
-        ExcelWorksheet $worksheet,
-        int $rowStart,
-        array $bestSellingProducts,
-        int $brandSoldQuantity,
+        $worksheet,
+        $rowStart,
+        $bestSellingProducts,
+        $brandSoldQuantity,
     ) {
         $row = $rowStart;
         $col = 1;

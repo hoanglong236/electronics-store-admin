@@ -31,7 +31,7 @@ class OrderStatisticsExportExcelService extends BaseExcelService
         $this->tableBodyCenterStyle = $this->generateTableBodyCenterStyle();
     }
 
-    public function export(string $fromDate, string $toDate)
+    public function export($fromDate, $toDate)
     {
         $this->fromDate = $fromDate;
         $this->toDate = $toDate;
@@ -80,11 +80,8 @@ class OrderStatisticsExportExcelService extends BaseExcelService
             ->setRepeatRows(1, 10);
     }
 
-    private function generateTotalOrderStatusTable(
-        ExcelWorksheet $worksheet,
-        int $rowStart,
-        array $orderStatusCountArray
-    ) {
+    private function generateTotalOrderStatusTable($worksheet, $rowStart, $orderStatusCountArray)
+    {
         $col = 7;
         $row = $rowStart;
 
@@ -132,11 +129,8 @@ class OrderStatisticsExportExcelService extends BaseExcelService
         return $usedRowCount;
     }
 
-    private function generateCustomOrdersTable(
-        ExcelWorksheet $worksheet,
-        int $rowStart,
-        array $customOrders
-    ) {
+    private function generateCustomOrdersTable($worksheet, $rowStart, $customOrders)
+    {
         $col = 1;
         $row = $rowStart;
 
