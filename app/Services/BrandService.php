@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Common\Constants;
+use App\Config\Config;
 use App\Models\Brand;
 use Illuminate\Support\Facades\Log;
 
@@ -31,7 +32,10 @@ class BrandService
 
     public function createBrand($brandProperties)
     {
-        $logoPath = $this->storageService->saveFile($brandProperties['logo'], Constants::BRAND_LOGO_PATH);
+        $logoPath = $this->storageService->saveFile(
+            $brandProperties['logo'],
+            Config::FOLDER_PATH_BRAND_LOGO
+        );
 
         Brand::create([
             'name' => $brandProperties['name'],
@@ -55,7 +59,7 @@ class BrandService
 
             $brand->logo_path = $this->storageService->saveFile(
                 $brandProperties['logo'],
-                Constants::BRAND_LOGO_PATH
+                Config::FOLDER_PATH_BRAND_LOGO
             );
             $this->firebaseStorageService->uploadImage($brand->logo_path);
         }
