@@ -39,9 +39,11 @@ class ProductService
             ->first();
     }
 
-    public function getProductPaginator($itemPerPage)
+    public function getListProductsPaginator($itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT)
     {
-        return Product::where('delete_flag', false)->paginate($itemPerPage);
+        return Product::where('delete_flag', false)
+            ->latest()
+            ->paginate($itemPerPage);
     }
 
     public function createProduct($productProperties)
@@ -107,18 +109,21 @@ class ProductService
         $product->save();
     }
 
-    public function getSearchProductPaginator($productSearchProperties, $itemPerPage)
-    {
+    public function getSearchProductsPaginator(
+        $productSearchProperties,
+        $itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT
+    ) {
         $searchOption = $productSearchProperties['searchOption'];
         $searchKeyword = $productSearchProperties['searchKeyword'];
         $escapedKeyword = UtilsService::escapeKeyword($searchKeyword);
 
         $queryBuilder = $this->getSearchProductsQueryBuilder($escapedKeyword, $searchOption);
         if (is_null($queryBuilder)) {
-            return [];
+            return new LengthAwarePaginator([], 0, $itemPerPage);
         }
 
-        return $queryBuilder->paginate($itemPerPage);
+        return $queryBuilder->latest()
+            ->paginate($itemPerPage);
     }
 
     private function getSearchProductsQueryBuilder($escapedKeyword, $searchOption)

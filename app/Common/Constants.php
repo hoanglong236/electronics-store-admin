@@ -25,7 +25,6 @@ class Constants
 
     const DEFAULT_ITEM_PAGE_COUNT = 12;
 
-    const PRODUCT_PAGE_COUNT = 8;
     const CUSTOMER_PAGE_COUNT = 8;
 
     const SEARCH_KEYWORD_MAX_LENGTH = 64;

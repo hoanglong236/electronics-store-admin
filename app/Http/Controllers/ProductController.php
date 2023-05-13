@@ -11,7 +11,6 @@ use App\Services\BrandService;
 use App\Services\CategoryService;
 use App\Services\ProductService;
 use App\Services\UtilsService;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
@@ -30,11 +29,11 @@ class ProductController extends Controller
 
     public function index()
     {
-        $productPaginator = $this->productService->getProductPaginator(Constants::PRODUCT_PAGE_COUNT);
+        $paginator = $this->productService->getListProductsPaginator();
 
         $data = $this->getCommonDataForProductsPage();
-        $data['products'] = $productPaginator->items();
-        $data['productPaginator'] = $productPaginator;
+        $data['products'] = $paginator->items();
+        $data['paginator'] = $paginator;
 
         return view('pages.product.products-page', ['data' => $data]);
     }
@@ -42,18 +41,15 @@ class ProductController extends Controller
     public function search(ProductSearchRequest $productSearchRequest)
     {
         $productSearchProperties = $productSearchRequest->validated();
-        $searchProductPaginator = $this->productService->getSearchProductPaginator(
-            $productSearchProperties,
-            Constants::PRODUCT_PAGE_COUNT
-        );
+        $paginator = $this->productService->getSearchProductsPaginator($productSearchProperties);
 
         $data = $this->getCommonDataForProductsPage();
-        $data['products'] = $searchProductPaginator->items();
-        $data['productPaginator'] = $searchProductPaginator->withPath(
-            'search?' . UtilsService::convertMapToParamsString($productSearchProperties)
-        );
         $data['searchKeyword'] = $productSearchProperties['searchKeyword'];
         $data['currentSearchOption'] = $productSearchProperties['searchOption'];
+        $data['products'] = $paginator->items();
+        $data['paginator'] = $paginator->withPath(
+            'search?' . UtilsService::convertMapToParamsString($productSearchProperties)
+        );
 
         return view('pages.product.products-page', ['data' => $data]);
     }
