@@ -29,8 +29,6 @@ class Constants
     const ORDER_STATUS_COMPLETED = OrderStatusConstants::COMPLETED;
     const ORDER_STATUS_CANCELLED = OrderStatusConstants::CANCELLED;
 
-    const FIREBASE_STORAGE_IMAGES_PATH = 'project_images/';
-
     const BEST_SELLING_CATEGORIES_LIMIT = 3;
     const BEST_SELLING_BRANDS_LIMIT = 3;
 

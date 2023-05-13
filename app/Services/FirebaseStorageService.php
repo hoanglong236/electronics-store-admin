@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Common\Constants;
+use App\Config\Config;
 use Kreait\Firebase\Factory;
 
 /**
@@ -30,12 +30,12 @@ class FirebaseStorageService
     {
         $imageResource = fopen(public_path('/storage/') . $imagePath, "r");
         $this->firebaseBucket->upload($imageResource, [
-            'name' => Constants::FIREBASE_STORAGE_IMAGES_PATH . $imagePath,
+            'name' => Config::FOLDER_PATH_FIREBASE_STORAGE_IMAGES . $imagePath,
         ]);
     }
 
     public function deleteImage($imagePath)
     {
-        $this->firebaseBucket->object(Constants::FIREBASE_STORAGE_IMAGES_PATH . $imagePath)->delete();
+        $this->firebaseBucket->object(Config::FOLDER_PATH_FIREBASE_STORAGE_IMAGES . $imagePath)->delete();
     }
 }

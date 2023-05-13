@@ -22,7 +22,6 @@ class FirebaseUploadImageSeeder extends Seeder
             ->createStorage()
             ->getBucket();
 
-
         $brandLogoPaths = [];
         $brands = Brand::all('logo_path');
         foreach ($brands as $brand) {
@@ -57,7 +56,7 @@ class FirebaseUploadImageSeeder extends Seeder
         foreach ($imagePaths as $imagePath) {
             $imageResource = fopen(public_path('storage/') . $imagePath, "r");
             $firebaseBucket->upload($imageResource, [
-                'name' => Constants::FIREBASE_STORAGE_IMAGES_PATH . $imagePath,
+                'name' => Config::FOLDER_PATH_FIREBASE_STORAGE_IMAGES . $imagePath,
             ]);
         }
     }
