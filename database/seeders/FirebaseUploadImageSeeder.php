@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Common\Constants;
+use App\Config\Config;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
