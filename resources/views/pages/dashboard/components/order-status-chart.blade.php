@@ -1,23 +1,10 @@
-@php
-    $incompleteOrderCount = $orderStatusCountArray[Constants::ORDER_STATUS_RECEIVED] + $orderStatusCountArray[Constants::ORDER_STATUS_PROCESSING] + $orderStatusCountArray[Constants::ORDER_STATUS_DELIVERING];
-@endphp
-
 <div class="row">
     <div class="col-md-4 mb-4">
         @include('shared.components.chart-legend-table', [
             'notEmptyChartElements' => [
-                [
-                    'label' => 'Incomplete',
-                    'value' => $incompleteOrderCount,
-                ],
-                [
-                    'label' => 'Completed',
-                    'value' => $orderStatusCountArray[Constants::ORDER_STATUS_COMPLETED],
-                ],
-                [
-                    'label' => 'Cancelled',
-                    'value' => $orderStatusCountArray[Constants::ORDER_STATUS_CANCELLED],
-                ],
+                ['label' => 'Incomplete', 'value' => $orderStatusCountArray['incomplete']],
+                ['label' => 'Completed', 'value' => $orderStatusCountArray['completed']],
+                ['label' => 'Cancelled', 'value' => $orderStatusCountArray['cancelled']],
             ],
             'chartElementCount' => 3,
         ])
@@ -38,9 +25,9 @@
     <script src="{{ asset('assets/js/order-status-chart.js') }}"></script>
     <script>
         drawOrderStatusChart(
-            {{ $incompleteOrderCount }},
-            {{ $orderStatusCountArray[Constants::ORDER_STATUS_COMPLETED] }},
-            {{ $orderStatusCountArray[Constants::ORDER_STATUS_CANCELLED] }}
+            {{ $orderStatusCountArray['incomplete'] }},
+            {{ $orderStatusCountArray['completed'] }},
+            {{ $orderStatusCountArray['cancelled'] }}
         );
     </script>
 @endpush

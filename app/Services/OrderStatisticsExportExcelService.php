@@ -58,7 +58,7 @@ class OrderStatisticsExportExcelService extends BaseExcelService
 
         $col = 1;
         $worksheet->setColumnWidth($col + 2, 25);
-        $worksheet->setColumnWidth($col + 3, 35);
+        $worksheet->setColumnWidth($col + 3, 40);
         $worksheet->setColumnWidth($col + 4, 12);
         $worksheet->setColumnWidth($col + 6, 11);
         $worksheet->setColumnWidth($col + 7, 13);
