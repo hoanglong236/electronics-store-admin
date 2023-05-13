@@ -6,6 +6,7 @@ use App\Common\Constants;
 use App\DataFilterConstants\CustomerSearchOptionConstants;
 use App\Models\Customer;
 use App\Models\CustomerAddress;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Log;
 
 class CustomerService
@@ -48,7 +49,7 @@ class CustomerService
 
         $queryBuilder = $this->getSearchCustomersQueryBuilder($escapedKeyword, $searchOption);
         if (is_null($queryBuilder)) {
-            return new LengthAwarePaginator([], 0, $itemPerPage);;
+            return new LengthAwarePaginator([], 0, $itemPerPage);
         }
 
         return $queryBuilder->latest()

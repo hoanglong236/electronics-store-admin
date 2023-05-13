@@ -6,6 +6,7 @@ use App\Common\Constants;
 use App\DataFilterConstants\ProductSearchOptionConstants;
 use App\Models\Product;
 use App\Models\ProductImage;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
