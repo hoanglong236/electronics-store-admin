@@ -28,11 +28,11 @@ class CategoryService
         ])->first();
     }
 
-    public function getListCategoriesPaginator($limit = Constants::DEFAULT_ITEM_PAGE_COUNT)
+    public function getListCategoriesPaginator($itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT)
     {
         return Category::where('delete_flag', false)
             ->latest()
-            ->paginate($limit);
+            ->paginate($itemPerPage);
     }
 
     public function createCategory($categoryProperties)
@@ -98,7 +98,7 @@ class CategoryService
 
     public function getSearchCategoriesPaginator(
         $categorySearchProperties,
-        $limit = Constants::DEFAULT_ITEM_PAGE_COUNT
+        $itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT
     ) {
         $searchKeyword = $categorySearchProperties['searchKeyword'];
         $searchOption = $categorySearchProperties['searchOption'];
@@ -106,11 +106,11 @@ class CategoryService
 
         $queryBuilder = $this->getSearchCategoriesQueryBuilder($escapedKeyword, $searchOption);
         if (is_null($queryBuilder)) {
-            return new LengthAwarePaginator([], 0, $limit);
+            return new LengthAwarePaginator([], 0, $itemPerPage);
         }
 
         return $queryBuilder->latest()
-            ->paginate($limit);
+            ->paginate($itemPerPage);
     }
 
     private function getSearchCategoriesQueryBuilder($escapedKeyword, $searchOption)

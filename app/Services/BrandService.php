@@ -22,11 +22,11 @@ class BrandService
         return Brand::where(['id' => $brandId, 'delete_flag' => false])->first();
     }
 
-    public function getListBrandsPaginator($limit = Constants::DEFAULT_ITEM_PAGE_COUNT)
+    public function getListBrandsPaginator($itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT)
     {
         return Brand::where('delete_flag', false)
             ->latest()
-            ->paginate($limit);
+            ->paginate($itemPerPage);
     }
 
     public function createBrand($brandProperties)
@@ -73,7 +73,7 @@ class BrandService
 
     public function getBrandIdNameMap()
     {
-        $brands = $this->listBrands();
+        $brands = Brand::where('delete_flag', false)->get();
         $map = [];
         foreach ($brands as $brand) {
             $map[$brand->id] = $brand->name;
@@ -82,8 +82,10 @@ class BrandService
         return $map;
     }
 
-    public function getSearchBrandsPaginator($searchBrandProperties, $limit = Constants::DEFAULT_ITEM_PAGE_COUNT)
-    {
+    public function getSearchBrandsPaginator(
+        $searchBrandProperties,
+        $itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT
+    ) {
         $searchKeyword = $searchBrandProperties['searchKeyword'];
         $escapedKeyword = UtilsService::escapeKeyword($searchKeyword);
 
@@ -93,6 +95,6 @@ class BrandService
                     ->orWhere('slug', 'LIKE', '%' . $escapedKeyword . '%');
             })
             ->latest()
-            ->paginate($limit);
+            ->paginate($itemPerPage);
     }
 }
