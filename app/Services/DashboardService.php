@@ -13,8 +13,8 @@ class DashboardService
     {
         $incompleteOrderCountCaseStatement = "CASE WHEN orders.status IN ('" .
             OrderStatusConstants::RECEIVED . "', '" .
-            OrderStatusConstants::DELIVERING . "', '" .
-            OrderStatusConstants::PROCESSING . "') THEN 1 ELSE 0 END";
+            OrderStatusConstants::PROCESSING . "', '" .
+            OrderStatusConstants::DELIVERING . "') THEN 1 ELSE 0 END";
         $completedOrderCountCaseStatement = "CASE WHEN orders.status = '" .
             OrderStatusConstants::COMPLETED . "' THEN 1 ELSE 0 END";
         $cancelledOrderCountCaseStatement = "CASE WHEN orders.status = '" .
@@ -62,21 +62,9 @@ class DashboardService
 
     public function getOrderStatisticsExportData($fromDate, $toDate)
     {
-        $orderStatusCount = [
-            OrderStatusConstants::RECEIVED => 0,
-            OrderStatusConstants::PROCESSING => 0,
-            OrderStatusConstants::DELIVERING => 0,
-            OrderStatusConstants::COMPLETED => 0,
-            OrderStatusConstants::CANCELLED => 0,
-        ];
         $customOrders = $this->getCustomOrdersInRange($fromDate, $toDate);
 
-        foreach ($customOrders as $customOrder) {
-            $orderStatusCount[$customOrder->status]++;
-        }
-
         return [
-            'statusCount' => $orderStatusCount,
             'customOrders' => $customOrders,
         ];
     }

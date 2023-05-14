@@ -7,7 +7,6 @@ use App\Libs\Excel\Constants\ExcelPageSetupConstants;
 use App\Libs\Excel\ExcelCellStyle;
 use App\Libs\Excel\ExcelPageSetup;
 use App\Libs\Excel\ExcelWorkbook;
-use App\Libs\Excel\ExcelWorksheet;
 use Illuminate\Support\Facades\Log;
 use App\Services\DashboardService;
 
@@ -52,14 +51,14 @@ class CatalogStatisticsExportExcelService extends BaseExcelService
         $worksheet = $workbook->getActiveWorksheet();
         $worksheet->setTitle('Categories');
         $worksheet->setPageSetup($this->generatePageSetup('BEST-SELLING CATEGORIES STATISTICS'));
-        $this->writeBestSellingCategories($worksheet, $catalogStatisticsData['bestSellingCategories']);
+        $this->writeBestSellingCategoriesToWorksheet($worksheet, $catalogStatisticsData['bestSellingCategories']);
 
         foreach ($catalogStatisticsData['bestSellingCategories'] as $bestSellingCategory) {
             $worksheet = $workbook->createExcelWorksheet();
             $worksheet->setTitle($bestSellingCategory['name']);
             $worksheet->setPageSetup($this->generatePageSetup("BEST-SELLING OF " .
                 strtoupper($bestSellingCategory['name'])));
-            $this->writeBestSellingCategoryDetails($worksheet, $bestSellingCategory);
+            $this->writeBestSellingCategoryDetailsToWorksheet($worksheet, $bestSellingCategory);
         }
 
         $workbook->download();
@@ -79,7 +78,7 @@ class CatalogStatisticsExportExcelService extends BaseExcelService
             ->setRepeatRows(1, 10);
     }
 
-    private function writeBestSellingCategories($worksheet, $bestSellingCategories)
+    private function writeBestSellingCategoriesToWorksheet($worksheet, $bestSellingCategories)
     {
         $row = 1;
         $col = 1;
@@ -88,17 +87,14 @@ class CatalogStatisticsExportExcelService extends BaseExcelService
         $worksheet->setCellStyle($row, $col, $this->titleStyle);
         $row++;
 
-        $row += $this->writeBestSellingCategoriesTable(
-            $worksheet,
-            $row,
-            $bestSellingCategories
-        );
+        $result = $this->generateBestSellingCategoriesTable($worksheet, $row, $bestSellingCategories);
+        $row += $result['usedRowCount'];
 
         $worksheet->setColumnWidth(2, 15);
         $worksheet->setColumnWidth(3, 13);
     }
 
-    private function writeBestSellingCategoriesTable($worksheet, $rowStart, $bestSellingCategories)
+    private function generateBestSellingCategoriesTable($worksheet, $rowStart, $bestSellingCategories)
     {
         $row = $rowStart;
         $col = 1;
@@ -132,11 +128,12 @@ class CatalogStatisticsExportExcelService extends BaseExcelService
             $row++;
         }
 
-        $usedRowCount = $row - $rowStart;
-        return $usedRowCount;
+        return [
+            'usedRowCount' => $row - $rowStart
+        ];
     }
 
-    private function writeBestSellingCategoryDetails($worksheet, $categoryDetails)
+    private function writeBestSellingCategoryDetailsToWorksheet($worksheet, $categoryDetails)
     {
         $row = 1;
         $col = 1;
@@ -145,17 +142,18 @@ class CatalogStatisticsExportExcelService extends BaseExcelService
         $worksheet->setCellStyle($row, $col, $this->titleStyle);
         $row++;
 
-        $row += $this->writeBestSellingBrandsTable(
+        $result = $this->generateBestSellingBrandsTable(
             $worksheet,
             $row,
             $categoryDetails['bestSellingBrands'],
             $categoryDetails['soldQuantity']
         );
+        $row += $result['usedRowCount'];
 
         // skip a row
         $row++;
 
-        foreach ($categoryDetails['bestSellingBrands'] as $index => $bestSellingBrand) {
+        foreach ($categoryDetails['bestSellingBrands'] as $bestSellingBrand) {
             // skip a row
             $row++;
 
@@ -163,18 +161,19 @@ class CatalogStatisticsExportExcelService extends BaseExcelService
             $worksheet->setCellStyle($row, $col, $this->titleStyle);
             $row++;
 
-            $row += $this->writeBestSellingProductsTable(
+            $result = $this->generateBestSellingProductsTable(
                 $worksheet,
                 $row,
                 $bestSellingBrand['bestSellingProducts'],
                 $bestSellingBrand['soldQuantity']
             );
+            $row += $result['usedRowCount'];
         }
 
         $worksheet->setColumnWidth(2, 30);
     }
 
-    private function writeBestSellingBrandsTable(
+    private function generateBestSellingBrandsTable(
         $worksheet,
         $rowStart,
         $bestSellingBrands,
@@ -232,11 +231,12 @@ class CatalogStatisticsExportExcelService extends BaseExcelService
             $row++;
         }
 
-        $usedRowCount = $row - $rowStart;
-        return $usedRowCount;
+        return [
+            'usedRowCount' => $row - $rowStart,
+        ];
     }
 
-    private function writeBestSellingProductsTable(
+    private function generateBestSellingProductsTable(
         $worksheet,
         $rowStart,
         $bestSellingProducts,
@@ -294,7 +294,8 @@ class CatalogStatisticsExportExcelService extends BaseExcelService
             $row++;
         }
 
-        $usedRowCount = $row - $rowStart;
-        return $usedRowCount;
+        return [
+            'usedRowCount' => $row - $rowStart,
+        ];
     }
 }
