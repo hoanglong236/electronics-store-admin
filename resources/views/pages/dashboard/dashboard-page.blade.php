@@ -77,7 +77,7 @@
                     <div class="row m-t-35">
                         @foreach ($data['catalogStatisticsData']['bestSellingCategories'] as $bestSellingCategory)
                             <div class="col-md-4">
-                                @include('pages.dashboard.components.brand-by-category-statistics-section', [
+                                @include('pages.dashboard.components.category-details-section', [
                                     'fromDate' => $data['fromDate'],
                                     'toDate' => $data['toDate'],
                                     'bestSellingCategory' => $bestSellingCategory,

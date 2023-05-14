@@ -34,7 +34,7 @@
 </div>
 
 @push('scripts')
-    <script src="{{ asset('assets/js/category-chart.js') }}"></script>
+    <script src="{{ asset('assets/js/best-selling-categories-chart.js') }}"></script>
     <script>
         drawBestSellingCategoriesChart({!! $drawChartParamsString !!});
     </script>
