@@ -50,7 +50,7 @@ class CatalogStatisticsExportExcelService extends BaseExcelService
 
         $worksheet = $workbook->getActiveWorksheet();
         $worksheet->setTitle('Categories');
-        $worksheet->setPageSetup($this->generatePageSetup('BEST-SELLING CATEGORIES STATISTICS'));
+        $worksheet->setPageSetup($this->generatePageSetup('BEST-SELLING CATEGORY STATISTICS'));
         $this->writeBestSellingCategoriesToWorksheet($worksheet, $catalogStatisticsData['bestSellingCategories']);
 
         foreach ($catalogStatisticsData['bestSellingCategories'] as $bestSellingCategory) {
@@ -83,7 +83,7 @@ class CatalogStatisticsExportExcelService extends BaseExcelService
         $row = 1;
         $col = 1;
 
-        $worksheet->setCellValue($row, $col, 'Category Statistics');
+        $worksheet->setCellValue($row, $col, 'Best-selling Categories');
         $worksheet->setCellStyle($row, $col, $this->titleStyle);
         $row++;
 
@@ -138,7 +138,7 @@ class CatalogStatisticsExportExcelService extends BaseExcelService
         $row = 1;
         $col = 1;
 
-        $worksheet->setCellValue($row, $col, "{$categoryDetails['name']} Statistics");
+        $worksheet->setCellValue($row, $col, "Best-selling Brands of {$categoryDetails['name']}");
         $worksheet->setCellStyle($row, $col, $this->titleStyle);
         $row++;
 
@@ -157,7 +157,8 @@ class CatalogStatisticsExportExcelService extends BaseExcelService
             // skip a row
             $row++;
 
-            $worksheet->setCellValue($row, $col, "{$bestSellingBrand['name']} Statistics");
+            $title = "Best-selling Products of {$bestSellingBrand['name']}'s {$categoryDetails['name']}";
+            $worksheet->setCellValue($row, $col, $title);
             $worksheet->setCellStyle($row, $col, $this->titleStyle);
             $row++;
 

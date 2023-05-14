@@ -3,7 +3,7 @@
     $othersSoldQuantity = $totalSoldQuantity;
 
     $chartElementId = 'bestSellingBrandChart' . $bestSellingCategory['id'];
-    $chartTitle = 'Best-selling Brands In ' . $bestSellingCategory['name'];
+    $chartTitle = 'Best-selling Brands of ' . $bestSellingCategory['name'] . ' Chart';
     $drawChartParamsString = "'{$chartElementId}', '{$chartTitle}', ";
 
     $brandChartElements = [];

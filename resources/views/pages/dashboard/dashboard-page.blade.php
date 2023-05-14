@@ -74,22 +74,19 @@
                         'bestSellingCategories' => $data['catalogStatisticsData']['bestSellingCategories'],
                         'totalSoldQuantity' => $data['soldItemCount'],
                     ])
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            @foreach ($data['catalogStatisticsData']['bestSellingCategories'] as $bestSellingCategory)
-                <div class="col-md-4">
-                    <div class="white-bg-wrapper m-b-30 p-30">
-                        @include('pages.dashboard.components.brand-by-category-statistics-section', [
-                            'fromDate' => $data['fromDate'],
-                            'toDate' => $data['toDate'],
-                            'bestSellingCategory' => $bestSellingCategory,
-                        ])
+                    <div class="row m-t-35">
+                        @foreach ($data['catalogStatisticsData']['bestSellingCategories'] as $bestSellingCategory)
+                            <div class="col-md-4">
+                                @include('pages.dashboard.components.brand-by-category-statistics-section', [
+                                    'fromDate' => $data['fromDate'],
+                                    'toDate' => $data['toDate'],
+                                    'bestSellingCategory' => $bestSellingCategory,
+                                ])
+                            </div>
+                        @endforeach
                     </div>
                 </div>
-            @endforeach
+            </div>
         </div>
     @endif
 @endsection

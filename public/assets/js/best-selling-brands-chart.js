@@ -12,7 +12,6 @@ const drawBestSellingBrandChart = (
 ) => {
     renderPieChart({
         canvasId: canvasId,
-        // height: 150,
         labels: [
             firstCategoryLabel,
             secondCategoryLabel,

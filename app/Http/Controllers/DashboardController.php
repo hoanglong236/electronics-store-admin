@@ -23,13 +23,18 @@ class DashboardController extends Controller
         $this->catalogStatisticsExportExcelService = new CatalogStatisticsExportExcelService();
     }
 
-    private function getCommonDataForDashboardPage($fromDate, $toDate)
+    private function retrieveDataForDashboardPage($fromDate, $toDate)
     {
         $newCustomerCount = $this->dashboardService->getNewCustomerCount($fromDate, $toDate);
         $placedOrderCount = $this->dashboardService->getPlacedOrderCount($fromDate, $toDate);
         $soldItemCount = $this->dashboardService->getSoldItemCount($fromDate, $toDate);
-        $orderStatisticsData = $this->dashboardService->getOrderStatisticsData($fromDate, $toDate);
-        $catalogStatisticsData = $this->dashboardService->getCatalogStatisticsData($fromDate, $toDate);
+        $orderStatisticsData = [];
+        $catalogStatisticsData = [];
+
+        if ($placedOrderCount > 0) {
+            $orderStatisticsData = $this->dashboardService->getOrderStatisticsData($fromDate, $toDate);
+            $catalogStatisticsData = $this->dashboardService->getCatalogStatisticsData($fromDate, $toDate);
+        }
 
         return [
             'pageTitle' => 'Dashboard',
@@ -48,7 +53,7 @@ class DashboardController extends Controller
         $firstDayOfMonth = Carbon::now()->firstOfMonth()->toDateString();
         $currentDay = Carbon::now()->toDateString();
 
-        $data = $this->getCommonDataForDashboardPage($firstDayOfMonth, $currentDay);
+        $data = $this->retrieveDataForDashboardPage($firstDayOfMonth, $currentDay);
         return view('pages.dashboard.dashboard-page', ['data' => $data]);
     }
 
@@ -56,7 +61,7 @@ class DashboardController extends Controller
     {
         $dashboardSearchProperties = $dashboardSearchRequest->validated();
 
-        $data = $this->getCommonDataForDashboardPage(
+        $data = $this->retrieveDataForDashboardPage(
             $dashboardSearchProperties['fromDate'],
             $dashboardSearchProperties['toDate']
         );

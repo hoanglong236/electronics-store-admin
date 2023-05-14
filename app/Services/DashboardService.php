@@ -26,7 +26,7 @@ class DashboardService
                 DB::raw('COALESCE(SUM(' . $completedOrderCountCaseStatement . '), 0) as completed_count'),
                 DB::raw('COALESCE(SUM(' . $cancelledOrderCountCaseStatement . '), 0) as cancelled_count')
             )
-            ->whereBetween('orders.created_at', [$fromDate, $toDate])
+            ->whereBetween('orders.created_at', [$fromDate, UtilsService::dateToEndOfDate($toDate)])
             ->first();
 
         $orderStatusCount = [
@@ -54,7 +54,7 @@ class DashboardService
                 'customers.email as customer_email',
                 DB::raw('SUM(order_items.total_price) as total'),
             )
-            ->whereBetween('orders.created_at', [$fromDate, $toDate])
+            ->whereBetween('orders.created_at', [$fromDate, UtilsService::dateToEndOfDate($toDate)])
             ->groupBy('orders.id')
             ->orderBy('orders.created_at')
             ->get();
@@ -73,7 +73,7 @@ class DashboardService
     {
         $result = DB::table('customers')
             ->selectRaw('COUNT(*) as newCustomerCount')
-            ->whereBetween('created_at', [$fromDate, $toDate])
+            ->whereBetween('created_at', [$fromDate, UtilsService::dateToEndOfDate($toDate)])
             ->first();
 
         return $result->newCustomerCount;
@@ -83,7 +83,7 @@ class DashboardService
     {
         $result = DB::table('orders')
             ->selectRaw('COUNT(*) as placedOrderCount')
-            ->whereBetween('orders.created_at', [$fromDate, $toDate])
+            ->whereBetween('orders.created_at', [$fromDate, UtilsService::dateToEndOfDate($toDate)])
             ->first();
 
         return $result->placedOrderCount;
@@ -94,7 +94,7 @@ class DashboardService
         $result = DB::table('order_items')
             ->join('orders', 'orders.id', '=', 'order_items.order_id')
             ->selectRaw('COALESCE(SUM(order_items.quantity), 0) as soldItemCount')
-            ->whereBetween('orders.created_at', [$fromDate, $toDate])
+            ->whereBetween('orders.created_at', [$fromDate, UtilsService::dateToEndOfDate($toDate)])
             ->where('orders.status', OrderStatusConstants::COMPLETED)
             ->first();
 
@@ -112,7 +112,7 @@ class DashboardService
                 'categories.name',
                 DB::raw('SUM(order_items.quantity) as soldQuantity'),
             )
-            ->whereBetween('orders.created_at', [$fromDate, $toDate])
+            ->whereBetween('orders.created_at', [$fromDate, UtilsService::dateToEndOfDate($toDate)])
             ->where('orders.status', OrderStatusConstants::COMPLETED)
             ->groupBy('categories.id')
             ->orderByDesc('soldQuantity')
@@ -137,7 +137,7 @@ class DashboardService
                 'brands.name',
                 DB::raw('SUM(order_items.quantity) as soldQuantity'),
             )
-            ->whereBetween('orders.created_at', [$fromDate, $toDate])
+            ->whereBetween('orders.created_at', [$fromDate, UtilsService::dateToEndOfDate($toDate)])
             ->where('orders.status', OrderStatusConstants::COMPLETED)
             ->where('products.category_id', $categoryId)
             ->groupBy('brands.id')
@@ -184,7 +184,7 @@ class DashboardService
                 'products.name',
                 DB::raw('SUM(order_items.quantity) as soldQuantity'),
             )
-            ->whereBetween('orders.created_at', [$fromDate, $toDate])
+            ->whereBetween('orders.created_at', [$fromDate, UtilsService::dateToEndOfDate($toDate)])
             ->where('orders.status', OrderStatusConstants::COMPLETED)
             ->where('products.category_id', $categoryId)
             ->where('products.brand_id', $brandId)

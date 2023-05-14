@@ -10,7 +10,7 @@ class UtilsService
     {
     }
 
-    public static function escapeKeyword($keyword)
+    public static function escapeKeyword(string $keyword)
     {
         $search = array('%', '_');
         $replace = array('\%', '\_');
@@ -25,5 +25,9 @@ class UtilsService
         }
 
         return substr($str, 0, -1);
+    }
+
+    public static function dateToEndOfDate(string $date) {
+        return $date . ' 23:59:59.999999';
     }
 }

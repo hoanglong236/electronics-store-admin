@@ -1,11 +1,11 @@
 const renderPieChart = ({
     canvasId = "",
     height = 180,
-    chartType = "pie",
     labels = [],
     data = [],
     colors = [],
     chartTitle = "",
+    isDoughnut = false,
 }) => {
     const ctx = document.getElementById(canvasId);
     const pieChartOptionsConfig = {
@@ -30,7 +30,7 @@ const renderPieChart = ({
     if (ctx) {
         ctx.height = height;
         const myChart = new Chart(ctx, {
-            type: chartType,
+            type: isDoughnut ? "doughnut" : "pie",
             data: {
                 labels: labels,
                 datasets: [
