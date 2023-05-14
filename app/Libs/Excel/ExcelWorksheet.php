@@ -157,6 +157,11 @@ class ExcelWorksheet
 
     public static function getCellAddress(int $row, int $col)
     {
-        return Coordinate::stringFromColumnIndex($col) . ($row);
+        return static::getColumnAddress($col) . ($row);
+    }
+
+    public static function getColumnAddress(int $col)
+    {
+        return Coordinate::stringFromColumnIndex($col);
     }
 }
