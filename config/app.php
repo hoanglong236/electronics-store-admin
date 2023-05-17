@@ -1,5 +1,6 @@
 <?php
 
+use App\Config\Config;
 use Illuminate\Support\Facades\Facade;
 
 return [
@@ -69,7 +70,7 @@ return [
     |
     */
 
-    'timezone' => 'Asia/Ho_Chi_Minh',
+    'timezone' => Config::APP_TIMEZONE,
 
     /*
     |--------------------------------------------------------------------------

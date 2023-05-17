@@ -18,7 +18,7 @@ class FirebaseStorage
 {
     private static $UNIQUE_INSTANCE;
     private static $FIREBASE_BUCKET;
-    private static $STORAGE_FOLDER_PATH = Config::FIREBASE_STORAGE_IMAGES_FOLDER . "/";
+    private static $STORAGE_FOLDER_PATH = Config::FOLDER_PATH_FIREBASE_STORAGE_IMAGES . "/";
 
     private function __construct()
     {
