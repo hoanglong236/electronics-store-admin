@@ -21,6 +21,6 @@ class FirebaseStorageService
 
     public function deleteImage($imagePath)
     {
-        $this->firebaseStorage->remove($imagePath);
+        $this->firebaseStorage->delete($imagePath);
     }
 }

@@ -18,7 +18,7 @@ class FirebaseStorage
 {
     private static $UNIQUE_INSTANCE;
     private static $FIREBASE_BUCKET;
-    private static $STORAGE_FOLDER = Config::FOLDER_PATH_FIREBASE_STORAGE_IMAGES;
+    private static $STORAGE_FOLDER_PATH = Config::FIREBASE_STORAGE_IMAGES_FOLDER . "/";
 
     private function __construct()
     {
@@ -39,13 +39,13 @@ class FirebaseStorage
     public function upload($resource, $newResourcePath)
     {
         static::$FIREBASE_BUCKET->upload($resource, [
-            'name' => static::$STORAGE_FOLDER . $newResourcePath
+            'name' => static::$STORAGE_FOLDER_PATH . $newResourcePath
         ]);
     }
 
-    public function remove($resourcePath)
+    public function delete($resourcePath)
     {
-        static::$FIREBASE_BUCKET->object(static::$STORAGE_FOLDER . $resourcePath)
+        static::$FIREBASE_BUCKET->object(static::$STORAGE_FOLDER_PATH . $resourcePath)
             ->delete();
     }
 }
