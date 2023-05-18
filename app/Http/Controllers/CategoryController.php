@@ -78,7 +78,7 @@ class CategoryController extends Controller
 
     public function update($categoryId)
     {
-        $category = $this->categoryService->getCategoryById($categoryId);
+        $category = $this->categoryService->findById($categoryId);
         $categoryIdNameMap = $this->categoryService->getCategoryIdNameMap();
 
         $data = [

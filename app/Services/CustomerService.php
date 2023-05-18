@@ -5,14 +5,13 @@ namespace App\Services;
 use App\Common\Constants;
 use App\Models\Customer;
 use App\Models\CustomerAddress;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Log;
 
 class CustomerService
 {
-    public function getCustomerById($customerId)
+    public function findById($customerId)
     {
-        return Customer::where(['id' => $customerId, 'delete_flag' => false])->first();
+        return Customer::findById($customerId);
     }
 
     public function getListCustomersPaginator($itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT)
@@ -24,7 +23,7 @@ class CustomerService
 
     public function updateCustomerDisableFlag($customerDisableFlagProperties, $customerId)
     {
-        $customer = $this->getCustomerById($customerId);
+        $customer = $this->findById($customerId);
         $customer->disable_flag = $customerDisableFlagProperties['disableFlag'];
 
         $customer->save();
@@ -32,10 +31,7 @@ class CustomerService
 
     public function deleteCustomer($customerId)
     {
-        $customer = $this->getCustomerById($customerId);
-        $customer->delete_flag = true;
-
-        $customer->save();
+        Customer::deleteById($customerId);
     }
 
     public function getSearchCustomersPaginator(
@@ -57,6 +53,6 @@ class CustomerService
 
     public function getCustomerAddressesByCustomerId($customerId)
     {
-        return CustomerAddress::where(['customer_id' => $customerId])->get();
+        return CustomerAddress::retrieveByCustomerId($customerId);
     }
 }

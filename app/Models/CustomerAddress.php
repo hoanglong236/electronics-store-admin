@@ -18,4 +18,9 @@ class CustomerAddress extends Model
         'address_type',
         'default_flag',
     ];
+
+    public static function retrieveByCustomerId($customerId)
+    {
+        return static::where('customer_id', $customerId)->get();
+    }
 }

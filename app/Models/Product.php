@@ -22,4 +22,21 @@ class Product extends Model
         'main_image_path',
         'delete_flag',
     ];
+
+    public static function findById($id)
+    {
+        return static::find($id)
+            ->where('delete_flag', false)
+            ->first();
+    }
+
+    public static function deleteById($id)
+    {
+        $product = static::findById($id);
+        if ($product) {
+            $product->delete_flag = true;
+            $product->save();
+        }
+        return $product;
+    }
 }

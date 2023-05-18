@@ -72,7 +72,7 @@ class CustomerController extends Controller
 
     public function showDetails($customerId)
     {
-        $customer = $this->customerService->getCustomerById($customerId);
+        $customer = $this->customerService->findById($customerId);
         $customerAddresses = $this->customerService->getCustomerAddressesByCustomerId($customerId);
 
         $data = [

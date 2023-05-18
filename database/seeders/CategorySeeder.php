@@ -24,8 +24,8 @@ class CategorySeeder extends Seeder
         ];
         $this->generateRootCategories($categoryInfoArray);
 
-        $accessoriesId = Category::where('slug', 'accessories')->first()->id;
-        $soundDeviceId = Category::where('slug', 'sound-device')->first()->id;
+        $accessoriesId = Category::findBySlug('accessories')->id;
+        $soundDeviceId = Category::findBySlug('sound-device')->id;
 
         $childCategoriesInfoArray = [
             ['name' => 'Keyboard', 'slug' => 'keyboard', 'parentId' => $accessoriesId],

@@ -19,12 +19,9 @@ class CategoryService
         $this->firebaseStorageService = new FirebaseStorageService();
     }
 
-    public function getCategoryById($categoryId)
+    public function findById($categoryId)
     {
-        return Category::where([
-            'delete_flag' => false,
-            'id' => $categoryId,
-        ])->first();
+        return Category::findById($categoryId);
     }
 
     public function getListCategoriesPaginator($itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT)
@@ -55,7 +52,7 @@ class CategoryService
 
     public function updateCategory($categoryProperties, $categoryId)
     {
-        $category = $this->getCategoryById($categoryId);
+        $category = $this->findById($categoryId);
 
         $category->parent_id = $categoryProperties['parentId'] === Constants::NONE_VALUE
             ? null : $categoryProperties['parentId'];
@@ -78,21 +75,12 @@ class CategoryService
 
     public function deleteCategory($categoryId)
     {
-        $category = $this->getCategoryById($categoryId);
-        $category->delete_flag = true;
-
-        $category->save();
+        Category::deleteById($categoryId);
     }
 
     public function getCategoryIdNameMap()
     {
-        $categories = Category::where('delete_flag', false)->get();
-        $map = [];
-        foreach ($categories as $category) {
-            $map[$category->id] = $category->name;
-        }
-
-        return $map;
+        return Category::getMapFromIdToName();
     }
 
     public function getSearchCategoriesPaginator(

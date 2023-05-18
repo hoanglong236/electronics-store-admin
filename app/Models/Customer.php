@@ -23,4 +23,21 @@ class Customer extends Model
         'password',
         'remember_token'
     ];
+
+    public static function findById($id)
+    {
+        return static::find($id)
+            ->where('delete_flag', false)
+            ->first();
+    }
+
+    public static function deleteById($id)
+    {
+        $customer = static::findById($id);
+        if ($customer) {
+            $customer->delete_flag = true;
+            $customer->save();
+        }
+        return $customer;
+    }
 }

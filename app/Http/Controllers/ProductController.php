@@ -91,7 +91,7 @@ class ProductController extends Controller
     {
         $categoryIdNameMap = $this->categoryService->getCategoryIdNameMap();
         $brandIdNameMap = $this->brandService->getBrandIdNameMap();
-        $product = $this->productService->getProductById($productId);
+        $product = $this->productService->findById($productId);
 
         $data = [
             'pageTitle' => 'Update product',

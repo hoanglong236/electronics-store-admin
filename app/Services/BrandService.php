@@ -20,7 +20,7 @@ class BrandService
 
     public function findById($brandId)
     {
-        return Brand::where(['id' => $brandId, 'delete_flag' => false])->first();
+        return Brand::findById($brandId);
     }
 
     public function getListBrandsPaginator($itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT)
@@ -69,21 +69,12 @@ class BrandService
 
     public function deleteBrand($brandId)
     {
-        $brand = $this->findById($brandId);
-        $brand->delete_flag = true;
-
-        $brand->save();
+        Brand::deleteById($brandId);
     }
 
     public function getBrandIdNameMap()
     {
-        $brands = Brand::where('delete_flag', false)->get();
-        $map = [];
-        foreach ($brands as $brand) {
-            $map[$brand->id] = $brand->name;
-        }
-
-        return $map;
+        return Brand::getMapFromIdToName();
     }
 
     public function getSearchBrandsPaginator(

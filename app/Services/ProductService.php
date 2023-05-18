@@ -22,7 +22,7 @@ class ProductService
         $this->firebaseStorageService = new FirebaseStorageService();
     }
 
-    public function getProductById($productId)
+    public function findById($productId)
     {
         return Product::where(['id' => $productId, 'delete_flag' => false])->first();
     }
@@ -77,7 +77,7 @@ class ProductService
 
     public function updateProduct($productProperties, $productId)
     {
-        $product = $this->getProductById($productId);
+        $product = $this->findById($productId);
 
         $product->category_id = $productProperties['categoryId'];
         $product->brand_id = $productProperties['brandId'];
@@ -105,10 +105,7 @@ class ProductService
 
     public function deleteProduct($productId)
     {
-        $product = $this->getProductById($productId);
-        $product->delete_flag = true;
-
-        $product->save();
+        Product::deleteById($productId);
     }
 
     public function getSearchProductsPaginator(
@@ -196,7 +193,7 @@ class ProductService
 
     public function getProductImagesByProductId($productId)
     {
-        return ProductImage::where('product_id', $productId)->get();
+        return ProductImage::retrieveByProductId($productId);
     }
 
     public function createProductImages($productImageProperties)
@@ -216,11 +213,10 @@ class ProductService
 
     public function deleteProductImage($productImageId)
     {
-        $productImage = ProductImage::find($productImageId);
-
-        $this->storageService->deleteFile($productImage->image_path);
-        $this->firebaseStorageService->deleteImage($productImage->image_path);
-
-        $productImage->delete();
+        $deletedProductImage = ProductImage::deleteById($productImageId);
+        if ($deletedProductImage) {
+            $this->storageService->deleteFile($deletedProductImage->image_path);
+            $this->firebaseStorageService->deleteImage($deletedProductImage->image_path);
+        }
     }
 }
