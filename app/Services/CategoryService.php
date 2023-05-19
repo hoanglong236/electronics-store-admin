@@ -67,16 +67,19 @@ class CategoryService
 
     public function updateCategory($categoryProperties, $categoryId)
     {
+        $oldCategory = $this->categoryRepository->findById($categoryId);
+        if (!$oldCategory) {
+            return;
+        }
+
         $updateAttributes = [];
 
+        if (isset($categoryProperties['icon'])) {
+            $this->deleteCategoryIcon($oldCategory->icon_path);
+            $updateAttributes['icon_path'] = $this->saveCategoryIcon($categoryProperties['icon']);
+        }
         if ($categoryProperties['parentId'] !== Constants::NONE_VALUE) {
             $updateAttributes['parent_id'] = $categoryProperties['parentId'];
-        }
-        if ($categoryProperties['icon']) {
-            $oldCategory = $this->categoryRepository->findById($categoryId);
-            $this->deleteCategoryIcon($oldCategory->icon_path);
-
-            $updateAttributes['icon_path'] = $this->saveCategoryIcon($categoryProperties['icon']);
         }
         $updateAttributes['name'] = $categoryProperties['name'];
         $updateAttributes['slug'] = $categoryProperties['slug'];

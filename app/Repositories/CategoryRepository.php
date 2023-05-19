@@ -30,12 +30,9 @@ class CategoryRepository implements ICategoryRepository
 
     public function update(array $attributes, int $id)
     {
-        $category = $this->findById($id);
-        if ($category) {
-            $category->update($attributes);
-            return $category;
-        }
-        return false;
+        Category::find($id)
+            ->where('delete_flag', false)
+            ->update($attributes);
     }
 
     public function deleteById(int $id)
