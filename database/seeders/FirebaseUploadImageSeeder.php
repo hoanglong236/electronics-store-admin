@@ -4,14 +4,21 @@ namespace Database\Seeders;
 
 use App\Libs\Cloud\Storage\FirebaseStorage;
 use App\Models\Brand;
-use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductImage;
+use App\Repositories\ICategoryRepository;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class FirebaseUploadImageSeeder extends Seeder
 {
+    private $categoryRepository;
+
+    public function __construct(ICategoryRepository $categoryRepository)
+    {
+        $this->categoryRepository = $categoryRepository;
+    }
+
     /**
      * Run the database seeds.
      */
@@ -19,14 +26,14 @@ class FirebaseUploadImageSeeder extends Seeder
     {
         $imagePaths = [];
 
+        $categories = $this->categoryRepository->listAll(['icon_path']);
+        foreach ($categories as $category) {
+            $imagePaths[] = $category->icon_path;
+        }
+
         $brands = Brand::all('logo_path');
         foreach ($brands as $brand) {
             $imagePaths[] = $brand->logo_path;
-        }
-
-        $categories = Category::all('icon_path');
-        foreach ($categories as $category) {
-            $imagePaths[] = $category->icon_path;
         }
 
         $products = Product::all('main_image_path');

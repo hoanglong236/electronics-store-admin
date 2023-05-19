@@ -4,14 +4,21 @@ namespace Database\Seeders;
 
 use App\Config\Config;
 use App\Models\Brand;
-use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductImage;
+use App\Repositories\ICategoryRepository;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class ProductSeeder extends Seeder
 {
+    private $categoryRepository;
+
+    public function __construct(ICategoryRepository $categoryRepository)
+    {
+        $this->categoryRepository = $categoryRepository;
+    }
+
     /**
      * Run the database seeds.
      */
@@ -26,7 +33,7 @@ class ProductSeeder extends Seeder
 
     private function generateSmartphones(): void
     {
-        $category = Category::findBySlug('phone');
+        $category = $this->categoryRepository->findBySlug('phone');
         $productInfoArray = [
             [
                 'name' => 'Oppo A16',
@@ -106,7 +113,7 @@ class ProductSeeder extends Seeder
 
     private function generateLaptops(): void
     {
-        $category = Category::findBySlug('laptop');
+        $category = $this->categoryRepository->findBySlug('laptop');
         $productInfoArray = [
             [
                 'name' => 'MacBook Air M1 2020 256GB',
@@ -198,7 +205,7 @@ class ProductSeeder extends Seeder
 
     private function generateTablets(): void
     {
-        $category = Category::findBySlug('tablet');
+        $category = $this->categoryRepository->findBySlug('tablet');
         $productInfoArray = [
             [
                 'name' => 'iPad Air 5 (2022) 256GB',
@@ -272,7 +279,7 @@ class ProductSeeder extends Seeder
 
     private function generateSmartwatches()
     {
-        $category = Category::findBySlug('smartwatch');
+        $category = $this->categoryRepository->findBySlug('smartwatch');
         $productInfoArray = [
             [
                 'name' => 'Apple Watch SE 2022 40mm',
@@ -298,7 +305,7 @@ class ProductSeeder extends Seeder
 
     private function generateAccessories()
     {
-        $category = Category::where(['slug' => 'accessories', 'delete_flag' => false])->first();
+        $category = $this->categoryRepository->findBySlug('accessories');
         $productInfoArray = [
             [
                 'name' => 'Wireless earphones Samsung Galaxy Buds Live',
