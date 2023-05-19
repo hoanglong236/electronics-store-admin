@@ -15,9 +15,9 @@ class CategoryController extends Controller
 {
     private $categoryService;
 
-    public function __construct()
+    public function __construct(CategoryService $categoryService)
     {
-        $this->categoryService = new CategoryService();
+        $this->categoryService = $categoryService;
     }
 
     public function index()

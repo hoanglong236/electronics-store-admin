@@ -3,12 +3,19 @@
 namespace Database\Seeders;
 
 use App\Config\Config;
-use App\Models\Category;
+use App\Repositories\ICategoryRepository;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class CategorySeeder extends Seeder
 {
+    private $categoryRepository;
+
+    public function __construct(ICategoryRepository $categoryRepository)
+    {
+        $this->categoryRepository = $categoryRepository;
+    }
+
     /**
      * Run the database seeds.
      */
@@ -24,8 +31,8 @@ class CategorySeeder extends Seeder
         ];
         $this->generateRootCategories($categoryInfoArray);
 
-        $accessoriesId = Category::findBySlug('accessories')->id;
-        $soundDeviceId = Category::findBySlug('sound-device')->id;
+        $accessoriesId = $this->categoryRepository->findBySlug('accessories')->id;
+        $soundDeviceId = $this->categoryRepository->findBySlug('sound-device')->id;
 
         $childCategoriesInfoArray = [
             ['name' => 'Keyboard', 'slug' => 'keyboard', 'parentId' => $accessoriesId],
@@ -41,7 +48,7 @@ class CategorySeeder extends Seeder
     private function generateRootCategories($categoryInfoArray)
     {
         foreach ($categoryInfoArray as $categoryInfo) {
-            Category::create([
+            $this->categoryRepository->create([
                 'name' => $categoryInfo['name'],
                 'slug' => $categoryInfo['slug'],
                 'icon_path' => Config::FOLDER_PATH_CATEGORY_ICONS . '/' . $categoryInfo['slug'] . '.png',
@@ -53,7 +60,7 @@ class CategorySeeder extends Seeder
     private function generateChildCategories($categoryInfoArray)
     {
         foreach ($categoryInfoArray as $categoryInfo) {
-            Category::create([
+            $this->categoryRepository->create([
                 'parent_id' => $categoryInfo['parentId'],
                 'name' => $categoryInfo['name'],
                 'slug' => $categoryInfo['slug'],

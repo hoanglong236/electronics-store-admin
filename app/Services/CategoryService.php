@@ -4,83 +4,101 @@ namespace App\Services;
 
 use App\Common\Constants;
 use App\Config\Config;
-use App\Models\Category;
+use App\Repositories\ICategoryRepository;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\DB;
 
 class CategoryService
 {
+    private $categoryRepository;
+
     private $storageService;
     private $firebaseStorageService;
 
-    public function __construct()
-    {
-        $this->storageService = new StorageService();
-        $this->firebaseStorageService = new FirebaseStorageService();
+    public function __construct(
+        ICategoryRepository $categoryRepository,
+        StorageService $storageService,
+        FirebaseStorageService $firebaseStorageService
+    ) {
+        $this->categoryRepository = $categoryRepository;
+        $this->storageService = $storageService;
+        $this->firebaseStorageService = $firebaseStorageService;
     }
 
     public function findById($categoryId)
     {
-        return Category::findById($categoryId);
+        return $this->categoryRepository->findById($categoryId);
     }
 
     public function getListCategoriesPaginator($itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT)
     {
-        return Category::where('delete_flag', false)
-            ->latest()
-            ->paginate($itemPerPage);
+        return $this->categoryRepository->paginate($itemPerPage);
+    }
+
+    private function saveCategoryIcon($icon)
+    {
+        $iconPath = $this->storageService->saveFile($icon, Config::FOLDER_PATH_CATEGORY_ICONS);
+        if ($iconPath) {
+            $this->firebaseStorageService->uploadImage($iconPath);
+        }
+
+        return $iconPath;
+    }
+
+    private function deleteCategoryIcon($iconPath)
+    {
+        $this->storageService->deleteFile($iconPath);
+        $this->firebaseStorageService->deleteImage($iconPath);
     }
 
     public function createCategory($categoryProperties)
     {
-        $iconPath = $this->storageService->saveFile(
-            $categoryProperties['icon'],
-            Config::FOLDER_PATH_CATEGORY_ICONS,
-        );
-        $parentCategoryId = $categoryProperties['parentId'] === Constants::NONE_VALUE
-            ? null : $categoryProperties['parentId'];
+        $createAttributes = [];
 
-        Category::create([
-            'parent_id' => $parentCategoryId,
-            'name' => $categoryProperties['name'],
-            'slug' => $categoryProperties['slug'],
-            'icon_path' => $iconPath,
-            'delete_flag' => false,
-        ]);
-        $this->firebaseStorageService->uploadImage($iconPath);
+        if ($categoryProperties['parentId'] !== Constants::NONE_VALUE) {
+            $createAttributes['parent_id'] = $categoryProperties['parentId'];
+        }
+        $createAttributes['icon_path'] = $this->saveCategoryIcon($categoryProperties['icon']);
+        $createAttributes['name'] = $categoryProperties['name'];
+        $createAttributes['slug'] = $categoryProperties['slug'];
+        $createAttributes['delete_flag'] = false;
+
+        $this->categoryRepository->create($createAttributes);
     }
 
     public function updateCategory($categoryProperties, $categoryId)
     {
-        $category = $this->findById($categoryId);
+        $updateAttributes = [];
 
-        $category->parent_id = $categoryProperties['parentId'] === Constants::NONE_VALUE
-            ? null : $categoryProperties['parentId'];
-        $category->name = $categoryProperties['name'];
-        $category->slug = $categoryProperties['slug'];
-
-        if (isset($categoryProperties['icon'])) {
-            $this->storageService->deleteFile($category->icon_path);
-            $this->firebaseStorageService->deleteImage($category->icon_path);
-
-            $category->icon_path = $this->storageService->saveFile(
-                $categoryProperties['icon'],
-                Config::FOLDER_PATH_CATEGORY_ICONS
-            );
-            $this->firebaseStorageService->uploadImage($category->icon_path);
+        if ($categoryProperties['parentId'] !== Constants::NONE_VALUE) {
+            $updateAttributes['parent_id'] = $categoryProperties['parentId'];
         }
+        if ($categoryProperties['icon']) {
+            $oldCategory = $this->categoryRepository->findById($categoryId);
+            $this->deleteCategoryIcon($oldCategory->icon_path);
 
-        $category->save();
+            $updateAttributes['icon_path'] = $this->saveCategoryIcon($categoryProperties['icon']);
+        }
+        $updateAttributes['name'] = $categoryProperties['name'];
+        $updateAttributes['slug'] = $categoryProperties['slug'];
+
+        $this->categoryRepository->update($updateAttributes, $categoryId);
     }
 
     public function deleteCategory($categoryId)
     {
-        Category::deleteById($categoryId);
+        $this->categoryRepository->deleteById($categoryId);
     }
 
     public function getCategoryIdNameMap()
     {
-        return Category::getMapFromIdToName();
+        $miniCategories = $this->categoryRepository->listAll(['id', 'name']);
+        $map = [];
+
+        foreach ($miniCategories as $miniCategory) {
+            $map[$miniCategory->id] = $miniCategory->name;
+        }
+
+        return $map;
     }
 
     public function getSearchCategoriesPaginator(
@@ -90,17 +108,6 @@ class CategoryService
         $searchKeyword = $categorySearchProperties['searchKeyword'];
         $escapedKeyword = UtilsService::escapeKeyword($searchKeyword);
 
-        return DB::table('categories')
-            ->leftJoin('categories as parent', 'parent.id', '=', 'categories.parent_id')
-            ->select('categories.*')
-            ->where('categories.delete_flag', false)
-            ->where(function ($query) use ($escapedKeyword) {
-                $query->where('categories.name', 'LIKE', '%' . $escapedKeyword . '%')
-                    ->orWhere('categories.slug', 'LIKE', '%' . $escapedKeyword . '%')
-                    ->orWhere('parent.name', 'LIKE', '%' . $escapedKeyword . '%')
-                    ->orWhere('parent.slug', 'LIKE', '%' . $escapedKeyword . '%');
-            })
-            ->latest()
-            ->paginate($itemPerPage);
+        return $this->categoryRepository->searchAndPaginate($escapedKeyword, $itemPerPage);
     }
 }
