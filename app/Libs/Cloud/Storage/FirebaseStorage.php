@@ -16,36 +16,27 @@ use Kreait\Firebase\Factory;
  */
 class FirebaseStorage
 {
-    private static $UNIQUE_INSTANCE;
-    private static $FIREBASE_BUCKET;
     private static $STORAGE_FOLDER_PATH = Config::FOLDER_PATH_FIREBASE_STORAGE_IMAGES . "/";
 
-    private function __construct()
+    private $firebaseBucket;
+
+    public function __construct()
     {
         $storage = (new Factory)->withServiceAccount(base_path(env('FIREBASE_CREDENTIALS')))
             ->createStorage();
-        static::$FIREBASE_BUCKET = $storage->getBucket();
-    }
-
-    public static function getInstance()
-    {
-        if (!static::$UNIQUE_INSTANCE) {
-            static::$UNIQUE_INSTANCE = new static();
-        }
-
-        return static::$UNIQUE_INSTANCE;
+        $this->firebaseBucket = $storage->getBucket();
     }
 
     public function upload($resource, $newResourcePath)
     {
-        static::$FIREBASE_BUCKET->upload($resource, [
+        $this->firebaseBucket->upload($resource, [
             'name' => static::$STORAGE_FOLDER_PATH . $newResourcePath
         ]);
     }
 
     public function delete($resourcePath)
     {
-        static::$FIREBASE_BUCKET->object(static::$STORAGE_FOLDER_PATH . $resourcePath)
+        $this->firebaseBucket->object(static::$STORAGE_FOLDER_PATH . $resourcePath)
             ->delete();
     }
 }

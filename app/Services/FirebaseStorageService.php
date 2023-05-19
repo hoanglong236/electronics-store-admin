@@ -10,7 +10,7 @@ class FirebaseStorageService
 
     public function __construct()
     {
-        $this->firebaseStorage = FirebaseStorage::getInstance();
+        $this->firebaseStorage = new FirebaseStorage();
     }
 
     public function uploadImage($imagePath)

@@ -44,7 +44,7 @@ class FirebaseUploadImageSeeder extends Seeder
 
     private function uploadImages($imagePaths)
     {
-        $firebaseStorage = FirebaseStorage::getInstance();
+        $firebaseStorage = new FirebaseStorage();
         foreach ($imagePaths as $imagePath) {
             $imageResource = fopen(public_path('storage/') . $imagePath, "r");
             $firebaseStorage->upload($imageResource, $imagePath);
