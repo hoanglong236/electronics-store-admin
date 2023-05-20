@@ -22,7 +22,7 @@
                 @enderror
             </div>
             <div class="form-group">
-                <label for="categoryName" class=" form-control-label">Category name</label>
+                <label for="categoryName" class="form-control-label">Category name</label>
                 <input id="categoryName" type="text" name="name" value="{{ $category->name }}"
                     class="form-control" required>
                 @error('name')
@@ -30,7 +30,7 @@
                 @enderror
             </div>
             <div class="form-group">
-                <label for="categorySlug" class=" form-control-label">Category slug</label>
+                <label for="categorySlug" class="form-control-label">Category slug</label>
                 <input id="categorySlug" type="text" name="slug" value="{{ $category->slug }}"
                     class="form-control" required>
                 @error('slug')

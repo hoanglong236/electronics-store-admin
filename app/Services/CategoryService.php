@@ -34,7 +34,7 @@ class CategoryService
         return $this->categoryRepository->paginate($itemPerPage);
     }
 
-    private function saveCategoryIcon($icon)
+    private function saveCategoryIconToStorage($icon)
     {
         $iconPath = $this->storageService->saveFile($icon, Config::FOLDER_PATH_CATEGORY_ICONS);
         if ($iconPath) {
@@ -44,7 +44,7 @@ class CategoryService
         return $iconPath;
     }
 
-    private function deleteCategoryIcon($iconPath)
+    private function deleteCategoryIconFromStorage($iconPath)
     {
         $this->storageService->deleteFile($iconPath);
         $this->firebaseStorageService->deleteImage($iconPath);
@@ -57,7 +57,7 @@ class CategoryService
         if ($categoryProperties['parentId'] !== Constants::NONE_VALUE) {
             $createAttributes['parent_id'] = $categoryProperties['parentId'];
         }
-        $createAttributes['icon_path'] = $this->saveCategoryIcon($categoryProperties['icon']);
+        $createAttributes['icon_path'] = $this->saveCategoryIconToStorage($categoryProperties['icon']);
         $createAttributes['name'] = $categoryProperties['name'];
         $createAttributes['slug'] = $categoryProperties['slug'];
         $createAttributes['delete_flag'] = false;
@@ -75,8 +75,8 @@ class CategoryService
         $updateAttributes = [];
 
         if (isset($categoryProperties['icon'])) {
-            $this->deleteCategoryIcon($oldCategory->icon_path);
-            $updateAttributes['icon_path'] = $this->saveCategoryIcon($categoryProperties['icon']);
+            $this->deleteCategoryIconFromStorage($oldCategory->icon_path);
+            $updateAttributes['icon_path'] = $this->saveCategoryIconToStorage($categoryProperties['icon']);
         }
         if ($categoryProperties['parentId'] !== Constants::NONE_VALUE) {
             $updateAttributes['parent_id'] = $categoryProperties['parentId'];

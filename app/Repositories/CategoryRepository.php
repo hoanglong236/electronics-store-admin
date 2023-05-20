@@ -21,7 +21,7 @@ class CategoryRepository implements ICategoryRepository
 
     public function create(array $attributes)
     {
-        Category::create($attributes);
+        return Category::create($attributes);
     }
 
     public function update(array $attributes, int $id)
@@ -29,7 +29,9 @@ class CategoryRepository implements ICategoryRepository
         $category = $this->findById($id);
         if ($category) {
             $category->update($attributes);
+            return $category;
         }
+        return false;
     }
 
     public function deleteById(int $id)
