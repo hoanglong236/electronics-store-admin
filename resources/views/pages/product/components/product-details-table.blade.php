@@ -10,52 +10,52 @@
             <tr>
                 <td>1</td>
                 <td>ID</td>
-                <td>{{ $customProduct->id }}</td>
+                <td>{{ $product->id }}</td>
             </tr>
             <tr>
                 <td>2</td>
                 <td>Category</td>
-                <td>{{ $customProduct->category_name }}</td>
+                <td>{{ $product->category_name }}</td>
             </tr>
             <tr>
                 <td>3</td>
                 <td>Brand</td>
-                <td>{{ $customProduct->brand_name }}</td>
+                <td>{{ $product->brand_name }}</td>
             </tr>
             <tr>
                 <td>4</td>
                 <td>Name</td>
-                <td>{{ $customProduct->name }}</td>
+                <td>{{ $product->name }}</td>
             </tr>
             <tr>
                 <td>5</td>
                 <td>Slug</td>
-                <td>{{ $customProduct->slug }}</td>
+                <td>{{ $product->slug }}</td>
             </tr>
             <tr>
                 <td>6</td>
                 <td>Price</td>
-                <td>{{ '$' . number_format($customProduct->price, 2) }}</td>
+                <td>{{ '$' . number_format($product->price, 2) }}</td>
             </tr>
             <tr>
                 <td>7</td>
                 <td>Discount</td>
-                <td>{{ $customProduct->discount_percent . '%' }}</td>
+                <td>{{ $product->discount_percent . '%' }}</td>
             </tr>
             <tr>
                 <td>8</td>
                 <td>Quantity</td>
-                <td>{{ $customProduct->quantity }}</td>
+                <td>{{ $product->quantity }}</td>
             </tr>
             <tr>
                 <td>9</td>
                 <td>Warranty Period</td>
-                <td>{{ $customProduct->warranty_period }}</td>
+                <td>{{ $product->warranty_period }}</td>
             </tr>
             <tr>
                 <td>10</td>
                 <td>Description</td>
-                <td>{{ $customProduct->description }}</td>
+                <td>{{ $product->description }}</td>
             </tr>
         </tbody>
     </table>

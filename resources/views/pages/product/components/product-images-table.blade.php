@@ -2,7 +2,7 @@
     <table class="table table-borderless table-striped table-earning table-earning--custom">
         <thead>
             <tr>
-                <th>Order</th>
+                <th>#</th>
                 <th>Image</th>
                 <th class="text-right">Action</th>
             </tr>
@@ -18,7 +18,7 @@
                     <td class="text-right">
                         @include('shared.components.buttons.delete-icon-button', [
                             'deleteUrl' => route('catalog.product.details.images.delete', [
-                                'productId' => $productId,
+                                'productId' => $productImage->product_id,
                                 'productImageId' => $productImage->id,
                             ]),
                         ])

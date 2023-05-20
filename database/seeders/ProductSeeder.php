@@ -3,10 +3,9 @@
 namespace Database\Seeders;
 
 use App\Config\Config;
-use App\Models\Product;
-use App\Models\ProductImage;
 use App\Repositories\IBrandRepository;
 use App\Repositories\ICategoryRepository;
+use App\Repositories\IProductRepository;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -14,13 +13,16 @@ class ProductSeeder extends Seeder
 {
     private $categoryRepository;
     private $brandRepository;
+    private $productRepository;
 
     public function __construct(
         ICategoryRepository $categoryRepository,
-        IBrandRepository $brandRepository
+        IBrandRepository $brandRepository,
+        IProductRepository $productRepository
     ) {
         $this->categoryRepository = $categoryRepository;
         $this->brandRepository = $brandRepository;
+        $this->productRepository = $productRepository;
     }
 
     /**
@@ -344,7 +346,7 @@ class ProductSeeder extends Seeder
         $brandSlugIdMap = $this->getBrandSlugIdMap();
 
         foreach ($productInfoArray as $productInfo) {
-            $product = Product::create([
+            $product = $this->productRepository->create([
                 'category_id' => $productInfo['category_id'],
                 'brand_id' => $brandSlugIdMap[$productInfo['brand_slug']],
                 'name' => $productInfo['name'],
@@ -363,19 +365,19 @@ class ProductSeeder extends Seeder
 
     private function createProductImages($productId, $productSlug)
     {
-        ProductImage::create([
+        $this->productRepository->createProductImage([
             'product_id' => $productId,
             'image_path' => Config::FOLDER_PATH_PRODUCT_IMAGES . '/' . $productSlug . '.jpg',
         ]);
-        ProductImage::create([
+        $this->productRepository->createProductImage([
             'product_id' => $productId,
             'image_path' => Config::FOLDER_PATH_PRODUCT_IMAGES . '/' . $productSlug . '-1.jpg',
         ]);
-        ProductImage::create([
+        $this->productRepository->createProductImage([
             'product_id' => $productId,
             'image_path' => Config::FOLDER_PATH_PRODUCT_IMAGES . '/' . $productSlug . '-2.jpg',
         ]);
-        ProductImage::create([
+        $this->productRepository->createProductImage([
             'product_id' => $productId,
             'image_path' => Config::FOLDER_PATH_PRODUCT_IMAGES . '/' . $productSlug . '-3.jpg',
         ]);

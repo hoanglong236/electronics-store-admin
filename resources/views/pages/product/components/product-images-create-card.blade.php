@@ -3,7 +3,7 @@
         <strong>Add product image</strong>
     </div>
     <form action="{{ route('catalog.product.details.images.create-handler', ['productId' => $productId]) }}"
-        method="post" enctype="multipart/form-data" class="form-horizontal">
+        method="post" enctype="multipart/form-data">
         @csrf
         <div class="card-body card-block">
             <div class="form-group">

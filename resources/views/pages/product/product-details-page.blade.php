@@ -8,13 +8,13 @@
     <div class="row mt-4">
         <div class="col-lg-8">
             @include('pages.product.components.product-details-table', [
-                'customProduct' => $data['customProduct'],
+                'product' => $data['product'],
             ])
         </div>
         <div class="col-lg-4">
             <div class="card card-radius">
                 <img class="card-img-top card-image--custom-square"
-                    src="{{ asset('storage/' . $data['customProduct']->main_image_path) }}" alt="Card image cap">
+                    src="{{ asset('storage/' . $data['product']->main_image_path) }}" alt="Card image cap">
             </div>
         </div>
     </div>
@@ -30,10 +30,9 @@
         <div class="col-lg-8">
             @include('pages.product.components.product-images-table', [
                 'productImages' => $data['productImages'],
-                'productId' => $data['customProduct']->id,
             ])
             @include('pages.product.components.product-images-create-card', [
-                'productId' => $data['customProduct']->id,
+                'productId' => $data['product']->id,
             ])
         </div>
         <div class="col-lg-4">

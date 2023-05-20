@@ -5,69 +5,75 @@ namespace App\Services;
 use App\Common\Constants;
 use App\Config\Config;
 use App\DataFilterConstants\ProductSearchOptionConstants;
-use App\Models\Product;
-use App\Models\ProductImage;
+use App\Repositories\IProductRepository;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class ProductService
 {
+    private $productRepository;
+
     private $storageService;
     private $firebaseStorageService;
 
-    public function __construct()
-    {
-        $this->storageService = new StorageService();
-        $this->firebaseStorageService = new FirebaseStorageService();
+    public function __construct(
+        IProductRepository $productRepository,
+        StorageService $storageService,
+        FirebaseStorageService $firebaseStorageService
+    ) {
+        $this->productRepository = $productRepository;
+        $this->storageService = $storageService;
+        $this->firebaseStorageService = $firebaseStorageService;
     }
 
     public function findById($productId)
     {
-        return Product::where(['id' => $productId, 'delete_flag' => false])->first();
+        return $this->productRepository->findById($productId);
     }
 
     public function getCustomProductById($productId)
     {
-        return DB::table('products')
-            ->join('categories', 'categories.id', '=', 'products.category_id')
-            ->join('brands', 'brands.id', '=', 'products.brand_id')
-            ->select(
-                'products.*',
-                'categories.name as category_name',
-                'brands.name as brand_name',
-            )
-            ->where(['products.delete_flag' => false, 'products.id' => $productId])
-            ->first();
+        return $this->productRepository->getCustomProductById($productId);
     }
 
-    public function getListProductsPaginator($itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT)
+    public function getCustomProductsPaginator($itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT)
     {
-        return Product::where('delete_flag', false)
-            ->latest()
-            ->paginate($itemPerPage);
+        return $this->productRepository->getCustomProductsPaginate($itemPerPage);
+    }
+
+    private function saveProductImageToStorage($image)
+    {
+        $imagePath = $this->storageService->saveFile($image, Config::FOLDER_PATH_CATEGORY_ICONS);
+        if ($imagePath) {
+            $this->firebaseStorageService->uploadImage($imagePath);
+        }
+
+        return $imagePath;
+    }
+
+    private function deleteProductImageFromStorage($imagePath)
+    {
+        $this->storageService->deleteFile($imagePath);
+        $this->firebaseStorageService->deleteImage($imagePath);
     }
 
     public function createProduct($productProperties)
     {
-        $productMainImage = $this->storageService->saveFile(
-            $productProperties['mainImage'],
-            Config::FOLDER_PATH_PRODUCT_IMAGES,
-        );
-        $product = Product::create([
-            'category_id' => $productProperties['categoryId'],
-            'brand_id' => $productProperties['brandId'],
-            'name' => $productProperties['name'],
-            'slug' => $productProperties['slug'],
-            'price' => $productProperties['price'],
-            'discount_percent' => $productProperties['discountPercent'],
-            'quantity' => $productProperties['quantity'],
-            'warranty_period' => $productProperties['warrantyPeriod'],
-            'description' => $productProperties['description'],
-            'main_image_path' => $productMainImage,
-            'delete_flag' => false,
-        ]);
-        $this->firebaseStorageService->uploadImage($productMainImage);
+        $createAttributes = [];
+
+        $createAttributes['main_image_path'] = $this->saveProductImageToStorage($productProperties['mainImage']);
+        $createAttributes['category_id'] = $productProperties['categoryId'];
+        $createAttributes['brand_id'] = $productProperties['brandId'];
+        $createAttributes['name'] = $productProperties['name'];
+        $createAttributes['slug'] = $productProperties['slug'];
+        $createAttributes['price'] = $productProperties['price'];
+        $createAttributes['discount_percent'] = $productProperties['discountPercent'];
+        $createAttributes['quantity'] = $productProperties['quantity'];
+        $createAttributes['warranty_period'] = $productProperties['warrantyPeriod'];
+        $createAttributes['description'] = $productProperties['description'];
+        $createAttributes['delete_flag'] = false;
+
+        $product = $this->productRepository->create($createAttributes);
 
         $this->createProductImages([
             'productId' => $product->id,
@@ -77,38 +83,36 @@ class ProductService
 
     public function updateProduct($productProperties, $productId)
     {
-        $product = $this->findById($productId);
-
-        $product->category_id = $productProperties['categoryId'];
-        $product->brand_id = $productProperties['brandId'];
-        $product->name = $productProperties['name'];
-        $product->slug = $productProperties['slug'];
-        $product->price = $productProperties['price'];
-        $product->discount_percent = $productProperties['discountPercent'];
-        $product->quantity = $productProperties['quantity'];
-        $product->warranty_period = $productProperties['warrantyPeriod'];
-        $product->description = $productProperties['description'];
-
-        if (isset($productProperties['mainImage'])) {
-            $this->storageService->deleteFile($product->main_image_path);
-            $this->firebaseStorageService->deleteImage($product->main_image_path);
-
-            $product->main_image_path = $this->storageService->saveFile(
-                $productProperties['mainImage'],
-                Config::FOLDER_PATH_PRODUCT_IMAGES
-            );
-            $this->firebaseStorageService->uploadImage($product->main_image_path);
+        $oldProduct = $this->findById($productId);
+        if (!$oldProduct) {
+            return false;
         }
 
-        $product->save();
+        $updateAttributes = [];
+
+        if (isset($productProperties['mainImage'])) {
+            $this->deleteProductImageFromStorage($oldProduct->main_image_path);
+            $updateAttributes['main_image_path'] = $this->saveProductImageToStorage($productProperties['mainImage']);
+        }
+        $updateAttributes['category_id'] = $productProperties['categoryId'];
+        $updateAttributes['brand_id'] = $productProperties['brandId'];
+        $updateAttributes['name'] = $productProperties['name'];
+        $updateAttributes['slug'] = $productProperties['slug'];
+        $updateAttributes['price'] = $productProperties['price'];
+        $updateAttributes['discount_percent'] = $productProperties['discountPercent'];
+        $updateAttributes['quantity'] = $productProperties['quantity'];
+        $updateAttributes['warranty_period'] = $productProperties['warrantyPeriod'];
+        $updateAttributes['description'] = $productProperties['description'];
+
+        $this->productRepository->update($updateAttributes, $productId);
     }
 
     public function deleteProduct($productId)
     {
-        Product::deleteById($productId);
+        $this->productRepository->deleteById($productId);
     }
 
-    public function getSearchProductsPaginator(
+    public function getSearchCustomProductsPaginator(
         $productSearchProperties,
         $itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT
     ) {
@@ -116,107 +120,44 @@ class ProductService
         $searchKeyword = $productSearchProperties['searchKeyword'];
         $escapedKeyword = UtilsService::escapeKeyword($searchKeyword);
 
-        $queryBuilder = $this->getSearchProductsQueryBuilder($escapedKeyword, $searchOption);
-        if (is_null($queryBuilder)) {
-            return new LengthAwarePaginator([], 0, $itemPerPage);
-        }
-
-        return $queryBuilder->latest()
-            ->paginate($itemPerPage);
-    }
-
-    private function getSearchProductsQueryBuilder($escapedKeyword, $searchOption)
-    {
         switch ($searchOption) {
             case ProductSearchOptionConstants::SEARCH_ALL:
-                return $this->getSearchProductsByAllQueryBuilder($escapedKeyword);
-            case ProductSearchOptionConstants::SEARCH_NAME:
-                return $this->getSearchProductsByNameQueryBuilder($escapedKeyword);
-            case ProductSearchOptionConstants::SEARCH_SLUG:
-                return $this->getSearchProductsBySlugQueryBuilder($escapedKeyword);
+                return $this->productRepository
+                    ->searchCustomProductsByAllAndPaginate($escapedKeyword, $itemPerPage);
             case ProductSearchOptionConstants::SEARCH_CATEGORY:
-                return $this->getSearchProductsByCategoryNameQueryBuilder($escapedKeyword);
+                return $this->productRepository
+                    ->searchCustomProductsByCategoryAndPaginate($escapedKeyword, $itemPerPage);
             case ProductSearchOptionConstants::SEARCH_BRAND:
-                return $this->getSearchProductsByBrandNameQueryBuilder($escapedKeyword);
+                return $this->productRepository
+                    ->searchCustomProductsByBrandAndPaginate($escapedKeyword, $itemPerPage);
             default:
-                return null;
+                return new LengthAwarePaginator([], 0, $itemPerPage);
         }
-    }
-
-    private function getSearchProductsByAllQueryBuilder($escapedKeyword)
-    {
-        return $this->getBaseSearchProductsQueryBuilder()
-            ->where(function ($query) use ($escapedKeyword) {
-                $query->where('products.name', 'LIKE', '%' . $escapedKeyword . '%')
-                    ->orWhere('products.slug', 'LIKE', '%' . $escapedKeyword . '%')
-                    ->orWhere('categories.name', 'LIKE', '%' . $escapedKeyword . '%')
-                    ->orWhere('brands.name', 'LIKE', '%' . $escapedKeyword . '%');
-            });
-    }
-
-    private function getSearchProductsByNameQueryBuilder($escapedKeyword)
-    {
-        return $this->getBaseSearchProductsQueryBuilder()
-            ->where('products.name', 'LIKE', '%' . $escapedKeyword . '%');
-    }
-
-    private function getSearchProductsBySlugQueryBuilder($escapedKeyword)
-    {
-        return $this->getBaseSearchProductsQueryBuilder()
-            ->where('products.slug', 'LIKE', '%' . $escapedKeyword . '%');
-    }
-
-    private function getSearchProductsByCategoryNameQueryBuilder($escapedKeyword)
-    {
-        return $this->getBaseSearchProductsQueryBuilder()
-            ->where('categories.name', 'LIKE', '%' . $escapedKeyword . '%');
-    }
-
-    private function getSearchProductsByBrandNameQueryBuilder($escapedKeyword)
-    {
-        return $this->getBaseSearchProductsQueryBuilder()
-            ->where('brands.name', 'LIKE', '%' . $escapedKeyword . '%');
-    }
-
-    private function getBaseSearchProductsQueryBuilder()
-    {
-        return DB::table('products')
-            ->join('categories', 'categories.id', '=', 'products.category_id')
-            ->join('brands', 'brands.id', '=', 'products.brand_id')
-            ->select(
-                'products.*',
-                'categories.name as category_name',
-                'brands.name as brand_name',
-            )
-            ->where('products.delete_flag', false);
     }
 
     public function getProductImagesByProductId($productId)
     {
-        return ProductImage::retrieveByProductId($productId);
+        return $this->productRepository->retrieveProductImagesByProductId($productId);
     }
 
     public function createProductImages($productImageProperties)
     {
         $images = $productImageProperties['images'];
-
         foreach ($images as $image) {
-            $imagePath = $this->storageService->saveFile($image, Config::FOLDER_PATH_PRODUCT_IMAGES);
-            $this->firebaseStorageService->uploadImage($imagePath);
+            $createAttributes = [];
 
-            ProductImage::create([
-                'product_id' => $productImageProperties['productId'],
-                'image_path' => $imagePath,
-            ]);
+            $createAttributes['image_path'] = $this->saveProductImageToStorage($image);
+            $createAttributes['product_id'] = $productImageProperties['productId'];
+
+            $this->productRepository->createProductImage($createAttributes);
         }
     }
 
     public function deleteProductImage($productImageId)
     {
-        $deletedProductImage = ProductImage::deleteById($productImageId);
+        $deletedProductImage = $this->productRepository->deleteProductImageById($productImageId);
         if ($deletedProductImage) {
-            $this->storageService->deleteFile($deletedProductImage->image_path);
-            $this->firebaseStorageService->deleteImage($deletedProductImage->image_path);
+            $this->deleteProductImageFromStorage($deletedProductImage->image_path);
         }
     }
 }

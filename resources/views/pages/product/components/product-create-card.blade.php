@@ -2,8 +2,7 @@
     <div class="card-header">
         <strong>Create Product</strong>
     </div>
-    <form action="{{ route('catalog.product.create-handler') }}" method="post" enctype="multipart/form-data"
-        class="form-horizontal">
+    <form action="{{ route('catalog.product.create-handler') }}" method="post" enctype="multipart/form-data">
         @csrf
         <div class="card-body card-block">
             <div class="row">

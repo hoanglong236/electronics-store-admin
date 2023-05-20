@@ -20,16 +20,20 @@ class ProductController extends Controller
     private $categoryService;
     private $brandService;
 
-    public function __construct()
+    public function __construct(
+        ProductService $productService,
+        CategoryService $categoryService,
+        BrandService $brandService
+    )
     {
-        $this->productService = new ProductService();
-        $this->categoryService = new CategoryService();
-        $this->brandService = new BrandService();
+        $this->productService = $productService;
+        $this->categoryService = $categoryService;
+        $this->brandService = $brandService;
     }
 
     public function index()
     {
-        $paginator = $this->productService->getListProductsPaginator();
+        $paginator = $this->productService->getCustomProductsPaginator();
 
         $data = $this->getCommonDataForProductsPage();
         $data['products'] = $paginator->items();
@@ -41,7 +45,7 @@ class ProductController extends Controller
     public function search(ProductSearchRequest $productSearchRequest)
     {
         $productSearchProperties = $productSearchRequest->validated();
-        $paginator = $this->productService->getSearchProductsPaginator($productSearchProperties);
+        $paginator = $this->productService->getSearchCustomProductsPaginator($productSearchProperties);
 
         $data = $this->getCommonDataForProductsPage();
         $data['searchKeyword'] = $productSearchProperties['searchKeyword'];
@@ -127,7 +131,7 @@ class ProductController extends Controller
 
         $data = [
             'pageTitle' => 'Product details',
-            'customProduct' => $customProduct,
+            'product' => $customProduct,
             'productImages' => $productImages,
         ];
 
