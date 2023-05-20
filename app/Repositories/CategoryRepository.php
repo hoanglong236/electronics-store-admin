@@ -9,17 +9,13 @@ class CategoryRepository implements ICategoryRepository
 {
     public function findById(int $id)
     {
-        return Category::find($id)
-            ->where('delete_flag', false)
+        return Category::where(['id' => $id, 'delete_flag' => false])
             ->first();
     }
 
     public function findBySlug(string $slug)
     {
-        return Category::where([
-            'slug' => $slug,
-            'delete_flag' => false
-        ])
+        return Category::where(['slug' => $slug, 'delete_flag' => false])
             ->first();
     }
 
@@ -30,9 +26,10 @@ class CategoryRepository implements ICategoryRepository
 
     public function update(array $attributes, int $id)
     {
-        Category::find($id)
-            ->where('delete_flag', false)
-            ->update($attributes);
+        $category = $this->findById($id);
+        if ($category) {
+            $category->update($attributes);
+        }
     }
 
     public function deleteById(int $id)
@@ -68,9 +65,9 @@ class CategoryRepository implements ICategoryRepository
             ->paginate($itemPerPage);
     }
 
-    public function listAll(array $columns = ['*'], bool $withDeletedBrands = false)
+    public function listAll(array $columns = ['*'], bool $withDeleted = false)
     {
-        if ($withDeletedBrands) {
+        if ($withDeleted) {
             return Category::all($columns);
         }
 

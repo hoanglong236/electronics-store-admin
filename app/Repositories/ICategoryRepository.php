@@ -11,5 +11,5 @@ interface ICategoryRepository
     public function deleteById(int $id);
     public function paginate(int $itemPerPage);
     public function searchAndPaginate(string $escapedKeyword, int $itemPerPage);
-    public function listAll(array $columns = ['*'], bool $withDeletedBrands = false);
+    public function listAll(array $columns = ['*'], bool $withDeleted = false);
 }

@@ -3,7 +3,7 @@
         <span class="form-title">Update category</span>
     </div>
     <form action="{{ route('catalog.category.update-handler', $category->id) }}" method="post"
-        enctype="multipart/form-data" class="form-horizontal">
+        enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="card-body card-block">

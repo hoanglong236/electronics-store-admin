@@ -15,12 +15,8 @@
                 <tr>
                     <td>{{ $category->id }}</td>
                     <td>
-                        @if (isset($category->icon_path))
-                            <img class="category-icon--small" src="{{ asset('/storage' . '/' . $category->icon_path) }}"
-                                alt="{{ $category->name . ' icon' }}">
-                        @else
-                            --
-                        @endif
+                        <img class="category-icon--small" src="{{ asset('storage/' . $category->icon_path) }}"
+                            alt="{{ $category->name . ' icon' }}">
                     </td>
                     <td>{{ $category->name }}</td>
                     <td>{{ $category->slug }}</td>
