@@ -34,7 +34,7 @@ class BrandService
         return $this->brandRepository->paginate($itemPerPage);
     }
 
-    private function saveBrandLogo($logo)
+    private function saveBrandLogoToStorage($logo)
     {
         $logoPath = $this->storageService->saveFile($logo, Config::FOLDER_PATH_BRAND_LOGOS);
         if ($logoPath) {
@@ -44,7 +44,7 @@ class BrandService
         return $logoPath;
     }
 
-    private function deleteBrandLogo($logoPath)
+    private function deleteBrandLogoFromStorage($logoPath)
     {
         $this->storageService->deleteFile($logoPath);
         $this->firebaseStorageService->deleteImage($logoPath);
@@ -54,7 +54,7 @@ class BrandService
     {
         $createAttributes = [];
 
-        $createAttributes['logo_path'] = $this->saveBrandLogo($brandProperties['logo']);
+        $createAttributes['logo_path'] = $this->saveBrandLogoToStorage($brandProperties['logo']);
         $createAttributes['name'] = $brandProperties['name'];
         $createAttributes['slug'] = $brandProperties['slug'];
         $createAttributes['delete_flag'] = false;
@@ -72,8 +72,8 @@ class BrandService
         $updateAttributes = [];
 
         if (isset($brandProperties['logo'])) {
-            $this->deleteBrandLogo($oldBrand->logo_path);
-            $updateAttributes['logo_path'] = $this->saveBrandLogo($brandProperties['logo']);
+            $this->deleteBrandLogoFromStorage($oldBrand->logo_path);
+            $updateAttributes['logo_path'] = $this->saveBrandLogoToStorage($brandProperties['logo']);
         }
 
         $updateAttributes['name'] = $brandProperties['name'];

@@ -21,7 +21,7 @@ class BrandRepository implements IBrandRepository
 
     public function create(array $attributes)
     {
-        Brand::create($attributes);
+        return Brand::create($attributes);
     }
 
     public function update(array $attributes, int $id)
@@ -29,7 +29,9 @@ class BrandRepository implements IBrandRepository
         $brand = $this->findById($id);
         if ($brand) {
             $brand->update($attributes);
+            return $brand;
         }
+        return false;
     }
 
     public function deleteById(int $id)

@@ -7,7 +7,7 @@
         @method('PUT')
         <div class="card-body card-block">
             <div class="form-group">
-                <label for="brandName" class=" form-control-label">Brand name</label>
+                <label for="brandName" class="form-control-label">Brand name</label>
                 <input id="brandName" type="text" name="name" value="{{ $brand->name }}" class="form-control"
                     required>
                 @error('name')
