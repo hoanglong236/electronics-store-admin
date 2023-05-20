@@ -3,13 +3,18 @@
 namespace App\Providers;
 
 use App\Repositories\BrandRepository;
+use App\Repositories\CartRepository;
 use App\Repositories\CategoryRepository;
+use App\Repositories\CustomerRepository;
 use App\Repositories\IBrandRepository;
+use App\Repositories\ICartRepository;
 use App\Repositories\ICategoryRepository;
+use App\Repositories\ICustomerRepository;
 use App\Repositories\IProductRepository;
 use App\Repositories\ProductRepository;
 use App\Services\BrandService;
 use App\Services\CategoryService;
+use App\Services\CustomerService;
 use App\Services\FirebaseStorageService;
 use App\Services\ProductService;
 use App\Services\StorageService;
@@ -66,5 +71,15 @@ class AppServiceProvider extends ServiceProvider
                 $this->app->make(FirebaseStorageService::class),
             )
         );
+
+        $this->app->bind(ICustomerRepository::class, CustomerRepository::class);
+        $this->app->instance(
+            CustomerService::class,
+            new CustomerService(
+                $this->app->make(ICustomerRepository::class)
+            )
+        );
+
+        $this->app->bind(ICartRepository::class, CartRepository::class);
     }
 }

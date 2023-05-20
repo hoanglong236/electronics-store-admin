@@ -3,35 +3,38 @@
 namespace App\Services;
 
 use App\Common\Constants;
-use App\Models\Customer;
-use App\Models\CustomerAddress;
+use App\Repositories\ICustomerRepository;
 use Illuminate\Support\Facades\Log;
 
 class CustomerService
 {
+    private $customerRepository;
+
+    public function __construct(ICustomerRepository $customerRepository)
+    {
+        $this->customerRepository = $customerRepository;
+    }
+
     public function findById($customerId)
     {
-        return Customer::findById($customerId);
+        return $this->customerRepository->findById($customerId);
     }
 
     public function getListCustomersPaginator($itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT)
     {
-        return Customer::where('delete_flag', false)
-            ->latest()
-            ->paginate($itemPerPage);
+        return $this->customerRepository->paginate($itemPerPage);
     }
 
     public function updateCustomerDisableFlag($customerDisableFlagProperties, $customerId)
     {
-        $customer = $this->findById($customerId);
-        $customer->disable_flag = $customerDisableFlagProperties['disableFlag'];
-
-        $customer->save();
+        $updateAttributes = [];
+        $updateAttributes['disable_flag'] = $customerDisableFlagProperties['disableFlag'];
+        $this->customerRepository->update($updateAttributes, $customerId);
     }
 
     public function deleteCustomer($customerId)
     {
-        Customer::deleteById($customerId);
+        $this->customerRepository->deleteById($customerId);
     }
 
     public function getSearchCustomersPaginator(
@@ -41,18 +44,11 @@ class CustomerService
         $searchKeyword = $customerSearchProperties['searchKeyword'];
         $escapedKeyword = UtilsService::escapeKeyword($searchKeyword);
 
-        return Customer::where('delete_flag', false)
-            ->where(function ($query) use ($escapedKeyword) {
-                $query->where('name', 'LIKE', '%' . $escapedKeyword . '%')
-                    ->orWhere('email', 'LIKE', '%' . $escapedKeyword . '%')
-                    ->orWhere('phone', 'LIKE', '%' . $escapedKeyword . '%');
-            })
-            ->latest()
-            ->paginate($itemPerPage);
+        return $this->customerRepository->searchAndPaginate($escapedKeyword, $itemPerPage);
     }
 
     public function getCustomerAddressesByCustomerId($customerId)
     {
-        return CustomerAddress::retrieveByCustomerId($customerId);
+        return $this->customerRepository->retrieveCustomerAddressesByCustomerId($customerId);
     }
 }

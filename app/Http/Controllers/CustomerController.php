@@ -14,9 +14,9 @@ class CustomerController extends Controller
 {
     private $customerService;
 
-    public function __construct()
+    public function __construct(CustomerService $customerService)
     {
-        $this->customerService = new CustomerService();
+        $this->customerService = $customerService;
     }
 
     public function index()
