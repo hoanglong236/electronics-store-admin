@@ -4,77 +4,99 @@ namespace App\Services;
 
 use App\Common\Constants;
 use App\Config\Config;
-use App\Models\Brand;
+use App\Repositories\IBrandRepository;
 use Illuminate\Support\Facades\Log;
 
 class BrandService
 {
+    private $brandRepository;
+
     private $storageService;
     private $firebaseStorageService;
 
-    public function __construct()
-    {
-        $this->storageService = new StorageService();
-        $this->firebaseStorageService = new FirebaseStorageService();
+    public function __construct(
+        IBrandRepository $brandRepository,
+        StorageService $storageService,
+        FirebaseStorageService $firebaseStorageService
+    ) {
+        $this->brandRepository = $brandRepository;
+        $this->storageService = $storageService;
+        $this->firebaseStorageService = $firebaseStorageService;
     }
 
     public function findById($brandId)
     {
-        return Brand::findById($brandId);
+        return $this->brandRepository->findById($brandId);
     }
 
     public function getListBrandsPaginator($itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT)
     {
-        return Brand::where('delete_flag', false)
-            ->latest()
-            ->paginate($itemPerPage);
+        return $this->brandRepository->paginate($itemPerPage);
+    }
+
+    private function saveBrandLogo($logo)
+    {
+        $logoPath = $this->storageService->saveFile($logo, Config::FOLDER_PATH_BRAND_LOGOS);
+        if ($logoPath) {
+            $this->firebaseStorageService->uploadImage($logoPath);
+        }
+
+        return $logoPath;
+    }
+
+    private function deleteBrandLogo($logoPath)
+    {
+        $this->storageService->deleteFile($logoPath);
+        $this->firebaseStorageService->deleteImage($logoPath);
     }
 
     public function createBrand($brandProperties)
     {
-        $logoPath = $this->storageService->saveFile(
-            $brandProperties['logo'],
-            Config::FOLDER_PATH_BRAND_LOGOS
-        );
+        $createAttributes = [];
 
-        Brand::create([
-            'name' => $brandProperties['name'],
-            'slug' => $brandProperties['slug'],
-            'logo_path' => $logoPath,
-            'delete_flag' => false,
-        ]);
-        $this->firebaseStorageService->uploadImage($logoPath);
+        $createAttributes['logo_path'] = $this->saveBrandLogo($brandProperties['logo']);
+        $createAttributes['name'] = $brandProperties['name'];
+        $createAttributes['slug'] = $brandProperties['slug'];
+        $createAttributes['delete_flag'] = false;
+
+        $this->brandRepository->create($createAttributes);
     }
 
     public function updateBrand($brandProperties, $brandId)
     {
-        $brand = $this->findById($brandId);
-
-        $brand->name = $brandProperties['name'];
-        $brand->slug = $brandProperties['slug'];
-
-        if (isset($brandProperties['logo'])) {
-            $this->storageService->deleteFile($brand->logo_path);
-            $this->firebaseStorageService->deleteImage($brand->logo_path);
-
-            $brand->logo_path = $this->storageService->saveFile(
-                $brandProperties['logo'],
-                Config::FOLDER_PATH_BRAND_LOGOS
-            );
-            $this->firebaseStorageService->uploadImage($brand->logo_path);
+        $oldBrand = $this->brandRepository->findById($brandId);
+        if (!$oldBrand) {
+            return;
         }
 
-        $brand->save();
+        $updateAttributes = [];
+
+        if (isset($brandProperties['logo'])) {
+            $this->deleteBrandLogo($oldBrand->logo_path);
+            $updateAttributes['logo_path'] = $this->saveBrandLogo($brandProperties['logo']);
+        }
+
+        $updateAttributes['name'] = $brandProperties['name'];
+        $updateAttributes['slug'] = $brandProperties['slug'];
+
+        $this->brandRepository->update($updateAttributes, $brandId);
     }
 
     public function deleteBrand($brandId)
     {
-        Brand::deleteById($brandId);
+        $this->brandRepository->deleteById($brandId);
     }
 
     public function getBrandIdNameMap()
     {
-        return Brand::getMapFromIdToName();
+        $miniBrands = $this->brandRepository->listAll(['id', 'name']);
+        $map = [];
+
+        foreach ($miniBrands as $miniBrand) {
+            $map[$miniBrand->id] = $miniBrand->name;
+        }
+
+        return $map;
     }
 
     public function getSearchBrandsPaginator(
@@ -84,12 +106,6 @@ class BrandService
         $searchKeyword = $searchBrandProperties['searchKeyword'];
         $escapedKeyword = UtilsService::escapeKeyword($searchKeyword);
 
-        return Brand::where('delete_flag', false)
-            ->where(function ($query) use ($escapedKeyword) {
-                $query->where('name', 'LIKE', '%' . $escapedKeyword . '%')
-                    ->orWhere('slug', 'LIKE', '%' . $escapedKeyword . '%');
-            })
-            ->latest()
-            ->paginate($itemPerPage);
+        return $this->brandRepository->searchAndPaginate($escapedKeyword, $itemPerPage);
     }
 }

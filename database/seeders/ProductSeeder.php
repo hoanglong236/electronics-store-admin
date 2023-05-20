@@ -3,9 +3,9 @@
 namespace Database\Seeders;
 
 use App\Config\Config;
-use App\Models\Brand;
 use App\Models\Product;
 use App\Models\ProductImage;
+use App\Repositories\IBrandRepository;
 use App\Repositories\ICategoryRepository;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -13,10 +13,14 @@ use Illuminate\Database\Seeder;
 class ProductSeeder extends Seeder
 {
     private $categoryRepository;
+    private $brandRepository;
 
-    public function __construct(ICategoryRepository $categoryRepository)
-    {
+    public function __construct(
+        ICategoryRepository $categoryRepository,
+        IBrandRepository $brandRepository
+    ) {
         $this->categoryRepository = $categoryRepository;
+        $this->brandRepository = $brandRepository;
     }
 
     /**
@@ -323,9 +327,21 @@ class ProductSeeder extends Seeder
         $this->generateProducts($productInfoArray);
     }
 
+    private function getBrandSlugIdMap()
+    {
+        $miniBrands = $this->brandRepository->listAll(['slug', 'id']);
+        $map = [];
+
+        foreach ($miniBrands as $miniBrand) {
+            $map[$miniBrand->slug] = $miniBrand->id;
+        }
+
+        return $map;
+    }
+
     private function generateProducts($productInfoArray)
     {
-        $brandSlugIdMap = Brand::getMapFromSlugToId();
+        $brandSlugIdMap = $this->getBrandSlugIdMap();
 
         foreach ($productInfoArray as $productInfo) {
             $product = Product::create([

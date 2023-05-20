@@ -3,12 +3,19 @@
 namespace Database\Seeders;
 
 use App\Config\Config;
-use App\Models\Brand;
+use App\Repositories\IBrandRepository;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class BrandSeeder extends Seeder
 {
+    private $brandRepository;
+
+    public function __construct(IBrandRepository $brandRepository)
+    {
+        $this->brandRepository = $brandRepository;
+    }
+
     /**
      * Run the database seeds.
      */
@@ -33,7 +40,7 @@ class BrandSeeder extends Seeder
     private function generateBrands($brandInfoArray)
     {
         foreach ($brandInfoArray as $brandInfo) {
-            Brand::create([
+            $this->brandRepository->create([
                 'name' => $brandInfo['name'],
                 'slug' => $brandInfo['slug'],
                 'logo_path' => Config::FOLDER_PATH_BRAND_LOGOS . '/' . $brandInfo['slug'] . '.png',

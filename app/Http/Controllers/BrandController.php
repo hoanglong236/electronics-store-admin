@@ -14,9 +14,9 @@ class BrandController extends Controller
 {
     private $brandService;
 
-    public function __construct()
+    public function __construct(BrandService $brandService)
     {
-        $this->brandService = new BrandService();
+        $this->brandService = $brandService;
     }
 
     public function index()
@@ -90,7 +90,6 @@ class BrandController extends Controller
         return redirect()->action([BrandController::class, 'index']);
     }
 
-    // TODO: validate here
     public function delete($brandId)
     {
         $this->brandService->deleteBrand($brandId);

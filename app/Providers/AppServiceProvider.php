@@ -2,8 +2,11 @@
 
 namespace App\Providers;
 
+use App\Repositories\BrandRepository;
 use App\Repositories\CategoryRepository;
+use App\Repositories\IBrandRepository;
 use App\Repositories\ICategoryRepository;
+use App\Services\BrandService;
 use App\Services\CategoryService;
 use App\Services\FirebaseStorageService;
 use App\Services\StorageService;
@@ -36,6 +39,16 @@ class AppServiceProvider extends ServiceProvider
             CategoryService::class,
             new CategoryService(
                 $this->app->make(ICategoryRepository::class),
+                $this->app->make(StorageService::class),
+                $this->app->make(FirebaseStorageService::class),
+            )
+        );
+
+        $this->app->bind(IBrandRepository::class, BrandRepository::class);
+        $this->app->instance(
+            BrandService::class,
+            new BrandService(
+                $this->app->make(IBrandRepository::class),
                 $this->app->make(StorageService::class),
                 $this->app->make(FirebaseStorageService::class),
             )
