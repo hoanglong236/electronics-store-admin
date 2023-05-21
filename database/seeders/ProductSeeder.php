@@ -3,26 +3,17 @@
 namespace Database\Seeders;
 
 use App\Config\Config;
-use App\Repositories\IBrandRepository;
-use App\Repositories\ICategoryRepository;
-use App\Repositories\IProductRepository;
+use App\Repositories\ISeederRepository;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class ProductSeeder extends Seeder
 {
-    private $categoryRepository;
-    private $brandRepository;
-    private $productRepository;
+    private $seederRepository;
 
-    public function __construct(
-        ICategoryRepository $categoryRepository,
-        IBrandRepository $brandRepository,
-        IProductRepository $productRepository
-    ) {
-        $this->categoryRepository = $categoryRepository;
-        $this->brandRepository = $brandRepository;
-        $this->productRepository = $productRepository;
+    public function __construct(ISeederRepository $seederRepository)
+    {
+        $this->seederRepository = $seederRepository;
     }
 
     /**
@@ -39,7 +30,7 @@ class ProductSeeder extends Seeder
 
     private function generateSmartphones(): void
     {
-        $category = $this->categoryRepository->findBySlug('phone');
+        $category = $this->seederRepository->findCategoryBySlug('phone');
         $productInfoArray = [
             [
                 'name' => 'Oppo A16',
@@ -119,7 +110,7 @@ class ProductSeeder extends Seeder
 
     private function generateLaptops(): void
     {
-        $category = $this->categoryRepository->findBySlug('laptop');
+        $category = $this->seederRepository->findCategoryBySlug('laptop');
         $productInfoArray = [
             [
                 'name' => 'MacBook Air M1 2020 256GB',
@@ -211,7 +202,7 @@ class ProductSeeder extends Seeder
 
     private function generateTablets(): void
     {
-        $category = $this->categoryRepository->findBySlug('tablet');
+        $category = $this->seederRepository->findCategoryBySlug('tablet');
         $productInfoArray = [
             [
                 'name' => 'iPad Air 5 (2022) 256GB',
@@ -285,7 +276,7 @@ class ProductSeeder extends Seeder
 
     private function generateSmartwatches()
     {
-        $category = $this->categoryRepository->findBySlug('smartwatch');
+        $category = $this->seederRepository->findCategoryBySlug('smartwatch');
         $productInfoArray = [
             [
                 'name' => 'Apple Watch SE 2022 40mm',
@@ -311,7 +302,7 @@ class ProductSeeder extends Seeder
 
     private function generateAccessories()
     {
-        $category = $this->categoryRepository->findBySlug('accessories');
+        $category = $this->seederRepository->findCategoryBySlug('accessories');
         $productInfoArray = [
             [
                 'name' => 'Wireless earphones Samsung Galaxy Buds Live',
@@ -331,7 +322,7 @@ class ProductSeeder extends Seeder
 
     private function getBrandSlugIdMap()
     {
-        $miniBrands = $this->brandRepository->listAll(['slug', 'id']);
+        $miniBrands = $this->seederRepository->listAllBrands(['slug', 'id']);
         $map = [];
 
         foreach ($miniBrands as $miniBrand) {
@@ -346,7 +337,7 @@ class ProductSeeder extends Seeder
         $brandSlugIdMap = $this->getBrandSlugIdMap();
 
         foreach ($productInfoArray as $productInfo) {
-            $product = $this->productRepository->create([
+            $product = $this->seederRepository->createProduct([
                 'category_id' => $productInfo['category_id'],
                 'brand_id' => $brandSlugIdMap[$productInfo['brand_slug']],
                 'name' => $productInfo['name'],
@@ -365,19 +356,19 @@ class ProductSeeder extends Seeder
 
     private function createProductImages($productId, $productSlug)
     {
-        $this->productRepository->createProductImage([
+        $this->seederRepository->createProductImage([
             'product_id' => $productId,
             'image_path' => Config::FOLDER_PATH_PRODUCT_IMAGES . '/' . $productSlug . '.jpg',
         ]);
-        $this->productRepository->createProductImage([
+        $this->seederRepository->createProductImage([
             'product_id' => $productId,
             'image_path' => Config::FOLDER_PATH_PRODUCT_IMAGES . '/' . $productSlug . '-1.jpg',
         ]);
-        $this->productRepository->createProductImage([
+        $this->seederRepository->createProductImage([
             'product_id' => $productId,
             'image_path' => Config::FOLDER_PATH_PRODUCT_IMAGES . '/' . $productSlug . '-2.jpg',
         ]);
-        $this->productRepository->createProductImage([
+        $this->seederRepository->createProductImage([
             'product_id' => $productId,
             'image_path' => Config::FOLDER_PATH_PRODUCT_IMAGES . '/' . $productSlug . '-3.jpg',
         ]);

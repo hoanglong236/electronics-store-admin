@@ -3,8 +3,7 @@
 namespace Database\Seeders;
 
 use App\ModelConstants\AddressType;
-use App\Repositories\ICartRepository;
-use App\Repositories\ICustomerRepository;
+use App\Repositories\ISeederRepository;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -15,15 +14,11 @@ class CustomerSeeder extends Seeder
     const RANDOM_CUSTOMER_COUNT = 8;
     const NON_HASH_PASSWORD = 'Abc12345';
 
-    private $customerRepository;
-    private $cartRepository;
+    private $seederRepository;
 
-    public function __construct(
-        ICustomerRepository $customerRepository,
-        ICartRepository $cartRepository
-    ) {
-        $this->customerRepository = $customerRepository;
-        $this->cartRepository = $cartRepository;
+    public function __construct(ISeederRepository $seederRepository)
+    {
+        $this->seederRepository = $seederRepository;
     }
 
     /**
@@ -37,7 +32,7 @@ class CustomerSeeder extends Seeder
 
     private function generateMainCustomer()
     {
-        $customer = $this->customerRepository->create([
+        $customer = $this->seederRepository->createCustomer([
             'name' => 'Customer Zero',
             'gender' => true,
             'phone' => '1234567890',
@@ -47,14 +42,14 @@ class CustomerSeeder extends Seeder
             'delete_flag' => false,
         ]);
         $this->generateCustomerAddresses($customer->id);
-        $this->cartRepository->create(['customer_id' => $customer->id]);
+        $this->seederRepository->createCart(['customer_id' => $customer->id]);
     }
 
     private function generateCustomers()
     {
         $password = Hash::make(static::NON_HASH_PASSWORD);
         for ($i = 0; $i < static::RANDOM_CUSTOMER_COUNT; $i++) {
-            $customer = $this->customerRepository->create([
+            $customer = $this->seederRepository->createCustomer([
                 'name' => 'Customer ' . ($i + 1),
                 'gender' => mt_rand(0, 1) === 1,
                 'phone' => '123456789' . ($i + 1),
@@ -64,7 +59,7 @@ class CustomerSeeder extends Seeder
                 'delete_flag' => false,
             ]);
             $this->generateCustomerAddresses($customer->id);
-            $this->cartRepository->create(['customer_id' => $customer->id]);
+            $this->seederRepository->createCart(['customer_id' => $customer->id]);
         }
     }
 
@@ -89,20 +84,10 @@ class CustomerSeeder extends Seeder
                 'customer_id' => $customerId,
                 'default_flag' => false,
             ],
-            [
-                'city' => 'Thanh pho Can Tho',
-                'district' => 'Quan Ninh Kieu',
-                'ward' => 'Phuong An Binh',
-                'specific_address' => 'Dai hoc FPT, Duong Nguyen Van Cu',
-                'address_type' => AddressType::OFFICE,
-                'customer_id' => $customerId,
-                'default_flag' => false,
-            ],
         ];
 
-        $addressCount = mt_rand(1, count($addresses));
-        for ($i = 0; $i < $addressCount; $i++) {
-            $this->customerRepository->createCustomerAddress($addresses[$i]);
+        foreach ($addresses as $address) {
+            $this->seederRepository->createCustomerAddress($address);
         }
     }
 }

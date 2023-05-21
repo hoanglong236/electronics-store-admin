@@ -3,26 +3,17 @@
 namespace Database\Seeders;
 
 use App\Libs\Cloud\Storage\FirebaseStorage;
-use App\Repositories\IBrandRepository;
-use App\Repositories\ICategoryRepository;
-use App\Repositories\IProductRepository;
+use App\Repositories\ISeederRepository;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class FirebaseUploadImageSeeder extends Seeder
 {
-    private $categoryRepository;
-    private $brandRepository;
-    private $productRepository;
+    private $seederRepository;
 
-    public function __construct(
-        ICategoryRepository $categoryRepository,
-        IBrandRepository $brandRepository,
-        IProductRepository $productRepository
-    ) {
-        $this->categoryRepository = $categoryRepository;
-        $this->brandRepository = $brandRepository;
-        $this->productRepository = $productRepository;
+    public function __construct(ISeederRepository $seederRepository)
+    {
+        $this->seederRepository = $seederRepository;
     }
 
     /**
@@ -32,22 +23,22 @@ class FirebaseUploadImageSeeder extends Seeder
     {
         $imagePaths = [];
 
-        $categories = $this->categoryRepository->listAll(['icon_path']);
+        $categories = $this->seederRepository->listAllCategories(['icon_path']);
         foreach ($categories as $category) {
             $imagePaths[] = $category->icon_path;
         }
 
-        $brands = $this->brandRepository->listAll(['logo_path']);
+        $brands = $this->seederRepository->listAllBrands(['logo_path']);
         foreach ($brands as $brand) {
             $imagePaths[] = $brand->logo_path;
         }
 
-        $products = $this->productRepository->listAll(['main_image_path']);
+        $products = $this->seederRepository->listAllProducts(['main_image_path']);
         foreach ($products as $product) {
             $imagePaths[] = $product->main_image_path;
         }
 
-        $productImages = $this->productRepository->listAllProductImages(['image_path']);
+        $productImages = $this->seederRepository->listAllProductImages(['image_path']);
         foreach ($productImages as $productImage) {
             $imagePaths[] = $productImage->image_path;
         }

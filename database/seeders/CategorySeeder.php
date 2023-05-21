@@ -3,17 +3,17 @@
 namespace Database\Seeders;
 
 use App\Config\Config;
-use App\Repositories\ICategoryRepository;
+use App\Repositories\ISeederRepository;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class CategorySeeder extends Seeder
 {
-    private $categoryRepository;
+    private $seederRepository;
 
-    public function __construct(ICategoryRepository $categoryRepository)
+    public function __construct(ISeederRepository $seederRepository)
     {
-        $this->categoryRepository = $categoryRepository;
+        $this->seederRepository = $seederRepository;
     }
 
     /**
@@ -31,8 +31,8 @@ class CategorySeeder extends Seeder
         ];
         $this->generateRootCategories($categoryInfoArray);
 
-        $accessoriesId = $this->categoryRepository->findBySlug('accessories')->id;
-        $soundDeviceId = $this->categoryRepository->findBySlug('sound-device')->id;
+        $accessoriesId = $this->seederRepository->findCategoryBySlug('accessories')->id;
+        $soundDeviceId = $this->seederRepository->findCategoryBySlug('sound-device')->id;
 
         $childCategoriesInfoArray = [
             ['name' => 'Keyboard', 'slug' => 'keyboard', 'parentId' => $accessoriesId],
@@ -48,7 +48,7 @@ class CategorySeeder extends Seeder
     private function generateRootCategories($categoryInfoArray)
     {
         foreach ($categoryInfoArray as $categoryInfo) {
-            $this->categoryRepository->create([
+            $this->seederRepository->createCategory([
                 'name' => $categoryInfo['name'],
                 'slug' => $categoryInfo['slug'],
                 'icon_path' => Config::FOLDER_PATH_CATEGORY_ICONS . '/' . $categoryInfo['slug'] . '.png',
@@ -60,7 +60,7 @@ class CategorySeeder extends Seeder
     private function generateChildCategories($categoryInfoArray)
     {
         foreach ($categoryInfoArray as $categoryInfo) {
-            $this->categoryRepository->create([
+            $this->seederRepository->createCategory([
                 'parent_id' => $categoryInfo['parentId'],
                 'name' => $categoryInfo['name'],
                 'slug' => $categoryInfo['slug'],

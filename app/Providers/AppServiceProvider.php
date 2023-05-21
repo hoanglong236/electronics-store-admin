@@ -11,7 +11,9 @@ use App\Repositories\ICartRepository;
 use App\Repositories\ICategoryRepository;
 use App\Repositories\ICustomerRepository;
 use App\Repositories\IProductRepository;
+use App\Repositories\ISeederRepository;
 use App\Repositories\ProductRepository;
+use App\Repositories\SeederRepository;
 use App\Services\BrandService;
 use App\Services\CategoryService;
 use App\Services\CustomerService;
@@ -81,5 +83,7 @@ class AppServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(ICartRepository::class, CartRepository::class);
+
+        $this->app->bind(ISeederRepository::class, SeederRepository::class);
     }
 }
