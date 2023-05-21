@@ -16,12 +16,6 @@ class ProductRepository implements IProductRepository
             ->first();
     }
 
-    public function findBySlug(string $slug)
-    {
-        return Product::where(['slug' => $slug, 'delete_flag' => false])
-            ->first();
-    }
-
     public function getCustomProductById(int $id)
     {
         return $this->getCustomProductQueryBuilder()
@@ -126,15 +120,6 @@ class ProductRepository implements IProductRepository
             ->where('products.delete_flag', false);
     }
 
-    public function listAll(array $columns = ['*'], bool $withDeleted = false)
-    {
-        if ($withDeleted) {
-            return Product::all($columns);
-        }
-
-        return Product::where('delete_flag', false)->get($columns);
-    }
-
     public function retrieveProductImagesByProductId(int $productId)
     {
         return ProductImage::where('product_id', $productId)->get();
@@ -153,10 +138,5 @@ class ProductRepository implements IProductRepository
             return $productImage;
         }
         return false;
-    }
-
-    public function listAllProductImages(array $columns = ['*'])
-    {
-        return ProductImage::all($columns);
     }
 }

@@ -35,11 +35,6 @@ class OrderRepository implements IOrderRepository
             ->where(['id' => $id])->first();
     }
 
-    public function create(array $attributes)
-    {
-        return Order::create($attributes);
-    }
-
     public function update(array $attributes, int $id)
     {
         $order = $this->findById($id);

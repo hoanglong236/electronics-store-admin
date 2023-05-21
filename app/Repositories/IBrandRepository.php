@@ -5,7 +5,6 @@ namespace App\Repositories;
 interface IBrandRepository
 {
     public function findById(int $id);
-    public function findBySlug(string $slug);
     public function create(array $attributes);
     public function update(array $attributes, int $id);
     public function deleteById(int $id);

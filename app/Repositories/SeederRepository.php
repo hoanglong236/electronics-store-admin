@@ -96,7 +96,10 @@ class SeederRepository implements ISeederRepository
             ->join('customer_addresses', 'customer_addresses.customer_id', '=', 'customers.id')
             ->select('customers.*')
             ->distinct()
-            ->where(['delete_flag' => false, 'disable_flag' => false])
+            ->where([
+                'customers.delete_flag' => false,
+                'customers.disable_flag' => false
+            ])
             ->inRandomOrder()
             ->limit($randomCount)
             ->get();

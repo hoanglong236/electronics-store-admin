@@ -3,19 +3,12 @@
 namespace App\Repositories;
 
 use App\Models\Brand;
-use Illuminate\Support\Facades\DB;
 
 class BrandRepository implements IBrandRepository
 {
     public function findById(int $id)
     {
         return Brand::where(['id' => $id, 'delete_flag' => false])
-            ->first();
-    }
-
-    public function findBySlug(string $slug)
-    {
-        return Brand::where(['slug' => $slug, 'delete_flag' => false])
             ->first();
     }
 

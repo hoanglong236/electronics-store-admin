@@ -13,12 +13,6 @@ class CategoryRepository implements ICategoryRepository
             ->first();
     }
 
-    public function findBySlug(string $slug)
-    {
-        return Category::where(['slug' => $slug, 'delete_flag' => false])
-            ->first();
-    }
-
     public function create(array $attributes)
     {
         return Category::create($attributes);

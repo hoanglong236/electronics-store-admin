@@ -13,11 +13,6 @@ class CustomerRepository implements ICustomerRepository
             ->first();
     }
 
-    public function create(array $attributes)
-    {
-        return Customer::create($attributes);
-    }
-
     public function update(array $attributes, int $id)
     {
         $customer = $this->findById($id);
@@ -60,10 +55,5 @@ class CustomerRepository implements ICustomerRepository
     public function retrieveCustomerAddressesByCustomerId(int $customerId)
     {
         return CustomerAddress::where('customer_id', $customerId)->get();
-    }
-
-    public function createCustomerAddress(array $attributes)
-    {
-        return CustomerAddress::create($attributes);
     }
 }
