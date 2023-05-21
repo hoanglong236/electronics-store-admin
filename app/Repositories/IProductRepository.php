@@ -10,10 +10,10 @@ interface IProductRepository
     public function create(array $attributes);
     public function update(array $attributes, int $id);
     public function deleteById(int $id);
-    public function getCustomProductsPaginate(int $itemPerPage);
-    public function searchCustomProductsByAllAndPaginate(string $escapedKeyword, int $itemPerPage);
-    public function searchCustomProductsByCategoryAndPaginate(string $escapedKeyword, int $itemPerPage);
-    public function searchCustomProductsByBrandAndPaginate(string $escapedKeyword, int $itemPerPage);
+    public function paginateCustomProducts(int $itemPerPage);
+    public function searchCustomProductsAndPaginate(
+        string $searchOption, string $escapedKeyword, int $itemPerPage
+    );
     public function listAll(array $columns = ['*'], bool $withDeleted = false);
 
     public function retrieveProductImagesByProductId(int $productId);

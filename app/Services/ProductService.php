@@ -4,9 +4,7 @@ namespace App\Services;
 
 use App\Common\Constants;
 use App\Config\Config;
-use App\DataFilterConstants\ProductSearchOptionConstants;
 use App\Repositories\IProductRepository;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Log;
 
 class ProductService
@@ -38,7 +36,7 @@ class ProductService
 
     public function getCustomProductsPaginator($itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT)
     {
-        return $this->productRepository->getCustomProductsPaginate($itemPerPage);
+        return $this->productRepository->paginateCustomProducts($itemPerPage);
     }
 
     private function saveProductImageToStorage($image)
@@ -120,19 +118,11 @@ class ProductService
         $searchKeyword = $productSearchProperties['searchKeyword'];
         $escapedKeyword = UtilsService::escapeKeyword($searchKeyword);
 
-        switch ($searchOption) {
-            case ProductSearchOptionConstants::SEARCH_ALL:
-                return $this->productRepository
-                    ->searchCustomProductsByAllAndPaginate($escapedKeyword, $itemPerPage);
-            case ProductSearchOptionConstants::SEARCH_CATEGORY:
-                return $this->productRepository
-                    ->searchCustomProductsByCategoryAndPaginate($escapedKeyword, $itemPerPage);
-            case ProductSearchOptionConstants::SEARCH_BRAND:
-                return $this->productRepository
-                    ->searchCustomProductsByBrandAndPaginate($escapedKeyword, $itemPerPage);
-            default:
-                return new LengthAwarePaginator([], 0, $itemPerPage);
-        }
+        return $this->productRepository->searchCustomProductsAndPaginate(
+            $searchOption,
+            $escapedKeyword,
+            $itemPerPage
+        );
     }
 
     public function getProductImagesByProductId($productId)

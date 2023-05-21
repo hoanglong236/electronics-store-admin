@@ -2,8 +2,10 @@
 
 namespace App\Repositories;
 
+use App\DataFilterConstants\ProductSearchOptionConstants;
 use App\Models\Product;
 use App\Models\ProductImage;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 
 class ProductRepository implements IProductRepository
@@ -52,14 +54,29 @@ class ProductRepository implements IProductRepository
         return false;
     }
 
-    public function getCustomProductsPaginate(int $itemPerPage)
+    public function paginateCustomProducts(int $itemPerPage)
     {
         return $this->getCustomProductQueryBuilder()
             ->latest()
             ->paginate($itemPerPage);
     }
 
-    public function searchCustomProductsByAllAndPaginate(string $escapedKeyword, int $itemPerPage)
+    public function searchCustomProductsAndPaginate(
+        string $searchOption, string $escapedKeyword, int $itemPerPage
+    ) {
+        switch ($searchOption) {
+            case ProductSearchOptionConstants::SEARCH_ALL:
+                return $this->searchCustomProductsByAllAndPaginate($escapedKeyword, $itemPerPage);
+            case ProductSearchOptionConstants::SEARCH_CATEGORY:
+                return $this->searchCustomProductsByCategoryAndPaginate($escapedKeyword, $itemPerPage);
+            case ProductSearchOptionConstants::SEARCH_BRAND:
+                return $this->searchCustomProductsByBrandAndPaginate($escapedKeyword, $itemPerPage);
+            default:
+                return new LengthAwarePaginator([], 0, $itemPerPage);
+        }
+    }
+
+    private function searchCustomProductsByAllAndPaginate(string $escapedKeyword, int $itemPerPage)
     {
         return $this->getCustomProductQueryBuilder()
             ->where(function ($query) use ($escapedKeyword) {
@@ -74,7 +91,7 @@ class ProductRepository implements IProductRepository
             ->paginate($itemPerPage);
     }
 
-    public function searchCustomProductsByCategoryAndPaginate(string $escapedKeyword, int $itemPerPage)
+    private function searchCustomProductsByCategoryAndPaginate(string $escapedKeyword, int $itemPerPage)
     {
         return $this->getCustomProductQueryBuilder()
             ->where(function ($query) use ($escapedKeyword) {
@@ -85,7 +102,7 @@ class ProductRepository implements IProductRepository
             ->paginate($itemPerPage);
     }
 
-    public function searchCustomProductsByBrandAndPaginate(string $escapedKeyword, int $itemPerPage)
+    private function searchCustomProductsByBrandAndPaginate(string $escapedKeyword, int $itemPerPage)
     {
         return $this->getCustomProductQueryBuilder()
             ->where(function ($query) use ($escapedKeyword) {
