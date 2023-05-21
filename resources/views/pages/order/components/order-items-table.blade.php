@@ -8,20 +8,20 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($customOrderItems as $index => $customOrderItem)
+            @foreach ($orderItems as $index => $orderItem)
                 <tr>
                     <td>{{ $index + 1 }}</td>
                     <td>
                         <img class="product-image--small"
-                            src="{{ asset('/storage' . '/' . $customOrderItem->product_image_path) }}"
+                            src="{{ asset('/storage' . '/' . $orderItem->product_image_path) }}"
                             alt="{{ 'Product image' }}">
                     </td>
                     <td>
-                        <span>{{ 'ID: ' . $customOrderItem->product_id }}</span><br>
-                        <span>{{ $customOrderItem->product_name }}</span>
+                        <span>{{ 'ID: ' . $orderItem->product_id }}</span><br>
+                        <span>{{ $orderItem->product_name }}</span>
                     </td>
-                    <td class="text-left">x {{ $customOrderItem->quantity }}</td>
-                    <td>{{ '$' . number_format($customOrderItem->total_price, 2) }}</td>
+                    <td class="text-left">x {{ $orderItem->quantity }}</td>
+                    <td>{{ '$' . number_format($orderItem->total_price, 2) }}</td>
                 </tr>
             @endforeach
         </tbody>

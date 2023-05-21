@@ -10,14 +10,17 @@ use App\Repositories\IBrandRepository;
 use App\Repositories\ICartRepository;
 use App\Repositories\ICategoryRepository;
 use App\Repositories\ICustomerRepository;
+use App\Repositories\IOrderRepository;
 use App\Repositories\IProductRepository;
 use App\Repositories\ISeederRepository;
+use App\Repositories\OrderRepository;
 use App\Repositories\ProductRepository;
 use App\Repositories\SeederRepository;
 use App\Services\BrandService;
 use App\Services\CategoryService;
 use App\Services\CustomerService;
 use App\Services\FirebaseStorageService;
+use App\Services\OrderService;
 use App\Services\ProductService;
 use App\Services\StorageService;
 use Illuminate\Support\ServiceProvider;
@@ -50,7 +53,7 @@ class AppServiceProvider extends ServiceProvider
             new CategoryService(
                 $this->app->make(ICategoryRepository::class),
                 $this->app->make(StorageService::class),
-                $this->app->make(FirebaseStorageService::class),
+                $this->app->make(FirebaseStorageService::class)
             )
         );
 
@@ -60,7 +63,7 @@ class AppServiceProvider extends ServiceProvider
             new BrandService(
                 $this->app->make(IBrandRepository::class),
                 $this->app->make(StorageService::class),
-                $this->app->make(FirebaseStorageService::class),
+                $this->app->make(FirebaseStorageService::class)
             )
         );
 
@@ -70,7 +73,7 @@ class AppServiceProvider extends ServiceProvider
             new ProductService(
                 $this->app->make(IProductRepository::class),
                 $this->app->make(StorageService::class),
-                $this->app->make(FirebaseStorageService::class),
+                $this->app->make(FirebaseStorageService::class)
             )
         );
 
@@ -85,5 +88,13 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ICartRepository::class, CartRepository::class);
 
         $this->app->bind(ISeederRepository::class, SeederRepository::class);
+
+        $this->app->bind(IOrderRepository::class, OrderRepository::class);
+        $this->app->instance(
+            OrderService::class,
+            new OrderService(
+                $this->app->make(IOrderRepository::class)
+            )
+        );
     }
 }

@@ -18,14 +18,14 @@ class OrderController extends Controller
 {
     private $orderService;
 
-    public function __construct()
+    public function __construct(OrderService $orderService)
     {
-        $this->orderService = new OrderService();
+        $this->orderService = $orderService;
     }
 
     public function index()
     {
-        $paginator = $this->orderService->getListCustomOrdersPaginator();
+        $paginator = $this->orderService->getCustomOrdersPaginator();
 
         $data = $this->getCommonDataForOrdersPage();
         $data['customOrders'] = $paginator->items();
@@ -101,8 +101,8 @@ class OrderController extends Controller
 
         $data = [
             'pageTitle' => 'Order details',
-            'customOrder' => $customOrder,
-            'customOrderItems' => $customOrderItems,
+            'order' => $customOrder,
+            'orderItems' => $customOrderItems,
         ];
 
         return view('pages.order.order-details-page', ['data' => $data]);

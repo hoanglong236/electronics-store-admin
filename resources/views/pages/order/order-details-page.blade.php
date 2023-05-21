@@ -8,7 +8,7 @@
     <div class="row mt-4">
         <div class="col-md-9">
             @include('pages.order.components.order-items-table', [
-                'customOrderItems' => $data['customOrderItems'],
+                'orderItems' => $data['orderItems'],
             ])
         </div>
     </div>
@@ -17,11 +17,11 @@
         <div class="col-md-9">
             @include('pages.order.components.customer-info-table', [
                 'customerInfo' => [
-                    'id' => $data['customOrder']->customer_id,
-                    'name' => $data['customOrder']->customer_name,
-                    'phone' => $data['customOrder']->customer_phone,
-                    'email' => $data['customOrder']->customer_email,
-                    'deliveryAddress' => $data['customOrder']->delivery_address,
+                    'id' => $data['order']->customer_id,
+                    'name' => $data['order']->customer_name,
+                    'phone' => $data['order']->customer_phone,
+                    'email' => $data['order']->customer_email,
+                    'deliveryAddress' => $data['order']->delivery_address,
                 ],
             ])
         </div>
@@ -31,12 +31,12 @@
         <div class="col-md-9">
             @include('pages.order.components.order-info-table', [
                 'orderInfo' => [
-                    'id' => $data['customOrder']->id,
-                    'totalAmount' => $data['customOrder']->total,
-                    'status' => $data['customOrder']->status,
-                    'paymentMethod' => $data['customOrder']->payment_method,
-                    'createdAt' => $data['customOrder']->created_at,
-                    'updatedAt' => $data['customOrder']->updated_at,
+                    'id' => $data['order']->id,
+                    'totalAmount' => $data['order']->total,
+                    'status' => $data['order']->status,
+                    'paymentMethod' => $data['order']->payment_method,
+                    'createdAt' => $data['order']->created_at,
+                    'updatedAt' => $data['order']->updated_at,
                 ],
             ])
         </div>
