@@ -38,9 +38,9 @@
                 @enderror
             </div>
             <div class="form-group">
-                <label for="categoryLogo" class="form-control-label">New category logo?</label>
-                <input id="categoryLogo" type="file" name="logo" class="form-control-file">
-                @error('logo')
+                <label for="categoryIcon" class="form-control-label">New category icon?</label>
+                <input id="categoryIcon" type="file" name="icon" class="form-control-file">
+                @error('icon')
                     <div class="alert alert-danger mt-1" role="alert">{{ $message }}</div>
                 @enderror
             </div>
