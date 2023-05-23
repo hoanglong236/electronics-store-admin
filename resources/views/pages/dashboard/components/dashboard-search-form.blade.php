@@ -1,5 +1,5 @@
 <form action="{{ $searchUrl }}" method="GET">
-    <div class="dashboard-search-form-wrapper">
+    <div class="d-flex-center-space-between-wrap">
         <div class="dashboard-search-form-fields">
             <div class="dashboard-form-group">
                 <label for="fromDate" class="dashboard-search-date-label">From:</label>
@@ -13,7 +13,7 @@
             </div>
         </div>
         <div class="dashboard-form-search-actions">
-            <button type="submit" class="dashboard-search-btn">SEARCH</button>
+            <button type="submit" class="primary-submit-btn">SEARCH</button>
         </div>
     </div>
 </form>

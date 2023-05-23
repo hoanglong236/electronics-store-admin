@@ -125,3 +125,55 @@ select.form-control:not([size]):not([multiple]) {
 .p-30 {
     padding: 30px;
 }
+
+.m-b-6 {
+    margin-bottom: 6px !important;
+}
+
+.d-inline-flex-wrap {
+    display: inline-flex;
+    flex-wrap: wrap;
+    row-gap: 6px;
+}
+
+.d-flex-center-space-between-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    row-gap: 8px;
+}
+
+.primary-submit-btn {
+    font-size: 1.6rem;
+    line-height: 4rem;
+    font-weight: 400;
+    padding: 0 30px;
+    color: #fff;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    background: #4272d7;
+}
+
+.primary-submit-btn:hover {
+    background: #305dbf;
+}
+
+.export-btn {
+    background-color: #e5e5e5;
+    border: 1px solid #777;
+}
+
+.export-btn:hover {
+    background-color: #cfcfcf;
+}
+
+.export-btn > img {
+    width: 30px;
+}

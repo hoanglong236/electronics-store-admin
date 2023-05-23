@@ -38,7 +38,7 @@
             </div>
         </div>
         <div class="report-form-actions">
-            <button class="dashboard-search-btn">SEARCH</button>
+            <button class="primary-submit-btn">SEARCH</button>
         </div>
     </div>
 </form>
