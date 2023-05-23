@@ -24,7 +24,7 @@ class CategoryService
         $this->firebaseStorageService = $firebaseStorageService;
     }
 
-    public function findById($categoryId)
+    public function getCategoryById($categoryId)
     {
         return $this->categoryRepository->findById($categoryId);
     }
@@ -87,7 +87,7 @@ class CategoryService
         $this->categoryRepository->update($updateAttributes, $categoryId);
     }
 
-    public function deleteCategory($categoryId)
+    public function deleteCategoryById($categoryId)
     {
         $this->categoryRepository->deleteById($categoryId);
     }

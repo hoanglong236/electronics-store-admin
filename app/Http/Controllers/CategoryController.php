@@ -7,7 +7,6 @@ use App\Http\Requests\CategoryRequest;
 use App\Http\Requests\CategorySearchRequest;
 use App\Services\CategoryService;
 use App\Services\UtilsService;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
@@ -58,11 +57,10 @@ class CategoryController extends Controller
 
     public function create()
     {
-        $categoryIdNameMap = $this->categoryService->getCategoryIdNameMap();
-        $data = [
-            'pageTitle' => 'Create category',
-            'categoryIdNameMap' => $categoryIdNameMap,
-        ];
+        $data = [];
+
+        $data['pageTitle'] = 'Create category';
+        $data['categoryIdNameMap'] = $this->categoryService->getCategoryIdNameMap();
 
         return view('pages.category.category-create-page', ['data' => $data]);
     }
@@ -78,14 +76,11 @@ class CategoryController extends Controller
 
     public function update($categoryId)
     {
-        $category = $this->categoryService->findById($categoryId);
-        $categoryIdNameMap = $this->categoryService->getCategoryIdNameMap();
+        $data = [];
 
-        $data = [
-            'pageTitle' => 'Update category',
-            'category' => $category,
-            'categoryIdNameMap' => $categoryIdNameMap,
-        ];
+        $data['pageTitle'] = 'Update category';
+        $data['category'] = $this->categoryService->getCategoryById($categoryId);
+        $data['categoryIdNameMap'] = $this->categoryService->getCategoryIdNameMap();
 
         return view('pages.category.category-update-page', ['data' => $data]);
     }
@@ -101,7 +96,7 @@ class CategoryController extends Controller
 
     public function delete($categoryId)
     {
-        $this->categoryService->deleteCategory($categoryId);
+        $this->categoryService->deleteCategoryById($categoryId);
 
         Session::flash(Constants::ACTION_SUCCESS, Constants::DELETE_SUCCESS);
         return redirect()->action([CategoryController::class, 'index']);
