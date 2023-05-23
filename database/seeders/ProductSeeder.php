@@ -358,10 +358,6 @@ class ProductSeeder extends Seeder
     {
         $this->seederRepository->createProductImage([
             'product_id' => $productId,
-            'image_path' => Config::FOLDER_PATH_PRODUCT_IMAGES . '/' . $productSlug . '.jpg',
-        ]);
-        $this->seederRepository->createProductImage([
-            'product_id' => $productId,
             'image_path' => Config::FOLDER_PATH_PRODUCT_IMAGES . '/' . $productSlug . '-1.jpg',
         ]);
         $this->seederRepository->createProductImage([

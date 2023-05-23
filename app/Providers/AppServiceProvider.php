@@ -3,11 +3,9 @@
 namespace App\Providers;
 
 use App\Repositories\BrandRepository;
-use App\Repositories\CartRepository;
 use App\Repositories\CategoryRepository;
 use App\Repositories\CustomerRepository;
 use App\Repositories\IBrandRepository;
-use App\Repositories\ICartRepository;
 use App\Repositories\ICategoryRepository;
 use App\Repositories\ICustomerRepository;
 use App\Repositories\IOrderRepository;
@@ -47,6 +45,8 @@ class AppServiceProvider extends ServiceProvider
             return new FirebaseStorageService();
         });
 
+        $this->app->bind(ISeederRepository::class, SeederRepository::class);
+
         $this->app->bind(ICategoryRepository::class, CategoryRepository::class);
         $this->app->instance(
             CategoryService::class,
@@ -84,10 +84,6 @@ class AppServiceProvider extends ServiceProvider
                 $this->app->make(ICustomerRepository::class)
             )
         );
-
-        $this->app->bind(ICartRepository::class, CartRepository::class);
-
-        $this->app->bind(ISeederRepository::class, SeederRepository::class);
 
         $this->app->bind(IOrderRepository::class, OrderRepository::class);
         $this->app->instance(
