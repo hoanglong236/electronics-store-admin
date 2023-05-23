@@ -24,7 +24,7 @@ class ProductService
         $this->firebaseStorageService = $firebaseStorageService;
     }
 
-    public function findById($productId)
+    public function getProductById($productId)
     {
         return $this->productRepository->findById($productId);
     }
@@ -81,7 +81,7 @@ class ProductService
 
     public function updateProduct($productProperties, $productId)
     {
-        $oldProduct = $this->findById($productId);
+        $oldProduct = $this->productRepository->findById($productId);
         if (!$oldProduct) {
             return false;
         }
@@ -105,7 +105,7 @@ class ProductService
         $this->productRepository->update($updateAttributes, $productId);
     }
 
-    public function deleteProduct($productId)
+    public function deleteProductById($productId)
     {
         $this->productRepository->deleteById($productId);
     }
@@ -143,7 +143,7 @@ class ProductService
         }
     }
 
-    public function deleteProductImage($productImageId)
+    public function deleteProductImageById($productImageId)
     {
         $deletedProductImage = $this->productRepository->deleteProductImageById($productImageId);
         if ($deletedProductImage) {

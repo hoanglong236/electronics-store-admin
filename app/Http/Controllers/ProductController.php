@@ -24,8 +24,7 @@ class ProductController extends Controller
         ProductService $productService,
         CategoryService $categoryService,
         BrandService $brandService
-    )
-    {
+    ) {
         $this->productService = $productService;
         $this->categoryService = $categoryService;
         $this->brandService = $brandService;
@@ -70,14 +69,11 @@ class ProductController extends Controller
 
     public function create()
     {
-        $categoryIdNameMap = $this->categoryService->getCategoryIdNameMap();
-        $brandIdNameMap = $this->brandService->getBrandIdNameMap();
+        $data = [];
 
-        $data = [
-            'pageTitle' => 'Create product',
-            'categoryIdNameMap' => $categoryIdNameMap,
-            'brandIdNameMap' => $brandIdNameMap,
-        ];
+        $data['pageTitle'] = 'Create product';
+        $data['categoryIdNameMap'] = $this->categoryService->getCategoryIdNameMap();
+        $data['brandIdNameMap'] = $this->brandService->getBrandIdNameMap();
 
         return view('pages.product.product-create-page', ['data' => $data]);
     }
@@ -93,16 +89,12 @@ class ProductController extends Controller
 
     public function update($productId)
     {
-        $categoryIdNameMap = $this->categoryService->getCategoryIdNameMap();
-        $brandIdNameMap = $this->brandService->getBrandIdNameMap();
-        $product = $this->productService->findById($productId);
+        $data = [];
 
-        $data = [
-            'pageTitle' => 'Update product',
-            'categoryIdNameMap' => $categoryIdNameMap,
-            'brandIdNameMap' => $brandIdNameMap,
-            'product' => $product,
-        ];
+        $data['pageTitle'] = 'Update product';
+        $data['categoryIdNameMap'] = $this->categoryService->getCategoryIdNameMap();
+        $data['brandIdNameMap'] = $this->brandService->getBrandIdNameMap();
+        $data['product'] = $this->productService->getProductById($productId);
 
         return view('pages.product.product-update-page', ['data' => $data]);
     }
@@ -118,7 +110,7 @@ class ProductController extends Controller
 
     public function delete($productId)
     {
-        $this->productService->deleteProduct($productId);
+        $this->productService->deleteProductById($productId);
 
         Session::flash(Constants::ACTION_SUCCESS, Constants::DELETE_SUCCESS);
         return redirect()->action([ProductController::class, 'index']);
@@ -126,14 +118,11 @@ class ProductController extends Controller
 
     public function showDetails($productId)
     {
-        $customProduct = $this->productService->getCustomProductById($productId);
-        $productImages = $this->productService->getProductImagesByProductId($productId);
+        $data = [];
 
-        $data = [
-            'pageTitle' => 'Product details',
-            'product' => $customProduct,
-            'productImages' => $productImages,
-        ];
+        $data['pageTitle'] = 'Product details';
+        $data['product'] = $this->productService->getCustomProductById($productId);
+        $data['productImages'] = $this->productService->getProductImagesByProductId($productId);
 
         return view('pages.product.product-details-page', ['data' => $data]);
     }
@@ -150,7 +139,7 @@ class ProductController extends Controller
 
     public function deleteImage($productId, $productImageId)
     {
-        $this->productService->deleteProductImage($productImageId);
+        $this->productService->deleteProductImageById($productImageId);
 
         Session::flash(Constants::ACTION_SUCCESS, Constants::DELETE_SUCCESS);
         return redirect()->action([ProductController::class, 'showDetails'], $productId);
