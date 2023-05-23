@@ -24,7 +24,7 @@ class BrandService
         $this->firebaseStorageService = $firebaseStorageService;
     }
 
-    public function findById($brandId)
+    public function getBrandById($brandId)
     {
         return $this->brandRepository->findById($brandId);
     }
@@ -82,7 +82,7 @@ class BrandService
         $this->brandRepository->update($updateAttributes, $brandId);
     }
 
-    public function deleteBrand($brandId)
+    public function deleteBrandById($brandId)
     {
         $this->brandRepository->deleteById($brandId);
     }

@@ -22,8 +22,10 @@ class BrandController extends Controller
     public function index()
     {
         $paginator = $this->brandService->getListBrandsPaginator();
+        $data = [];
 
-        $data = $this->getCommonDataForBrandsPage();
+        $data['pageTitle'] = 'Brands';
+        $data['searchKeywords'] = '';
         $data['brands'] = $paginator->items();
         $data['paginator'] = $paginator;
 
@@ -34,8 +36,9 @@ class BrandController extends Controller
     {
         $searchBrandProperties = $brandSearchRequest->validated();
         $paginator = $this->brandService->getSearchBrandsPaginator($searchBrandProperties);
+        $data = [];
 
-        $data = $this->getCommonDataForBrandsPage();
+        $data['pageTitle'] = 'Brands';
         $data['searchKeyword'] = $searchBrandProperties['searchKeyword'];
         $data['brands'] = $paginator->items();
         $data['paginator'] = $paginator->withPath(
@@ -45,20 +48,10 @@ class BrandController extends Controller
         return view('pages.brand.brands-page', ['data' => $data]);
     }
 
-    private function getCommonDataForBrandsPage()
-    {
-        return [
-            'pageTitle' => 'Brands',
-            'searchKeyword' => '',
-        ];
-    }
-
     public function create()
     {
-        $data = [
-            'pageTitle' => 'Create brand',
-        ];
-
+        $data = [];
+        $data['pageTitle'] = 'Create brand';
         return view('pages.brand.brand-create-page', ['data' => $data]);
     }
 
@@ -73,10 +66,10 @@ class BrandController extends Controller
 
     public function update($brandId)
     {
-        $data = [
-            'pageTitle' => 'Update brand',
-            'brand' => $this->brandService->findById($brandId),
-        ];
+        $data = [];
+
+        $data['pageTitle'] = 'Update Brand';
+        $data['brand'] = $this->brandService->getBrandById($brandId);
 
         return view('pages.brand.brand-update-page', ['data' => $data]);
     }
@@ -92,7 +85,7 @@ class BrandController extends Controller
 
     public function delete($brandId)
     {
-        $this->brandService->deleteBrand($brandId);
+        $this->brandService->deleteBrandById($brandId);
 
         Session::flash(Constants::ACTION_SUCCESS, Constants::DELETE_SUCCESS);
         return redirect()->action([BrandController::class, 'index']);
