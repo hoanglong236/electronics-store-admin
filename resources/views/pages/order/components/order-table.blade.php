@@ -7,51 +7,49 @@
                 <th>Delivery Address</th>
                 <th>Total</th>
                 <th>Status</th>
+                <th>Created at</th>
                 <th>Updated at</th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($customOrders as $customOrder)
+            @foreach ($orders as $order)
                 <tr>
-                    <td>{{ $customOrder->id }}</td>
+                    <td>{{ $order->id }}</td>
                     <td>
-                        {{ $customOrder->customer_name }}<br>
-                        {{ $customOrder->customer_email }}<br>
-                        {{ $customOrder->customer_phone }}
+                        {{ $order->customer_name }}<br>
+                        {{ $order->customer_email }}<br>
+                        Phone: {{ $order->customer_phone }}
                     </td>
                     <td>
-                        {{ $customOrder->delivery_address }}
+                        {{ $order->delivery_address }}
                     </td>
                     <td>
-                        {{ '$' . number_format($customOrder->total, 2) }}
-                        {{ ' (' . $customOrder->payment_method . ')' }}
+                        {{ '$' . number_format($order->total, 2) }}
+                        {{ ' (' . $order->payment_method . ')' }}
                     </td>
                     <td>
-                        @if (count($nextSelectableStatusMap[$customOrder->status]) === 0)
+                        @if (count($nextSelectableStatusMap[$order->status]) === 0)
                             <span @class([
-                                'order-cancelled' =>
-                                    $customOrder->status === Constants::ORDER_STATUS_CANCELLED,
-                                'order-completed' =>
-                                    $customOrder->status === Constants::ORDER_STATUS_COMPLETED,
-                            ])>{{ $customOrder->status }}</span>
+                                'order-cancelled' => $order->status === Constants::ORDER_STATUS_CANCELLED,
+                                'order-completed' => $order->status === Constants::ORDER_STATUS_COMPLETED,
+                            ])>{{ $order->status }}</span>
                         @else
-                            <form action="{{ route('manage.order.update-order-status', $customOrder->id) }}"
-                                method="POST">
+                            <form action="{{ route('manage.order.update-order-status', $order->id) }}" method="POST">
                                 @csrf
                                 @method('PUT')
                                 <select name="status" class="form-control text--small" onchange="this.form.submit()">
-                                    <option value="{{ $customOrder->status }}">
-                                        {{ $customOrder->status }}
+                                    <option value="{{ $order->status }}">
+                                        {{ $order->status }}
                                     </option>
-                                    @foreach ($nextSelectableStatusMap[$customOrder->status] as $nextStatus)
+                                    @foreach ($nextSelectableStatusMap[$order->status] as $nextStatus)
                                         <option value="{{ $nextStatus }}">
                                             {{ $nextStatus }}
                                         </option>
                                     @endforeach
                                 </select>
                                 @error('status')
-                                    @if (intval(Session::get('orderId')) === $customOrder->id)
+                                    @if (intval(Session::get('orderId')) === $order->id)
                                         <div class="alert alert-danger mt-1 text--small" role="alert">{{ $message }}
                                         </div>
                                     @endif
@@ -59,14 +57,19 @@
                             </form>
                         @endif
                     </td>
-                    <td>{{ $customOrder->updated_at }}</td>
+                    <td>{{ $order->created_at }}</td>
+                    <td>{{ $order->updated_at }}</td>
                     <td>
                         @include('shared.components.buttons.detail-icon-button', [
-                            'detailUrl' => route('manage.order.details', $customOrder->id),
+                            'detailUrl' => route('manage.order.details', $order->id),
                         ])
                     </td>
                 </tr>
             @endforeach
         </tbody>
     </table>
+
+    @if (count($orders) === 0)
+        <div class="mt-3">No order found.</div>
+    @endif
 </div>

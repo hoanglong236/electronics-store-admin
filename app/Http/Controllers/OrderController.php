@@ -28,7 +28,7 @@ class OrderController extends Controller
         $paginator = $this->orderService->getCustomOrdersPaginator();
 
         $data = $this->getCommonDataForOrdersPage();
-        $data['customOrders'] = $paginator->items();
+        $data['orders'] = $paginator->items();
         $data['paginator'] = $paginator;
 
         return view('pages.order.orders-page', ['data' => $data]);
@@ -42,7 +42,7 @@ class OrderController extends Controller
         $data = $this->getCommonDataForOrdersPage();
         $data['searchKeyword'] = $orderSearchProperties['searchKeyword'];
         $data['currentSearchOption'] = $orderSearchProperties['searchOption'];
-        $data['customOrders'] = $paginator->items();
+        $data['orders'] = $paginator->items();
         $data['paginator'] = $paginator->withPath(
             'search?' . UtilsService::convertMapToParamsString($orderSearchProperties)
         );
@@ -60,7 +60,7 @@ class OrderController extends Controller
         $data['currentSearchOption'] = $orderFilterProperties['searchOption'];
         $data['currentStatusFilter'] = $orderFilterProperties['statusFilter'];
         $data['currentPaymentFilter'] = $orderFilterProperties['paymentFilter'];
-        $data['customOrders'] = $paginator->items();
+        $data['orders'] = $paginator->items();
         $data['paginator'] = $paginator->withPath(
             'filter?' . UtilsService::convertMapToParamsString($orderFilterProperties)
         );

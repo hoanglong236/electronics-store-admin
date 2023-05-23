@@ -10,33 +10,28 @@
                 ])
             @endif
 
-            <div class="table-data__tool">
-                <div class="table-data__tool-left">
-                    @include('shared.components.dropdown-search-bar', [
-                        'searchFormUrl' => route('manage.order.search'),
-                        'searchKeyword' => $data['searchKeyword'],
-                        'searchOptions' => $data['searchOptions'],
-                        'currentSearchOption' => $data['currentSearchOption'],
-                    ])
-
-                    @include('pages.order.components.filter-bar', [
-                        'filterFormUrl' => route('manage.order.filter'),
-                        'searchKeyword' => $data['searchKeyword'],
-                        'searchOption' => $data['currentSearchOption'],
-                        'statusFilters' => $data['statusFilters'],
-                        'currentStatusFilter' => $data['currentStatusFilter'],
-                        'paymentFilters' => $data['paymentFilters'],
-                        'currentPaymentFilter' => $data['currentPaymentFilter'],
-                    ])
-                </div>
+            <div class="white-bg-wrapper">
+                @include('pages.order.components.order-filters-bar')
             </div>
         </div>
     </div>
 
-    <div class="row m-t-10">
+    <div class="row m-t-20">
+        <div class="col-md-12">
+            <div class="export-buttons-wrapper text-right d-flex-center-space-between-wrap">
+                <div class="export-title">Export</div>
+                @include('shared.components.buttons.csv-button', [
+                    'conditionFields' => [],
+                    'csvUrl' => '',
+                ])
+            </div>
+        </div>
+    </div>
+
+    <div class="row m-t-20">
         <div class="col-md-12">
             @include('pages.order.components.order-table', [
-                'customOrders' => $data['customOrders'],
+                'orders' => $data['orders'],
                 'nextSelectableStatusMap' => $data['nextSelectableStatusMap'],
             ])
         </div>
