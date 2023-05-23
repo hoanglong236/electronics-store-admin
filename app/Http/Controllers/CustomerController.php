@@ -22,8 +22,10 @@ class CustomerController extends Controller
     public function index()
     {
         $paginator = $this->customerService->getListCustomersPaginator();
+        $data = [];
 
-        $data = $this->getCommonDataForCustomersPage();
+        $data['pageTitle'] = 'Customers';
+        $data['searchKeyword'] = '';
         $data['customers'] = $paginator->items();
         $data['paginator'] = $paginator;
 
@@ -34,8 +36,9 @@ class CustomerController extends Controller
     {
         $customerSearchProperties = $customerSearchRequest->validated();
         $paginator = $this->customerService->getSearchCustomersPaginator($customerSearchProperties);
+        $data = [];
 
-        $data = $this->getCommonDataForCustomersPage();
+        $data['pageTitle'] = 'Customers';
         $data['searchKeyword'] = $customerSearchProperties['searchKeyword'];
         $data['customers'] = $paginator->items();
         $data['paginator'] = $paginator->withPath(
@@ -43,14 +46,6 @@ class CustomerController extends Controller
         );
 
         return view('pages.customer.customers-page', ['data' => $data]);
-    }
-
-    private function getCommonDataForCustomersPage()
-    {
-        return [
-            'pageTitle' => 'Customers',
-            'searchKeyword' => '',
-        ];
     }
 
     public function updateDisableFlag(CustomerDisableFlagRequest $customerDisableFlagRequest, $customerId)
@@ -64,7 +59,7 @@ class CustomerController extends Controller
 
     public function delete($customerId)
     {
-        $this->customerService->deleteCustomer($customerId);
+        $this->customerService->deleteCustomerById($customerId);
 
         Session::flash(Constants::ACTION_SUCCESS, Constants::DELETE_SUCCESS);
         return redirect()->action([CustomerController::class, 'index']);
@@ -72,14 +67,11 @@ class CustomerController extends Controller
 
     public function showDetails($customerId)
     {
-        $customer = $this->customerService->findById($customerId);
-        $customerAddresses = $this->customerService->getCustomerAddressesByCustomerId($customerId);
+        $data = [];
 
-        $data = [
-            'pageTitle' => 'Customer details',
-            'customer' => $customer,
-            'customerAddresses' => $customerAddresses,
-        ];
+        $data['pageTitle'] = 'Customer details';
+        $data['customer'] = $this->customerService->getCustomerById($customerId);
+        $data['customerAddresses'] = $this->customerService->getCustomerAddressesByCustomerId($customerId);
 
         return view('pages.customer.customer-details-page', ['data' => $data]);
     }

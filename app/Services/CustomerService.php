@@ -15,7 +15,7 @@ class CustomerService
         $this->customerRepository = $customerRepository;
     }
 
-    public function findById($customerId)
+    public function getCustomerById($customerId)
     {
         return $this->customerRepository->findById($customerId);
     }
@@ -32,7 +32,7 @@ class CustomerService
         $this->customerRepository->update($updateAttributes, $customerId);
     }
 
-    public function deleteCustomer($customerId)
+    public function deleteCustomerById($customerId)
     {
         $this->customerRepository->deleteById($customerId);
     }
