@@ -105,10 +105,10 @@ class CategoryService
     }
 
     public function getSearchCategoriesPaginator(
-        $categorySearchProperties,
+        $searchProperties,
         $itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT
     ) {
-        $searchKeyword = $categorySearchProperties['searchKeyword'];
+        $searchKeyword = $searchProperties['searchKeyword'];
         $escapedKeyword = UtilsService::escapeKeyword($searchKeyword);
 
         return $this->categoryRepository->searchAndPaginate($escapedKeyword, $itemPerPage);

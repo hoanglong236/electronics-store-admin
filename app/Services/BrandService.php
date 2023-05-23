@@ -100,10 +100,10 @@ class BrandService
     }
 
     public function getSearchBrandsPaginator(
-        $searchBrandProperties,
+        $searchProperties,
         $itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT
     ) {
-        $searchKeyword = $searchBrandProperties['searchKeyword'];
+        $searchKeyword = $searchProperties['searchKeyword'];
         $escapedKeyword = UtilsService::escapeKeyword($searchKeyword);
 
         return $this->brandRepository->searchAndPaginate($escapedKeyword, $itemPerPage);

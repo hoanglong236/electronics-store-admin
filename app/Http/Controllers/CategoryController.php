@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Common\Constants;
 use App\Http\Requests\CategoryRequest;
-use App\Http\Requests\CategorySearchRequest;
+use App\Http\Requests\SimpleSearchRequest;
 use App\Services\CategoryService;
 use App\Services\UtilsService;
 use Illuminate\Support\Facades\Log;
@@ -30,16 +30,16 @@ class CategoryController extends Controller
         return view('pages.category.categories-page', ['data' => $data]);
     }
 
-    public function search(CategorySearchRequest $categorySearchRequest)
+    public function search(SimpleSearchRequest $searchRequest)
     {
-        $categorySearchProperties = $categorySearchRequest->validated();
-        $paginator = $this->categoryService->getSearchCategoriesPaginator($categorySearchProperties);
+        $searchProperties = $searchRequest->validated();
+        $paginator = $this->categoryService->getSearchCategoriesPaginator($searchProperties);
 
         $data = $this->getCommonDataForCategoriesPage();
-        $data['searchKeyword'] = $categorySearchProperties['searchKeyword'];
+        $data['searchKeyword'] = $searchProperties['searchKeyword'];
         $data['categories'] = $paginator->items();
         $data['paginator'] = $paginator->withPath(
-            'search?' . UtilsService::convertMapToParamsString($categorySearchProperties)
+            'search?' . UtilsService::convertMapToParamsString($searchProperties)
         );
 
         return view('pages.category.categories-page', ['data' => $data]);

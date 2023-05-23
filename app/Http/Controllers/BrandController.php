@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Common\Constants;
 use App\Http\Requests\BrandRequest;
-use App\Http\Requests\BrandSearchRequest;
+use App\Http\Requests\SimpleSearchRequest;
 use App\Services\BrandService;
 use App\Services\UtilsService;
 use Illuminate\Support\Facades\Session;
@@ -32,17 +32,17 @@ class BrandController extends Controller
         return view('pages.brand.brands-page', ['data' => $data]);
     }
 
-    public function search(BrandSearchRequest $brandSearchRequest)
+    public function search(SimpleSearchRequest $searchRequest)
     {
-        $searchBrandProperties = $brandSearchRequest->validated();
-        $paginator = $this->brandService->getSearchBrandsPaginator($searchBrandProperties);
+        $searchProperties = $searchRequest->validated();
+        $paginator = $this->brandService->getSearchBrandsPaginator($searchProperties);
         $data = [];
 
         $data['pageTitle'] = 'Brands';
-        $data['searchKeyword'] = $searchBrandProperties['searchKeyword'];
+        $data['searchKeyword'] = $searchProperties['searchKeyword'];
         $data['brands'] = $paginator->items();
         $data['paginator'] = $paginator->withPath(
-            'search?' . UtilsService::convertMapToParamsString($searchBrandProperties)
+            'search?' . UtilsService::convertMapToParamsString($searchProperties)
         );
 
         return view('pages.brand.brands-page', ['data' => $data]);

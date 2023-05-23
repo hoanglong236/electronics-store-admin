@@ -38,10 +38,10 @@ class CustomerService
     }
 
     public function getSearchCustomersPaginator(
-        $customerSearchProperties,
+        $searchProperties,
         $itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT
     ) {
-        $searchKeyword = $customerSearchProperties['searchKeyword'];
+        $searchKeyword = $searchProperties['searchKeyword'];
         $escapedKeyword = UtilsService::escapeKeyword($searchKeyword);
 
         return $this->customerRepository->searchAndPaginate($escapedKeyword, $itemPerPage);

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Common\Constants;
 use App\Http\Requests\CustomerDisableFlagRequest;
-use App\Http\Requests\CustomerSearchRequest;
+use App\Http\Requests\SimpleSearchRequest;
 use App\Services\CustomerService;
 use App\Services\UtilsService;
 use Illuminate\Http\Request;
@@ -32,17 +32,17 @@ class CustomerController extends Controller
         return view('pages.customer.customers-page', ['data' => $data]);
     }
 
-    public function search(CustomerSearchRequest $customerSearchRequest)
+    public function search(SimpleSearchRequest $searchRequest)
     {
-        $customerSearchProperties = $customerSearchRequest->validated();
-        $paginator = $this->customerService->getSearchCustomersPaginator($customerSearchProperties);
+        $searchProperties = $searchRequest->validated();
+        $paginator = $this->customerService->getSearchCustomersPaginator($searchProperties);
         $data = [];
 
         $data['pageTitle'] = 'Customers';
-        $data['searchKeyword'] = $customerSearchProperties['searchKeyword'];
+        $data['searchKeyword'] = $searchProperties['searchKeyword'];
         $data['customers'] = $paginator->items();
         $data['paginator'] = $paginator->withPath(
-            'search?' . UtilsService::convertMapToParamsString($customerSearchProperties)
+            'search?' . UtilsService::convertMapToParamsString($searchProperties)
         );
 
         return view('pages.customer.customers-page', ['data' => $data]);
