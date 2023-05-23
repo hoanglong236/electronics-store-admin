@@ -25,7 +25,7 @@ class BrandController extends Controller
         $data = [];
 
         $data['pageTitle'] = 'Brands';
-        $data['searchKeywords'] = '';
+        $data['searchKeyword'] = '';
         $data['brands'] = $paginator->items();
         $data['paginator'] = $paginator;
 
