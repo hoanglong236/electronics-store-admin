@@ -3,8 +3,7 @@
 namespace App\Services;
 
 use App\Common\Constants;
-use App\DataFilterConstants\OrderPaymentFilterConstants;
-use App\DataFilterConstants\OrderStatusFilterConstants;
+use App\Http\Requests\Constants\OrderFilterRequestConstants;
 use App\ModelConstants\OrderStatusConstants;
 use App\Repositories\IOrderRepository;
 use Illuminate\Support\Facades\Log;
@@ -39,62 +38,71 @@ class OrderService
     {
         return [
             OrderStatusConstants::RECEIVED => [
-                OrderStatusConstants::PROCESSING,
-                OrderStatusConstants::CANCELLED,
+                OrderStatusConstants::PROCESSING, OrderStatusConstants::CANCELLED
             ],
             OrderStatusConstants::PROCESSING => [
-                OrderStatusConstants::DELIVERING,
-                OrderStatusConstants::CANCELLED,
+                OrderStatusConstants::DELIVERING, OrderStatusConstants::CANCELLED
             ],
             OrderStatusConstants::DELIVERING => [
-                OrderStatusConstants::COMPLETED,
-                OrderStatusConstants::CANCELLED,
+                OrderStatusConstants::COMPLETED, OrderStatusConstants::CANCELLED
             ],
             OrderStatusConstants::COMPLETED => [],
             OrderStatusConstants::CANCELLED => [],
         ];
     }
 
-    public function getSearchCustomOrdersPaginator(
-        $orderSearchProperties,
-        $itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT
-    ) {
-        $searchKeyword = $orderSearchProperties['searchKeyword'];
-        $searchOption = $orderSearchProperties['searchOption'];
-        $escapedKeyword = UtilsService::escapeKeyword($searchKeyword);
-
-        return $this->orderRepository->searchAndFilterCustomOrdersAndPaginate(
-            [],
-            $searchOption,
-            $escapedKeyword,
-            $itemPerPage
-        );
-    }
-
     public function getFilterCustomOrdersPaginator(
         $orderFilterProperties,
         $itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT
     ) {
-        $searchKeyword = $orderFilterProperties['searchKeyword'];
-        $searchOption = $orderFilterProperties['searchOption'];
-        $escapedKeyword = UtilsService::escapeKeyword($searchKeyword);
+        $searchFields = [];
+        $orderIdKeyword = $orderFilterProperties['orderIdKeyword'];
+        if ($orderIdKeyword) {
+            $searchFields[] = [
+                'name' => 'orderId',
+                'value' => UtilsService::escapeKeyword($orderIdKeyword)
+            ];
+        }
+        $phoneOrEmailKeyword = $orderFilterProperties['phoneOrEmailKeyword'];
+        if ($phoneOrEmailKeyword) {
+            $searchFields[] = [
+                'name' => 'phoneOrEmail',
+                'value' => UtilsService::escapeKeyword($phoneOrEmailKeyword)
+            ];
+        }
+        $deliveryAddressKeyword = $orderFilterProperties['deliveryAddressKeyword'];
+        if ($deliveryAddressKeyword) {
+            $searchFields[] = [
+                'name' => 'deliveryAddress',
+                'value' => UtilsService::escapeKeyword($deliveryAddressKeyword)
+            ];
+        }
 
-        $filterColumnMap = [];
-
+        $filterFields = [];
         $statusFilter = $orderFilterProperties['statusFilter'];
-        if ($statusFilter !== OrderStatusFilterConstants::ALL) {
-            $filterColumnMap[] = ['column' => 'status', 'value' => $statusFilter];
+        if ($statusFilter !== OrderFilterRequestConstants::ALL) {
+            $filterFields[] = ['name' => 'status', 'value' => $statusFilter];
+        }
+        $paymentMethodFilter = $orderFilterProperties['paymentMethodFilter'];
+        if ($paymentMethodFilter !== OrderFilterRequestConstants::ALL) {
+            $filterFields[] = ['name' => 'paymentMethod', 'value' => $paymentMethodFilter];
         }
 
-        $paymentFilter = $orderFilterProperties['paymentFilter'];
-        if ($paymentFilter !== OrderPaymentFilterConstants::ALL) {
-            $filterColumnMap[] = ['column' => 'payment_method', 'value' => $paymentFilter];
+        $sortFields = [];
+        $sortField = $orderFilterProperties['sortField'];
+        switch ($sortField) {
+            case OrderFilterRequestConstants::SORT_BY_CREATED_AT:
+                $sortFields[] = ['name' => 'createdAt', 'value' => 'desc'];
+                break;
+            case OrderFilterRequestConstants::SORT_BY_UPDATED_AT:
+                $sortFields[] = ['name' => 'updatedAt', 'value' => 'desc'];
+                break;
         }
 
-        return $this->orderRepository->searchAndFilterCustomOrdersAndPaginate(
-            $filterColumnMap,
-            $searchOption,
-            $escapedKeyword,
+        return $this->orderRepository->filterCustomOrdersAndPaginate(
+            $searchFields,
+            $filterFields,
+            $sortFields,
             $itemPerPage
         );
     }

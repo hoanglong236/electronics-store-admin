@@ -2,9 +2,7 @@
 
 namespace App\Repositories;
 
-use App\DataFilterConstants\OrderSearchOptionConstants;
 use App\Models\Order;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 
 class OrderRepository implements IOrderRepository
@@ -14,7 +12,7 @@ class OrderRepository implements IOrderRepository
         return Order::find($id)->first();
     }
 
-    private function getCustomOrdersTableQueryBuilder()
+    private function getCustomOrdersQueryBuilder()
     {
         return DB::table('orders')
             ->join('customers', 'customers.id', '=', 'orders.customer_id')
@@ -29,9 +27,17 @@ class OrderRepository implements IOrderRepository
             ->groupBy('orders.id');
     }
 
+    private function getCustomOrdersTableQueryBuilder()
+    {
+        $queryBuilder = $this->getCustomOrdersQueryBuilder()
+            ->orderByDesc('orders.created_at');
+
+        return DB::table($queryBuilder, 'custom_orders');
+    }
+
     public function getCustomOrderById(int $id)
     {
-        return DB::table($this->getCustomOrdersTableQueryBuilder(), 'custom_orders')
+        return $this->getCustomOrdersTableQueryBuilder()
             ->where(['id' => $id])->first();
     }
 
@@ -47,70 +53,60 @@ class OrderRepository implements IOrderRepository
 
     public function paginateCustomOrders(int $itemPerPage)
     {
-        return DB::table($this->getCustomOrdersTableQueryBuilder(), 'custom_orders')
-            ->latest()
+        return $this->getCustomOrdersTableQueryBuilder()
             ->paginate($itemPerPage);
     }
 
-    public function searchAndFilterCustomOrdersAndPaginate(
-        array $filterColumnMap, string $searchOption, string $escapedKeyword, int $itemPerPage
+    public function filterCustomOrdersAndPaginate(
+        array $searchFields, array $filterFields, array $sortFields, int $itemPerPage
     ) {
-        $queryBuilder = $this->getSearchCustomOrdersQueryBuilder($searchOption, $escapedKeyword);
-        if (!$queryBuilder) {
-            return new LengthAwarePaginator([], 0, $itemPerPage);
-        }
-
-        foreach ($filterColumnMap as $filterColumn) {
-            $queryBuilder->where($filterColumn['column'], $filterColumn['value']);
-        }
-
-        return $queryBuilder->latest()
-            ->paginate($itemPerPage);
-    }
-
-    private function getSearchCustomOrdersQueryBuilder(string $searchOption, string $escapedKeyword)
-    {
-        switch ($searchOption) {
-            case OrderSearchOptionConstants::ALL:
-                return $this->getSearchCustomOrdersByAllQueryBuilder($escapedKeyword);
-            case OrderSearchOptionConstants::CUSTOMER:
-                return $this->getSearchCustomOrdersByCustomerQueryBuilder($escapedKeyword);
-            case OrderSearchOptionConstants::ADDRESS:
-                return $this->getSearchCustomOrdersByAddressQueryBuilder($escapedKeyword);
-            default:
-                return false;
-        }
-    }
-
-    private function getSearchCustomOrdersByAllQueryBuilder(string $escapedKeyword)
-    {
-        return DB::table($this->getCustomOrdersTableQueryBuilder(), 'custom_orders')
-            ->where(function ($query) use ($escapedKeyword) {
-                $query->where('customer_name', 'LIKE', '%' . $escapedKeyword . '%')
-                    ->orWhere('customer_email', 'LIKE', '%' . $escapedKeyword . '%')
-                    ->orWhere('customer_phone', 'LIKE', '%' . $escapedKeyword . '%')
-                    ->orWhere('delivery_address', 'LIKE', '%' . $escapedKeyword . '%');
-
-                if (is_numeric($escapedKeyword)) {
-                    $query->orWhere('id', 'LIKE', '%' . $escapedKeyword . '%');
+        // executing the 'order by' statement first in the sub query can help speed up query execution
+        $customOrdersQueryBuilder = $this->getCustomOrdersQueryBuilder();
+        foreach ($sortFields as $sortField) {
+            if ($sortField['value'] === 'desc' || $sortField['value'] === 'asc') {
+                switch ($sortField['name']) {
+                    case 'createdAt':
+                        $customOrdersQueryBuilder->orderBy('orders.created_at', $sortField['value']);
+                        break;
+                    case 'updatedAt':
+                        $customOrdersQueryBuilder->orderBy('orders.updated_at', $sortField['value']);
+                        break;
                 }
-            });
-    }
+            }
+        }
 
-    private function getSearchCustomOrdersByCustomerQueryBuilder(string $escapedKeyword)
-    {
-        return DB::table($this->getCustomOrdersTableQueryBuilder(), 'custom_orders')
-            ->where(function ($query) use ($escapedKeyword) {
-                $query->where('customer_name', 'LIKE', '%' . $escapedKeyword . '%')
-                    ->orWhere('customer_email', 'LIKE', '%' . $escapedKeyword . '%')
-                    ->orWhere('customer_phone', 'LIKE', '%' . $escapedKeyword . '%');
-            });
-    }
+        $queryBuilder = DB::table($customOrdersQueryBuilder, 'custom_orders');
 
-    private function getSearchCustomOrdersByAddressQueryBuilder(string $escapedKeyword)
-    {
-        return DB::table($this->getCustomOrdersTableQueryBuilder(), 'custom_orders')
-            ->where('delivery_address', 'LIKE', '%' . $escapedKeyword . '%');
+        foreach ($searchFields as $searchField) {
+            $escapedKeyword = $searchField['value'];
+            switch ($searchField['name']) {
+                case 'orderId':
+                    $queryBuilder->where('id', 'LIKE', '%' . $escapedKeyword . '%');
+                    break;
+                case 'phoneOrEmail':
+                    $queryBuilder->where(function ($query) use ($escapedKeyword) {
+                        $query->where('customer_phone', 'LIKE', '%' . $escapedKeyword . '%')
+                            ->orWhere('customer_email', 'LIKE', '%' . $escapedKeyword . '%');
+                    });
+                    break;
+                case 'deliveryAddress':
+                    $queryBuilder->where('delivery_address', 'LIKE', '%' . $escapedKeyword . '%');
+                    break;
+            }
+        }
+
+        foreach ($filterFields as $filterField) {
+            switch ($filterField['name']) {
+                case 'status':
+                    $queryBuilder->where('status', $filterField['value']);
+                    break;
+                case 'paymentMethod':
+                    $queryBuilder->where('payment_method', $filterField['value']);
+                    break;
+            }
+        }
+
+        return $queryBuilder->paginate($itemPerPage);
     }
 
     public function getCustomOrderItemsByOrderId(int $orderId)

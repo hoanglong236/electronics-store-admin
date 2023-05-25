@@ -11,7 +11,15 @@
             @endif
 
             <div class="white-bg-wrapper">
-                @include('pages.order.components.order-filters-bar')
+                @include('pages.order.components.order-filters-bar', [
+                    'orderIdKeyword' => $data['orderIdKeyword'],
+                    'phoneOrEmailKeyword' => $data['phoneOrEmailKeyword'],
+                    'deliveryAddressKeyword' => $data['deliveryAddressKeyword'],
+                    'statusFilter' => $data['statusFilter'],
+                    'paymentMethodFilter' => $data['paymentMethodFilter'],
+                    'sortField' => $data['sortField'],
+                    'orderFilterUrl' => route('manage.order.filter'),
+                ])
             </div>
         </div>
     </div>

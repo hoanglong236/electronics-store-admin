@@ -3,11 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Common\Constants;
-use App\DataFilterConstants\OrderPaymentFilterConstants;
-use App\DataFilterConstants\OrderSearchOptionConstants;
-use App\DataFilterConstants\OrderStatusFilterConstants;
+use App\Http\Requests\Constants\OrderFilterRequestConstants;
 use App\Http\Requests\OrderFilterRequest;
-use App\Http\Requests\OrderSearchRequest;
 use App\Http\Requests\OrderStatusRequest;
 use App\Services\OrderService;
 use App\Services\UtilsService;
@@ -34,32 +31,18 @@ class OrderController extends Controller
         return view('pages.order.orders-page', ['data' => $data]);
     }
 
-    public function search(OrderSearchRequest $orderSearchRequest)
-    {
-        $orderSearchProperties = $orderSearchRequest->validated();
-        $paginator = $this->orderService->getSearchCustomOrdersPaginator($orderSearchProperties);
-
-        $data = $this->getCommonDataForOrdersPage();
-        $data['searchKeyword'] = $orderSearchProperties['searchKeyword'];
-        $data['currentSearchOption'] = $orderSearchProperties['searchOption'];
-        $data['orders'] = $paginator->items();
-        $data['paginator'] = $paginator->withPath(
-            'search?' . UtilsService::convertMapToParamsString($orderSearchProperties)
-        );
-
-        return view('pages.order.orders-page', ['data' => $data]);
-    }
-
     public function filter(OrderFilterRequest $orderFilterRequest)
     {
         $orderFilterProperties = $orderFilterRequest->validated();
         $paginator = $this->orderService->getFilterCustomOrdersPaginator($orderFilterProperties);
 
         $data = $this->getCommonDataForOrdersPage();
-        $data['searchKeyword'] = $orderFilterProperties['searchKeyword'];
-        $data['currentSearchOption'] = $orderFilterProperties['searchOption'];
-        $data['currentStatusFilter'] = $orderFilterProperties['statusFilter'];
-        $data['currentPaymentFilter'] = $orderFilterProperties['paymentFilter'];
+        $data['orderIdKeyword'] = $orderFilterProperties['orderIdKeyword'];
+        $data['phoneOrEmailKeyword'] = $orderFilterProperties['phoneOrEmailKeyword'];
+        $data['deliveryAddressKeyword'] = $orderFilterProperties['deliveryAddressKeyword'];
+        $data['statusFilter'] = $orderFilterProperties['statusFilter'];
+        $data['paymentMethodFilter'] = $orderFilterProperties['paymentMethodFilter'];
+        $data['sortField'] = $orderFilterProperties['sortField'];
         $data['orders'] = $paginator->items();
         $data['paginator'] = $paginator->withPath(
             'filter?' . UtilsService::convertMapToParamsString($orderFilterProperties)
@@ -71,17 +54,15 @@ class OrderController extends Controller
     private function getCommonDataForOrdersPage()
     {
         $nextSelectableStatusMap = $this->orderService->getNextSelectableStatusMap();
-
         return [
             'pageTitle' => 'Order',
             'nextSelectableStatusMap' => $nextSelectableStatusMap,
-            'searchKeyword' => '',
-            'searchOptions' => OrderSearchOptionConstants::toArray(),
-            'currentSearchOption' => OrderSearchOptionConstants::ALL,
-            'statusFilters' => OrderStatusFilterConstants::toArray(),
-            'currentStatusFilter' => OrderStatusFilterConstants::ALL,
-            'paymentFilters' => OrderPaymentFilterConstants::toArray(),
-            'currentPaymentFilter' => OrderPaymentFilterConstants::ALL,
+            'orderIdKeyword' => '',
+            'phoneOrEmailKeyword' => '',
+            'deliveryAddressKeyword' => '',
+            'statusFilter' => OrderFilterRequestConstants::ALL,
+            'paymentMethodFilter' => OrderFilterRequestConstants::ALL,
+            'sortField' => OrderFilterRequestConstants::SORT_BY_CREATED_AT,
         ];
     }
 
@@ -96,14 +77,11 @@ class OrderController extends Controller
 
     public function showDetails($orderId)
     {
-        $customOrder = $this->orderService->getCustomOrderById($orderId);
-        $customOrderItems = $this->orderService->getCustomOrderItemsByOrderId($orderId);
+        $data = [];
 
-        $data = [
-            'pageTitle' => 'Order details',
-            'order' => $customOrder,
-            'orderItems' => $customOrderItems,
-        ];
+        $data['pageTitle'] = 'Order details';
+        $data['order'] = $this->orderService->getCustomOrderById($orderId);
+        $data['orderItems'] = $this->orderService->getCustomOrderItemsByOrderId($orderId);
 
         return view('pages.order.order-details-page', ['data' => $data]);
     }

@@ -2,13 +2,20 @@
 
 namespace App\Http\Requests;
 
-use App\DataFilterConstants\OrderPaymentFilterConstants;
-use App\DataFilterConstants\OrderSearchOptionConstants;
-use App\DataFilterConstants\OrderStatusFilterConstants;
+use App\Http\Requests\Constants\OrderFilterRequestConstants;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class OrderFilterRequest extends BaseSearchRequest
+class OrderFilterRequest extends FormRequest
 {
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
+    {
+        return true;
+    }
+
     /**
      * Override the default.
      *
@@ -17,19 +24,33 @@ class OrderFilterRequest extends BaseSearchRequest
     public function rules(): array
     {
         return [
-            'searchKeyword' => 'max:64',
-            'searchOption' => [
-                'required',
-                Rule::in(OrderSearchOptionConstants::toArray()),
-            ],
+            'orderIdKeyword' => 'max:32',
+            'phoneOrEmailKeyword' => 'max:64',
+            'deliveryAddressKeyword' => 'max:64',
             'statusFilter' => [
                 'required',
-                Rule::in(OrderStatusFilterConstants::toArray()),
+                Rule::in(OrderFilterRequestConstants::statusArray())
             ],
-            'paymentFilter' => [
+            'paymentMethodFilter' => [
                 'required',
-                Rule::in(OrderPaymentFilterConstants::toArray()),
+                Rule::in(OrderFilterRequestConstants::paymentMethodArray())
+            ],
+            'sortField' => [
+                'required',
+                Rule::in(OrderFilterRequestConstants::sortByArray())
             ],
         ];
+    }
+
+    /**
+     * Override the default.
+     */
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'orderIdKeyword' => $this->orderIdKeyword ?? '',
+            'phoneOrEmailKeyword' => $this->phoneOrEmailKeyword ?? '',
+            'deliveryAddressKeyword' => $this->deliveryAddressKeyword ?? '',
+        ]);
     }
 }

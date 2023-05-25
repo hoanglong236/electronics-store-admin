@@ -133,8 +133,6 @@ Route::middleware('auth:admin')->group(function () {
             ->name('manage.order.index');
         Route::put('/update-order-status/{orderId}', [OrderController::class, 'updateOrderStatus'])
             ->name('manage.order.update-order-status');
-        Route::get('/search', [OrderController::class, 'search'])
-            ->name('manage.order.search');
         Route::get('/filter', [OrderController::class, 'filter'])
             ->name('manage.order.filter');
         Route::get('/details/{orderId}', [OrderController::class, 'showDetails'])
