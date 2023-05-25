@@ -31,8 +31,8 @@
                     <td>
                         @if (count($nextSelectableStatusMap[$order->status]) === 0)
                             <span @class([
-                                'order-cancelled' => $order->status === Constants::ORDER_STATUS_CANCELLED,
-                                'order-completed' => $order->status === Constants::ORDER_STATUS_COMPLETED,
+                                'order-cancelled' => $order->status === "Cancelled",
+                                'order-completed' => $order->status === "Completed",
                             ])>{{ $order->status }}</span>
                         @else
                             <form action="{{ route('manage.order.update-order-status', $order->id) }}" method="POST">

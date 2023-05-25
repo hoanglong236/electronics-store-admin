@@ -2,8 +2,6 @@
 
 namespace App\Common;
 
-use App\ModelConstants\OrderStatusConstants;
-
 class Constants
 {
     const ACTION_SUCCESS = 'success_message';
@@ -22,9 +20,6 @@ class Constants
     const DEFAULT_ITEM_PAGE_COUNT = 12;
 
     const SEARCH_KEYWORD_MAX_LENGTH = 64;
-
-    const ORDER_STATUS_COMPLETED = OrderStatusConstants::COMPLETED;
-    const ORDER_STATUS_CANCELLED = OrderStatusConstants::CANCELLED;
 
     const BEST_SELLING_CATEGORIES_LIMIT = 3;
     const BEST_SELLING_BRANDS_LIMIT = 3;
