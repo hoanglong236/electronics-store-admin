@@ -58,19 +58,28 @@ class ProductRepository implements IProductRepository
     public function searchCustomProductsAndPaginate(
         string $searchOption, string $escapedKeyword, int $itemPerPage
     ) {
+        $queryBuilder = null;
         switch ($searchOption) {
             case ProductSearchOptionConstants::SEARCH_ALL:
-                return $this->searchCustomProductsByAllAndPaginate($escapedKeyword, $itemPerPage);
+                $queryBuilder = $this->getSearchCustomProductsByAllQueryBuilder($escapedKeyword);
+                break;
             case ProductSearchOptionConstants::SEARCH_CATEGORY:
-                return $this->searchCustomProductsByCategoryAndPaginate($escapedKeyword, $itemPerPage);
+                $queryBuilder = $this->getSearchCustomProductsByCategoryQueryBuilder($escapedKeyword);
+                break;
             case ProductSearchOptionConstants::SEARCH_BRAND:
-                return $this->searchCustomProductsByBrandAndPaginate($escapedKeyword, $itemPerPage);
-            default:
-                return new LengthAwarePaginator([], 0, $itemPerPage);
+                $queryBuilder = $this->getSearchCustomProductsByBrandQueryBuilder($escapedKeyword);
+                break;
         }
+
+        if (is_null($queryBuilder)) {
+            return new LengthAwarePaginator([], 0, $itemPerPage);
+        }
+
+        return $queryBuilder->latest()
+            ->paginate($itemPerPage);
     }
 
-    private function searchCustomProductsByAllAndPaginate(string $escapedKeyword, int $itemPerPage)
+    private function getSearchCustomProductsByAllQueryBuilder(string $escapedKeyword)
     {
         return $this->getCustomProductQueryBuilder()
             ->where(function ($query) use ($escapedKeyword) {
@@ -80,31 +89,25 @@ class ProductRepository implements IProductRepository
                     ->orWhere('categories.slug', 'LIKE', '%' . $escapedKeyword . '%')
                     ->orWhere('brands.name', 'LIKE', '%' . $escapedKeyword . '%')
                     ->orWhere('brands.slug', 'LIKE', '%' . $escapedKeyword . '%');
-            })
-            ->latest()
-            ->paginate($itemPerPage);
+            });
     }
 
-    private function searchCustomProductsByCategoryAndPaginate(string $escapedKeyword, int $itemPerPage)
+    private function getSearchCustomProductsByCategoryQueryBuilder(string $escapedKeyword)
     {
         return $this->getCustomProductQueryBuilder()
             ->where(function ($query) use ($escapedKeyword) {
                 $query->Where('categories.name', 'LIKE', '%' . $escapedKeyword . '%')
                     ->orWhere('categories.slug', 'LIKE', '%' . $escapedKeyword . '%');
-            })
-            ->latest()
-            ->paginate($itemPerPage);
+            });
     }
 
-    private function searchCustomProductsByBrandAndPaginate(string $escapedKeyword, int $itemPerPage)
+    private function getSearchCustomProductsByBrandQueryBuilder(string $escapedKeyword)
     {
         return $this->getCustomProductQueryBuilder()
             ->where(function ($query) use ($escapedKeyword) {
                 $query->Where('brands.name', 'LIKE', '%' . $escapedKeyword . '%')
                     ->orWhere('brands.slug', 'LIKE', '%' . $escapedKeyword . '%');
-            })
-            ->latest()
-            ->paginate($itemPerPage);
+            });
     }
 
     private function getCustomProductQueryBuilder()
