@@ -81,7 +81,7 @@ class ProductService
 
     public function updateProduct($productProperties, $productId)
     {
-        $oldProduct = $this->productRepository->findById($productId);
+        $oldProduct = $this->getProductById($productId);
         if (!$oldProduct) {
             return false;
         }

@@ -15,7 +15,7 @@
                 </li>
                 <li class="{{ Request::routeIs('monthly-report.*') ? 'active' : '' }}">
                     <a href="{{ route('monthly-report.index') }}">
-                        <i class="fas fa-tachometer-alt"></i>Monthly Report
+                        <i class="fas fa-chart-bar"></i>Monthly Report
                     </a>
                 </li>
                 <li class="{{ Request::routeIs('catalog.category.*') ? 'active' : '' }}">

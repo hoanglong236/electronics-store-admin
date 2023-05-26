@@ -64,7 +64,7 @@ class BrandService
 
     public function updateBrand($brandProperties, $brandId)
     {
-        $oldBrand = $this->brandRepository->findById($brandId);
+        $oldBrand = $this->getBrandById($brandId);
         if (!$oldBrand) {
             return;
         }

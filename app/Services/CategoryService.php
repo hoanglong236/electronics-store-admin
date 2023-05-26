@@ -67,7 +67,7 @@ class CategoryService
 
     public function updateCategory($categoryProperties, $categoryId)
     {
-        $oldCategory = $this->categoryRepository->findById($categoryId);
+        $oldCategory = $this->getCategoryById($categoryId);
         if (!$oldCategory) {
             return;
         }
