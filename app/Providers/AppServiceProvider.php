@@ -31,14 +31,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
-    }
+        $this->app->bind(ISeederRepository::class, SeederRepository::class);
 
-    /**
-     * Bootstrap any application services.
-     */
-    public function boot(): void
-    {
+        $this->app->bind(ICategoryRepository::class, CategoryRepository::class);
+        $this->app->bind(IBrandRepository::class, BrandRepository::class);
+        $this->app->bind(IProductRepository::class, ProductRepository::class);
+        $this->app->bind(ICustomerRepository::class, CustomerRepository::class);
+        $this->app->bind(IOrderRepository::class, OrderRepository::class);
+
         $this->app->singleton(StorageService::class, function () {
             return new StorageService();
         });
@@ -46,9 +46,6 @@ class AppServiceProvider extends ServiceProvider
             return new FirebaseStorageService();
         });
 
-        $this->app->bind(ISeederRepository::class, SeederRepository::class);
-
-        $this->app->bind(ICategoryRepository::class, CategoryRepository::class);
         $this->app->instance(
             CategoryService::class,
             new CategoryService(
@@ -58,7 +55,6 @@ class AppServiceProvider extends ServiceProvider
             )
         );
 
-        $this->app->bind(IBrandRepository::class, BrandRepository::class);
         $this->app->instance(
             BrandService::class,
             new BrandService(
@@ -68,7 +64,6 @@ class AppServiceProvider extends ServiceProvider
             )
         );
 
-        $this->app->bind(IProductRepository::class, ProductRepository::class);
         $this->app->instance(
             ProductService::class,
             new ProductService(
@@ -78,7 +73,6 @@ class AppServiceProvider extends ServiceProvider
             )
         );
 
-        $this->app->bind(ICustomerRepository::class, CustomerRepository::class);
         $this->app->instance(
             CustomerService::class,
             new CustomerService(
@@ -86,7 +80,6 @@ class AppServiceProvider extends ServiceProvider
             )
         );
 
-        $this->app->bind(IOrderRepository::class, OrderRepository::class);
         $this->app->instance(
             OrderService::class,
             new OrderService(
@@ -99,5 +92,13 @@ class AppServiceProvider extends ServiceProvider
                 $this->app->make(IOrderRepository::class)
             )
         );
+    }
+
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
+    {
+        //
     }
 }
