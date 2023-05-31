@@ -18,6 +18,7 @@ use App\Services\BrandService;
 use App\Services\CategoryService;
 use App\Services\CustomerService;
 use App\Services\FirebaseStorageService;
+use App\Services\OrderExportCsvService;
 use App\Services\OrderService;
 use App\Services\ProductService;
 use App\Services\StorageService;
@@ -89,6 +90,12 @@ class AppServiceProvider extends ServiceProvider
         $this->app->instance(
             OrderService::class,
             new OrderService(
+                $this->app->make(IOrderRepository::class)
+            )
+        );
+        $this->app->instance(
+            OrderExportCsvService::class,
+            new OrderExportCsvService(
                 $this->app->make(IOrderRepository::class)
             )
         );

@@ -6,6 +6,7 @@ use App\Common\Constants;
 use App\Http\Requests\Constants\OrderFilterRequestConstants;
 use App\Http\Requests\OrderFilterRequest;
 use App\Http\Requests\OrderStatusRequest;
+use App\Services\OrderExportCsvService;
 use App\Services\OrderService;
 use App\Services\UtilsService;
 use Illuminate\Http\Request;
@@ -14,10 +15,12 @@ use Illuminate\Support\Facades\Session;
 class OrderController extends Controller
 {
     private $orderService;
+    private $orderExportCsvService;
 
-    public function __construct(OrderService $orderService)
+    public function __construct(OrderService $orderService, OrderExportCsvService $orderExportCsvService)
     {
         $this->orderService = $orderService;
+        $this->orderExportCsvService = $orderExportCsvService;
     }
 
     public function index()
@@ -51,6 +54,12 @@ class OrderController extends Controller
         return view('pages.order.orders-page', ['data' => $data]);
     }
 
+    public function filterAndExportCsv(OrderFilterRequest $orderFilterRequest)
+    {
+        $orderFilterProperties = $orderFilterRequest->validated();
+        $this->orderExportCsvService->filterAndExportCsv($orderFilterProperties);
+    }
+
     private function getCommonDataForOrdersPage()
     {
         $nextSelectableStatusMap = $this->orderService->getNextSelectableStatusMap();
@@ -80,8 +89,7 @@ class OrderController extends Controller
         $data = [];
 
         $data['pageTitle'] = 'Order details';
-        $data['order'] = $this->orderService->getCustomOrderById($orderId);
-        $data['orderItems'] = $this->orderService->getCustomOrderItemsByOrderId($orderId);
+        $data['orderDetails'] = $this->orderService->getOrderDetails($orderId);
 
         return view('pages.order.order-details-page', ['data' => $data]);
     }

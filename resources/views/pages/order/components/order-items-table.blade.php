@@ -13,15 +13,15 @@
                     <td>{{ $index + 1 }}</td>
                     <td>
                         <img class="product-image--small"
-                            src="{{ asset('/storage' . '/' . $orderItem->product_image_path) }}"
+                            src="{{ asset('/storage' . '/' . $orderItem['productImagePath']) }}"
                             alt="{{ 'Product image' }}">
                     </td>
                     <td>
-                        <span>{{ 'ID: ' . $orderItem->product_id }}</span><br>
-                        <span>{{ $orderItem->product_name }}</span>
+                        <span>{{ 'ID: ' . $orderItem['productId'] }}</span><br>
+                        <span>{{ $orderItem['productName'] }}</span>
                     </td>
-                    <td class="text-left">x {{ $orderItem->quantity }}</td>
-                    <td>{{ '$' . number_format($orderItem->total_price, 2) }}</td>
+                    <td class="text-left">x {{ $orderItem['quantity'] }}</td>
+                    <td>{{ '$' . number_format($orderItem['totalPrice'], 2) }}</td>
                 </tr>
             @endforeach
         </tbody>

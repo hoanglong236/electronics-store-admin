@@ -38,7 +38,8 @@ class OrderRepository implements IOrderRepository
     public function getCustomOrderById(int $id)
     {
         return $this->getCustomOrdersTableQueryBuilder()
-            ->where(['id' => $id])->first();
+            ->where(['id' => $id])
+            ->first();
     }
 
     public function update(array $attributes, int $id)
@@ -59,6 +60,13 @@ class OrderRepository implements IOrderRepository
 
     public function filterCustomOrdersAndPaginate(
         array $searchFields, array $filterFields, array $sortFields, int $itemPerPage
+    ) {
+        return $this->getFilterCustomOrdersQueryBuilder($searchFields, $filterFields, $sortFields)
+            ->paginate($itemPerPage);
+    }
+
+    private function getFilterCustomOrdersQueryBuilder(
+        array $searchFields, array $filterFields, array $sortFields
     ) {
         // executing the 'order by' statement first in the sub query can help speed up query execution
         $customOrdersQueryBuilder = $this->getCustomOrdersQueryBuilder();
@@ -106,7 +114,14 @@ class OrderRepository implements IOrderRepository
             }
         }
 
-        return $queryBuilder->paginate($itemPerPage);
+        return $queryBuilder;
+    }
+
+    public function getFilterCustomOrdersIterator(
+        array $searchFields, array $filterFields, array $sortFields
+    ) {
+        return $this->getFilterCustomOrdersQueryBuilder($searchFields, $filterFields, $sortFields)
+            ->lazyById();
     }
 
     public function getCustomOrderItemsByOrderId(int $orderId)

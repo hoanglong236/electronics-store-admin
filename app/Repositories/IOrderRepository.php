@@ -11,6 +11,9 @@ interface IOrderRepository
     public function filterCustomOrdersAndPaginate(
         array $searchFields, array $filterFields, array $sortFields, int $itemPerPage
     );
+    public function getFilterCustomOrdersIterator(
+        array $searchFields, array $filterFields, array $sortFields
+    );
 
     public function getCustomOrderItemsByOrderId(int $orderId);
 }

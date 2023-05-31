@@ -29,8 +29,15 @@
             <div class="export-buttons-wrapper text-right d-flex-center-space-between-wrap">
                 <div class="export-title">Export</div>
                 @include('shared.components.buttons.csv-button', [
-                    'conditionFields' => [],
-                    'csvUrl' => '',
+                    'conditionFields' => [
+                        'orderIdKeyword' => $data['orderIdKeyword'],
+                        'phoneOrEmailKeyword' => $data['phoneOrEmailKeyword'],
+                        'deliveryAddressKeyword' => $data['deliveryAddressKeyword'],
+                        'statusFilter' => $data['statusFilter'],
+                        'paymentMethodFilter' => $data['paymentMethodFilter'],
+                        'sortField' => $data['sortField'],
+                    ],
+                    'csvUrl' => route('manage.order.filter-export-csv'),
                 ])
             </div>
         </div>

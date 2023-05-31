@@ -135,6 +135,8 @@ Route::middleware('auth:admin')->group(function () {
             ->name('manage.order.update-order-status');
         Route::get('/filter', [OrderController::class, 'filter'])
             ->name('manage.order.filter');
+        Route::post('/filter-export-csv', [OrderController::class, 'filterAndExportCsv'])
+            ->name('manage.order.filter-export-csv');
         Route::get('/details/{orderId}', [OrderController::class, 'showDetails'])
             ->name('manage.order.details');
     });
