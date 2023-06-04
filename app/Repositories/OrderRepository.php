@@ -13,28 +13,6 @@ class OrderRepository implements IOrderRepository
         return Order::find($id)->first();
     }
 
-    private function getCustomOrdersQueryBuilder()
-    {
-        return DB::table('orders')
-            ->join('customers', 'customers.id', '=', 'orders.customer_id')
-            ->join('order_items', 'order_items.order_id', '=', 'orders.id')
-            ->select(
-                'orders.id',
-                'orders.status',
-                'orders.payment_method',
-                DB::raw('date(orders.created_at) as create_date'),
-                'customers.email as customer_email',
-                DB::raw('sum(order_items.total_price) as total'),
-            )
-            ->groupBy('orders.id');
-    }
-
-    private function getCustomOrdersTableQueryBuilder()
-    {
-        $queryBuilder = $this->getCustomOrdersQueryBuilder();
-        return DB::table($queryBuilder, 'custom_orders');
-    }
-
     public function update(array $attributes, int $id)
     {
         $order = $this->findById($id);
@@ -45,26 +23,32 @@ class OrderRepository implements IOrderRepository
         return false;
     }
 
-    public function paginateCustomOrders(int $itemPerPage)
-    {
-        return $this->getCustomOrdersTableQueryBuilder()
-            ->latest('id')
-            ->paginate($itemPerPage);
-    }
-
     private function getFilterCustomOrdersQueryBuilder(
-        array $searchFields, array $filterFields, string $fromDate, string $toDate
+        array $searchFields = [],
+        array $filterFields = [],
+        string $fromDate = null,
+        string $toDate = null,
     ) {
-        $queryBuilder = $this->getCustomOrdersTableQueryBuilder();
+        $queryBuilder = DB::table('orders')
+            ->join('customers', 'customers.id', '=', 'orders.customer_id')
+            ->join('order_items', 'order_items.order_id', '=', 'orders.id')
+            ->select(
+                'orders.id',
+                'orders.status',
+                'orders.payment_method',
+                DB::raw('date(orders.created_at) as create_date'),
+                'customers.email as customer_email',
+                DB::raw('sum(order_items.total_price) as total'),
+            );
 
         foreach ($searchFields as $searchField) {
             $escapedKeyword = $searchField['value'];
             switch ($searchField['name']) {
                 case 'orderId':
-                    $queryBuilder->where('id', 'LIKE', '%' . $escapedKeyword . '%');
+                    $queryBuilder->where('orders.id', 'LIKE', '%' . $escapedKeyword . '%');
                     break;
                 case 'email':
-                    $queryBuilder->where('customer_email', 'LIKE', '%' . $escapedKeyword . '%');
+                    $queryBuilder->where('customers.email', 'LIKE', '%' . $escapedKeyword . '%');
                     break;
             }
         }
@@ -72,16 +56,28 @@ class OrderRepository implements IOrderRepository
         foreach ($filterFields as $filterField) {
             switch ($filterField['name']) {
                 case 'status':
-                    $queryBuilder->where('status', $filterField['value']);
+                    $queryBuilder->where('orders.status', $filterField['value']);
                     break;
                 case 'paymentMethod':
-                    $queryBuilder->where('payment_method', $filterField['value']);
+                    $queryBuilder->where('orders.payment_method', $filterField['value']);
                     break;
             }
         }
 
-        $queryBuilder->whereBetween('create_date', [$fromDate, UtilsService::dateToEndOfDate($toDate)]);
-        return $queryBuilder;
+        if (!is_null($fromDate) && !is_null($toDate)) {
+            $queryBuilder->whereBetween('orders.created_at', [
+                $fromDate, UtilsService::dateToEndOfDate($toDate)
+            ]);
+        }
+
+        return $queryBuilder->groupBy('orders.id');
+    }
+
+    public function paginateCustomOrders(int $itemPerPage)
+    {
+        return $this->getFilterCustomOrdersQueryBuilder()
+            ->latest('id')
+            ->paginate($itemPerPage);
     }
 
     public function filterCustomOrdersAndPaginate(
