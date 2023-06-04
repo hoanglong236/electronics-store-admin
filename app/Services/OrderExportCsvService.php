@@ -28,7 +28,7 @@ class OrderExportCsvService
         $emailKeyword = $orderFilterProperties['emailKeyword'];
         if ($emailKeyword) {
             $searchFields[] = [
-                'name' => 'phoneOrEmail',
+                'name' => 'email',
                 'value' => UtilsService::escapeKeyword($emailKeyword)
             ];
         }
@@ -73,7 +73,7 @@ class OrderExportCsvService
             'Total',
             'Payment Method',
             'Status',
-            'Created Date',
+            'Create Date',
         ];
         fputcsv($stream, $columns);
 

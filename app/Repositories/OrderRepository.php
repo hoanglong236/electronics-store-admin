@@ -35,13 +35,6 @@ class OrderRepository implements IOrderRepository
         return DB::table($queryBuilder, 'custom_orders');
     }
 
-    public function getCustomOrderById(int $id)
-    {
-        return $this->getCustomOrdersTableQueryBuilder()
-            ->where(['id' => $id])
-            ->first();
-    }
-
     public function update(array $attributes, int $id)
     {
         $order = $this->findById($id);
@@ -103,8 +96,21 @@ class OrderRepository implements IOrderRepository
         array $searchFields, array $filterFields, string $fromDate, string $toDate
     ) {
         return $this->getFilterCustomOrdersQueryBuilder($searchFields, $filterFields, $fromDate, $toDate)
-            ->latest('id')
-            ->lazyById();
+            ->lazyByIdDesc();
+    }
+
+    public function getOrderAlongWithCustomerInfoById(int $id)
+    {
+        return DB::table('orders')
+            ->join('customers', 'customers.id', '=', 'orders.customer_id')
+            ->select(
+                'orders.*',
+                'customers.name as customer_name',
+                'customers.email as customer_email',
+                'customers.phone as customer_phone',
+            )
+            ->where('orders.id', $id)
+            ->first();
     }
 
     public function getCustomOrderItemsByOrderId(int $orderId)
@@ -118,7 +124,7 @@ class OrderRepository implements IOrderRepository
                 'products.name as product_name',
                 'products.main_image_path as product_image_path',
             )
-            ->where(['order_items.order_id' => $orderId])
+            ->where('order_items.order_id', $orderId)
             ->get();
     }
 }

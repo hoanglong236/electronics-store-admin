@@ -61,7 +61,7 @@ class OrderService
         $emailKeyword = $orderFilterProperties['emailKeyword'];
         if ($emailKeyword) {
             $searchFields[] = [
-                'name' => 'phoneOrEmail',
+                'name' => 'email',
                 'value' => UtilsService::escapeKeyword($emailKeyword)
             ];
         }
@@ -88,19 +88,7 @@ class OrderService
     public function getOrderDetails($orderId)
     {
         $orderDetails = [];
-
-        $customOrder = $this->orderRepository->getCustomOrderById($orderId);
-        $orderDetails['order']['id'] = $customOrder->id;
-        $orderDetails['order']['status'] = $customOrder->status;
-        $orderDetails['order']['paymentMethod'] = $customOrder->payment_method;
-        $orderDetails['order']['total'] = $customOrder->total;
-        $orderDetails['order']['createdAt'] = $customOrder->created_at;
-        $orderDetails['order']['updatedAt'] = $customOrder->updated_at;
-        $orderDetails['customer']['id'] = $customOrder->customer_id;
-        $orderDetails['customer']['name'] = $customOrder->customer_name;
-        $orderDetails['customer']['email'] = $customOrder->customer_email;
-        $orderDetails['customer']['phone'] = $customOrder->customer_phone;
-        $orderDetails['customer']['deliveryAddress'] = $customOrder->delivery_address;
+        $totalAmount = 0;
 
         $customOrderItems = $this->orderRepository->getCustomOrderItemsByOrderId($orderId);
         foreach ($customOrderItems as $index => $item) {
@@ -109,7 +97,22 @@ class OrderService
             $orderDetails['items'][$index]['productImagePath'] = $item->product_image_path;
             $orderDetails['items'][$index]['quantity'] = $item->quantity;
             $orderDetails['items'][$index]['totalPrice'] = $item->total_price;
+
+            $totalAmount += $item->total_price;
         }
+
+        $customOrder = $this->orderRepository->getOrderAlongWithCustomerInfoById($orderId);
+        $orderDetails['order']['id'] = $customOrder->id;
+        $orderDetails['order']['status'] = $customOrder->status;
+        $orderDetails['order']['paymentMethod'] = $customOrder->payment_method;
+        $orderDetails['order']['total'] = $totalAmount;
+        $orderDetails['order']['createdAt'] = $customOrder->created_at;
+        $orderDetails['order']['updatedAt'] = $customOrder->updated_at;
+        $orderDetails['customer']['id'] = $customOrder->customer_id;
+        $orderDetails['customer']['name'] = $customOrder->customer_name;
+        $orderDetails['customer']['email'] = $customOrder->customer_email;
+        $orderDetails['customer']['phone'] = $customOrder->customer_phone;
+        $orderDetails['customer']['deliveryAddress'] = $customOrder->delivery_address;
 
         return $orderDetails;
     }

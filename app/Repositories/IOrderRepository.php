@@ -5,7 +5,6 @@ namespace App\Repositories;
 interface IOrderRepository
 {
     public function findById(int $id);
-    public function getCustomOrderById(int $id);
     public function update(array $attributes, int $id);
     public function paginateCustomOrders(int $itemPerPage);
     public function filterCustomOrdersAndPaginate(
@@ -15,5 +14,6 @@ interface IOrderRepository
         array $searchFields, array $filterFields, string $fromDate, string $toDate
     );
 
+    public function getOrderAlongWithCustomerInfoById(int $id);
     public function getCustomOrderItemsByOrderId(int $orderId);
 }
