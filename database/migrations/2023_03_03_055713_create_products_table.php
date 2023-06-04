@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('category_id')->reference('id')->on('categories');
-            $table->unsignedInteger('brand_id')->reference('id')->on('brands');
+            $table->foreignId('category_id')->constrained('categories');
+            $table->foreignId('brand_id')->constrained('brands');
             $table->string('name', 128);
             $table->string('slug', 128);
             $table->unsignedInteger('price');

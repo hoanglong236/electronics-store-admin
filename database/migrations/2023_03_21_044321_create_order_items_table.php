@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::create('order_items', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('order_id')->reference('id')->on('orders');
-            $table->unsignedInteger('product_id')->reference('id')->on('products');
+            $table->foreignId('order_id')->constrained('orders');
+            $table->foreignId('product_id')->constrained('products');
             $table->unsignedInteger('quantity');
             $table->unsignedFloat('total_price');
+
+            $table->unique(['order_id', 'product_id']);
         });
     }
 

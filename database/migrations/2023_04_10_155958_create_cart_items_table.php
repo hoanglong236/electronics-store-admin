@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::create('cart_items', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('cart_id')->reference('id')->on('carts');
-            $table->unsignedInteger('product_id')->reference('id')->on('products');
+            $table->foreignId('cart_id')->constrained('carts');
+            $table->foreignId('product_id')->constrained('products');
             $table->unsignedInteger('quantity');
             $table->timestamps();
+
+            $table->unique(['cart_id', 'product_id']);
         });
     }
 

@@ -1,6 +1,5 @@
 <?php
 
-use App\ModelConstants\AddressType;
 use App\ModelConstants\OrderStatusConstants;
 use App\ModelConstants\PaymentMethodConstants;
 use Illuminate\Database\Migrations\Migration;
@@ -16,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('customer_id')->reference('id')->on('customers');
+            $table->foreignId('customer_id')->constrained('customers');
             $table->string('delivery_address');
             $table->enum('status', OrderStatusConstants::toArray())
                 ->default(OrderStatusConstants::RECEIVED);
