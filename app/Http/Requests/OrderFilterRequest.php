@@ -25,8 +25,7 @@ class OrderFilterRequest extends FormRequest
     {
         return [
             'orderIdKeyword' => 'max:32',
-            'phoneOrEmailKeyword' => 'max:64',
-            'deliveryAddressKeyword' => 'max:64',
+            'emailKeyword' => 'max:64',
             'statusFilter' => [
                 'required',
                 Rule::in(OrderFilterRequestConstants::statusArray())
@@ -35,10 +34,8 @@ class OrderFilterRequest extends FormRequest
                 'required',
                 Rule::in(OrderFilterRequestConstants::paymentMethodArray())
             ],
-            'sortField' => [
-                'required',
-                Rule::in(OrderFilterRequestConstants::sortByArray())
-            ],
+            'fromDate' => 'required|date',
+            'toDate' => 'required|date|after_or_equal:fromDate'
         ];
     }
 
@@ -49,8 +46,7 @@ class OrderFilterRequest extends FormRequest
     {
         $this->merge([
             'orderIdKeyword' => $this->orderIdKeyword ?? '',
-            'phoneOrEmailKeyword' => $this->phoneOrEmailKeyword ?? '',
-            'deliveryAddressKeyword' => $this->deliveryAddressKeyword ?? '',
+            'emailKeyword' => $this->emailKeyword ?? '',
         ]);
     }
 }

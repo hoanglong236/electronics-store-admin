@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Order;
+use App\Services\UtilsService;
 use Illuminate\Support\Facades\DB;
 
 class OrderRepository implements IOrderRepository
@@ -18,9 +19,10 @@ class OrderRepository implements IOrderRepository
             ->join('customers', 'customers.id', '=', 'orders.customer_id')
             ->join('order_items', 'order_items.order_id', '=', 'orders.id')
             ->select(
-                'orders.*',
-                'customers.name as customer_name',
-                'customers.phone as customer_phone',
+                'orders.id',
+                'orders.status',
+                'orders.payment_method',
+                DB::raw('date(orders.created_at) as create_date'),
                 'customers.email as customer_email',
                 DB::raw('sum(order_items.total_price) as total'),
             )
@@ -29,9 +31,7 @@ class OrderRepository implements IOrderRepository
 
     private function getCustomOrdersTableQueryBuilder()
     {
-        $queryBuilder = $this->getCustomOrdersQueryBuilder()
-            ->orderByDesc('orders.created_at');
-
+        $queryBuilder = $this->getCustomOrdersQueryBuilder();
         return DB::table($queryBuilder, 'custom_orders');
     }
 
@@ -55,35 +55,14 @@ class OrderRepository implements IOrderRepository
     public function paginateCustomOrders(int $itemPerPage)
     {
         return $this->getCustomOrdersTableQueryBuilder()
-            ->paginate($itemPerPage);
-    }
-
-    public function filterCustomOrdersAndPaginate(
-        array $searchFields, array $filterFields, array $sortFields, int $itemPerPage
-    ) {
-        return $this->getFilterCustomOrdersQueryBuilder($searchFields, $filterFields, $sortFields)
+            ->latest('id')
             ->paginate($itemPerPage);
     }
 
     private function getFilterCustomOrdersQueryBuilder(
-        array $searchFields, array $filterFields, array $sortFields
+        array $searchFields, array $filterFields, string $fromDate, string $toDate
     ) {
-        // executing the 'order by' statement first in the sub query can help speed up query execution
-        $customOrdersQueryBuilder = $this->getCustomOrdersQueryBuilder();
-        foreach ($sortFields as $sortField) {
-            if ($sortField['value'] === 'desc' || $sortField['value'] === 'asc') {
-                switch ($sortField['name']) {
-                    case 'createdAt':
-                        $customOrdersQueryBuilder->orderBy('orders.created_at', $sortField['value']);
-                        break;
-                    case 'updatedAt':
-                        $customOrdersQueryBuilder->orderBy('orders.updated_at', $sortField['value']);
-                        break;
-                }
-            }
-        }
-
-        $queryBuilder = DB::table($customOrdersQueryBuilder, 'custom_orders');
+        $queryBuilder = $this->getCustomOrdersTableQueryBuilder();
 
         foreach ($searchFields as $searchField) {
             $escapedKeyword = $searchField['value'];
@@ -91,14 +70,8 @@ class OrderRepository implements IOrderRepository
                 case 'orderId':
                     $queryBuilder->where('id', 'LIKE', '%' . $escapedKeyword . '%');
                     break;
-                case 'phoneOrEmail':
-                    $queryBuilder->where(function ($query) use ($escapedKeyword) {
-                        $query->where('customer_phone', 'LIKE', '%' . $escapedKeyword . '%')
-                            ->orWhere('customer_email', 'LIKE', '%' . $escapedKeyword . '%');
-                    });
-                    break;
-                case 'deliveryAddress':
-                    $queryBuilder->where('delivery_address', 'LIKE', '%' . $escapedKeyword . '%');
+                case 'email':
+                    $queryBuilder->where('customer_email', 'LIKE', '%' . $escapedKeyword . '%');
                     break;
             }
         }
@@ -114,13 +87,23 @@ class OrderRepository implements IOrderRepository
             }
         }
 
+        $queryBuilder->whereBetween('create_date', [$fromDate, UtilsService::dateToEndOfDate($toDate)]);
         return $queryBuilder;
     }
 
-    public function getFilterCustomOrdersIterator(
-        array $searchFields, array $filterFields, array $sortFields
+    public function filterCustomOrdersAndPaginate(
+        array $searchFields, array $filterFields, string $fromDate, string $toDate, int $itemPerPage
     ) {
-        return $this->getFilterCustomOrdersQueryBuilder($searchFields, $filterFields, $sortFields)
+        return $this->getFilterCustomOrdersQueryBuilder($searchFields, $filterFields, $fromDate, $toDate)
+            ->latest('id')
+            ->paginate($itemPerPage);
+    }
+
+    public function getFilterCustomOrdersIterator(
+        array $searchFields, array $filterFields, string $fromDate, string $toDate
+    ) {
+        return $this->getFilterCustomOrdersQueryBuilder($searchFields, $filterFields, $fromDate, $toDate)
+            ->latest('id')
             ->lazyById();
     }
 

@@ -3,12 +3,11 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Customer</th>
-                <th>Delivery Address</th>
+                <th>Email</th>
                 <th>Total</th>
+                <th>Payment<br>method</th>
                 <th>Status</th>
-                <th>Created at</th>
-                <th>Updated at</th>
+                <th>Create date</th>
                 <th></th>
             </tr>
         </thead>
@@ -16,23 +15,14 @@
             @foreach ($orders as $order)
                 <tr>
                     <td>{{ $order->id }}</td>
-                    <td>
-                        {{ $order->customer_name }}<br>
-                        {{ $order->customer_email }}<br>
-                        Phone: {{ $order->customer_phone }}
-                    </td>
-                    <td>
-                        {{ $order->delivery_address }}
-                    </td>
-                    <td>
-                        {{ '$' . number_format($order->total, 2) }}
-                        {{ ' (' . $order->payment_method . ')' }}
-                    </td>
+                    <td>{{ $order->customer_email }}</td>
+                    <td>${{ number_format($order->total, 2) }}</td>
+                    <td>{{ $order->payment_method }}</td>
                     <td>
                         @if (count($nextSelectableStatusMap[$order->status]) === 0)
                             <span @class([
-                                'order-cancelled' => $order->status === "Cancelled",
-                                'order-completed' => $order->status === "Completed",
+                                'order-cancelled' => $order->status === 'Cancelled',
+                                'order-completed' => $order->status === 'Completed',
                             ])>{{ $order->status }}</span>
                         @else
                             <form action="{{ route('manage.order.update-order-status', $order->id) }}" method="POST">
@@ -57,8 +47,7 @@
                             </form>
                         @endif
                     </td>
-                    <td>{{ $order->created_at }}</td>
-                    <td>{{ $order->updated_at }}</td>
+                    <td>{{ $order->create_date }}</td>
                     <td>
                         @include('shared.components.buttons.detail-icon-button', [
                             'detailUrl' => route('manage.order.details', $order->id),

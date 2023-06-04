@@ -25,18 +25,11 @@ class OrderExportCsvService
                 'value' => UtilsService::escapeKeyword($orderIdKeyword)
             ];
         }
-        $phoneOrEmailKeyword = $orderFilterProperties['phoneOrEmailKeyword'];
-        if ($phoneOrEmailKeyword) {
+        $emailKeyword = $orderFilterProperties['emailKeyword'];
+        if ($emailKeyword) {
             $searchFields[] = [
                 'name' => 'phoneOrEmail',
-                'value' => UtilsService::escapeKeyword($phoneOrEmailKeyword)
-            ];
-        }
-        $deliveryAddressKeyword = $orderFilterProperties['deliveryAddressKeyword'];
-        if ($deliveryAddressKeyword) {
-            $searchFields[] = [
-                'name' => 'deliveryAddress',
-                'value' => UtilsService::escapeKeyword($deliveryAddressKeyword)
+                'value' => UtilsService::escapeKeyword($emailKeyword)
             ];
         }
 
@@ -50,18 +43,12 @@ class OrderExportCsvService
             $filterFields[] = ['name' => 'paymentMethod', 'value' => $paymentMethodFilter];
         }
 
-        $sortFields = [];
-        $sortField = $orderFilterProperties['sortField'];
-        switch ($sortField) {
-            case OrderFilterRequestConstants::SORT_BY_CREATED_AT:
-                $sortFields[] = ['name' => 'createdAt', 'value' => 'desc'];
-                break;
-            case OrderFilterRequestConstants::SORT_BY_UPDATED_AT:
-                $sortFields[] = ['name' => 'updatedAt', 'value' => 'desc'];
-                break;
-        }
-
-        return $this->orderRepository->getFilterCustomOrdersIterator($searchFields, $filterFields, $sortFields);
+        return $this->orderRepository->getFilterCustomOrdersIterator(
+            $searchFields,
+            $filterFields,
+            $orderFilterProperties['fromDate'],
+            $orderFilterProperties['toDate']
+        );
     }
 
     private function exportCsv($customOrdersIterator)
@@ -83,13 +70,10 @@ class OrderExportCsvService
         $columns = [
             'Order ID',
             'Email',
-            'Phone Number',
-            'Delivery Address',
-            'Status',
-            'Payment Method',
             'Total',
-            'Created at',
-            'Updated at',
+            'Payment Method',
+            'Status',
+            'Created Date',
         ];
         fputcsv($stream, $columns);
 
@@ -97,13 +81,10 @@ class OrderExportCsvService
             fputcsv($stream, [
                 $customOrder->id,
                 $customOrder->customer_email,
-                $customOrder->customer_phone,
-                $customOrder->delivery_address,
-                $customOrder->status,
-                $customOrder->payment_method,
                 $customOrder->total,
-                $customOrder->created_at,
-                $customOrder->updated_at,
+                $customOrder->payment_method,
+                $customOrder->status,
+                $customOrder->create_date,
             ]);
         }
 

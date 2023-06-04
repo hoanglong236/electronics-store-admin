@@ -18,9 +18,6 @@ class OrderFilterRequestConstants
     const PAYMENT_METHOD_COD = PaymentMethodConstants::COD;
     const PAYMENT_METHOD_VISA = PaymentMethodConstants::VISA;
 
-    const SORT_BY_CREATED_AT = 'createdAt';
-    const SORT_BY_UPDATED_AT = 'updatedAt';
-
     private function __construct()
     {
     }
@@ -43,14 +40,6 @@ class OrderFilterRequestConstants
             static::ALL,
             static::PAYMENT_METHOD_COD,
             static::PAYMENT_METHOD_VISA,
-        ];
-    }
-
-    public static function sortByArray()
-    {
-        return [
-            static::SORT_BY_CREATED_AT,
-            static::SORT_BY_UPDATED_AT,
         ];
     }
 }

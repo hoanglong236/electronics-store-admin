@@ -41,11 +41,11 @@ class OrderController extends Controller
 
         $data = $this->getCommonDataForOrdersPage();
         $data['orderIdKeyword'] = $orderFilterProperties['orderIdKeyword'];
-        $data['phoneOrEmailKeyword'] = $orderFilterProperties['phoneOrEmailKeyword'];
-        $data['deliveryAddressKeyword'] = $orderFilterProperties['deliveryAddressKeyword'];
+        $data['emailKeyword'] = $orderFilterProperties['emailKeyword'];
         $data['statusFilter'] = $orderFilterProperties['statusFilter'];
         $data['paymentMethodFilter'] = $orderFilterProperties['paymentMethodFilter'];
-        $data['sortField'] = $orderFilterProperties['sortField'];
+        $data['fromDate'] = $orderFilterProperties['fromDate'];
+        $data['toDate'] = $orderFilterProperties['toDate'];
         $data['orders'] = $paginator->items();
         $data['paginator'] = $paginator->withPath(
             'filter?' . UtilsService::convertMapToParamsString($orderFilterProperties)
@@ -63,15 +63,16 @@ class OrderController extends Controller
     private function getCommonDataForOrdersPage()
     {
         $nextSelectableStatusMap = $this->orderService->getNextSelectableStatusMap();
+        $today = date('Y-m-d');
         return [
             'pageTitle' => 'Order',
             'nextSelectableStatusMap' => $nextSelectableStatusMap,
             'orderIdKeyword' => '',
-            'phoneOrEmailKeyword' => '',
-            'deliveryAddressKeyword' => '',
+            'emailKeyword' => '',
             'statusFilter' => OrderFilterRequestConstants::ALL,
             'paymentMethodFilter' => OrderFilterRequestConstants::ALL,
-            'sortField' => OrderFilterRequestConstants::SORT_BY_CREATED_AT,
+            'fromDate' => $today,
+            'toDate' => $today,
         ];
     }
 

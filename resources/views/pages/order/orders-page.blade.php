@@ -13,11 +13,11 @@
             <div class="white-bg-wrapper">
                 @include('pages.order.components.order-filters-bar', [
                     'orderIdKeyword' => $data['orderIdKeyword'],
-                    'phoneOrEmailKeyword' => $data['phoneOrEmailKeyword'],
-                    'deliveryAddressKeyword' => $data['deliveryAddressKeyword'],
+                    'emailKeyword' => $data['emailKeyword'],
                     'statusFilter' => $data['statusFilter'],
                     'paymentMethodFilter' => $data['paymentMethodFilter'],
-                    'sortField' => $data['sortField'],
+                    'fromDate' => $data['fromDate'],
+                    'toDate' => $data['toDate'],
                     'orderFilterUrl' => route('manage.order.filter'),
                 ])
             </div>
@@ -31,11 +31,11 @@
                 @include('shared.components.buttons.csv-button', [
                     'conditionFields' => [
                         'orderIdKeyword' => $data['orderIdKeyword'],
-                        'phoneOrEmailKeyword' => $data['phoneOrEmailKeyword'],
-                        'deliveryAddressKeyword' => $data['deliveryAddressKeyword'],
+                        'emailKeyword' => $data['emailKeyword'],
                         'statusFilter' => $data['statusFilter'],
                         'paymentMethodFilter' => $data['paymentMethodFilter'],
-                        'sortField' => $data['sortField'],
+                        'fromDate' => $data['fromDate'],
+                        'toDate' => $data['toDate'],
                     ],
                     'csvUrl' => route('manage.order.filter-export-csv'),
                 ])

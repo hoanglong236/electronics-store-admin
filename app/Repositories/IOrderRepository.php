@@ -9,10 +9,10 @@ interface IOrderRepository
     public function update(array $attributes, int $id);
     public function paginateCustomOrders(int $itemPerPage);
     public function filterCustomOrdersAndPaginate(
-        array $searchFields, array $filterFields, array $sortFields, int $itemPerPage
+        array $searchFields, array $filterFields, string $fromDate, string $toDate, int $itemPerPage
     );
     public function getFilterCustomOrdersIterator(
-        array $searchFields, array $filterFields, array $sortFields
+        array $searchFields, array $filterFields, string $fromDate, string $toDate
     );
 
     public function getCustomOrderItemsByOrderId(int $orderId);

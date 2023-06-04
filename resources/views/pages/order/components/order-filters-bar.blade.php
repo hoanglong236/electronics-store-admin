@@ -8,15 +8,10 @@
                         class="order-filter--form-control order-filter-id">
                 </div>
                 <div>
-                    <label for="phoneOrEmailKeyword" class="mr-3">Phone/Email:</label>
-                    <input type="text" name="phoneOrEmailKeyword" id="phoneOrEmailKeyword"
-                        value="{{ $phoneOrEmailKeyword }}" class="order-filter--form-control">
+                    <label for="emailKeyword" class="mr-3">Email:</label>
+                    <input type="text" name="emailKeyword" id="emailKeyword" value="{{ $emailKeyword }}"
+                        class="order-filter--form-control">
                 </div>
-            </div>
-            <div class="m-b-6">
-                <label for="deliveryAddressKeyword" class="mr-3">Delivery Address:</label>
-                <input type="text" name="deliveryAddressKeyword" id="deliveryAddressKeyword"
-                    value="{{ $deliveryAddressKeyword }}" class="order-filter--form-control">
             </div>
             <div class="d-flex-wrap m-b-6">
                 <div class="mr-5">
@@ -41,11 +36,13 @@
                 </div>
             </div>
             <div>
-                <label for="sortField" class="mr-3">Sort by:</label>
-                <select name="sortField" id="sortField" class="order-filter--form-control" required>
-                    <option value="createdAt" @selected($sortField === 'createdAt')>Created at</option>
-                    <option value="updatedAt" @selected($sortField === 'updatedAt')>Updated at</option>
-                </select>
+                @include('shared.components.date-range-picker', [
+                    'label' => 'Create date',
+                    'fromDateInputName' => 'fromDate',
+                    'fromDate' => $fromDate,
+                    'toDateInputName' => 'toDate',
+                    'toDate' => $toDate,
+                ])
             </div>
         </div>
 

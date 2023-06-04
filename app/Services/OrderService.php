@@ -58,18 +58,11 @@ class OrderService
                 'value' => UtilsService::escapeKeyword($orderIdKeyword)
             ];
         }
-        $phoneOrEmailKeyword = $orderFilterProperties['phoneOrEmailKeyword'];
-        if ($phoneOrEmailKeyword) {
+        $emailKeyword = $orderFilterProperties['emailKeyword'];
+        if ($emailKeyword) {
             $searchFields[] = [
                 'name' => 'phoneOrEmail',
-                'value' => UtilsService::escapeKeyword($phoneOrEmailKeyword)
-            ];
-        }
-        $deliveryAddressKeyword = $orderFilterProperties['deliveryAddressKeyword'];
-        if ($deliveryAddressKeyword) {
-            $searchFields[] = [
-                'name' => 'deliveryAddress',
-                'value' => UtilsService::escapeKeyword($deliveryAddressKeyword)
+                'value' => UtilsService::escapeKeyword($emailKeyword)
             ];
         }
 
@@ -83,21 +76,11 @@ class OrderService
             $filterFields[] = ['name' => 'paymentMethod', 'value' => $paymentMethodFilter];
         }
 
-        $sortFields = [];
-        $sortField = $orderFilterProperties['sortField'];
-        switch ($sortField) {
-            case OrderFilterRequestConstants::SORT_BY_CREATED_AT:
-                $sortFields[] = ['name' => 'createdAt', 'value' => 'desc'];
-                break;
-            case OrderFilterRequestConstants::SORT_BY_UPDATED_AT:
-                $sortFields[] = ['name' => 'updatedAt', 'value' => 'desc'];
-                break;
-        }
-
         return $this->orderRepository->filterCustomOrdersAndPaginate(
             $searchFields,
             $filterFields,
-            $sortFields,
+            $orderFilterProperties['fromDate'],
+            $orderFilterProperties['toDate'],
             $itemPerPage
         );
     }

@@ -579,3 +579,19 @@ table.chart-legend-table tbody td {
 .navbar-mobile .navbar-mobile__list li.active > a {
     color: #4272d7;
 }
+
+.date-range-group {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 1.6rem;
+}
+
+.date-range-group>input {
+    flex: 1;
+}
+
+.date-range-label {
+    margin-bottom: 0;
+    margin-right: 8px;
+}
