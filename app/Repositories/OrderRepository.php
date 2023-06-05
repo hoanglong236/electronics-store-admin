@@ -8,14 +8,9 @@ use Illuminate\Support\Facades\DB;
 
 class OrderRepository implements IOrderRepository
 {
-    public function findById(int $id)
-    {
-        return Order::find($id)->first();
-    }
-
     public function update(array $attributes, int $id)
     {
-        $order = $this->findById($id);
+        $order = Order::find($id);
         if ($order) {
             $order->update($attributes);
             return $order;
@@ -71,13 +66,6 @@ class OrderRepository implements IOrderRepository
         }
 
         return $queryBuilder->groupBy('orders.id');
-    }
-
-    public function paginateCustomOrders(int $itemPerPage)
-    {
-        return $this->getFilterCustomOrdersQueryBuilder()
-            ->latest('id')
-            ->paginate($itemPerPage);
     }
 
     public function filterCustomOrdersAndPaginate(

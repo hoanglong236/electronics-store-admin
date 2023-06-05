@@ -23,13 +23,29 @@ class OrderController extends Controller
         $this->orderExportCsvService = $orderExportCsvService;
     }
 
+    private function getCommonDataForOrdersPage()
+    {
+        $nextSelectableStatusMap = $this->orderService->getNextSelectableStatusMap();
+        return [
+            'pageTitle' => 'Order',
+            'nextSelectableStatusMap' => $nextSelectableStatusMap,
+            'orderIdKeyword' => '',
+            'emailKeyword' => '',
+            'statusFilter' => OrderFilterRequestConstants::ALL,
+            'paymentMethodFilter' => OrderFilterRequestConstants::ALL,
+        ];
+    }
+
     public function index()
     {
-        $paginator = $this->orderService->getCustomOrdersPaginator();
+        $today = date('Y-m-d');
+        $paginator = $this->orderService->getCustomOrdersPaginator($today, $today);
 
         $data = $this->getCommonDataForOrdersPage();
         $data['orders'] = $paginator->items();
         $data['paginator'] = $paginator;
+        $data['fromDate'] = $today;
+        $data['toDate'] = $today;
 
         return view('pages.order.orders-page', ['data' => $data]);
     }
@@ -58,22 +74,6 @@ class OrderController extends Controller
     {
         $orderFilterProperties = $orderFilterRequest->validated();
         $this->orderExportCsvService->filterAndExportCsv($orderFilterProperties);
-    }
-
-    private function getCommonDataForOrdersPage()
-    {
-        $nextSelectableStatusMap = $this->orderService->getNextSelectableStatusMap();
-        $today = date('Y-m-d');
-        return [
-            'pageTitle' => 'Order',
-            'nextSelectableStatusMap' => $nextSelectableStatusMap,
-            'orderIdKeyword' => '',
-            'emailKeyword' => '',
-            'statusFilter' => OrderFilterRequestConstants::ALL,
-            'paymentMethodFilter' => OrderFilterRequestConstants::ALL,
-            'fromDate' => $today,
-            'toDate' => $today,
-        ];
     }
 
     public function updateOrderStatus(OrderStatusRequest $orderStatusRequest, $orderId)

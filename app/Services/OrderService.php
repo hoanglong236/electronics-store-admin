@@ -17,33 +17,18 @@ class OrderService
         $this->orderRepository = $orderRepository;
     }
 
-    public function getCustomOrdersPaginator($itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT)
-    {
-        return $this->orderRepository->paginateCustomOrders($itemPerPage);
-    }
-
-    public function updateOrderStatus($orderStatusProperties, $orderId)
-    {
-        $updateAttributes = [];
-        $updateAttributes['status'] = $orderStatusProperties['status'];
-        $this->orderRepository->update($updateAttributes, $orderId);
-    }
-
-    public function getNextSelectableStatusMap()
-    {
-        return [
-            OrderStatusConstants::RECEIVED => [
-                OrderStatusConstants::PROCESSING, OrderStatusConstants::CANCELLED
-            ],
-            OrderStatusConstants::PROCESSING => [
-                OrderStatusConstants::DELIVERING, OrderStatusConstants::CANCELLED
-            ],
-            OrderStatusConstants::DELIVERING => [
-                OrderStatusConstants::COMPLETED, OrderStatusConstants::CANCELLED
-            ],
-            OrderStatusConstants::COMPLETED => [],
-            OrderStatusConstants::CANCELLED => [],
-        ];
+    public function getCustomOrdersPaginator(
+        $fromDate,
+        $toDate,
+        $itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT
+    ) {
+        return $this->orderRepository->filterCustomOrdersAndPaginate(
+            [],
+            [],
+            $fromDate,
+            $toDate,
+            $itemPerPage
+        );
     }
 
     public function getFilterCustomOrdersPaginator(
@@ -83,6 +68,30 @@ class OrderService
             $orderFilterProperties['toDate'],
             $itemPerPage
         );
+    }
+
+    public function updateOrderStatus($orderStatusProperties, $orderId)
+    {
+        $updateAttributes = [];
+        $updateAttributes['status'] = $orderStatusProperties['status'];
+        $this->orderRepository->update($updateAttributes, $orderId);
+    }
+
+    public function getNextSelectableStatusMap()
+    {
+        return [
+            OrderStatusConstants::RECEIVED => [
+                OrderStatusConstants::PROCESSING, OrderStatusConstants::CANCELLED
+            ],
+            OrderStatusConstants::PROCESSING => [
+                OrderStatusConstants::DELIVERING, OrderStatusConstants::CANCELLED
+            ],
+            OrderStatusConstants::DELIVERING => [
+                OrderStatusConstants::COMPLETED, OrderStatusConstants::CANCELLED
+            ],
+            OrderStatusConstants::COMPLETED => [],
+            OrderStatusConstants::CANCELLED => [],
+        ];
     }
 
     public function getOrderDetails($orderId)
