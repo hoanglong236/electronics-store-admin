@@ -31,7 +31,17 @@ class CategoryService
 
     public function getListCategoriesPaginator($itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT)
     {
-        return $this->categoryRepository->paginate($itemPerPage);
+        return $this->categoryRepository->searchAndPaginate('', $itemPerPage);
+    }
+
+    public function getSearchCategoriesPaginator(
+        $searchProperties,
+        $itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT
+    ) {
+        $searchKeyword = $searchProperties['searchKeyword'];
+        $escapedKeyword = UtilsService::escapeKeyword($searchKeyword);
+
+        return $this->categoryRepository->searchAndPaginate($escapedKeyword, $itemPerPage);
     }
 
     private function saveCategoryIconToStorage($icon)
@@ -102,15 +112,5 @@ class CategoryService
         }
 
         return $map;
-    }
-
-    public function getSearchCategoriesPaginator(
-        $searchProperties,
-        $itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT
-    ) {
-        $searchKeyword = $searchProperties['searchKeyword'];
-        $escapedKeyword = UtilsService::escapeKeyword($searchKeyword);
-
-        return $this->categoryRepository->searchAndPaginate($escapedKeyword, $itemPerPage);
     }
 }

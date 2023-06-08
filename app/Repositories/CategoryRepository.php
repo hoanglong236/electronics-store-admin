@@ -38,26 +38,26 @@ class CategoryRepository implements ICategoryRepository
         return false;
     }
 
-    public function paginate(int $itemPerPage)
-    {
-        return Category::where('delete_flag', false)
-            ->latest()
-            ->paginate($itemPerPage);
-    }
-
     public function searchAndPaginate(string $escapedKeyword, int $itemPerPage)
     {
-        return DB::table('categories')
-            ->leftJoin('categories as parent', 'parent.id', '=', 'categories.parent_id')
-            ->select('categories.*')
+        $queryBuilder = DB::table('categories');
+
+        if (strlen($escapedKeyword) === 0) {
+            $queryBuilder->select('categories.*');
+        } else {
+            $queryBuilder->leftJoin('categories as parent', 'parent.id', '=', 'categories.parent_id')
+                ->select('categories.*')
+                ->where(function ($query) use ($escapedKeyword) {
+                    $query->where('categories.name', 'LIKE', '%' . $escapedKeyword . '%')
+                        ->orWhere('categories.slug', 'LIKE', '%' . $escapedKeyword . '%')
+                        ->orWhere('parent.name', 'LIKE', '%' . $escapedKeyword . '%')
+                        ->orWhere('parent.slug', 'LIKE', '%' . $escapedKeyword . '%');
+                });
+        }
+
+        return $queryBuilder
             ->where('categories.delete_flag', false)
-            ->where(function ($query) use ($escapedKeyword) {
-                $query->where('categories.name', 'LIKE', '%' . $escapedKeyword . '%')
-                    ->orWhere('categories.slug', 'LIKE', '%' . $escapedKeyword . '%')
-                    ->orWhere('parent.name', 'LIKE', '%' . $escapedKeyword . '%')
-                    ->orWhere('parent.slug', 'LIKE', '%' . $escapedKeyword . '%');
-            })
-            ->latest()
+            ->latest('categories.id')
             ->paginate($itemPerPage);
     }
 
