@@ -1,3 +1,6 @@
+@php
+    $index = 1;
+@endphp
 <div class="table-data7-wrapper">
     <table class="table table-data7">
         <thead>
@@ -8,32 +11,27 @@
         </thead>
         <tbody>
             <tr>
-                <td>1</td>
+                <td>{{ $index++ }}</td>
                 <td>ID</td>
                 <td>{{ $orderInfo['id'] }}</td>
             </tr>
             <tr>
-                <td>2</td>
+                <td>{{ $index++ }}</td>
                 <td>Status</td>
                 <td>{{ $orderInfo['status'] }}</td>
             </tr>
             <tr>
-                <td>3</td>
-                <td>Total amount</td>
-                <td>{{ '$' . number_format($orderInfo['total'], 2) }}</td>
-            </tr>
-            <tr>
-                <td>4</td>
+                <td>{{ $index++ }}</td>
                 <td>Payment method</td>
                 <td>{{ $orderInfo['paymentMethod'] }}</td>
             </tr>
             <tr>
-                <td>5</td>
+                <td>{{ $index++ }}</td>
                 <td>Created At</td>
                 <td>{{ $orderInfo['createdAt'] }}</td>
             </tr>
             <tr>
-                <td>6</td>
+                <td>{{ $index++ }}</td>
                 <td>Updated At</td>
                 <td>{{ $orderInfo['updatedAt'] }}</td>
             </tr>

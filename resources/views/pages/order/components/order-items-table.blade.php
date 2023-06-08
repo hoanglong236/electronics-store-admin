@@ -1,10 +1,14 @@
+@php
+    $totalDue = 0;
+@endphp
 <div class="table-responsive">
     <table class="table table-borderless table-data6 table-radius">
         <thead>
             <tr>
                 <th>#</th>
-                <th colspan="3">Product</th>
-                <th>Total</th>
+                <th colspan="2">Product</th>
+                <th>Qty</th>
+                <th>Amount</th>
             </tr>
         </thead>
         <tbody>
@@ -21,9 +25,17 @@
                         <span>{{ $orderItem['productName'] }}</span>
                     </td>
                     <td class="text-left">x {{ $orderItem['quantity'] }}</td>
-                    <td>{{ '$' . number_format($orderItem['totalPrice'], 2) }}</td>
+                    <td>${{ number_format($orderItem['totalPrice'], 2) }}</td>
                 </tr>
+                @php
+                    $totalDue += $orderItem['totalPrice'];
+                @endphp
             @endforeach
+            <tr class="table-total">
+                <td></td>
+                <td colspan="3">Total Due</td>
+                <td>${{ number_format($totalDue, 2) }}</td>
+            </tr>
         </tbody>
     </table>
 </div>

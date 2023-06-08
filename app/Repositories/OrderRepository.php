@@ -19,10 +19,7 @@ class OrderRepository implements IOrderRepository
     }
 
     private function getFilterCustomOrdersQueryBuilder(
-        array $searchFields = [],
-        array $filterFields = [],
-        string $fromDate = null,
-        string $toDate = null,
+        array $searchFields, array $filterFields, string $fromDate, string $toDate
     ) {
         $queryBuilder = DB::table('orders')
             ->join('customers', 'customers.id', '=', 'orders.customer_id')
@@ -59,11 +56,9 @@ class OrderRepository implements IOrderRepository
             }
         }
 
-        if (!is_null($fromDate) && !is_null($toDate)) {
-            $queryBuilder->whereBetween('orders.created_at', [
-                $fromDate, UtilsService::dateToEndOfDate($toDate)
-            ]);
-        }
+        $queryBuilder->whereBetween('orders.created_at', [
+            $fromDate, UtilsService::dateToEndOfDate($toDate)
+        ]);
 
         return $queryBuilder->groupBy('orders.id');
     }

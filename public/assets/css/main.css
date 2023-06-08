@@ -315,11 +315,10 @@
 }
 
 .table-data6 tbody td {
-    border-bottom: 1px solid #f5f5f5;
     background: #fff;
     font-size: 1.3rem;
     line-height: 1.7rem;
-    color: #808080;
+    color: #888;
     padding-top: 10px;
     padding-bottom: 10px;
 }
@@ -327,7 +326,7 @@
 .table-data6 thead th,
 .table-data6 tbody td {
     padding-left: 16px;
-    padding-right: 10px;
+    padding-right: 12px;
     vertical-align: middle;
 }
 
@@ -339,6 +338,15 @@
 .table-data6 thead th:last-child,
 .table-data6 tbody td:last-child {
     padding-right: 25px;
+}
+
+.table-data6 tbody tr.table-total td {
+    border-top: 1px solid #666;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #666;
 }
 
 .table-data7 {
