@@ -37,21 +37,19 @@ class BrandRepository implements IBrandRepository
         return false;
     }
 
-    public function paginate(int $itemPerPage)
-    {
-        return Brand::where('delete_flag', false)
-            ->latest()
-            ->paginate($itemPerPage);
-    }
-
     public function searchAndPaginate(string $escapedKeyword, int $itemPerPage)
     {
-        return Brand::where('delete_flag', false)
-            ->where(function ($query) use ($escapedKeyword) {
+        $queryBuilder = Brand::query();
+
+        if (strlen($escapedKeyword) > 0) {
+            $queryBuilder->where(function ($query) use ($escapedKeyword) {
                 $query->where('name', 'LIKE', '%' . $escapedKeyword . '%')
                     ->orWhere('slug', 'LIKE', '%' . $escapedKeyword . '%');
-            })
-            ->latest()
+            });
+        }
+
+        return $queryBuilder->where('delete_flag', false)
+            ->latest('id')
             ->paginate($itemPerPage);
     }
 

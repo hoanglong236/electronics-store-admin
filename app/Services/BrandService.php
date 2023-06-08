@@ -31,7 +31,17 @@ class BrandService
 
     public function getListBrandsPaginator($itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT)
     {
-        return $this->brandRepository->paginate($itemPerPage);
+        return $this->brandRepository->searchAndPaginate('', $itemPerPage);
+    }
+
+    public function getSearchBrandsPaginator(
+        $searchProperties,
+        $itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT
+    ) {
+        $searchKeyword = $searchProperties['searchKeyword'];
+        $escapedKeyword = UtilsService::escapeKeyword($searchKeyword);
+
+        return $this->brandRepository->searchAndPaginate($escapedKeyword, $itemPerPage);
     }
 
     private function saveBrandLogoToStorage($logo)
@@ -97,15 +107,5 @@ class BrandService
         }
 
         return $map;
-    }
-
-    public function getSearchBrandsPaginator(
-        $searchProperties,
-        $itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT
-    ) {
-        $searchKeyword = $searchProperties['searchKeyword'];
-        $escapedKeyword = UtilsService::escapeKeyword($searchKeyword);
-
-        return $this->brandRepository->searchAndPaginate($escapedKeyword, $itemPerPage);
     }
 }
