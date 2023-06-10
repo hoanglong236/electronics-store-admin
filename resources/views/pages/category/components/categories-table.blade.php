@@ -20,7 +20,15 @@
                     </td>
                     <td>{{ $category->name }}</td>
                     <td>{{ $category->slug }}</td>
-                    <td>{{ is_null($category->parent_id) ? '--' : $categoryIdNameMap[$category->parent_id] }}
+                    <td>
+                        @if (is_null($category->parent_id))
+                            --
+                        @else
+                            @php
+                                $parentCategory = $categoryMap[$category->parent_id];
+                            @endphp
+                            {{ $parentCategory->delete_flag ? $parentCategory->name . ' (deleted)' : $parentCategory->name }}
+                        @endif
                     </td>
                     <td>
                         <div class="card-action-wrapper--right">

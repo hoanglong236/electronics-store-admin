@@ -9,7 +9,7 @@
         <div class="col-lg-6">
             @include('pages.category.components.category-update-card', [
                 'category' => $data['category'],
-                'categoryIdNameMap' => $data['categoryIdNameMap'],
+                'categoryMap' => $data['categoryMap'],
             ])
         </div>
     </div>

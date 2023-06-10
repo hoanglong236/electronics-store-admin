@@ -29,7 +29,7 @@
         <div class="col-md-12">
             @include('pages.category.components.categories-table', [
                 'categories' => $data['categories'],
-                'categoryIdNameMap' => $data['categoryIdNameMap'],
+                'categoryMap' => $data['categoryMap'],
             ])
         </div>
     </div>

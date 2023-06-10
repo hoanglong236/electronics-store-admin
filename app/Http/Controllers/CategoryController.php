@@ -47,10 +47,10 @@ class CategoryController extends Controller
 
     private function getCommonDataForCategoriesPage()
     {
-        $categoryIdNameMap = $this->categoryService->getCategoryIdNameMap();
+        $categoryMap = $this->categoryService->getMapFromCategoryIdToCategory(true);
         return [
             'pageTitle' => 'Categories',
-            'categoryIdNameMap' => $categoryIdNameMap,
+            'categoryMap' => $categoryMap,
             'searchKeyword' => '',
         ];
     }
@@ -60,7 +60,7 @@ class CategoryController extends Controller
         $data = [];
 
         $data['pageTitle'] = 'Create category';
-        $data['categoryIdNameMap'] = $this->categoryService->getCategoryIdNameMap();
+        $data['categoryMap'] = $this->categoryService->getMapFromCategoryIdToCategory();
 
         return view('pages.category.category-create-page', ['data' => $data]);
     }
@@ -80,7 +80,7 @@ class CategoryController extends Controller
 
         $data['pageTitle'] = 'Update category';
         $data['category'] = $this->categoryService->getCategoryById($categoryId);
-        $data['categoryIdNameMap'] = $this->categoryService->getCategoryIdNameMap();
+        $data['categoryMap'] = $this->categoryService->getMapFromCategoryIdToCategory(true);
 
         return view('pages.category.category-update-page', ['data' => $data]);
     }

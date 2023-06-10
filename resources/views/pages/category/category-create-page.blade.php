@@ -8,7 +8,7 @@
     <div class="row mt-4">
         <div class="col-lg-6">
             @include('pages.category.components.category-create-card', [
-                'categoryIdNameMap' => $data['categoryIdNameMap'],
+                'categoryMap' => $data['categoryMap'],
             ])
         </div>
     </div>

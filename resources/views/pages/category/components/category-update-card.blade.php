@@ -11,11 +11,21 @@
                 <label for="parentCategoryId" class="form-control-label">Parent category</label>
                 <select id="parentCategoryId" name="parentId" class="form-control">
                     <option value="{{ Constants::NONE_VALUE }}">None</option>
-                    @foreach ($categoryIdNameMap as $categoryId => $categoryName)
-                        <option value="{{ $categoryId }}" @selected(intval($category->parent_id) === $categoryId)>
-                            {{ $categoryName }}
-                        </option>
-                    @endforeach
+                    @if (is_null($category->parent_id))
+                        @foreach ($categoryMap as $parentCategoryId => $parentCategory)
+                            <option value="{{ $parentCategoryId }}">{{ $parentCategory->name }}</option>
+                        @endforeach
+                    @else
+                        @foreach ($categoryMap as $parentCategoryId => $parentCategory)
+                            @if ($category->parent_id === $parentCategoryId)
+                                <option value="{{ $parentCategoryId }}" selected>
+                                    {{ $parentCategory->name . ' (deleted)' }}
+                                </option>
+                            @elseif (!$parentCategory->delete_flag)
+                                <option value="{{ $parentCategoryId }}">{{ $parentCategory->name }}</option>
+                            @endif
+                        @endforeach
+                    @endif
                 </select>
                 @error('parentId')
                     <div class="alert alert-danger mt-1" role="alert">{{ $message }}</div>

@@ -9,9 +9,9 @@
                 <label for="parentCategoryId" class="form-control-label">Parent category</label>
                 <select id="parentCategoryId" name="parentId" class="form-control">
                     <option value="{{ Constants::NONE_VALUE }}">None</option>
-                    @foreach ($categoryIdNameMap as $categoryId => $categoryName)
-                        <option value="{{ $categoryId }}" @selected(intval(old('parentId')) === $categoryId)>
-                            {{ $categoryName }}
+                    @foreach ($categoryMap as $parentCategoryId => $parentCategory)
+                        <option value="{{ $parentCategoryId }}" @selected(intval(old('parentId')) === $parentCategoryId)>
+                            {{ $parentCategory->name }}
                         </option>
                     @endforeach
                 </select>

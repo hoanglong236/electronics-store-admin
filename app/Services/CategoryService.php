@@ -102,13 +102,16 @@ class CategoryService
         $this->categoryRepository->deleteById($categoryId);
     }
 
-    public function getCategoryIdNameMap()
+    public function getMapFromCategoryIdToCategory($withDeleted = false)
     {
-        $miniCategories = $this->categoryRepository->listAll(['id', 'name']);
+        $miniCategories = $this->categoryRepository->listAll(
+            ['id', 'name', 'delete_flag'],
+            $withDeleted
+        );
         $map = [];
 
         foreach ($miniCategories as $miniCategory) {
-            $map[$miniCategory->id] = $miniCategory->name;
+            $map[$miniCategory->id] = $miniCategory;
         }
 
         return $map;
