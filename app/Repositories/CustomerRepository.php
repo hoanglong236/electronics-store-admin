@@ -52,6 +52,14 @@ class CustomerRepository implements ICustomerRepository
 
     public function retrieveCustomerAddressesByCustomerId(int $customerId)
     {
-        return CustomerAddress::where('customer_id', $customerId)->get();
+        return CustomerAddress::select([
+            'specific_address',
+            'ward',
+            'district',
+            'city',
+            'address_type',
+            'default_flag',
+        ])
+            ->where('customer_id', $customerId)->get();
     }
 }

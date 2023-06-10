@@ -15,11 +15,6 @@ class CustomerService
         $this->customerRepository = $customerRepository;
     }
 
-    public function getCustomerById($customerId)
-    {
-        return $this->customerRepository->findById($customerId);
-    }
-
     public function getListCustomersPaginator($itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT)
     {
         return $this->customerRepository->searchAndPaginate('', $itemPerPage);
@@ -47,8 +42,33 @@ class CustomerService
         $this->customerRepository->deleteById($customerId);
     }
 
-    public function getCustomerAddressesByCustomerId($customerId)
+    public function getCustomerDetails($customerId)
     {
-        return $this->customerRepository->retrieveCustomerAddressesByCustomerId($customerId);
+        $customerDetails = [];
+
+        $customer = $this->customerRepository->findById($customerId);
+        $customerDetails['customerInfo'] = [
+            'id' => $customer->id,
+            'name' => $customer->name,
+            'email' => $customer->email,
+            'phone' => $customer->phone,
+            'disableFlag' => $customer->disable_flag,
+            'createdAt' => $customer->created_at,
+            'updatedAt' => $customer->updated_at,
+        ];
+
+        $addresses = $this->customerRepository->retrieveCustomerAddressesByCustomerId($customerId);
+        foreach ($addresses as $address) {
+            $customerDetails['addresses'][] = [
+                'specificAddress' => $address->specific_address,
+                'ward' => $address->ward,
+                'district' => $address->district,
+                'city' => $address->city,
+                'addressType' => $address->address_type,
+                'defaultFlag' => $address->default_flag,
+            ];
+        }
+
+        return $customerDetails;
     }
 }

@@ -9,8 +9,8 @@
 
     <div class="row mt-4">
         <div class="col-md-8">
-            @include('pages.customer.components.customer-details-table', [
-                'customer' => $data['customer'],
+            @include('pages.customer.components.customer-info-table', [
+                'customerInfo' => $data['customerDetails']['customerInfo'],
             ])
         </div>
     </div>
@@ -18,7 +18,7 @@
     <div class="row mt-4">
         <div class="col-md-12">
             @include('pages.customer.components.customer-address-table', [
-                'customerAddresses' => $data['customerAddresses'],
+                'customerAddresses' => $data['customerDetails']['addresses'],
             ])
         </div>
     </div>

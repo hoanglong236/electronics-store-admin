@@ -12,19 +12,19 @@
             @foreach ($customerAddresses as $index => $customerAddress)
                 <tr>
                     <td>{{ $index + 1 }}</td>
-                    <td>{{ $customerAddress->specific_address .
+                    <td>{{ $customerAddress['specificAddress'] .
                         ', ' .
-                        $customerAddress->ward .
+                        $customerAddress['ward'] .
                         ', ' .
-                        $customerAddress->district .
+                        $customerAddress['district'] .
                         ', ' .
-                        $customerAddress->city }}
+                        $customerAddress['city'] }}
                     </td>
-                    <td>{{ $customerAddress->address_type }}</td>
+                    <td>{{ $customerAddress['addressType'] }}</td>
                     <td>
                         <div class="form-check">
                             <label class="form-check-label">&nbsp;</label>
-                            <input class="form-check-input" type="checkbox" @checked($customerAddress->default_flag)>
+                            <input class="form-check-input" type="checkbox" @checked($customerAddress['defaultFlag'])>
                         </div>
                     </td>
                 </tr>

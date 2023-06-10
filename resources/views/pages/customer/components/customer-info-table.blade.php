@@ -1,3 +1,6 @@
+@php
+    $index = 1;
+@endphp
 <div class="table-data7-wrapper">
     <table class="table table-data7">
         <thead>
@@ -8,30 +11,30 @@
         </thead>
         <tbody>
             <tr>
-                <td>1</td>
+                <td>{{ $index++ }}</td>
                 <td>ID</td>
-                <td>{{ $customer->id }}</td>
+                <td>{{ $customerInfo['id'] }}</td>
             </tr>
             <tr>
-                <td>2</td>
+                <td>{{ $index++ }}</td>
                 <td>Name</td>
-                <td>{{ $customer->name }}</td>
+                <td>{{ $customerInfo['name'] }}</td>
             </tr>
             <tr>
-                <td>3</td>
+                <td>{{ $index++ }}</td>
                 <td>Phone</td>
-                <td>{{ $customer->phone }}</td>
+                <td>{{ $customerInfo['phone'] }}</td>
             </tr>
             <tr>
-                <td>4</td>
+                <td>{{ $index++ }}</td>
                 <td>Email</td>
-                <td>{{ $customer->email }}</td>
+                <td>{{ $customerInfo['email'] }}</td>
             </tr>
             <tr>
-                <td>5</td>
+                <td>{{ $index++ }}</td>
                 <td>Status</td>
                 <td>
-                    @if ($customer->disable_flag)
+                    @if ($customerInfo['disableFlag'])
                         <span class="disable-status">Disable</span>
                     @else
                         <span class="enable-status">Enable</span>
@@ -39,17 +42,17 @@
                 </td>
             </tr>
             <tr>
-                <td>6</td>
+                <td>{{ $index++ }}</td>
                 <td>Created at</td>
                 <td>
-                    {{ $customer->created_at }}
+                    {{ $customerInfo['createdAt'] }}
                 </td>
             </tr>
             <tr>
-                <td>7</td>
+                <td>{{ $index++ }}</td>
                 <td>Updated at</td>
                 <td>
-                    {{ $customer->updated_at }}
+                    {{ $customerInfo['updatedAt'] }}
                 </td>
             </tr>
         </tbody>

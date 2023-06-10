@@ -70,8 +70,7 @@ class CustomerController extends Controller
         $data = [];
 
         $data['pageTitle'] = 'Customer details';
-        $data['customer'] = $this->customerService->getCustomerById($customerId);
-        $data['customerAddresses'] = $this->customerService->getCustomerAddressesByCustomerId($customerId);
+        $data['customerDetails'] = $this->customerService->getCustomerDetails($customerId);
 
         return view('pages.customer.customer-details-page', ['data' => $data]);
     }
