@@ -63,10 +63,12 @@ class CategoryRepository implements ICategoryRepository
 
     public function listAll(array $columns = ['*'], bool $withDeleted = false)
     {
-        if ($withDeleted) {
-            return Category::all($columns);
+        $queryBuilder = Category::select($columns);
+
+        if (!$withDeleted) {
+            $queryBuilder->where('delete_flag', false);
         }
 
-        return Category::where('delete_flag', false)->get($columns);
+        return $queryBuilder->get();
     }
 }

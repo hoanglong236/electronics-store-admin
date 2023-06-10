@@ -99,25 +99,31 @@ class OrderService
         $orderDetails = [];
 
         $customOrderItems = $this->orderRepository->getCustomOrderItemsByOrderId($orderId);
-        foreach ($customOrderItems as $index => $item) {
-            $orderDetails['items'][$index]['productId'] = $item->product_id;
-            $orderDetails['items'][$index]['productName'] = $item->product_name;
-            $orderDetails['items'][$index]['productImagePath'] = $item->product_image_path;
-            $orderDetails['items'][$index]['quantity'] = $item->quantity;
-            $orderDetails['items'][$index]['totalPrice'] = $item->total_price;
+        foreach ($customOrderItems as $item) {
+            $orderDetails['items'][] = [
+                'productId' => $item->product_id,
+                'productName' => $item->product_name,
+                'productImagePath' => $item->product_image_path,
+                'quantity' => $item->quantity,
+                'totalPrice' => $item->total_price,
+            ];
         }
 
         $customOrder = $this->orderRepository->getOrderAlongWithCustomerInfoById($orderId);
-        $orderDetails['order']['id'] = $customOrder->id;
-        $orderDetails['order']['status'] = $customOrder->status;
-        $orderDetails['order']['paymentMethod'] = $customOrder->payment_method;
-        $orderDetails['order']['createdAt'] = $customOrder->created_at;
-        $orderDetails['order']['updatedAt'] = $customOrder->updated_at;
-        $orderDetails['customer']['id'] = $customOrder->customer_id;
-        $orderDetails['customer']['name'] = $customOrder->customer_name;
-        $orderDetails['customer']['email'] = $customOrder->customer_email;
-        $orderDetails['customer']['phone'] = $customOrder->customer_phone;
-        $orderDetails['customer']['deliveryAddress'] = $customOrder->delivery_address;
+        $orderDetails['order'] = [
+            'id' => $customOrder->id,
+            'status' => $customOrder->status,
+            'paymentMethod' => $customOrder->payment_method,
+            'createdAt' => $customOrder->created_at,
+            'updatedAt' => $customOrder->updated_at,
+        ];
+        $orderDetails['customer'] = [
+            'id' => $customOrder->customer_id,
+            'name' => $customOrder->customer_name,
+            'email' => $customOrder->customer_email,
+            'phone' => $customOrder->customer_phone,
+            'deliveryAddress' => $customOrder->delivery_address,
+        ];
 
         return $orderDetails;
     }

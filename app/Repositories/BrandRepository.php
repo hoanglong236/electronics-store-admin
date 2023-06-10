@@ -55,10 +55,12 @@ class BrandRepository implements IBrandRepository
 
     public function listAll(array $columns = ['*'], bool $withDeleted = false)
     {
-        if ($withDeleted) {
-            return Brand::all($columns);
+        $queryBuilder = Brand::select($columns);
+
+        if (!$withDeleted) {
+            $queryBuilder->where('delete_flag', false);
         }
 
-        return Brand::where('delete_flag', false)->get($columns);
+        return $queryBuilder->get();
     }
 }
