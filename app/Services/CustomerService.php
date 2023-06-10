@@ -22,7 +22,17 @@ class CustomerService
 
     public function getListCustomersPaginator($itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT)
     {
-        return $this->customerRepository->paginate($itemPerPage);
+        return $this->customerRepository->searchAndPaginate('', $itemPerPage);
+    }
+
+    public function getSearchCustomersPaginator(
+        $searchProperties,
+        $itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT
+    ) {
+        $searchKeyword = $searchProperties['searchKeyword'];
+        $escapedKeyword = UtilsService::escapeKeyword($searchKeyword);
+
+        return $this->customerRepository->searchAndPaginate($escapedKeyword, $itemPerPage);
     }
 
     public function updateCustomerDisableFlag($customerDisableFlagProperties, $customerId)
@@ -35,16 +45,6 @@ class CustomerService
     public function deleteCustomerById($customerId)
     {
         $this->customerRepository->deleteById($customerId);
-    }
-
-    public function getSearchCustomersPaginator(
-        $searchProperties,
-        $itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT
-    ) {
-        $searchKeyword = $searchProperties['searchKeyword'];
-        $escapedKeyword = UtilsService::escapeKeyword($searchKeyword);
-
-        return $this->customerRepository->searchAndPaginate($escapedKeyword, $itemPerPage);
     }
 
     public function getCustomerAddressesByCustomerId($customerId)

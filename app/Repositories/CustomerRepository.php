@@ -33,22 +33,20 @@ class CustomerRepository implements ICustomerRepository
         return false;
     }
 
-    public function paginate(int $itemPerPage)
-    {
-        return Customer::where('delete_flag', false)
-            ->latest()
-            ->paginate($itemPerPage);
-    }
-
     public function searchAndPaginate(string $escapedKeyword, int $itemPerPage)
     {
-        return Customer::where('delete_flag', false)
-            ->where(function ($query) use ($escapedKeyword) {
+        $queryBuilder = Customer::query();
+
+        if (strlen($escapedKeyword) > 0) {
+            $queryBuilder->where(function ($query) use ($escapedKeyword) {
                 $query->where('name', 'LIKE', '%' . $escapedKeyword . '%')
                     ->orWhere('email', 'LIKE', '%' . $escapedKeyword . '%')
                     ->orWhere('phone', 'LIKE', '%' . $escapedKeyword . '%');
-            })
-            ->latest()
+            });
+        }
+
+        return $queryBuilder->where('delete_flag', false)
+            ->latest('id')
             ->paginate($itemPerPage);
     }
 
