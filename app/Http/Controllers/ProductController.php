@@ -121,8 +121,7 @@ class ProductController extends Controller
         $data = [];
 
         $data['pageTitle'] = 'Product details';
-        $data['product'] = $this->productService->getCustomProductById($productId);
-        $data['productImages'] = $this->productService->getProductImagesByProductId($productId);
+        $data['productDetails'] = $this->productService->getProductDetails($productId);
 
         return view('pages.product.product-details-page', ['data' => $data]);
     }

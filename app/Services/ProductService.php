@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Common\Constants;
 use App\Config\Config;
+use App\DataFilterConstants\ProductSearchOptionConstants;
 use App\Repositories\IProductRepository;
 use Illuminate\Support\Facades\Log;
 
@@ -29,14 +30,28 @@ class ProductService
         return $this->productRepository->findById($productId);
     }
 
-    public function getCustomProductById($productId)
-    {
-        return $this->productRepository->getCustomProductById($productId);
-    }
-
     public function getCustomProductsPaginator($itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT)
     {
-        return $this->productRepository->paginateCustomProducts($itemPerPage);
+        return $this->productRepository->searchAndPaginate(
+            '',
+            ProductSearchOptionConstants::SEARCH_ALL,
+            $itemPerPage
+        );
+    }
+
+    public function getSearchCustomProductsPaginator(
+        $productSearchProperties,
+        $itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT
+    ) {
+        $searchOption = $productSearchProperties['searchOption'];
+        $searchKeyword = $productSearchProperties['searchKeyword'];
+        $escapedKeyword = UtilsService::escapeKeyword($searchKeyword);
+
+        return $this->productRepository->searchAndPaginate(
+            $escapedKeyword,
+            $searchOption,
+            $itemPerPage
+        );
     }
 
     private function saveProductImageToStorage($image)
@@ -110,24 +125,36 @@ class ProductService
         $this->productRepository->deleteById($productId);
     }
 
-    public function getSearchCustomProductsPaginator(
-        $productSearchProperties,
-        $itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT
-    ) {
-        $searchOption = $productSearchProperties['searchOption'];
-        $searchKeyword = $productSearchProperties['searchKeyword'];
-        $escapedKeyword = UtilsService::escapeKeyword($searchKeyword);
-
-        return $this->productRepository->searchCustomProductsAndPaginate(
-            $searchOption,
-            $escapedKeyword,
-            $itemPerPage
-        );
-    }
-
-    public function getProductImagesByProductId($productId)
+    public function getProductDetails($productId)
     {
-        return $this->productRepository->retrieveProductImagesByProductId($productId);
+        $productDetails = [];
+
+        $customProduct = $this->productRepository->getCustomProductById($productId);
+        $productDetails['productInfo'] = [
+            'id' => $customProduct->id,
+            'name' => $customProduct->name,
+            'slug' => $customProduct->slug,
+            'price' => $customProduct->price,
+            'discountPercent' => $customProduct->discount_percent,
+            'quantity' => $customProduct->quantity,
+            'warrantyPeriod' => $customProduct->warranty_period,
+            'description' => $customProduct->description,
+            'mainImagePath' => $customProduct->main_image_path,
+            'createdAt' => $customProduct->created_at,
+            'updatedAt' => $customProduct->updated_at,
+            'categoryName' => $customProduct->category_name,
+            'brandName' => $customProduct->brand_name,
+        ];
+
+        $images = $this->productRepository->retrieveProductImagesByProductId($productId);
+        foreach ($images as $image) {
+            $productDetails['images'][] = [
+                'id' => $image->id,
+                'path' => $image->image_path,
+            ];
+        }
+
+        return $productDetails;
     }
 
     public function createProductImages($productImageProperties)

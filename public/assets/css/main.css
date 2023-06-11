@@ -194,16 +194,6 @@
     background-color: #ff5555;
 }
 
-.table-earning--custom {
-    white-space: normal;
-    font-size: 1.4rem;
-}
-
-.table-earning--custom tbody tr:hover td {
-    color: #555;
-    cursor: default;
-}
-
 .order-cancelled {
     color: #ff5555;
 }
@@ -595,11 +585,50 @@ table.chart-legend-table tbody td {
     font-size: 1.6rem;
 }
 
-.date-range-group>input {
+.date-range-group > input {
     flex: 1;
 }
 
 .date-range-label {
     margin-bottom: 0;
     margin-right: 8px;
+}
+
+.product-details-area {
+    font-size: 1.4rem;
+}
+
+.product-info__name {
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
+.product-info__slug {
+    font-size: 1.3rem;
+    font-weight: 600;
+    font-style: italic;
+}
+
+.product-info__price {
+    font-size: 1.8rem;
+    font-weight: 500;
+}
+
+.product-info__price .price {
+    color: #ee4d2d;
+}
+
+.product-info__price .original-price {
+    text-decoration: line-through;
+    font-size: 1.4rem;
+}
+
+.product-info__price .discount-percent {
+    font-size: 1.4rem;
+    color: #fff;
+    background: #ee4d2d;
+    border-radius: 2px;
+    padding: 2px 4px;
+    line-height: 1;
+    white-space: nowrap;
 }

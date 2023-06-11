@@ -5,42 +5,39 @@
         'backUrl' => route('catalog.product.index'),
     ])
 
+    @php
+        $productDetails = $data['productDetails'];
+    @endphp
+
     <div class="row mt-4">
-        <div class="col-lg-8">
-            @include('pages.product.components.product-details-table', [
-                'product' => $data['product'],
-            ])
-        </div>
-        <div class="col-lg-4">
-            <div class="card card-radius">
-                <img class="card-img-top card-image--custom-square"
-                    src="{{ asset('storage/' . $data['product']->main_image_path) }}" alt="Card image cap">
+        <div class="col-md-12">
+            <div class="white-bg-wrapper">
+                @include('pages.product.components.product-details-area', [
+                    'productInfo' => $productDetails['productInfo'],
+                    'productImages' => $productDetails['images'],
+                ])
             </div>
         </div>
     </div>
 
-    <h4 class="title-5 mt-4 mb-4">Product sliders</h4>
-    @if (Session::has(Constants::ACTION_SUCCESS))
-        @include('shared.components.action-success-label', [
-            'succeeMessage' => Session::get(Constants::ACTION_SUCCESS),
-        ])
-    @endif
-
     <div class="row mt-4">
-        <div class="col-lg-8">
+        <div class="col-sm-6">
             @include('pages.product.components.product-images-table', [
-                'productImages' => $data['productImages'],
-            ])
-            @include('pages.product.components.product-images-create-card', [
-                'productId' => $data['product']->id,
+                'mainImagePath' => $productDetails['productInfo']['mainImagePath'],
+                'productImages' => $productDetails['images'],
+                'productId' => $productDetails['productInfo']['id'],
             ])
         </div>
-        <div class="col-lg-4">
-            @if (count($data['productImages']) > 0)
-                @include('pages.product.components.product-images-slider', [
-                    'productImages' => $data['productImages'],
-                ])
-            @endif
+        <div class="col-sm-6">
+            @include('pages.product.components.product-images-create-card', [
+                'productId' => $productDetails['productInfo']['id'],
+            ])
         </div>
     </div>
 @endsection
+
+@if (Session::has(Constants::ACTION_SUCCESS))
+    <script>
+        alert('{{ Session::get(Constants::ACTION_SUCCESS) }}');
+    </script>
+@endif

@@ -8,9 +8,8 @@ interface IProductRepository
     public function create(array $attributes);
     public function update(array $attributes, int $id);
     public function deleteById(int $id);
-    public function paginateCustomProducts(int $itemPerPage);
-    public function searchCustomProductsAndPaginate(
-        string $searchOption, string $escapedKeyword, int $itemPerPage
+    public function searchAndPaginate(
+        string $escapedKeyword, string $searchOption, int $itemPerPage
     );
 
     public function getCustomProductById(int $id);
