@@ -13,7 +13,10 @@
             ])
         </div>
         <div class="col-sm-9">
-            <div class="product-info__name">{{ $productInfo['name'] }}</div>
+            <div class="product-info__name">
+                <span class="mr-3">{{ $productInfo['name'] }}</span>
+                <span>(ID: {{ $productInfo['id'] }})</span>
+            </div>
             <div class="product-info__slug">Slug: {{ $productInfo['slug'] }}</div>
 
             <div class="product-info__price mt-4">

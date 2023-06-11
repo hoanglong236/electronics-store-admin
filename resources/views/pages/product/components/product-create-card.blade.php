@@ -10,9 +10,9 @@
                     <div class="form-group">
                         <label for="category" class="form-control-label">Category</label>
                         <select id="category" name="categoryId" class="form-control">
-                            @foreach ($categoryIdNameMap as $categoryId => $categoryName)
+                            @foreach ($categoryMap as $categoryId => $category)
                                 <option value="{{ $categoryId }}" @selected(intval(old('categoryId')) === $categoryId)>
-                                    {{ $categoryName }}
+                                    {{ $category->name }}
                                 </option>
                             @endforeach
                         </select>
@@ -25,9 +25,9 @@
                     <div class="form-group">
                         <label for="brand" class="form-control-label">Brand</label>
                         <select id="brand" name="brandId" class="form-control">
-                            @foreach ($brandIdNameMap as $brandId => $brandName)
+                            @foreach ($brandMap as $brandId => $brand)
                                 <option value="{{ $brandId }}" @selected(intval(old('brandId')) === $brandId)>
-                                    {{ $brandName }}
+                                    {{ $brand->name }}
                                 </option>
                             @endforeach
                         </select>
@@ -105,30 +105,12 @@
                     <div class="alert alert-danger mt-1" role="alert">{{ $message }}</div>
                 @enderror
             </div>
-            <div class="row">
-                <div class="col">
-                    <div class="form-group">
-                        <label for="productMainImage" class="form-control-label">Main image</label>
-                        <input id="productMainImage" type="file" name="mainImage" class="form-control-file"
-                            required>
-                        @error('mainImage')
-                            <div class="alert alert-danger mt-1" role="alert">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="form-group">
-                        <label for="productImageSlider" class="form-control-label">Slider images</label>
-                        <input id="productImageSlider" name="images[]" type="file" class="form-control-file"
-                            multiple required>
-                        @error('images')
-                            <div class="alert alert-danger mt-1" role="alert">{{ $message }}</div>
-                        @enderror
-                        @error('images.*')
-                            <div class="alert alert-danger mt-1" role="alert">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
+            <div class="form-group">
+                <label for="productMainImage" class="form-control-label">Main image</label>
+                <input id="productMainImage" type="file" name="mainImage" class="form-control-file" required>
+                @error('mainImage')
+                    <div class="alert alert-danger mt-1" role="alert">{{ $message }}</div>
+                @enderror
             </div>
         </div>
         <div class="card-footer">

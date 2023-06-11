@@ -9,8 +9,8 @@
         <div class="col-lg-8">
             @include('pages.product.components.product-update-card', [
                 'product' => $data['product'],
-                'categoryIdNameMap' => $data['categoryIdNameMap'],
-                'brandIdNameMap' => $data['brandIdNameMap'],
+                'categoryMap' => $data['categoryMap'],
+                'brandMap' => $data['brandMap'],
             ])
         </div>
     </div>

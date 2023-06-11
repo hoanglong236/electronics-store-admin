@@ -30,7 +30,7 @@ class ProductService
         return $this->productRepository->findById($productId);
     }
 
-    public function getCustomProductsPaginator($itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT)
+    public function getProductsPaginator($itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT)
     {
         return $this->productRepository->searchAndPaginate(
             '',
@@ -39,7 +39,7 @@ class ProductService
         );
     }
 
-    public function getSearchCustomProductsPaginator(
+    public function getSearchProductsPaginator(
         $productSearchProperties,
         $itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT
     ) {
@@ -86,12 +86,7 @@ class ProductService
         $createAttributes['description'] = $productProperties['description'];
         $createAttributes['delete_flag'] = false;
 
-        $product = $this->productRepository->create($createAttributes);
-
-        $this->createProductImages([
-            'productId' => $product->id,
-            'images' => $productProperties['images']
-        ]);
+        $this->productRepository->create($createAttributes);
     }
 
     public function updateProduct($productProperties, $productId)
@@ -146,6 +141,7 @@ class ProductService
             'brandName' => $customProduct->brand_name,
         ];
 
+        $productDetails['images'] = [];
         $images = $this->productRepository->retrieveProductImagesByProductId($productId);
         foreach ($images as $image) {
             $productDetails['images'][] = [

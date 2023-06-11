@@ -12,10 +12,14 @@
                     <div class="form-group">
                         <label for="category" class="form-control-label">Category</label>
                         <select id="category" name="categoryId" class="form-control">
-                            @foreach ($categoryIdNameMap as $categoryId => $categoryName)
-                                <option value="{{ $categoryId }}" @selected($categoryId === $product->category_id)>
-                                    {{ $categoryName }}
-                                </option>
+                            @foreach ($categoryMap as $categoryId => $category)
+                                @if ($product->category_id === $categoryId)
+                                    <option value="{{ $categoryId }}" selected>
+                                        {{ $category->delete_flag ? $category->name . ' (deleted)' : $category->name }}
+                                    </option>
+                                @elseif (!$category->delete_flag)
+                                    <option value="{{ $categoryId }}">{{ $category->name }}</option>
+                                @endif
                             @endforeach
                         </select>
                         @error('categoryId')
@@ -27,9 +31,14 @@
                     <div class="form-group">
                         <label for="brand" class="form-control-label">Brand</label>
                         <select id="brand" name="brandId" class="form-control">
-                            @foreach ($brandIdNameMap as $brandId => $brandName)
-                                <option value="{{ $brandId }}" @selected($brandId === $product->brand_id)>{{ $brandName }}
-                                </option>
+                            @foreach ($brandMap as $brandId => $brand)
+                                @if ($product->brand_id === $brandId)
+                                    <option value="{{ $brandId }}" selected>
+                                        {{ $brand->delete_flag ? $brand->name . ' (deleted)' : $brand->name }}
+                                    </option>
+                                @elseif (!$brand->delete_flag)
+                                    <option value="{{ $brandId }}">{{ $brand->name }}</option>
+                                @endif
                             @endforeach
                         </select>
                         @error('brandId')

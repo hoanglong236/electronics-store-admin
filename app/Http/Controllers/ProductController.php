@@ -32,7 +32,7 @@ class ProductController extends Controller
 
     public function index()
     {
-        $paginator = $this->productService->getCustomProductsPaginator();
+        $paginator = $this->productService->getProductsPaginator();
 
         $data = $this->getCommonDataForProductsPage();
         $data['products'] = $paginator->items();
@@ -44,7 +44,7 @@ class ProductController extends Controller
     public function search(ProductSearchRequest $productSearchRequest)
     {
         $productSearchProperties = $productSearchRequest->validated();
-        $paginator = $this->productService->getSearchCustomProductsPaginator($productSearchProperties);
+        $paginator = $this->productService->getSearchProductsPaginator($productSearchProperties);
 
         $data = $this->getCommonDataForProductsPage();
         $data['searchKeyword'] = $productSearchProperties['searchKeyword'];
@@ -72,8 +72,8 @@ class ProductController extends Controller
         $data = [];
 
         $data['pageTitle'] = 'Create product';
-        $data['categoryIdNameMap'] = $this->categoryService->getCategoryIdNameMap();
-        $data['brandIdNameMap'] = $this->brandService->getBrandIdNameMap();
+        $data['categoryMap'] = $this->categoryService->getMapFromCategoryIdToCategory();
+        $data['brandMap'] = $this->brandService->getMapFromBrandIdToBrand();
 
         return view('pages.product.product-create-page', ['data' => $data]);
     }
@@ -92,8 +92,8 @@ class ProductController extends Controller
         $data = [];
 
         $data['pageTitle'] = 'Update product';
-        $data['categoryIdNameMap'] = $this->categoryService->getCategoryIdNameMap();
-        $data['brandIdNameMap'] = $this->brandService->getBrandIdNameMap();
+        $data['categoryMap'] = $this->categoryService->getMapFromCategoryIdToCategory(true);
+        $data['brandMap'] = $this->brandService->getMapFromBrandIdToBrand(true);
         $data['product'] = $this->productService->getProductById($productId);
 
         return view('pages.product.product-update-page', ['data' => $data]);

@@ -97,13 +97,16 @@ class BrandService
         $this->brandRepository->deleteById($brandId);
     }
 
-    public function getBrandIdNameMap()
+    public function getMapFromBrandIdToBrand($withDeleted = false)
     {
-        $miniBrands = $this->brandRepository->listAll(['id', 'name']);
+        $miniBrands = $this->brandRepository->listAll(
+            ['id', 'name', 'delete_flag'],
+            $withDeleted
+        );
         $map = [];
 
         foreach ($miniBrands as $miniBrand) {
-            $map[$miniBrand->id] = $miniBrand->name;
+            $map[$miniBrand->id] = $miniBrand;
         }
 
         return $map;
