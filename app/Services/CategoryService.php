@@ -29,7 +29,7 @@ class CategoryService
         return $this->categoryRepository->findById($categoryId);
     }
 
-    public function getListCategoriesPaginator($itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT)
+    public function getCategoriesPaginator($itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT)
     {
         return $this->categoryRepository->searchAndPaginate('', $itemPerPage);
     }

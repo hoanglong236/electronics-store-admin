@@ -1,7 +1,7 @@
 <?php
 
-use App\ModelConstants\OrderStatusConstants;
-use App\ModelConstants\PaymentMethodConstants;
+use App\Models\Constants\OrderStatusConstants;
+use App\Models\Constants\PaymentMethodConstants;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;

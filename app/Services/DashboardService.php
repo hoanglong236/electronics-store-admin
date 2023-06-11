@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Common\Constants;
-use App\ModelConstants\OrderStatusConstants;
+use App\Models\Constants\OrderStatusConstants;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 

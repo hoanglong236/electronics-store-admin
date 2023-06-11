@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\ModelConstants\OrderStatusConstants;
-use App\ModelConstants\PaymentMethodConstants;
+use App\Models\Constants\OrderStatusConstants;
+use App\Models\Constants\PaymentMethodConstants;
 use App\Repositories\ISeederRepository;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;

@@ -15,7 +15,7 @@ class CustomerService
         $this->customerRepository = $customerRepository;
     }
 
-    public function getListCustomersPaginator($itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT)
+    public function getCustomersPaginator($itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT)
     {
         return $this->customerRepository->searchAndPaginate('', $itemPerPage);
     }

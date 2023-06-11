@@ -19,7 +19,7 @@
                         @foreach ($categoryMap as $parentCategoryId => $parentCategory)
                             @if ($category->parent_id === $parentCategoryId)
                                 <option value="{{ $parentCategoryId }}" selected>
-                                    {{ $parentCategory->name . ' (deleted)' }}
+                                    {{ $parentCategory->delete_flag ? $parentCategory->name . ' (deleted)' : $parentCategory->name }}
                                 </option>
                             @elseif (!$parentCategory->delete_flag)
                                 <option value="{{ $parentCategoryId }}">{{ $parentCategory->name }}</option>

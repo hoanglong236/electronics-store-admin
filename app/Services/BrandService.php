@@ -29,7 +29,7 @@ class BrandService
         return $this->brandRepository->findById($brandId);
     }
 
-    public function getListBrandsPaginator($itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT)
+    public function getBrandsPaginator($itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT)
     {
         return $this->brandRepository->searchAndPaginate('', $itemPerPage);
     }

@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Common\Constants;
 use App\Http\Requests\Constants\OrderFilterRequestConstants;
-use App\ModelConstants\OrderStatusConstants;
+use App\Models\Constants\OrderStatusConstants;
 use App\Repositories\IOrderRepository;
 use Illuminate\Support\Facades\Log;
 

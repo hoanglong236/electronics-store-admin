@@ -21,7 +21,7 @@ class CustomerController extends Controller
 
     public function index()
     {
-        $paginator = $this->customerService->getListCustomersPaginator();
+        $paginator = $this->customerService->getCustomersPaginator();
         $data = [];
 
         $data['pageTitle'] = 'Customers';

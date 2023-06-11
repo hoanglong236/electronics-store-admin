@@ -21,7 +21,7 @@ class BrandController extends Controller
 
     public function index()
     {
-        $paginator = $this->brandService->getListBrandsPaginator();
+        $paginator = $this->brandService->getBrandsPaginator();
         $data = [];
 
         $data['pageTitle'] = 'Brands';

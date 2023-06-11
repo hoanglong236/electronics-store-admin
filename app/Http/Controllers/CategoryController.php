@@ -21,7 +21,7 @@ class CategoryController extends Controller
 
     public function index()
     {
-        $paginator = $this->categoryService->getListCategoriesPaginator();
+        $paginator = $this->categoryService->getCategoriesPaginator();
 
         $data = $this->getCommonDataForCategoriesPage();
         $data['categories'] = $paginator->items();

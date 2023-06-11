@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\ModelConstants\OrderStatusConstants;
+use App\Models\Constants\OrderStatusConstants;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Session;

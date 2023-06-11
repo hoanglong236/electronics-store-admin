@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\ModelConstants\AddressType;
+use App\Models\Constants\AddressType;
 use App\Repositories\ISeederRepository;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;

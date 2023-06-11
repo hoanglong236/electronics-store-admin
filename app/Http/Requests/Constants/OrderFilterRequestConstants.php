@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests\Constants;
 
-use App\ModelConstants\OrderStatusConstants;
-use App\ModelConstants\PaymentMethodConstants;
+use App\Models\Constants\OrderStatusConstants;
+use App\Models\Constants\PaymentMethodConstants;
 
 class OrderFilterRequestConstants
 {

@@ -9,7 +9,7 @@ use App\Libs\Excel\ExcelCellStyle;
 use App\Libs\Excel\ExcelPageSetup;
 use App\Libs\Excel\ExcelWorkbook;
 use App\Libs\Excel\ExcelWorksheet;
-use App\ModelConstants\OrderStatusConstants;
+use App\Models\Constants\OrderStatusConstants;
 use App\Services\DashboardService;
 
 class OrderStatisticsExportExcelService extends BaseExcelService

@@ -2,8 +2,6 @@
 
 namespace App\Config;
 
-use App\ModelConstants\OrderStatusConstants;
-
 class Config
 {
     const FOLDER_PATH_BRAND_LOGOS = 'brand_logos';
