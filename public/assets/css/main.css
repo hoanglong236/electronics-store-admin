@@ -423,28 +423,11 @@ span.disable-status {
     color: #ff5555;
 }
 
-.dashboard-search-form-fields {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    row-gap: 5px;
-}
-
 .dashboard-form-group {
     display: inline-flex;
     align-items: center;
     justify-content: flex-start;
     font-size: 1.6rem;
-}
-
-.dashboard-form-group:not(:last-child) {
-    margin-right: 25px;
-}
-
-.dashboard-form-group > label {
-    margin-bottom: 0;
-    margin-right: 8px;
 }
 
 .dashboard-search-date-label {
@@ -517,16 +500,6 @@ table.chart-legend-table tbody td {
     background-color: var(--white-color);
     padding: 25px;
     overflow: hidden;
-}
-
-.report-form-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.report-form-conditions {
-    width: 50%;
 }
 
 .month-report-input {

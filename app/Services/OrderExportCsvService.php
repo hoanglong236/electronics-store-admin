@@ -53,8 +53,6 @@ class OrderExportCsvService
 
     private function exportCsv($customOrdersIterator)
     {
-        ob_start();
-
         $currentDate = date('Y-m-d');
         $fileName = "filter_orders_{$currentDate}.csv";
 
@@ -64,7 +62,6 @@ class OrderExportCsvService
         header('Cache-Control: max-age=604800, must-revalidate');
         header('Pragma: public');
 
-        ob_end_clean();
         $stream = fopen('php://output', 'w');
 
         $columns = [
