@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Concretes;
 
 use App\Models\Order;
+use App\Repositories\IOrderRepository;
 use App\Services\UtilsService;
 use Illuminate\Support\Facades\DB;
 

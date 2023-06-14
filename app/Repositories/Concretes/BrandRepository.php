@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Concretes;
 
 use App\Models\Brand;
+use App\Repositories\IBrandRepository;
 
 class BrandRepository implements IBrandRepository
 {

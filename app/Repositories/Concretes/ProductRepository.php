@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Concretes;
 
 use App\DataFilterConstants\ProductSearchOptionConstants;
 use App\Models\Product;
 use App\Models\ProductImage;
+use App\Repositories\IProductRepository;
 use Illuminate\Support\Facades\DB;
 
 class ProductRepository implements IProductRepository

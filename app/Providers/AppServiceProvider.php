@@ -2,18 +2,18 @@
 
 namespace App\Providers;
 
-use App\Repositories\BrandRepository;
-use App\Repositories\CategoryRepository;
-use App\Repositories\CustomerRepository;
+use App\Repositories\Concretes\BrandRepository;
+use App\Repositories\Concretes\CategoryRepository;
+use App\Repositories\Concretes\CustomerRepository;
+use App\Repositories\Concretes\OrderRepository;
+use App\Repositories\Concretes\ProductRepository;
+use App\Repositories\Concretes\SeederRepository;
 use App\Repositories\IBrandRepository;
 use App\Repositories\ICategoryRepository;
 use App\Repositories\ICustomerRepository;
 use App\Repositories\IOrderRepository;
 use App\Repositories\IProductRepository;
 use App\Repositories\ISeederRepository;
-use App\Repositories\OrderRepository;
-use App\Repositories\ProductRepository;
-use App\Repositories\SeederRepository;
 use App\Services\BrandService;
 use App\Services\CategoryService;
 use App\Services\CustomerService;

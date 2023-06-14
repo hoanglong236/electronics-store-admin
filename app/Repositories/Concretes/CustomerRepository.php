@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Concretes;
 
 use App\Models\Customer;
 use App\Models\CustomerAddress;
+use App\Repositories\ICustomerRepository;
 
 class CustomerRepository implements ICustomerRepository
 {

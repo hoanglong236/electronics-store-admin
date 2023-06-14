@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Concretes;
 
 use App\Models\Category;
+use App\Repositories\ICategoryRepository;
 use Illuminate\Support\Facades\DB;
 
 class CategoryRepository implements ICategoryRepository
