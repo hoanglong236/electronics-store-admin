@@ -2,9 +2,9 @@
 
 namespace App\Repositories\Concretes;
 
+use App\Helpers\DateTimeHelper;
 use App\Models\Order;
 use App\Repositories\IOrderRepository;
-use App\Services\UtilsService;
 use Illuminate\Support\Facades\DB;
 
 class OrderRepository implements IOrderRepository
@@ -58,7 +58,7 @@ class OrderRepository implements IOrderRepository
         }
 
         $queryBuilder->whereBetween('orders.created_at', [
-            $fromDate, UtilsService::dateToEndOfDate($toDate)
+            $fromDate, DateTimeHelper::dateToEndOfDate($toDate)
         ]);
 
         return $queryBuilder->groupBy('orders.id');

@@ -53,8 +53,7 @@ class OrderExportCsvService
 
     private function exportCsv($customOrdersIterator)
     {
-        $currentDate = date('Y-m-d');
-        $fileName = "filter_orders_{$currentDate}.csv";
+        $fileName = "filter_orders_" . date('Y-m-d') . ".csv";
 
         header('Content-Description: File Transfer');
         header('Content-Type: application/csv');
