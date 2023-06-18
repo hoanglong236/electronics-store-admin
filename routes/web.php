@@ -55,6 +55,8 @@ Route::middleware('auth:admin')->group(function () {
     Route::group(['prefix' => 'monthly-report'], function () {
         Route::get('', [MonthlyReportController::class, 'index'])
             ->name('monthly-report.index');
+        Route::get('search', [MonthlyReportController::class, 'search'])
+            ->name('monthly-report.search');
     });
 
     Route::group(['prefix' => 'catalog/brand'], function () {

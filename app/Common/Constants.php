@@ -24,6 +24,8 @@ class Constants
     const BEST_SELLING_CATEGORIES_LIMIT = 3;
     const BEST_SELLING_BRANDS_LIMIT = 3;
 
+    const BEST_SELLER_ITEMS_LIMIT = 3;
+
     private function __construct()
     {
     }
