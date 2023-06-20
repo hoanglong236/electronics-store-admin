@@ -17,10 +17,3 @@
         </div>
     </div>
 </form>
-
-@if ($errors->any())
-    <script>
-        const message = '{{ implode(' ', $errors->all()) }}';
-        alert(message);
-    </script>
-@endif

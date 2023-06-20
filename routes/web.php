@@ -57,6 +57,8 @@ Route::middleware('auth:admin')->group(function () {
             ->name('monthly-report.index');
         Route::get('search', [MonthlyReportController::class, 'search'])
             ->name('monthly-report.search');
+        Route::get('export-excel', [MonthlyReportController::class, 'exportExcel'])
+            ->name('monthly-report.export-excel');
     });
 
     Route::group(['prefix' => 'catalog/brand'], function () {

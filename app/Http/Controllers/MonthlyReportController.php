@@ -42,4 +42,11 @@ class MonthlyReportController extends Controller
 
         return view('pages.monthly-report.monthly-report-page', ['data' => $data]);
     }
+
+    public function exportExcel(MonthlyReportSearchRequest $monthlyReportSearchRequest)
+    {
+        $monthlyReportSearchProperties = $monthlyReportSearchRequest->validated();
+        $month = $monthlyReportSearchProperties['month'];
+        $year = $monthlyReportSearchProperties['year'];
+    }
 }

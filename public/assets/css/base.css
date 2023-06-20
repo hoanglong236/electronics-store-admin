@@ -167,11 +167,12 @@ select.form-control:not([size]):not([multiple]) {
 
 .export-btn {
     background-color: #e5e5e5;
-    border: 1px solid #777;
+    border: 1px solid #999;
 }
 
 .export-btn:hover {
     background-color: #cfcfcf;
+    border-color: #777;
 }
 
 .export-btn > img {
