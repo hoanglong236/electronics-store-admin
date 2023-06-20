@@ -6,7 +6,7 @@ const drawLineChart = ({
 }) => {
     const ctx = document.getElementById(canvasId);
     if (!ctx) {
-        console.log("Can't find orderPlacedChart element");
+        console.log("No element found with id: " + canvasId);
         return;
     }
 
@@ -14,8 +14,6 @@ const drawLineChart = ({
         type: "line",
         data: {
             labels: chartLabels,
-            type: "line",
-            defaultFontFamily: "Poppins",
             datasets: chartDatasets,
         },
         options: chartOptionsObject,
@@ -31,7 +29,7 @@ const drawPieChart = ({
 }) => {
     const ctx = document.getElementById(canvasId);
     if (!ctx) {
-        console.log("Can't find orderPlacedChart element");
+        console.log("No element found with id: " + canvasId);
         return;
     }
 
@@ -53,7 +51,7 @@ const drawBarChart = ({
 }) => {
     const ctx = document.getElementById(canvasId);
     if (!ctx) {
-        console.log("Can't find orderPlacedChart element");
+        console.log("No element found with id: " + canvasId);
         return;
     }
 

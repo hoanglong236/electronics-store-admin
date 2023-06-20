@@ -1,28 +1,30 @@
 const drawOrderPlacedChart = ({
+    canvasId,
     xAxisLabels,
     totalOrderPlacedData,
     totalOrderCancelledData,
+    chartTitle,
 }) => {
     const chartDatasets = [
         {
             label: "Placed",
             data: totalOrderPlacedData,
             backgroundColor: "transparent",
-            borderColor: "#5193f5",
+            borderColor: "rgba(50, 125, 240, 0.6)",
             borderWidth: 3,
             pointRadius: 5,
             pointHoverRadius: 7,
-            pointBackgroundColor: "#5193f5",
+            pointBackgroundColor: "rgba(50, 125, 240, 1)",
         },
         {
             label: "Cancelled",
             data: totalOrderCancelledData,
             backgroundColor: "transparent",
-            borderColor: "#f04a5a",
+            borderColor: "rgba(240, 25, 25, 0.6)",
             borderWidth: 3,
             pointRadius: 5,
             pointHoverRadius: 7,
-            pointBackgroundColor: "#f04a5a",
+            pointBackgroundColor: "rgba(240, 25, 25, 1)",
         },
     ];
 
@@ -67,13 +69,13 @@ const drawOrderPlacedChart = ({
         },
         title: {
             display: true,
-            text: "Order placed chart",
+            text: chartTitle,
             position: "bottom",
         },
     };
 
     drawLineChart({
-        canvasId: "orderPlacedChart",
+        canvasId: canvasId,
         chartLabels: xAxisLabels,
         chartDatasets: chartDatasets,
         chartOptionsObject: chartOptionsObject,
@@ -100,5 +102,7 @@ const parseOrderPlacedDatasetToObject = (dataset) => {
 
 const handleDrawOrderPlacedChart = (dataset) => {
     const obj = parseOrderPlacedDatasetToObject(dataset);
+    obj.canvasId = 'orderPlacedChart';
+    obj.chartTitle = 'Order placed chart';
     drawOrderPlacedChart(obj);
 };

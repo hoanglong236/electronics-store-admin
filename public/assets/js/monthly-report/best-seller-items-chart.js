@@ -8,9 +8,9 @@ const drawBestSellerItemsChart = ({
         {
             label: "Sold quantity",
             data: chartData,
-            borderColor: "#5193f5",
+            borderColor: "rgba(50, 125, 240, 1)",
             borderWidth: "0",
-            backgroundColor: "#6fa7fc",
+            backgroundColor: "rgba(50, 125, 240, 0.6)",
         },
     ];
 
