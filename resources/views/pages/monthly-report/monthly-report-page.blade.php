@@ -43,13 +43,23 @@
     <div class="row mt-4">
         <div class="col-md-12">
             <div class="white-bg-wrapper">
-                @include('pages.monthly-report.components.order-placed-chart', [
-                    'orderPlacedDataset' => $monthlyReportData['orderPlacedDataset'],
+                @include('pages.monthly-report.components.orders-summary-section', [
+                    'ordersSummary' => $monthlyReportData['ordersSummary'],
                 ])
             </div>
         </div>
     </div>
 
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="white-bg-wrapper">
+                @include('pages.monthly-report.components.orders-analysis-section', [
+                    'ordersAnalysis' => $monthlyReportData['ordersAnalysis'],
+                ])
+            </div>
+        </div>
+    </div>
+    {{--
     <div class="row mt-4">
         <div class="col-md-12">
             <div class="white-bg-wrapper">
@@ -90,7 +100,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 @endsection
 
 @if ($errors->any())

@@ -611,3 +611,8 @@ table.chart-legend-table tbody td {
     font-weight: 400;
     color: #666;
 }
+
+.pie-chart-legend-wrapper {
+    font-size: 1.3rem;
+    line-height: 1.6rem;
+}

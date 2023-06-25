@@ -18,15 +18,16 @@ class MonthlyReportService
     {
         $data = [];
 
-        $data['orderPlacedDataset'] = $this->monthlyReportRepository
-            ->getOrderPlacedDataset($month, $year);
-        $data['numberRegisteredCustomers'] = $this->monthlyReportRepository
-            ->getNumberOfRegisteredCustomers($month, $year);
-        $data['bestSellerProducts'] = $this->monthlyReportRepository
+        $data['ordersSummary'] = $this->monthlyReportRepository
+            ->getOrdersSummaryDataInMonth($month, $year);
+        $data['ordersAnalysis'] = $this->monthlyReportRepository
+            ->getOrdersAnalysisDataByDayOfMonth($month, $year);
+
+        $data['bestSeller']['products'] = $this->monthlyReportRepository
             ->getBestSellerProducts($month, $year);
-        $data['bestSellerBrands'] = $this->monthlyReportRepository
+        $data['bestSeller']['brands'] = $this->monthlyReportRepository
             ->getBestSellerBrands($month, $year);
-        $data['bestSellerCategories'] = $this->monthlyReportRepository
+        $data['bestSeller']['categories'] = $this->monthlyReportRepository
             ->getBestSellerCategories($month, $year);
 
         return $data;

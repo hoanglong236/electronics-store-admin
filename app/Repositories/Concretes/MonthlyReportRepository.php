@@ -5,63 +5,81 @@ namespace App\Repositories\Concretes;
 use App\Common\Constants;
 use App\Helpers\DateTimeHelper;
 use App\Models\Constants\OrderStatusConstants;
-use App\Models\Customer;
 use App\Repositories\IMonthlyReportRepository;
 use Illuminate\Support\Facades\DB;
 
 class MonthlyReportRepository implements IMonthlyReportRepository
 {
-    public function getOrderPlacedDataset(int $month, int $year)
+    private function getOrderValueTableQueryBuilder(int $month, int $year)
     {
         $firstDateOfMonth = DateTimeHelper::getFirstDateOfMonth($month, $year);
         $lastDateOfMonth = DateTimeHelper::getLastDateOfMonth($month, $year);
 
-        $result = DB::table('orders')
+        return DB::table('orders')
+            ->join('order_items', 'order_items.order_id', '=', 'orders.id')
             ->select([
-                DB::raw('day(created_at) as `day`'),
-                DB::raw('count(*) as `total_placed`'),
-                DB::raw('count(case when status = "Cancelled" then 1 else NULL end) as `total_cancelled`'),
+                'orders.id',
+                'orders.status',
+                'orders.created_at',
+                DB::raw('SUM(order_items.total_price) AS value')
             ])
             ->whereBetween('created_at', [
                 $firstDateOfMonth, DateTimeHelper::dateToEndOfDate($lastDateOfMonth)
             ])
+            ->groupBy('orders.id');
+    }
+
+    public function getOrdersSummaryDataInMonth(int $month, int $year)
+    {
+        $orderValueTableQueryBuilder = $this->getOrderValueTableQueryBuilder($month, $year);
+        return DB::table($orderValueTableQueryBuilder, 'ov')
+            ->select([
+                DB::raw('COUNT(*) as placed'),
+                DB::raw('SUM(value) as placed_value'),
+                DB::raw('COUNT(CASE WHEN status = "Cancelled" THEN 1 ELSE NULL END) as cancelled'),
+                DB::raw('SUM(CASE WHEN status = "Cancelled" THEN value ELSE 0 END) as cancelled_value'),
+            ])
+            ->first();
+    }
+
+    public function getOrdersAnalysisDataByDayOfMonth(int $month, int $year)
+    {
+        $orderValueTableQueryBuilder = $this->getOrderValueTableQueryBuilder($month, $year);
+        $result = DB::table($orderValueTableQueryBuilder, 'ov')
+            ->select([
+                DB::raw('DAY(created_at) as day'),
+                DB::raw('COUNT(*) as placed'),
+                DB::raw('SUM(value) as placed_value'),
+                DB::raw('COUNT(CASE WHEN status = "Cancelled" THEN 1 ELSE NULL END) as cancelled'),
+                DB::raw('SUM(CASE WHEN status = "Cancelled" THEN value ELSE 0 END) as cancelled_value'),
+            ])
             ->groupByRaw('day')
-            ->orderBy('day')
+            ->orderByRaw('day')
             ->get();
 
-        $dataset = [];
         $resultIndex = 0;
         $resultCount = count($result);
+        $lastDayOfMonth = DateTimeHelper::getLastDayOfMonth($month, $year);
+        $dataReturn = [];
 
-        for ($day = 1; $day <= DateTimeHelper::getLastDayOfMonth($month, $year); $day++) {
-            $totalPlaced = 0;
-            $totalCancelled = 0;
+        for ($day = 1; $day <= $lastDayOfMonth; $day++) {
+            $record = (object) [
+                'day' => $day,
+                'placed' => 0,
+                'placed_value' => 0,
+                'cancelled' => 0,
+                'cancelled_value' => 0
+            ];
 
             if ($resultIndex < $resultCount && $result[$resultIndex]->day === $day) {
-                $totalPlaced = $result[$resultIndex]->total_placed;
-                $totalCancelled = $result[$resultIndex]->total_cancelled;
+                $record = $result[$resultIndex];
                 $resultIndex++;
             }
 
-            $dataset[] = [
-                'day' => $day,
-                'totalPlaced' => $totalPlaced,
-                'totalCancelled' => $totalCancelled
-            ];
+            $dataReturn[] = $record;
         }
 
-        return $dataset;
-    }
-
-    public function getNumberOfRegisteredCustomers(int $month, int $year)
-    {
-        $firstDateOfMonth = DateTimeHelper::getFirstDateOfMonth($month, $year);
-        $lastDateOfMonth = DateTimeHelper::getLastDateOfMonth($month, $year);
-
-        return Customer::whereBetween('created_at', [
-            $firstDateOfMonth, DateTimeHelper::dateToEndOfDate($lastDateOfMonth)
-        ])
-            ->count();
+        return $dataReturn;
     }
 
     public function getBestSellerProducts(int $month, int $year)
@@ -75,7 +93,7 @@ class MonthlyReportRepository implements IMonthlyReportRepository
             ->select([
                 'products.id',
                 'products.name',
-                DB::raw('sum(order_items.quantity) as sold_quantity'),
+                DB::raw('sum(order_items.quantity) as sold_qty'),
             ])
             ->whereBetween('orders.created_at', [
                 $firstDateOfMonth, DateTimeHelper::dateToEndOfDate($lastDateOfMonth)
@@ -98,7 +116,7 @@ class MonthlyReportRepository implements IMonthlyReportRepository
             ->select([
                 'categories.id',
                 'categories.name',
-                DB::raw('sum(order_items.quantity) as sold_quantity'),
+                DB::raw('sum(order_items.quantity) as sold_qty'),
             ])
             ->whereBetween('orders.created_at', [
                 $firstDateOfMonth, DateTimeHelper::dateToEndOfDate($lastDateOfMonth)
@@ -120,7 +138,7 @@ class MonthlyReportRepository implements IMonthlyReportRepository
             ->select([
                 'brands.id',
                 'brands.name',
-                DB::raw('sum(order_items.quantity) as sold_quantity'),
+                DB::raw('sum(order_items.quantity) as sold_qty'),
             ])
             ->whereBetween('orders.created_at', [
                 $firstDateOfMonth, DateTimeHelper::dateToEndOfDate($lastDateOfMonth)
