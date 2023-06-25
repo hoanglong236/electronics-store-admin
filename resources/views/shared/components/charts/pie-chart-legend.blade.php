@@ -15,7 +15,9 @@
                     <span class="dot" style="background-color: {{ $chartElementColors[$index] }}"></span>
                 </td>
                 <td>{{ $element['label'] }}</td>
-                <td>{{ number_format($element['value']) }}</td>
+                <td>
+                    {{ is_int($element['value']) ? number_format($element['value']) : number_format($element['value'], 3) }}
+                </td>
                 <td>{{ round(($element['value'] / $total) * 100, 2) }}%</td>
             </tr>
         @endforeach

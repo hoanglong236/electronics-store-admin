@@ -66,7 +66,7 @@
     <script src="{{ asset('assets/js/main.js') }}"></script>
 
     <!-- Utils JS -->
-    <script src="{{ asset('assets/js/draw-chart.js') }}"></script>
+    <script src="{{ asset('assets/js/chart-utils.js') }}"></script>
     @stack('scripts')
 </body>
 

@@ -23,11 +23,11 @@ class MonthlyReportService
         $data['ordersAnalysis'] = $this->monthlyReportRepository
             ->getOrdersAnalysisDataByDayOfMonth($month, $year);
 
-        $data['bestSeller']['products'] = $this->monthlyReportRepository
+        $data['bestSellers']['products'] = $this->monthlyReportRepository
             ->getBestSellerProducts($month, $year);
-        $data['bestSeller']['brands'] = $this->monthlyReportRepository
+        $data['bestSellers']['brands'] = $this->monthlyReportRepository
             ->getBestSellerBrands($month, $year);
-        $data['bestSeller']['categories'] = $this->monthlyReportRepository
+        $data['bestSellers']['categories'] = $this->monthlyReportRepository
             ->getBestSellerCategories($month, $year);
 
         return $data;

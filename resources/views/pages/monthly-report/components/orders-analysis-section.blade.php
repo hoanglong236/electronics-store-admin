@@ -4,8 +4,9 @@
     </div>
 
     <canvas id="ordersQtyAnalysisChart"></canvas>
-    <div class="m-b-50"></div>
+    <div class="m-b-40"></div>
     <canvas id="ordersValueAnalysisChart"></canvas>
+    <div class="mb-4"></div>
 </div>
 
 @php
@@ -28,13 +29,13 @@
             'label' => 'Placed',
             'data' => $ordersPlacedQtyArray,
             'lineColor' => 'rgba(50, 125, 240, 0.6)',
-            'pointColor' => 'rgba(50, 125, 240, 1)',
+            'pointColor' => 'rgb(50, 125, 240)',
         ],
         (object) [
             'label' => 'Cancelled',
             'data' => $ordersCancelledQtyArray,
             'lineColor' => 'rgba(225, 40, 30, 0.6)',
-            'pointColor' => 'rgba(225, 40, 30, 1)',
+            'pointColor' => 'rgb(225, 40, 30)',
         ],
     ];
     $ordersValueAnalysisDatasetPropertiesObjects = [
@@ -42,13 +43,13 @@
             'label' => 'Placed',
             'data' => $ordersPlacedValueArray,
             'lineColor' => 'rgba(50, 125, 240, 0.6)',
-            'pointColor' => 'rgba(50, 125, 240, 1)',
+            'pointColor' => 'rgb(50, 125, 240)',
         ],
         (object) [
             'label' => 'Cancelled',
             'data' => $ordersCancelledValueArray,
             'lineColor' => 'rgba(225, 40, 30, 0.6)',
-            'pointColor' => 'rgba(225, 40, 30, 1)',
+            'pointColor' => 'rgb(225, 40, 30)',
         ],
     ];
 @endphp

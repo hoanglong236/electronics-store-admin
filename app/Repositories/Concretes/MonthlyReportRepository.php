@@ -93,7 +93,7 @@ class MonthlyReportRepository implements IMonthlyReportRepository
             ->select([
                 'products.id',
                 'products.name',
-                DB::raw('sum(order_items.quantity) as sold_qty'),
+                DB::raw('sum(order_items.quantity) as quantity'),
             ])
             ->whereBetween('orders.created_at', [
                 $firstDateOfMonth, DateTimeHelper::dateToEndOfDate($lastDateOfMonth)
@@ -116,7 +116,7 @@ class MonthlyReportRepository implements IMonthlyReportRepository
             ->select([
                 'categories.id',
                 'categories.name',
-                DB::raw('sum(order_items.quantity) as sold_qty'),
+                DB::raw('sum(order_items.quantity) as quantity'),
             ])
             ->whereBetween('orders.created_at', [
                 $firstDateOfMonth, DateTimeHelper::dateToEndOfDate($lastDateOfMonth)
@@ -138,7 +138,7 @@ class MonthlyReportRepository implements IMonthlyReportRepository
             ->select([
                 'brands.id',
                 'brands.name',
-                DB::raw('sum(order_items.quantity) as sold_qty'),
+                DB::raw('sum(order_items.quantity) as quantity'),
             ])
             ->whereBetween('orders.created_at', [
                 $firstDateOfMonth, DateTimeHelper::dateToEndOfDate($lastDateOfMonth)

@@ -1,3 +1,33 @@
+const breakLongTextToArray = (text) => {
+    const breakSize = 12;
+    const arr = [];
+
+    if (!text.includes(" ")) {
+        for (let i = 0; i < text.length; i += breakSize) {
+            arr.push(text.slice(i, i + breakSize));
+        }
+    } else {
+        let oddSpace = false;
+        let startIndex = 0;
+        for (let i = 0; i < text.length; i++) {
+            if (text[i] !== " ") {
+                continue;
+            }
+
+            oddSpace = !oddSpace;
+            if (oddSpace) {
+                continue;
+            }
+
+            arr.push(text.slice(startIndex, i));
+            startIndex = i + 1;
+        }
+        arr.push(text.slice(startIndex));
+    }
+
+    return arr;
+};
+
 const drawLineChart = ({
     canvasId,
     chartLabels,

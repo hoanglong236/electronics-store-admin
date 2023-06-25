@@ -59,48 +59,16 @@
             </div>
         </div>
     </div>
-    {{--
+
     <div class="row mt-4">
         <div class="col-md-12">
             <div class="white-bg-wrapper">
-                <div class="row">
-                    <div class="col-md-6">
-                        @include('pages.monthly-report.components.best-seller-items-chart', [
-                            'chartData' => [
-                                'title' => 'Best-seller Brands',
-                                'chartElementId' => 'bestSellerBrands',
-                                'chartElementTitle' => 'Best-seller Brands Chart',
-                                'bestSellerItems' => $monthlyReportData['bestSellerBrands'],
-                            ],
-                        ])
-                    </div>
-                    <div class="col-md-6">
-                        @include('pages.monthly-report.components.best-seller-items-chart', [
-                            'chartData' => [
-                                'title' => 'Best-seller Categories',
-                                'chartElementId' => 'bestSellerCategories',
-                                'chartElementTitle' => 'Best-seller Categories Chart',
-                                'bestSellerItems' => $monthlyReportData['bestSellerCategories'],
-                            ],
-                        ])
-                    </div>
-                </div>
-
-                <div class="row m-t-25">
-                    <div class="col-md-12">
-                        @include('pages.monthly-report.components.best-seller-items-chart', [
-                            'chartData' => [
-                                'title' => 'Best-seller Products',
-                                'chartElementId' => 'bestSellerProducts',
-                                'chartElementTitle' => 'Best-seller Products Chart',
-                                'bestSellerItems' => $monthlyReportData['bestSellerProducts'],
-                            ],
-                        ])
-                    </div>
-                </div>
+                @include('pages.monthly-report.components.best-sellers-section', [
+                    'bestSellers' => $monthlyReportData['bestSellers'],
+                ])
             </div>
         </div>
-    </div> --}}
+    </div>
 @endsection
 
 @if ($errors->any())
