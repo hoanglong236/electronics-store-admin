@@ -3,51 +3,51 @@
         <h3 class="chart-header-title">Analysis of orders by day of the month</h3>
     </div>
 
-    <canvas id="ordersQtyAnalysisChart"></canvas>
+    <canvas id="orderQtyAnalysisChart"></canvas>
     <div class="m-b-40"></div>
-    <canvas id="ordersValueAnalysisChart"></canvas>
+    <canvas id="orderValueAnalysisChart"></canvas>
     <div class="mb-4"></div>
 </div>
 
 @php
     $chartLabels = [];
-    $ordersPlacedQtyArray = [];
-    $ordersPlacedValueArray = [];
-    $ordersCancelledQtyArray = [];
-    $ordersCancelledValueArray = [];
+    $placedQtyArray = [];
+    $placedValueArray = [];
+    $cancelledQtyArray = [];
+    $cancelledValueArray = [];
 
-    foreach ($ordersAnalysis as $item) {
+    foreach ($analysisData as $item) {
         $chartLabels[] = $item->day;
-        $ordersPlacedQtyArray[] = $item->placed;
-        $ordersPlacedValueArray[] = $item->placed_value / 1000;
-        $ordersCancelledQtyArray[] = $item->cancelled;
-        $ordersCancelledValueArray[] = $item->cancelled_value / 1000;
+        $placedQtyArray[] = $item->placed;
+        $placedValueArray[] = $item->placed_value / 1000;
+        $cancelledQtyArray[] = $item->cancelled;
+        $cancelledValueArray[] = $item->cancelled_value / 1000;
     }
 
-    $ordersQtyAnalisisDatasetPropertiesObjects = [
+    $orderQtyAnalisisDatasetPropertiesObjects = [
         (object) [
             'label' => 'Placed',
-            'data' => $ordersPlacedQtyArray,
+            'data' => $placedQtyArray,
             'lineColor' => 'rgba(50, 125, 240, 0.6)',
             'pointColor' => 'rgb(50, 125, 240)',
         ],
         (object) [
             'label' => 'Cancelled',
-            'data' => $ordersCancelledQtyArray,
+            'data' => $cancelledQtyArray,
             'lineColor' => 'rgba(225, 40, 30, 0.6)',
             'pointColor' => 'rgb(225, 40, 30)',
         ],
     ];
-    $ordersValueAnalysisDatasetPropertiesObjects = [
+    $orderValueAnalysisDatasetPropertiesObjects = [
         (object) [
             'label' => 'Placed',
-            'data' => $ordersPlacedValueArray,
+            'data' => $placedValueArray,
             'lineColor' => 'rgba(50, 125, 240, 0.6)',
             'pointColor' => 'rgb(50, 125, 240)',
         ],
         (object) [
             'label' => 'Cancelled',
-            'data' => $ordersCancelledValueArray,
+            'data' => $cancelledValueArray,
             'lineColor' => 'rgba(225, 40, 30, 0.6)',
             'pointColor' => 'rgb(225, 40, 30)',
         ],
@@ -61,16 +61,16 @@
 @push('scripts')
     <script>
         drawMonthlyReportLineChart({
-            canvasId: 'ordersQtyAnalysisChart',
+            canvasId: 'orderQtyAnalysisChart',
             chartLabels: {{ Js::from($chartLabels) }},
-            chartTitle: 'Orders quantity analysis',
-            datasetPropertiesObjects: {{ Js::from($ordersQtyAnalisisDatasetPropertiesObjects) }}
+            chartTitle: 'Order quantity analysis',
+            datasetPropertiesObjects: {{ Js::from($orderQtyAnalisisDatasetPropertiesObjects) }}
         });
         drawMonthlyReportLineChart({
-            canvasId: 'ordersValueAnalysisChart',
+            canvasId: 'orderValueAnalysisChart',
             chartLabels: {{ Js::from($chartLabels) }},
-            chartTitle: 'Orders value analysis (in thousands of dollars)',
-            datasetPropertiesObjects: {{ Js::from($ordersValueAnalysisDatasetPropertiesObjects) }}
+            chartTitle: 'Order value analysis (in thousands of dollars)',
+            datasetPropertiesObjects: {{ Js::from($orderValueAnalysisDatasetPropertiesObjects) }}
         });
     </script>
 @endpush

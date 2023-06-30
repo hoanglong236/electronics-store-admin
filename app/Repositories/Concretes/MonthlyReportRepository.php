@@ -29,7 +29,7 @@ class MonthlyReportRepository implements IMonthlyReportRepository
             ->groupBy('orders.id');
     }
 
-    public function getOrdersSummaryDataInMonth(int $month, int $year)
+    public function getOrderSummaryDataInMonth(int $month, int $year)
     {
         $orderValueTableQueryBuilder = $this->getOrderValueTableQueryBuilder($month, $year);
         return DB::table($orderValueTableQueryBuilder, 'ov')
@@ -42,7 +42,7 @@ class MonthlyReportRepository implements IMonthlyReportRepository
             ->first();
     }
 
-    public function getOrdersAnalysisDataByDayOfMonth(int $month, int $year)
+    public function getOrderAnalysisDataByDayOfMonth(int $month, int $year)
     {
         $orderValueTableQueryBuilder = $this->getOrderValueTableQueryBuilder($month, $year);
         $result = DB::table($orderValueTableQueryBuilder, 'ov')

@@ -40,35 +40,43 @@
         $monthlyReportData = $data['monthlyReportData'];
     @endphp
 
-    <div class="row mt-4">
-        <div class="col-md-12">
-            <div class="white-bg-wrapper">
-                @include('pages.monthly-report.components.orders-summary-section', [
-                    'ordersSummary' => $monthlyReportData['ordersSummary'],
-                ])
+    @if ($monthlyReportData)
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <div class="white-bg-wrapper">
+                    @include('pages.monthly-report.components.order-summary-section', [
+                        'summaryData' => $monthlyReportData['order']['summary'],
+                    ])
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="row mt-4">
-        <div class="col-md-12">
-            <div class="white-bg-wrapper">
-                @include('pages.monthly-report.components.orders-analysis-section', [
-                    'ordersAnalysis' => $monthlyReportData['ordersAnalysis'],
-                ])
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <div class="white-bg-wrapper">
+                    @include('pages.monthly-report.components.order-analysis-section', [
+                        'analysisData' => $monthlyReportData['order']['analysis'],
+                    ])
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="row mt-4">
-        <div class="col-md-12">
-            <div class="white-bg-wrapper">
-                @include('pages.monthly-report.components.best-sellers-section', [
-                    'bestSellers' => $monthlyReportData['bestSellers'],
-                ])
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <div class="white-bg-wrapper">
+                    @include('pages.monthly-report.components.best-sellers-section', [
+                        'bestSellers' => $monthlyReportData['bestSellers'],
+                    ])
+                </div>
             </div>
         </div>
-    </div>
+    @else
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <div class="white-bg-wrapper">No data.</div>
+            </div>
+        </div>
+    @endif
 @endsection
 
 @if ($errors->any())

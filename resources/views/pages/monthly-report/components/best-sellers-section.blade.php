@@ -25,7 +25,7 @@
     }
     $bestSellerBrandsDatasetPropertiesObjects = [
         (object) [
-            'label' => 'Sold quantity',
+            'label' => 'Qty sold',
             'data' => $brandQtyData,
             'backgroundColor' => 'rgba(50, 125, 240, 0.6)',
             'borderColor' => 'rgb(50, 125, 240)',
@@ -40,7 +40,7 @@
     }
     $bestSellerCategoriesDatasetPropertiesObjects = [
         (object) [
-            'label' => 'Sold quantity',
+            'label' => 'Qty sold',
             'data' => $categoryQtyData,
             'backgroundColor' => 'rgba(50, 125, 240, 0.6)',
             'borderColor' => 'rgb(50, 125, 240)',
@@ -55,7 +55,7 @@
     }
     $bestSellerProductsDatasetPropertiesObjects = [
         (object) [
-            'label' => 'Sold quantity',
+            'label' => 'Qty sold',
             'data' => $productQtyData,
             'backgroundColor' => 'rgba(50, 125, 240, 0.6)',
             'borderColor' => 'rgb(50, 125, 240)',
