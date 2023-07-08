@@ -2,10 +2,8 @@
 
 namespace App\Libs\Excel;
 
-use App\Libs\Excel\Constants\ExcelCellValueType;
-use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
+use App\Libs\Excel\Constants\ExcelDataType;
 use PhpOffice\PhpSpreadsheet\Cell\Hyperlink;
-use PhpOffice\PhpSpreadsheet\Style\Style;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class ExcelWorksheet
@@ -21,7 +19,7 @@ class ExcelWorksheet
         int $row,
         int $col,
         $value,
-        string $dataType = ExcelCellValueType::STRING
+        string $dataType = ExcelDataType::STRING
     ) {
         $this->worksheet->setCellValueExplicit([$col, $row], $value, $dataType);
     }
@@ -48,14 +46,13 @@ class ExcelWorksheet
             $this->setCellStyle($row, $col, $hyperLinkStyle);
         }
 
-        $cellAddress = static::getCellAddress($row, $col);
+        $cellAddress = ExcelUtils::getCellAddress($row, $col);
         $this->worksheet->setHyperlink($cellAddress, new Hyperlink($url, $tooltip));
     }
 
     public function setCellStyle(int $row, int $col, ExcelCellStyle $excelCellStyle)
     {
-        $styleToApply = $this->worksheet->getStyle([$col, $row]);
-        $this->applyStyleFromExcelCellStyle($styleToApply, $excelCellStyle);
+        $this->applyRangeStyle([$col, $row], $excelCellStyle);
     }
 
     public function setRangeStyle(
@@ -65,35 +62,36 @@ class ExcelWorksheet
         int $colEnd,
         ExcelCellStyle $excelCellStyle
     ) {
-        $styleToApply = $this->worksheet->getStyle([$colStart, $rowStart, $colEnd, $rowEnd]);
-        $this->applyStyleFromExcelCellStyle($styleToApply, $excelCellStyle);
+        $this->applyRangeStyle([$colStart, $rowStart, $colEnd, $rowEnd], $excelCellStyle);
     }
 
-    private function applyStyleFromExcelCellStyle(Style $styleToApply, ExcelCellStyle $excelCellStyle)
+    private function applyRangeStyle(array $range, ExcelCellStyle $excelCellStyle)
     {
+        $rangeStyle = $this->worksheet->getStyle($range);
+
         $fontProps = $excelCellStyle->getFontProps();
         if (count($fontProps) > 0) {
-            $styleToApply->getFont()->applyFromArray($fontProps);
+            $rangeStyle->getFont()->applyFromArray($fontProps);
         }
 
         $borderProps = $excelCellStyle->getBorderProps();
         if (count($borderProps) > 0) {
-            $styleToApply->getBorders()->applyFromArray($borderProps);
+            $rangeStyle->getBorders()->applyFromArray($borderProps);
         }
 
         $alignmentProps = $excelCellStyle->getAlignmentProps();
         if ($alignmentProps) {
-            $styleToApply->getAlignment()->applyFromArray($alignmentProps);
+            $rangeStyle->getAlignment()->applyFromArray($alignmentProps);
         }
 
         $fillProps = $excelCellStyle->getFillProps();
         if ($fillProps) {
-            $styleToApply->getFill()->applyFromArray($fillProps);
+            $rangeStyle->getFill()->applyFromArray($fillProps);
         }
 
         $numberFormatProps = $excelCellStyle->getNumberFormatProps();
         if ($numberFormatProps) {
-            $styleToApply->getNumberFormat()->applyFromArray($numberFormatProps);
+            $rangeStyle->getNumberFormat()->applyFromArray($numberFormatProps);
         }
     }
 
@@ -153,15 +151,5 @@ class ExcelWorksheet
         if ($printGirdLines) {
             $this->worksheet->setPrintGridLines($printGirdLines);
         }
-    }
-
-    public static function getCellAddress(int $row, int $col)
-    {
-        return static::getColumnAddress($col) . ($row);
-    }
-
-    public static function getColumnAddress(int $col)
-    {
-        return Coordinate::stringFromColumnIndex($col);
     }
 }

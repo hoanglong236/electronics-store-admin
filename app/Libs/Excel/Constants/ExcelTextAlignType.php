@@ -4,7 +4,7 @@ namespace App\Libs\Excel\Constants;
 
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 
-class ExcelTextAlignmentType
+class ExcelTextAlignType
 {
     const HORIZONTAL_GENERAL = Alignment::HORIZONTAL_GENERAL;
     const HORIZONTAL_LEFT = Alignment::HORIZONTAL_LEFT;

@@ -4,7 +4,7 @@ namespace App\Libs\Excel\Constants;
 
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
 
-class ExcelCellValueType
+class ExcelDataType
 {
     const STRING = DataType::TYPE_STRING;
     const FORMULA = DataType::TYPE_FORMULA;

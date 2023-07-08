@@ -37,8 +37,8 @@ class ExcelCellStyle
     /**
      * Example:
      * [
-     *     'horizontal' => ExcelTextAlignmentType::HORIZONTAL_GENERAL,
-     *     'vertical' => ExcelTextAlignmentType::VERTICAL_CENTER,
+     *     'horizontal' => ExcelTextAlignType::HORIZONTAL_GENERAL,
+     *     'vertical' => ExcelTextAlignType::VERTICAL_CENTER,
      *     'wrapText' => true,
      *     'indent' => 1,
      * ]
@@ -151,7 +151,7 @@ class ExcelCellStyle
     /**
      * Set the horizontal align
      *
-     * @param string $align see ExcelTextAlignmentType::HORIZONTAL_*
+     * @param string $align see ExcelTextAlignType::HORIZONTAL_*
      *
      * @return $this
      */
@@ -164,7 +164,7 @@ class ExcelCellStyle
     /**
      * Set the vertical align
      *
-     * @param string $align see ExcelTextAlignmentType::VERTICAL_*
+     * @param string $align see ExcelTextAlignType::VERTICAL_*
      *
      * @return $this
      */
