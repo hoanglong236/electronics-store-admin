@@ -8,7 +8,7 @@
             <canvas id="orderQtyChart"></canvas>
         </div>
         <div class="col-md-6 mb-4">
-            <canvas id="orderAvgQtyChart"></canvas>
+            <canvas id="orderAvgQtyByDayChart"></canvas>
         </div>
     </div>
 
@@ -17,10 +17,10 @@
             <canvas id="orderValueChart"></canvas>
         </div>
         <div class="col-md-4 mb-4">
-            <canvas id="orderAvgValueByDayChart"></canvas>
+            <canvas id="orderAvgTotalValueByDayChart"></canvas>
         </div>
         <div class="col-md-4 mb-4">
-            <canvas id="orderAvgValueByQtyChart"></canvas>
+            <canvas id="orderAvgValueChart"></canvas>
         </div>
     </div>
 </div>
@@ -30,20 +30,20 @@
         (object) [
             'label' => 'Qty',
             'data' => [
-                $summaryData['all']['qty']['placed'],
-                $summaryData['all']['qty']['cancelled']
+                $summaryData['total']['qty']['placed'],
+                $summaryData['total']['qty']['cancelled']
             ],
             'backgroundColor' => 'rgba(50, 125, 240, 0.6)',
             'borderColor' => 'rgb(50, 125, 240)',
         ],
     ];
 
-    $orderAvgQtyChartDatasetPropertiesObjects = [
+    $orderAvgQtyByDayChartDatasetPropertiesObjects = [
         (object) [
             'label' => 'Qty',
             'data' => [
-                number_format($summaryData['avg']['qty']['placed'], 2),
-                number_format($summaryData['avg']['qty']['cancelled'], 2)
+                number_format($summaryData['avg']['qtyByDay']['placed'], 2),
+                number_format($summaryData['avg']['qtyByDay']['cancelled'], 2)
             ],
             'backgroundColor' => 'rgba(50, 125, 240, 0.6)',
             'borderColor' => 'rgb(50, 125, 240)',
@@ -54,32 +54,32 @@
         (object) [
             'label' => 'Value',
             'data' => [
-                $summaryData['all']['value']['placed'] / 1000,
-                $summaryData['all']['value']['cancelled'] / 1000
+                $summaryData['total']['value']['placed'] / 1000,
+                $summaryData['total']['value']['cancelled'] / 1000
             ],
             'backgroundColor' => 'rgba(50, 125, 240, 0.6)',
             'borderColor' => 'rgb(50, 125, 240)',
         ],
     ];
 
-    $orderAvgValueByDayChartDatasetPropertiesObjects = [
+    $orderAvgTotalValueByDayChartDatasetPropertiesObjects = [
         (object) [
             'label' => 'Value',
             'data' => [
-                floatval(number_format($summaryData['avg']['valueByDay']['placed'] / 1000, 2)),
-                floatval(number_format($summaryData['avg']['valueByDay']['cancelled'] / 1000, 2))
+                floatval(number_format($summaryData['avg']['totalValueByDay']['placed'] / 1000, 2)),
+                floatval(number_format($summaryData['avg']['totalValueByDay']['cancelled'] / 1000, 2))
             ],
             'backgroundColor' => 'rgba(50, 125, 240, 0.6)',
             'borderColor' => 'rgb(50, 125, 240)',
         ],
     ];
 
-    $orderAvgValueByQtyChartDatasetPropertiesObjects = [
+    $orderAvgValueChartDatasetPropertiesObjects = [
         (object) [
             'label' => 'Value',
             'data' => [
-                floatval(number_format($summaryData['avg']['valueByQty']['placed'] / 1000, 2)),
-                floatval(number_format($summaryData['avg']['valueByQty']['cancelled'] / 1000, 2))
+                floatval(number_format($summaryData['avg']['value']['placed'] / 1000, 2)),
+                floatval(number_format($summaryData['avg']['value']['cancelled'] / 1000, 2))
             ],
             'backgroundColor' => 'rgba(50, 125, 240, 0.6)',
             'borderColor' => 'rgb(50, 125, 240)',
@@ -101,31 +101,31 @@
         });
 
         drawMonthlyReportBarChart({
-            canvasId: 'orderAvgQtyChart',
+            canvasId: 'orderAvgQtyByDayChart',
             chartLabels: ['Placed', 'Cancelled'],
-            chartTitle: 'Avg order quantity by day',
-            datasetPropertiesObjects: {{ Js::from($orderAvgQtyChartDatasetPropertiesObjects) }}
+            chartTitle: 'Avg. order quantity by day',
+            datasetPropertiesObjects: {{ Js::from($orderAvgQtyByDayChartDatasetPropertiesObjects) }}
         });
 
         drawMonthlyReportBarChart({
             canvasId: 'orderValueChart',
             chartLabels: ['Placed', 'Cancelled'],
-            chartTitle: 'Total order value (in K dollars)',
+            chartTitle: 'Order value (in K dollars)',
             datasetPropertiesObjects: {{ Js::from($orderValueChartDatasetPropertiesObjects) }}
         });
 
         drawMonthlyReportBarChart({
-            canvasId: 'orderAvgValueByDayChart',
+            canvasId: 'orderAvgTotalValueByDayChart',
             chartLabels: ['Placed', 'Cancelled'],
-            chartTitle: 'Avg order value by day (in K dollars)',
-            datasetPropertiesObjects: {{ Js::from($orderAvgValueByDayChartDatasetPropertiesObjects) }}
+            chartTitle: 'Avg. total order value by day (in K dollars)',
+            datasetPropertiesObjects: {{ Js::from($orderAvgTotalValueByDayChartDatasetPropertiesObjects) }}
         });
 
         drawMonthlyReportBarChart({
-            canvasId: 'orderAvgValueByQtyChart',
+            canvasId: 'orderAvgValueChart',
             chartLabels: ['Placed', 'Cancelled'],
-            chartTitle: 'Avg order value by qty (in K dollars)',
-            datasetPropertiesObjects: {{ Js::from($orderAvgValueByQtyChartDatasetPropertiesObjects) }}
+            chartTitle: 'Avg. order value (in K dollars)',
+            datasetPropertiesObjects: {{ Js::from($orderAvgValueChartDatasetPropertiesObjects) }}
         });
     </script>
 @endpush

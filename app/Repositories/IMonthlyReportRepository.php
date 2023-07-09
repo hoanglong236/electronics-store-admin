@@ -4,7 +4,6 @@ namespace App\Repositories;
 
 interface IMonthlyReportRepository
 {
-    public function getOrderSummaryDataInMonth(int $month, int $year);
     public function getOrderAnalysisDataByDayOfMonth(int $month, int $year);
 
     public function getBestSellerProducts(int $month, int $year);

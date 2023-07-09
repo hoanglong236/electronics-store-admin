@@ -3,16 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\MonthlyReportSearchRequest;
+use App\Services\Exports\MonthlyReportExportExcelService;
 use App\Services\MonthlyReportService;
 use Illuminate\Http\Request;
 
 class MonthlyReportController extends Controller
 {
     private $monthlyReportService;
+    private $monthlyReportExportExcelService;
 
-    public function __construct(MonthlyReportService $monthlyReportService)
-    {
+    public function __construct(
+        MonthlyReportService $monthlyReportService,
+        MonthlyReportExportExcelService $monthlyReportExportExcelService
+    ) {
         $this->monthlyReportService = $monthlyReportService;
+        $this->monthlyReportExportExcelService = $monthlyReportExportExcelService;
     }
 
     public function index()
@@ -48,5 +53,10 @@ class MonthlyReportController extends Controller
         $monthlyReportSearchProperties = $monthlyReportSearchRequest->validated();
         $month = $monthlyReportSearchProperties['month'];
         $year = $monthlyReportSearchProperties['year'];
+
+        $this->monthlyReportExportExcelService->export([
+            'month' => $month,
+            'year' => $year
+        ]);
     }
 }

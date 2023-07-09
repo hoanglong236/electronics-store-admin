@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Helpers\DateTimeHelper;
 use App\Repositories\IMonthlyReportRepository;
 use Illuminate\Support\Facades\Log;
 
@@ -17,42 +16,54 @@ class MonthlyReportService
 
     public function getMonthlyReportData(int $month, int $year)
     {
-        $data = [];
-        $orderSummaryData = $this->monthlyReportRepository->getOrderSummaryDataInMonth($month, $year);
-        if ($orderSummaryData->placed === 0) {
-            return $data;
+        $orderAnalysisData = $this->monthlyReportRepository->getOrderAnalysisDataByDayOfMonth($month, $year);
+
+        $orderPlacedQty = 0;
+        $totalOrderValuePlaced = 0;
+        $orderCancelledQty = 0;
+        $totalOrderValueCancelled = 0;
+
+        foreach ($orderAnalysisData as $item) {
+            $orderPlacedQty += $item->placed;
+            $totalOrderValuePlaced += $item->placed_value;
+            $orderCancelledQty += $item->cancelled;
+            $totalOrderValueCancelled += $item->cancelled_value;
         }
 
-        $numberDaysInMonth = DateTimeHelper::getLastDayOfMonth($month, $year);
+        if ($orderPlacedQty === 0) {
+            return [];
+        }
+
+        $data = [];
+        $numberDaysInMonth = count($orderAnalysisData);
+
         $data['order']['summary'] = [
-            'all' => [
+            'total' => [
                 'qty' => [
-                    'placed' => $orderSummaryData->placed,
-                    'cancelled' => $orderSummaryData->cancelled,
+                    'placed' => $orderPlacedQty,
+                    'cancelled' => $orderCancelledQty,
                 ],
                 'value' => [
-                    'placed' => $orderSummaryData->placed_value,
-                    'cancelled' => $orderSummaryData->cancelled_value,
+                    'placed' => $totalOrderValuePlaced,
+                    'cancelled' => $totalOrderValueCancelled,
                 ]
             ],
             'avg' => [
-                'qty' => [
-                    'placed' => $orderSummaryData->placed / $numberDaysInMonth,
-                    'cancelled' => $orderSummaryData->cancelled / $numberDaysInMonth,
+                'qtyByDay' => [
+                    'placed' => $orderPlacedQty / $numberDaysInMonth,
+                    'cancelled' => $orderCancelledQty / $numberDaysInMonth,
                 ],
-                'valueByDay' => [
-                    'placed' => $orderSummaryData->placed_value / $numberDaysInMonth,
-                    'cancelled' => $orderSummaryData->cancelled_value / $numberDaysInMonth,
+                'totalValueByDay' => [
+                    'placed' => $totalOrderValuePlaced / $numberDaysInMonth,
+                    'cancelled' => $totalOrderValueCancelled / $numberDaysInMonth,
                 ],
-                'valueByQty' => [
-                    'placed' => $orderSummaryData->placed_value / $orderSummaryData->placed,
-                    'cancelled' => $orderSummaryData->cancelled_value / $orderSummaryData->cancelled,
+                'value' => [
+                    'placed' => $totalOrderValuePlaced / $orderPlacedQty,
+                    'cancelled' => $totalOrderValueCancelled / $orderCancelledQty,
                 ]
             ]
         ];
-
-        $data['order']['analysis'] = $this->monthlyReportRepository
-            ->getOrderAnalysisDataByDayOfMonth($month, $year);
+        $data['order']['analysis'] = $orderAnalysisData;
 
         $data['bestSellers']['products'] = $this->monthlyReportRepository
             ->getBestSellerProducts($month, $year);

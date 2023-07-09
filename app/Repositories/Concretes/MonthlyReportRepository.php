@@ -29,19 +29,6 @@ class MonthlyReportRepository implements IMonthlyReportRepository
             ->groupBy('orders.id');
     }
 
-    public function getOrderSummaryDataInMonth(int $month, int $year)
-    {
-        $orderValueTableQueryBuilder = $this->getOrderValueTableQueryBuilder($month, $year);
-        return DB::table($orderValueTableQueryBuilder, 'ov')
-            ->select([
-                DB::raw('COUNT(*) as placed'),
-                DB::raw('SUM(value) as placed_value'),
-                DB::raw('COUNT(CASE WHEN status = "Cancelled" THEN 1 ELSE NULL END) as cancelled'),
-                DB::raw('SUM(CASE WHEN status = "Cancelled" THEN value ELSE 0 END) as cancelled_value'),
-            ])
-            ->first();
-    }
-
     public function getOrderAnalysisDataByDayOfMonth(int $month, int $year)
     {
         $orderValueTableQueryBuilder = $this->getOrderValueTableQueryBuilder($month, $year);

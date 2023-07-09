@@ -63,13 +63,13 @@
         drawMonthlyReportLineChart({
             canvasId: 'orderQtyAnalysisChart',
             chartLabels: {{ Js::from($chartLabels) }},
-            chartTitle: 'Order quantity analysis',
+            chartTitle: 'Analysis of order quantity by day',
             datasetPropertiesObjects: {{ Js::from($orderQtyAnalisisDatasetPropertiesObjects) }}
         });
         drawMonthlyReportLineChart({
             canvasId: 'orderValueAnalysisChart',
             chartLabels: {{ Js::from($chartLabels) }},
-            chartTitle: 'Order value analysis (in thousands of dollars)',
+            chartTitle: 'Analysis of total order value by day (in K dollars)',
             datasetPropertiesObjects: {{ Js::from($orderValueAnalysisDatasetPropertiesObjects) }}
         });
     </script>

@@ -19,6 +19,7 @@ use App\Repositories\ISeederRepository;
 use App\Services\BrandService;
 use App\Services\CategoryService;
 use App\Services\CustomerService;
+use App\Services\Exports\MonthlyReportExportExcelService;
 use App\Services\FirebaseStorageService;
 use App\Services\MonthlyReportService;
 use App\Services\OrderExportCsvService;
@@ -100,6 +101,12 @@ class AppServiceProvider extends ServiceProvider
         $this->app->instance(
             MonthlyReportService::class,
             new MonthlyReportService(
+                $this->app->make(IMonthlyReportRepository::class)
+            )
+        );
+        $this->app->instance(
+            MonthlyReportExportExcelService::class,
+            new MonthlyReportExportExcelService(
                 $this->app->make(IMonthlyReportRepository::class)
             )
         );
