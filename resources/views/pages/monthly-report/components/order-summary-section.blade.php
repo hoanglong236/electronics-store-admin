@@ -33,8 +33,8 @@
                 $summaryData['total']['qty']['placed'],
                 $summaryData['total']['qty']['cancelled']
             ],
-            'backgroundColor' => 'rgba(50, 125, 240, 0.6)',
-            'borderColor' => 'rgb(50, 125, 240)',
+            'backgroundColor' => ['rgba(50, 125, 240, 0.6)', 'rgba(225, 40, 30, 0.6)'],
+            'borderColor' => ['rgb(50, 125, 240)', 'rgb(225, 40, 30)'],
         ],
     ];
 
@@ -45,8 +45,8 @@
                 number_format($summaryData['avg']['qtyByDay']['placed'], 2),
                 number_format($summaryData['avg']['qtyByDay']['cancelled'], 2)
             ],
-            'backgroundColor' => 'rgba(50, 125, 240, 0.6)',
-            'borderColor' => 'rgb(50, 125, 240)',
+            'backgroundColor' => ['rgba(50, 125, 240, 0.6)', 'rgba(225, 40, 30, 0.6)'],
+            'borderColor' => ['rgb(50, 125, 240)', 'rgb(225, 40, 30)'],
         ],
     ];
 
@@ -57,8 +57,8 @@
                 $summaryData['total']['value']['placed'] / 1000,
                 $summaryData['total']['value']['cancelled'] / 1000
             ],
-            'backgroundColor' => 'rgba(50, 125, 240, 0.6)',
-            'borderColor' => 'rgb(50, 125, 240)',
+            'backgroundColor' => ['rgba(50, 125, 240, 0.6)', 'rgba(225, 40, 30, 0.6)'],
+            'borderColor' => ['rgb(50, 125, 240)', 'rgb(225, 40, 30)'],
         ],
     ];
 
@@ -69,8 +69,8 @@
                 floatval(number_format($summaryData['avg']['totalValueByDay']['placed'] / 1000, 2)),
                 floatval(number_format($summaryData['avg']['totalValueByDay']['cancelled'] / 1000, 2))
             ],
-            'backgroundColor' => 'rgba(50, 125, 240, 0.6)',
-            'borderColor' => 'rgb(50, 125, 240)',
+            'backgroundColor' => ['rgba(50, 125, 240, 0.6)', 'rgba(225, 40, 30, 0.6)'],
+            'borderColor' => ['rgb(50, 125, 240)', 'rgb(225, 40, 30)'],
         ],
     ];
 
@@ -81,8 +81,8 @@
                 floatval(number_format($summaryData['avg']['value']['placed'] / 1000, 2)),
                 floatval(number_format($summaryData['avg']['value']['cancelled'] / 1000, 2))
             ],
-            'backgroundColor' => 'rgba(50, 125, 240, 0.6)',
-            'borderColor' => 'rgb(50, 125, 240)',
+            'backgroundColor' => ['rgba(50, 125, 240, 0.6)', 'rgba(225, 40, 30, 0.6)'],
+            'borderColor' => ['rgb(50, 125, 240)', 'rgb(225, 40, 30)'],
         ],
     ];
 @endphp

@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Libs\Excel\Constants\ExcelNumberFormatType;
-use App\Libs\Excel\Constants\ExcelTextAlignmentType;
+use App\Libs\Excel\Constants\ExcelTextAlignType;
 use App\Libs\Excel\ExcelCellStyle;
 
 class BaseExcelService
@@ -12,8 +12,8 @@ class BaseExcelService
     {
         return (new ExcelCellStyle())->setFontBold()
             ->setBorder()
-            ->setHorizontalAlign(ExcelTextAlignmentType::HORIZONTAL_CENTER)
-            ->setVerticalAlign(ExcelTextAlignmentType::VERTICAL_CENTER)
+            ->setHorizontalAlign(ExcelTextAlignType::HORIZONTAL_CENTER)
+            ->setVerticalAlign(ExcelTextAlignType::VERTICAL_CENTER)
             ->setTextWrap()
             ->setFillColor('f8f700');
     }
@@ -21,8 +21,8 @@ class BaseExcelService
     protected function generateTableBodyLeftStyle()
     {
         return (new ExcelCellStyle())->setBorder()
-            ->setHorizontalAlign(ExcelTextAlignmentType::HORIZONTAL_LEFT)
-            ->setVerticalAlign(ExcelTextAlignmentType::VERTICAL_CENTER)
+            ->setHorizontalAlign(ExcelTextAlignType::HORIZONTAL_LEFT)
+            ->setVerticalAlign(ExcelTextAlignType::VERTICAL_CENTER)
             ->setTextWrap();
     }
 
@@ -35,8 +35,8 @@ class BaseExcelService
     protected function generateTableBodyCenterStyle()
     {
         return (new ExcelCellStyle())->setBorder()
-            ->setHorizontalAlign(ExcelTextAlignmentType::HORIZONTAL_CENTER)
-            ->setVerticalAlign(ExcelTextAlignmentType::VERTICAL_CENTER)
+            ->setHorizontalAlign(ExcelTextAlignType::HORIZONTAL_CENTER)
+            ->setVerticalAlign(ExcelTextAlignType::VERTICAL_CENTER)
             ->setTextWrap();
     }
 
@@ -49,8 +49,8 @@ class BaseExcelService
     protected function generateTableBodyRightStyle()
     {
         return (new ExcelCellStyle())->setBorder()
-            ->setHorizontalAlign(ExcelTextAlignmentType::HORIZONTAL_RIGHT)
-            ->setVerticalAlign(ExcelTextAlignmentType::VERTICAL_CENTER)
+            ->setHorizontalAlign(ExcelTextAlignType::HORIZONTAL_RIGHT)
+            ->setVerticalAlign(ExcelTextAlignType::VERTICAL_CENTER)
             ->setTextWrap();
     }
 
@@ -63,8 +63,8 @@ class BaseExcelService
     protected function generateTableBodyCurrencyStyle()
     {
         return (new ExcelCellStyle())->setBorder()
-            ->setHorizontalAlign(ExcelTextAlignmentType::HORIZONTAL_RIGHT)
-            ->setVerticalAlign(ExcelTextAlignmentType::VERTICAL_CENTER)
+            ->setHorizontalAlign(ExcelTextAlignType::HORIZONTAL_RIGHT)
+            ->setVerticalAlign(ExcelTextAlignType::VERTICAL_CENTER)
             ->setNumberFormat(ExcelNumberFormatType::CURRENCY_USD);
     }
 

@@ -87,7 +87,7 @@ class MonthlyReportRepository implements IMonthlyReportRepository
             ])
             ->where('orders.status', OrderStatusConstants::COMPLETED)
             ->groupBy('products.id')
-            ->limit(Constants::BEST_SELLER_PRODUCTS_LIMIT)
+            ->limit(Constants::BEST_SELLER_ITEMS_LIMIT)
             ->get();
     }
 

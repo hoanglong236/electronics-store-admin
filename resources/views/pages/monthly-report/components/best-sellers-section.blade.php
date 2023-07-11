@@ -12,8 +12,12 @@
         </div>
     </div>
 
-    <div class="m-t-40"></div>
-    <canvas id="bestSellerProducts"></canvas>
+    <div class="row m-t-40">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <canvas id="bestSellerProducts"></canvas>
+        </div>
+    </div>
 </div>
 
 @php

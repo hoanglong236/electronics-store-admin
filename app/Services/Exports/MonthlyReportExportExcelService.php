@@ -14,6 +14,7 @@ use App\Libs\Excel\ExcelUtils;
 use App\Libs\Excel\ExcelWorkbook;
 use App\Libs\Excel\ExcelWorksheet;
 use App\Repositories\IMonthlyReportRepository;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 
 class MonthlyReportExportExcelService extends ExportExcelService
@@ -22,6 +23,7 @@ class MonthlyReportExportExcelService extends ExportExcelService
 
     private $tableHeaderStyle;
     private $tableBodyBoldLeftStyle;
+    private $tableBodyLeftStyle;
     private $tableBodyRightStyle;
     private $tableTitleStyle;
 
@@ -36,6 +38,8 @@ class MonthlyReportExportExcelService extends ExportExcelService
         $this->tableHeaderStyle = $this->generateTableHeaderStyle()
             ->setFontSize(10);
         $this->tableBodyBoldLeftStyle = $this->generateTableBodyBoldLeftStyle()
+            ->setFontSize(10);
+        $this->tableBodyLeftStyle = $this->generateTableBodyLeftStyle()
             ->setFontSize(10);
         $this->tableBodyRightStyle = $this->generateTableBodyRightStyle()
             ->setFontSize(10);
@@ -113,14 +117,12 @@ class MonthlyReportExportExcelService extends ExportExcelService
         $worksheet->setColumnWidth($col + 39, 5);
 
         return [
-            'usedRowCount' => $row - $rowStart + 1,
+            'usedRowCount' => $row - $rowStart,
         ];
     }
 
     private function writeOrderSummarySection(
-        ExcelWorksheet $worksheet,
-        int $rowStart,
-        array $analysisSectionInfo
+        ExcelWorksheet $worksheet, int $rowStart, array $analysisSectionInfo
     ) {
         $row = $rowStart;
         $col = 1;
@@ -202,14 +204,12 @@ class MonthlyReportExportExcelService extends ExportExcelService
         $row++;
 
         return [
-            'usedRowCount' => $row - $rowStart + 1,
+            'usedRowCount' => $row - $rowStart,
         ];
     }
 
     private function writeOrderAnalysisSection(
-        ExcelWorksheet $worksheet,
-        int $rowStart,
-        array $analysisData
+        ExcelWorksheet $worksheet, int $rowStart, array $analysisData
     ) {
         $row = $rowStart;
         $col = 1;
@@ -302,7 +302,7 @@ class MonthlyReportExportExcelService extends ExportExcelService
             . $tableColEndAddress . ($tableRow + 4) . ')';
 
         return [
-            'usedRowCount' => $row - $rowStart + 1,
+            'usedRowCount' => $row - $rowStart,
             'totalOrderPlacedFormula' => $totalOrderPlacedFormula,
             'totalOrderCancelledFormula' => $totalOrderCancelledFormula,
             'totalOrderPlacedValueFormula' => $totalOrderPlacedValueFormula,
@@ -310,15 +310,77 @@ class MonthlyReportExportExcelService extends ExportExcelService
         ];
     }
 
-    private function writeBestSellerSection(
+    private function writeBestSellerItemsTable(
         ExcelWorksheet $worksheet,
         int $rowStart,
-        array $bestSellerData
+        int $colStart,
+        Collection $bestSellerItems,
+        string $tableTitle
     ) {
+        $row = $rowStart;
+        $col = $colStart;
+
+        $worksheet->mergeCells($row, $row, $col, $col + 9);
+        $worksheet->setCellValue($row, $col, "Name");
+        $worksheet->mergeCells($row, $row, $col + 10, $col + 11);
+        $worksheet->setCellValue($row, $col + 10, "Qty");
+        $worksheet->setRangeStyle($row, $row, $col, $col + 11, $this->tableHeaderStyle);
+        $row++;
+
+        foreach ($bestSellerItems as $item) {
+            $worksheet->mergeCells($row, $row, $col, $col + 9);
+            $worksheet->setCellValue($row, $col, $item->name);
+            $worksheet->setRangeStyle($row, $row, $col, $col + 9, $this->tableBodyLeftStyle);
+
+            $worksheet->mergeCells($row, $row, $col + 10, $col + 11);
+            $worksheet->setCellValue($row, $col + 10, $item->quantity, ExcelDataType::NUMERIC);
+            $worksheet->setRangeStyle($row, $row, $col + 10, $col + 11, $this->tableBodyRightStyle);
+
+            $row++;
+        }
+
+        $worksheet->mergeCells($row, $row, $col, $col + 11);
+        $worksheet->setCellValue($row, $col, $tableTitle);
+        $worksheet->setRangeStyle($row, $row, $col, $col + 11, $this->tableTitleStyle);
+        $row++;
+
+        return [
+            'usedRowCount' => $row - $rowStart,
+        ];
     }
 
-    private function writeDataSource(ExcelWorksheet $worksheet, int $rowStart, $dataSourceIterator)
-    {
+    private function writeBestSellerSection(
+        ExcelWorksheet $worksheet, int $rowStart, array $bestSellerData
+    ) {
+        $row = $rowStart;
+        $col = 1;
+
+        $this->writeBestSellerItemsTable(
+            $worksheet,
+            $row,
+            $col,
+            $bestSellerData['categories'],
+            'Best-seller Categories'
+        );
+        $this->writeBestSellerItemsTable(
+            $worksheet,
+            $row,
+            $col + 13,
+            $bestSellerData['brands'],
+            'Best-seller Brands'
+        );
+        $bestSellerItemsTableInfo = $this->writeBestSellerItemsTable(
+            $worksheet,
+            $row,
+            $col + 26,
+            $bestSellerData['products'],
+            'Best-seller Products'
+        );
+        $row += $bestSellerItemsTableInfo['usedRowCount'];
+
+        return [
+            'usedRowCount' => $row - $rowStart,
+        ];
     }
 
     private function addMainWorksheet(ExcelWorkbook $workbook, array $data)
@@ -334,13 +396,20 @@ class MonthlyReportExportExcelService extends ExportExcelService
         $row += $timeLineSectionInfo['usedRowCount'];
 
         $analysisSectionInfo = $this->writeOrderAnalysisSection($worksheet, $row + 8, $data['analysisData']);
-        $summarySectionInfo = $this->writeOrderSummarySection($worksheet, $row + 1, $analysisSectionInfo);
+        $this->writeOrderSummarySection($worksheet, $row + 1, $analysisSectionInfo);
+        $row = $row + 8 + $analysisSectionInfo['usedRowCount'];
 
-        // $this->writeBestSellerSection();
+        $bestSellerSectionInfo = $this->writeBestSellerSection($worksheet, $row + 2, $data['bestSellerData']);
+        $row = $row + 2 + $bestSellerSectionInfo['usedRowCount'];
 
         $worksheet->setPageSetup($this->generatePageSetup([
             'headerCenterTitle' => 'MONTHLY REPORT',
         ]));
+    }
+
+    private function writeDataSource(
+        ExcelWorksheet $worksheet, int $rowStart, array $dataSourceIterator
+    ) {
     }
 
     private function addDataSourceWorksheet(ExcelWorkbook $workbook)
