@@ -22,8 +22,7 @@ abstract class ExportExcelService
     {
         return (new ExcelCellStyle())->setBorder()
             ->setHorizontalAlign(ExcelTextAlignType::HORIZONTAL_LEFT)
-            ->setVerticalAlign(ExcelTextAlignType::VERTICAL_CENTER)
-            ->setTextWrap();
+            ->setVerticalAlign(ExcelTextAlignType::VERTICAL_CENTER);
     }
 
     protected function generateTableBodyBoldLeftStyle()
@@ -36,8 +35,7 @@ abstract class ExportExcelService
     {
         return (new ExcelCellStyle())->setBorder()
             ->setHorizontalAlign(ExcelTextAlignType::HORIZONTAL_CENTER)
-            ->setVerticalAlign(ExcelTextAlignType::VERTICAL_CENTER)
-            ->setTextWrap();
+            ->setVerticalAlign(ExcelTextAlignType::VERTICAL_CENTER);
     }
 
     protected function generateTableBodyBoldCenterStyle()
@@ -50,8 +48,7 @@ abstract class ExportExcelService
     {
         return (new ExcelCellStyle())->setBorder()
             ->setHorizontalAlign(ExcelTextAlignType::HORIZONTAL_RIGHT)
-            ->setVerticalAlign(ExcelTextAlignType::VERTICAL_CENTER)
-            ->setTextWrap();
+            ->setVerticalAlign(ExcelTextAlignType::VERTICAL_CENTER);
     }
 
     protected function generateTableBodyBoldRightStyle()
@@ -74,10 +71,19 @@ abstract class ExportExcelService
             ->setFontBold();
     }
 
+    protected function generateTableTitleStyle()
+    {
+        return (new ExcelCellStyle())
+            ->setFontItalic()
+            ->setHorizontalAlign(ExcelTextAlignType::HORIZONTAL_CENTER)
+            ->setVerticalAlign(ExcelTextAlignType::VERTICAL_BOTTOM);
+    }
+
     protected abstract function getData(array $props);
     protected abstract function generateExcel(array $data);
 
-    public function export(array $props) {
+    public function export(array $props)
+    {
         $data = $this->getData($props);
         $this->generateExcel($data);
     }

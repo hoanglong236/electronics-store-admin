@@ -22,7 +22,7 @@ class MonthlyReportExportExcelService extends ExportExcelService
     private $monthlyReportRepository;
 
     private $tableHeaderStyle;
-    private $tableBodyBoldLeftStyle;
+    private $tableBodyBoldLeftWrapStyle;
     private $tableBodyLeftStyle;
     private $tableBodyRightStyle;
     private $tableTitleStyle;
@@ -37,17 +37,15 @@ class MonthlyReportExportExcelService extends ExportExcelService
 
         $this->tableHeaderStyle = $this->generateTableHeaderStyle()
             ->setFontSize(10);
-        $this->tableBodyBoldLeftStyle = $this->generateTableBodyBoldLeftStyle()
-            ->setFontSize(10);
+        $this->tableBodyBoldLeftWrapStyle = $this->generateTableBodyBoldLeftStyle()
+            ->setFontSize(10)
+            ->setTextWrap();
         $this->tableBodyLeftStyle = $this->generateTableBodyLeftStyle()
             ->setFontSize(10);
         $this->tableBodyRightStyle = $this->generateTableBodyRightStyle()
             ->setFontSize(10);
-        $this->tableTitleStyle = (new ExcelCellStyle())
-            ->setFontSize(9)
-            ->setFontItalic()
-            ->setHorizontalAlign(ExcelTextAlignType::HORIZONTAL_CENTER)
-            ->setVerticalAlign(ExcelTextAlignType::VERTICAL_BOTTOM);
+        $this->tableTitleStyle = $this->generateTableTitleStyle()
+            ->setFontSize(9);
     }
 
     protected function getData(array $props)
@@ -150,7 +148,7 @@ class MonthlyReportExportExcelService extends ExportExcelService
         $worksheet->setCellValue($row, $col, "Placed");
         $worksheet->mergeCells($row + 1, $row + 1, $col, $col + 2);
         $worksheet->setCellValue($row + 1, $col, "Cancelled");
-        $worksheet->setRangeStyle($row, $row + 1, $col, $col + 2, $this->tableBodyBoldLeftStyle);
+        $worksheet->setRangeStyle($row, $row + 1, $col, $col + 2, $this->tableBodyBoldLeftWrapStyle);
 
         $formula = $analysisSectionInfo['totalOrderPlacedFormula'];
         $worksheet->mergeCells($row, $row, $orderQtyCol, $orderQtyCol + 2);
@@ -236,7 +234,7 @@ class MonthlyReportExportExcelService extends ExportExcelService
             $row + 5,
             $col,
             $col + 2,
-            $this->tableBodyBoldLeftStyle
+            $this->tableBodyBoldLeftWrapStyle
         );
 
         $tableRow = $row + 1;
@@ -285,7 +283,7 @@ class MonthlyReportExportExcelService extends ExportExcelService
         $row += 6;
 
         $worksheet->mergeCells($row, $row, $col, $col + 2 + $this->dayOfMonth);
-        $worksheet->setCellValue($row, $col, "Analysis of orders for the day of month");
+        $worksheet->setCellValue($row, $col, "Analysis of orders by day of the month");
         $worksheet->setCellStyle($row, $col, $this->tableTitleStyle);
         $row++;
 
@@ -314,38 +312,48 @@ class MonthlyReportExportExcelService extends ExportExcelService
         ExcelWorksheet $worksheet,
         int $rowStart,
         int $colStart,
-        Collection $bestSellerItems,
-        string $tableTitle
+        int $numberColumnsForNameColumn,
+        string $tableTitle,
+        Collection $bestSellerItems
     ) {
         $row = $rowStart;
         $col = $colStart;
 
-        $worksheet->mergeCells($row, $row, $col, $col + 9);
-        $worksheet->setCellValue($row, $col, "Name");
-        $worksheet->mergeCells($row, $row, $col + 10, $col + 11);
-        $worksheet->setCellValue($row, $col + 10, "Qty");
-        $worksheet->setRangeStyle($row, $row, $col, $col + 11, $this->tableHeaderStyle);
+        $numberColumnsForQtyColumn = 2;
+
+        $nameColStart = $col;
+        $nameColEnd = $nameColStart + $numberColumnsForNameColumn - 1;
+        $qtyColStart = $nameColEnd + 1;
+        $qtyColEnd = $qtyColStart + $numberColumnsForQtyColumn - 1;
+
+        $worksheet->mergeCells($row, $row, $nameColStart, $nameColEnd);
+        $worksheet->setCellValue($row, $nameColStart, "Name");
+        $worksheet->mergeCells($row, $row, $qtyColStart, $qtyColEnd);
+        $worksheet->setCellValue($row, $qtyColStart, "Qty");
+        $worksheet->setRangeStyle($row, $row, $nameColStart, $qtyColEnd, $this->tableHeaderStyle);
         $row++;
 
         foreach ($bestSellerItems as $item) {
-            $worksheet->mergeCells($row, $row, $col, $col + 9);
-            $worksheet->setCellValue($row, $col, $item->name);
-            $worksheet->setRangeStyle($row, $row, $col, $col + 9, $this->tableBodyLeftStyle);
+            $worksheet->mergeCells($row, $row, $nameColStart, $nameColEnd);
+            $worksheet->setCellValue($row, $nameColStart, $item->name);
+            $worksheet->setRangeStyle($row, $row, $nameColStart, $nameColEnd, $this->tableBodyLeftStyle);
 
-            $worksheet->mergeCells($row, $row, $col + 10, $col + 11);
-            $worksheet->setCellValue($row, $col + 10, $item->quantity, ExcelDataType::NUMERIC);
-            $worksheet->setRangeStyle($row, $row, $col + 10, $col + 11, $this->tableBodyRightStyle);
+            $worksheet->mergeCells($row, $row, $qtyColStart, $qtyColEnd);
+            $worksheet->setCellValue($row, $qtyColStart, $item->quantity, ExcelDataType::NUMERIC);
+            $worksheet->setRangeStyle($row, $row, $qtyColStart, $qtyColEnd, $this->tableBodyRightStyle);
 
             $row++;
         }
 
-        $worksheet->mergeCells($row, $row, $col, $col + 11);
-        $worksheet->setCellValue($row, $col, $tableTitle);
-        $worksheet->setRangeStyle($row, $row, $col, $col + 11, $this->tableTitleStyle);
+        $worksheet->mergeCells($row, $row, $nameColStart, $qtyColEnd);
+        $worksheet->setCellValue($row, $nameColStart, $tableTitle);
+        $worksheet->setRangeStyle($row, $row, $nameColStart, $qtyColEnd, $this->tableTitleStyle);
         $row++;
+        $col = $qtyColEnd + 1;
 
         return [
             'usedRowCount' => $row - $rowStart,
+            'usedColumnCount' => $col - $colStart,
         ];
     }
 
@@ -355,26 +363,33 @@ class MonthlyReportExportExcelService extends ExportExcelService
         $row = $rowStart;
         $col = 1;
 
-        $this->writeBestSellerItemsTable(
-            $worksheet,
-            $row,
-            $col,
-            $bestSellerData['categories'],
-            'Best-seller Categories'
-        );
-        $this->writeBestSellerItemsTable(
-            $worksheet,
-            $row,
-            $col + 13,
-            $bestSellerData['brands'],
-            'Best-seller Brands'
-        );
         $bestSellerItemsTableInfo = $this->writeBestSellerItemsTable(
             $worksheet,
             $row,
-            $col + 26,
-            $bestSellerData['products'],
-            'Best-seller Products'
+            $col,
+            7,
+            'Best-seller Categories',
+            $bestSellerData['categories']
+        );
+        $col += $bestSellerItemsTableInfo['usedColumnCount'];
+
+        $bestSellerItemsTableInfo = $this->writeBestSellerItemsTable(
+            $worksheet,
+            $row,
+            $col + 1,
+            7,
+            'Best-seller Brands',
+            $bestSellerData['brands']
+        );
+        $col += 1 + $bestSellerItemsTableInfo['usedColumnCount'];
+
+        $bestSellerItemsTableInfo = $this->writeBestSellerItemsTable(
+            $worksheet,
+            $row,
+            $col + 1,
+            10,
+            'Best-seller Products',
+            $bestSellerData['products']
         );
         $row += $bestSellerItemsTableInfo['usedRowCount'];
 
@@ -407,21 +422,6 @@ class MonthlyReportExportExcelService extends ExportExcelService
         ]));
     }
 
-    private function writeDataSource(
-        ExcelWorksheet $worksheet, int $rowStart, array $dataSourceIterator
-    ) {
-    }
-
-    private function addDataSourceWorksheet(ExcelWorkbook $workbook)
-    {
-        $worksheet = $workbook->createExcelWorksheet();
-
-        $worksheet->setTitle("Data Source");
-
-
-        // $worksheet->setPageSetup($this->generatePageSetup([]));
-    }
-
     protected function generateExcel(array $data)
     {
         $monthYearStr = str_pad($this->month, 2, '0', STR_PAD_LEFT) . $this->year;
@@ -431,7 +431,6 @@ class MonthlyReportExportExcelService extends ExportExcelService
             'analysisData' => $data['order']['analysis'],
             'bestSellerData' => $data['bestSellers'],
         ]);
-        $this->addDataSourceWorksheet($workbook);
 
         $workbook->download();
     }

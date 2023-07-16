@@ -5,10 +5,10 @@
 
     <div class="row">
         <div class="col-md-6 mb-4">
-            <canvas id="bestSellerBrands"></canvas>
+            <canvas id="bestSellerCategories"></canvas>
         </div>
         <div class="col-md-6 mb-4">
-            <canvas id="bestSellerCategories"></canvas>
+            <canvas id="bestSellerBrands"></canvas>
         </div>
     </div>
 
