@@ -450,31 +450,6 @@ span.disable-status {
     justify-content: space-between;
 }
 
-.chart-legend-table {
-    font-size: 1.3rem;
-    line-height: 1.6rem;
-}
-
-table.chart-legend-table tbody td {
-    border-top: none;
-}
-
-.dot--custom-1 {
-    background-color: #5bad60;
-}
-
-.dot--custom-2 {
-    background-color: #407ff6;
-}
-
-.dot--custom-3 {
-    background-color: #ff5555;
-}
-
-.dot--custom-4 {
-    background-color: #8c8e91;
-}
-
 .sm-title-2 {
     text-transform: capitalize;
     font-weight: 400;

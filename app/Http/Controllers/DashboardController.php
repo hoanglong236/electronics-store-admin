@@ -15,7 +15,7 @@ class DashboardController extends Controller
 
     public function index()
     {
-        $today = '2023/08/02';
+        $today = date('Y-m-d');
         $data = [];
 
         $data['pageTitle'] = 'Dashboard';

@@ -10,14 +10,8 @@
     </div>
 
     <div class="overview-panel__compare mt-2">
-        @if ($previousData ?? false)
-            @if ($previousData < $currentData)
-                <span>GT</span>
-            @elseif ($previousData > $currentData)
-                <span>LT</span>
-            @else
-                <span>EQ</span>
-            @endif
+        @if ($compareText ?? false)
+            <span class="{{ $compareCSSClass }}">{{ $compareText }}</span>
         @endif
     </div>
 </div>
