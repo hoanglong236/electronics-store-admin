@@ -2,87 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\DashboardExportExcelRequest;
-use App\Http\Requests\DashboardSearchRequest;
-use App\Services\CatalogStatisticsExportExcelService;
 use App\Services\DashboardService;
-use App\Services\OrderStatisticsExportExcelService;
-use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 
 class DashboardController extends Controller
 {
     private $dashboardService;
-    private $orderStatisticsExportExcelService;
-    private $catalogStatisticsExportExcelService;
 
-    public function __construct()
+    public function __construct(DashboardService $dashboardService)
     {
-        $this->dashboardService = new DashboardService();
-        $this->orderStatisticsExportExcelService = new OrderStatisticsExportExcelService();
-        $this->catalogStatisticsExportExcelService = new CatalogStatisticsExportExcelService();
-    }
-
-    private function retrieveDataForDashboardPage($fromDate, $toDate)
-    {
-        $newCustomerCount = $this->dashboardService->getNewCustomerCount($fromDate, $toDate);
-        $placedOrderCount = $this->dashboardService->getPlacedOrderCount($fromDate, $toDate);
-        $soldItemCount = $this->dashboardService->getSoldItemCount($fromDate, $toDate);
-        $orderStatisticsData = [];
-        $catalogStatisticsData = [];
-
-        if ($placedOrderCount > 0) {
-            $orderStatisticsData = $this->dashboardService->getOrderStatisticsData($fromDate, $toDate);
-            $catalogStatisticsData = $this->dashboardService->getCatalogStatisticsData($fromDate, $toDate);
-        }
-
-        return [
-            'pageTitle' => 'Dashboard',
-            'fromDate' => $fromDate,
-            'toDate' => $toDate,
-            'newCustomerCount' => $newCustomerCount,
-            'placedOrderCount' => $placedOrderCount,
-            'soldItemCount' => $soldItemCount,
-            'orderStatisticsData' => $orderStatisticsData,
-            'catalogStatisticsData' => $catalogStatisticsData,
-        ];
+        $this->dashboardService = $dashboardService;
     }
 
     public function index()
     {
-        $firstDayOfMonth = Carbon::now()->firstOfMonth()->toDateString();
-        $currentDay = Carbon::now()->toDateString();
+        $today = '2023/08/02';
+        $data = [];
 
-        $data = $this->retrieveDataForDashboardPage($firstDayOfMonth, $currentDay);
+        $data['pageTitle'] = 'Dashboard';
+        $data['dashboardData'] = $this->dashboardService->getDashboardData($today);
+
         return view('pages.dashboard.dashboard-page', ['data' => $data]);
-    }
-
-    public function search(DashboardSearchRequest $dashboardSearchRequest)
-    {
-        $dashboardSearchProperties = $dashboardSearchRequest->validated();
-
-        $data = $this->retrieveDataForDashboardPage(
-            $dashboardSearchProperties['fromDate'],
-            $dashboardSearchProperties['toDate']
-        );
-        return view('pages.dashboard.dashboard-page', ['data' => $data]);
-    }
-
-    public function orderStatisticsExportExcel(DashboardExportExcelRequest $dashboardExportExcelRequest)
-    {
-        $dashboardExportExcelProperties = $dashboardExportExcelRequest->validated();
-        $this->orderStatisticsExportExcelService->export(
-            $dashboardExportExcelProperties['fromDate'],
-            $dashboardExportExcelProperties['toDate'],
-        );
-    }
-
-    public function catalogStatisticsExportExcel(DashboardExportExcelRequest $dashboardExportExcelRequest)
-    {
-        $dashboardExportExcelProperties = $dashboardExportExcelRequest->validated();
-        $this->catalogStatisticsExportExcelService->export(
-            $dashboardExportExcelProperties['fromDate'],
-            $dashboardExportExcelProperties['toDate'],
-        );
     }
 }

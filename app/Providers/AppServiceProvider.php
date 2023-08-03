@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Repositories\Concretes\BrandRepository;
 use App\Repositories\Concretes\CategoryRepository;
 use App\Repositories\Concretes\CustomerRepository;
+use App\Repositories\Concretes\DashboardRepository;
 use App\Repositories\Concretes\MonthlyReportRepository;
 use App\Repositories\Concretes\OrderRepository;
 use App\Repositories\Concretes\ProductRepository;
@@ -12,6 +13,7 @@ use App\Repositories\Concretes\SeederRepository;
 use App\Repositories\IBrandRepository;
 use App\Repositories\ICategoryRepository;
 use App\Repositories\ICustomerRepository;
+use App\Repositories\IDashboardRepository;
 use App\Repositories\IMonthlyReportRepository;
 use App\Repositories\IOrderRepository;
 use App\Repositories\IProductRepository;
@@ -19,6 +21,7 @@ use App\Repositories\ISeederRepository;
 use App\Services\BrandService;
 use App\Services\CategoryService;
 use App\Services\CustomerService;
+use App\Services\DashboardService;
 use App\Services\Exports\MonthlyReportExportExcelService;
 use App\Services\FirebaseStorageService;
 use App\Services\MonthlyReportService;
@@ -43,6 +46,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ICustomerRepository::class, CustomerRepository::class);
         $this->app->bind(IOrderRepository::class, OrderRepository::class);
         $this->app->bind(IMonthlyReportRepository::class, MonthlyReportRepository::class);
+        $this->app->bind(IDashboardRepository::class, DashboardRepository::class);
 
         $this->app->singleton(StorageService::class, function () {
             return new StorageService();
@@ -108,6 +112,13 @@ class AppServiceProvider extends ServiceProvider
             MonthlyReportExportExcelService::class,
             new MonthlyReportExportExcelService(
                 $this->app->make(IMonthlyReportRepository::class)
+            )
+        );
+
+        $this->app->instance(
+            DashboardService::class,
+            new DashboardService(
+                $this->app->make(IDashboardRepository::class)
             )
         );
     }

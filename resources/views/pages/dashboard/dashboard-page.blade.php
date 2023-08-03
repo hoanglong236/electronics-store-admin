@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="overview-wrap">
-                <h2 class="title-1">overview</h2>
+                <h2 class="title-1">Dashboard</h2>
             </div>
         </div>
     </div>
@@ -12,81 +12,60 @@
     <div class="row mt-4">
         <div class="col-md-12">
             <div class="white-bg-wrapper">
-                @include('pages.dashboard.components.dashboard-search-form', [
-                    'fromDate' => $data['fromDate'],
-                    'toDate' => $data['toDate'],
-                    'searchUrl' => route('dashboard.search'),
-                ])
+                Export section
             </div>
         </div>
     </div>
 
-    <div class="row m-t-25">
-        <div class="col-md-4">
-            @include('pages.dashboard.components.overview-area', [
-                'overviewItemCSSClass' => 'overview-item--c1',
-                'overviewIconCSSClass' => 'zmdi zmdi-account-o',
-                'overviewData' => $data['newCustomerCount'],
-                'overviewTitle' => 'new memebers',
+    @php
+        $dashboardData = $data['dashboardData'];
+    @endphp
+
+    <div class="row mt-4">
+        <div class="col-md-3">
+            @include('pages.dashboard.components.overview-panel', [
+                'imageUrl' => asset('assets/images/icon/customer.png'),
+                'title' => 'New Customer',
+                'currentData' => $dashboardData['newCustomersCount'],
             ])
         </div>
-        <div class="col-md-4">
-            @include('pages.dashboard.components.overview-area', [
-                'overviewItemCSSClass' => 'overview-item--c2',
-                'overviewIconCSSClass' => 'zmdi zmdi-calendar-note',
-                'overviewData' => $data['placedOrderCount'],
-                'overviewTitle' => 'orders placed',
+        <div class="col-md-3">
+            @include('pages.dashboard.components.overview-panel', [
+                'imageUrl' => asset('assets/images/icon/shopping-bag.png'),
+                'title' => 'Orders',
+                'currentData' => $dashboardData['orderQty'],
             ])
         </div>
-        <div class="col-md-4">
-            @include('pages.dashboard.components.overview-area', [
-                'overviewItemCSSClass' => 'overview-item--c3',
-                'overviewIconCSSClass' => 'zmdi zmdi-shopping-cart',
-                'overviewData' => $data['soldItemCount'],
-                'overviewTitle' => 'items sold',
+        <div class="col-md-3">
+            @include('pages.dashboard.components.overview-panel', [
+                'imageUrl' => asset('assets/images/icon/revenue.png'),
+                'title' => 'Revenue',
+                'currentData' => $dashboardData['revenue'],
+            ])
+        </div>
+        <div class="col-md-3">
+            @include('pages.dashboard.components.overview-panel', [
+                'title' => 'Updating feature',
             ])
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-12">
+    <div class="row mt-4">
+        <div class="col-md-6">
             <div class="white-bg-wrapper m-b-30 p-30">
-                @if ($data['placedOrderCount'] > 0)
-                    @include('pages.dashboard.components.order-statistics-section', [
-                        'fromDate' => $data['fromDate'],
-                        'toDate' => $data['toDate'],
-                        'orderStatisticsData' => $data['orderStatisticsData'],
+                @if ($dashboardData['orderQty'] > 0)
+                    @include('pages.dashboard.components.payment-channel-section', [
+                        'orderQtyByPaymentMethods' => $dashboardData['orderQtyByPaymentMethods'],
                     ])
                 @else
                     <div>No data.</div>
                 @endif
             </div>
         </div>
-    </div>
-
-    @if ($data['placedOrderCount'] > 0)
-        <div class="row">
-            <div class="col-md-12">
-                <div class="white-bg-wrapper m-b-30 p-30">
-                    @include('pages.dashboard.components.category-statistics-section', [
-                        'fromDate' => $data['fromDate'],
-                        'toDate' => $data['toDate'],
-                        'bestSellingCategories' => $data['catalogStatisticsData']['bestSellingCategories'],
-                        'totalSoldQuantity' => $data['soldItemCount'],
-                    ])
-                    <div class="row m-t-35">
-                        @foreach ($data['catalogStatisticsData']['bestSellingCategories'] as $bestSellingCategory)
-                            <div class="col-md-4">
-                                @include('pages.dashboard.components.category-details-section', [
-                                    'fromDate' => $data['fromDate'],
-                                    'toDate' => $data['toDate'],
-                                    'bestSellingCategory' => $bestSellingCategory,
-                                ])
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
+        <div class="col-md-6">
+            <div class="white-bg-wrapper m-b-30 p-30">
+                <div>No data.</div>
             </div>
         </div>
-    @endif
+    </div>
 @endsection

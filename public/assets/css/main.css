@@ -459,14 +459,6 @@ table.chart-legend-table tbody td {
     border-top: none;
 }
 
-.chart-legend-explain-wrapper {
-    font-size: 1.2rem;
-}
-
-.incomplete-legend-explain {
-    color: #407ff6;
-}
-
 .dot--custom-1 {
     background-color: #5bad60;
 }
@@ -615,4 +607,44 @@ table.chart-legend-table tbody td {
 .pie-chart-legend-wrapper {
     font-size: 1.3rem;
     line-height: 1.6rem;
+}
+
+.overview-panel {
+    font-size: 1.2rem;
+}
+
+.overview-panel__main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    column-gap: 6px;
+}
+
+.overview-panel__icon-wrapper {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.15);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.overview-panel__icon-wrapper > img {
+    width: 28px;
+    height: 28px;
+    opacity: 0.6;
+}
+
+.overview-panel__content-wrapper {
+    flex: 1;
+}
+
+.overview-panel__title {
+    font-size: 1.3rem;
+}
+
+.overview-panel__data {
+    font-size: 1.6rem;
 }

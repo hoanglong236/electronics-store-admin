@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Helpers;
+use DateTime;
 
 class DateTimeHelper
 {
@@ -15,7 +16,7 @@ class DateTimeHelper
 
     public static function getLastDayOfMonth(int $month, $year)
     {
-        $date = new \DateTime($year . '/' . str_pad($month, 2, '0', STR_PAD_LEFT) . '/01');
+        $date = new DateTime($year . '/' . str_pad($month, 2, '0', STR_PAD_LEFT) . '/01');
         return intval($date->format('t'));
     }
 
@@ -26,7 +27,7 @@ class DateTimeHelper
 
     public static function getLastDateOfMonth(int $month, int $year)
     {
-        $date = new \DateTime(static::getFirstDateOfMonth($month, $year));
+        $date = new DateTime(static::getFirstDateOfMonth($month, $year));
         return $date->format('Y/m/t');
     }
 }

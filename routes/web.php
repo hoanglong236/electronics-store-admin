@@ -44,12 +44,6 @@ Route::middleware('auth:admin')->group(function () {
     Route::group(['prefix' => 'dashboard'], function () {
         Route::get('', [DashboardController::class, 'index'])
             ->name('dashboard.index');
-        Route::get('search', [DashboardController::class, 'search'])
-            ->name('dashboard.search');
-        Route::post('/order-statistics/export-excel', [DashboardController::class, 'orderStatisticsExportExcel'])
-            ->name('dashboard.order-statistics.export-excel');
-        Route::post('/catalog-statistics/export-excel', [DashboardController::class, 'catalogStatisticsExportExcel'])
-            ->name('dashboard.catalog-statistics.export-excel');
     });
 
     Route::group(['prefix' => 'monthly-report'], function () {
