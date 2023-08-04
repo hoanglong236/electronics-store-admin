@@ -6,7 +6,7 @@ use App\Common\Constants;
 use App\Http\Requests\Constants\OrderFilterRequestConstants;
 use App\Http\Requests\OrderFilterRequest;
 use App\Http\Requests\OrderStatusRequest;
-use App\Services\OrderExportCsvService;
+use App\Services\Exports\OrderExportCsvService;
 use App\Services\OrderService;
 use App\Services\UtilsService;
 use Illuminate\Http\Request;
@@ -73,7 +73,7 @@ class OrderController extends Controller
     public function filterAndExportCsv(OrderFilterRequest $orderFilterRequest)
     {
         $orderFilterProperties = $orderFilterRequest->validated();
-        $this->orderExportCsvService->filterAndExportCsv($orderFilterProperties);
+        $this->orderExportCsvService->export($orderFilterProperties);
     }
 
     public function updateOrderStatus(OrderStatusRequest $orderStatusRequest, $orderId)

@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Exports;
 
 use App\Http\Requests\Constants\OrderFilterRequestConstants;
 use App\Repositories\IOrderRepository;
+use App\Services\UtilsService;
 use Illuminate\Support\Facades\Log;
 
-class OrderExportCsvService
+class OrderExportCsvService extends ExportCsvService
 {
     private $orderRepository;
 
@@ -51,19 +52,11 @@ class OrderExportCsvService
         );
     }
 
-    private function exportCsv($customOrdersIterator)
+    protected function getData(array $props)
     {
-        $fileName = "filter_orders_" . date('Y-m-d') . ".csv";
-
-        header('Content-Description: File Transfer');
-        header('Content-Type: application/csv');
-        header('Content-Disposition: attachment; filename="' . rawurlencode($fileName) . '"');
-        header('Cache-Control: max-age=604800, must-revalidate');
-        header('Pragma: public');
-
-        $stream = fopen('php://output', 'w');
-
-        $columns = [
+        $data = [];
+        $data['iterator'] = $this->getFilterCustomOrdersIterator($props);
+        $data['labels'] = [
             'Order ID',
             'Email',
             'Total',
@@ -71,26 +64,6 @@ class OrderExportCsvService
             'Status',
             'Create Date',
         ];
-        fputcsv($stream, $columns);
-
-        foreach ($customOrdersIterator as $customOrder) {
-            fputcsv($stream, [
-                $customOrder->id,
-                $customOrder->customer_email,
-                $customOrder->total,
-                $customOrder->payment_method,
-                $customOrder->status,
-                $customOrder->create_date,
-            ]);
-        }
-
-        fclose($stream);
-        exit;
-    }
-
-    public function filterAndExportCsv($orderFilterProperties)
-    {
-        $customOrdersIterator = $this->getFilterCustomOrdersIterator($orderFilterProperties);
-        $this->exportCsv($customOrdersIterator);
+        return $data;
     }
 }
