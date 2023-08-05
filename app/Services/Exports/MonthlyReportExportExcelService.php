@@ -2,7 +2,7 @@
 
 namespace App\Services\Exports;
 
-use App\Helpers\DateTimeHelper;
+use App\Utils\DateTimeUtil;
 use App\Libs\Excel\Constants\ExcelBorderConstants;
 use App\Libs\Excel\Constants\ExcelDataType;
 use App\Libs\Excel\Constants\ExcelNumberFormatType;
@@ -52,7 +52,7 @@ class MonthlyReportExportExcelService extends ExportExcelService
     {
         $this->year = $props['year'];
         $this->month = $props['month'];
-        $this->dayOfMonth = DateTimeHelper::getLastDayOfMonth($this->month, $this->year);
+        $this->dayOfMonth = DateTimeUtil::getLastDayOfMonth($this->month, $this->year);
 
         $orderAnalysisData = $this->monthlyReportRepository
             ->getOrderAnalysisDataByDayOfMonth($this->month, $this->year);

@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Helpers;
+namespace App\Utils;
+
 use DateTime;
 
-class DateTimeHelper
+class DateTimeUtil
 {
     private function __construct()
     {

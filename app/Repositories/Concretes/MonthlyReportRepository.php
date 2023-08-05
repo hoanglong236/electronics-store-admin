@@ -3,7 +3,7 @@
 namespace App\Repositories\Concretes;
 
 use App\Common\Constants;
-use App\Helpers\DateTimeHelper;
+use App\Utils\DateTimeUtil;
 use App\Models\Constants\OrderStatusConstants;
 use App\Repositories\IMonthlyReportRepository;
 use Illuminate\Support\Facades\DB;
@@ -12,8 +12,8 @@ class MonthlyReportRepository implements IMonthlyReportRepository
 {
     private function getOrderValueTableQueryBuilder(int $month, int $year)
     {
-        $firstDateOfMonth = DateTimeHelper::getFirstDateOfMonth($month, $year);
-        $lastDateOfMonth = DateTimeHelper::getLastDateOfMonth($month, $year);
+        $firstDateOfMonth = DateTimeUtil::getFirstDateOfMonth($month, $year);
+        $lastDateOfMonth = DateTimeUtil::getLastDateOfMonth($month, $year);
 
         return DB::table('orders')
             ->join('order_items', 'order_items.order_id', '=', 'orders.id')
@@ -24,7 +24,7 @@ class MonthlyReportRepository implements IMonthlyReportRepository
                 DB::raw('SUM(order_items.total_price) AS value')
             ])
             ->whereBetween('created_at', [
-                $firstDateOfMonth, DateTimeHelper::dateToEndOfDate($lastDateOfMonth)
+                $firstDateOfMonth, DateTimeUtil::dateToEndOfDate($lastDateOfMonth)
             ])
             ->groupBy('orders.id');
     }
@@ -46,7 +46,7 @@ class MonthlyReportRepository implements IMonthlyReportRepository
 
         $resultIndex = 0;
         $resultCount = count($result);
-        $lastDayOfMonth = DateTimeHelper::getLastDayOfMonth($month, $year);
+        $lastDayOfMonth = DateTimeUtil::getLastDayOfMonth($month, $year);
         $dataReturn = [];
 
         for ($day = 1; $day <= $lastDayOfMonth; $day++) {
@@ -71,8 +71,8 @@ class MonthlyReportRepository implements IMonthlyReportRepository
 
     public function getBestSellerProducts(int $month, int $year)
     {
-        $firstDateOfMonth = DateTimeHelper::getFirstDateOfMonth($month, $year);
-        $lastDateOfMonth = DateTimeHelper::getLastDateOfMonth($month, $year);
+        $firstDateOfMonth = DateTimeUtil::getFirstDateOfMonth($month, $year);
+        $lastDateOfMonth = DateTimeUtil::getLastDateOfMonth($month, $year);
 
         return DB::table('products')
             ->join('order_items', 'order_items.product_id', '=', 'products.id')
@@ -83,7 +83,7 @@ class MonthlyReportRepository implements IMonthlyReportRepository
                 DB::raw('sum(order_items.quantity) as quantity'),
             ])
             ->whereBetween('orders.created_at', [
-                $firstDateOfMonth, DateTimeHelper::dateToEndOfDate($lastDateOfMonth)
+                $firstDateOfMonth, DateTimeUtil::dateToEndOfDate($lastDateOfMonth)
             ])
             ->where('orders.status', OrderStatusConstants::COMPLETED)
             ->groupBy('products.id')
@@ -93,8 +93,8 @@ class MonthlyReportRepository implements IMonthlyReportRepository
 
     public function getBestSellerCategories(int $month, int $year)
     {
-        $firstDateOfMonth = DateTimeHelper::getFirstDateOfMonth($month, $year);
-        $lastDateOfMonth = DateTimeHelper::getLastDateOfMonth($month, $year);
+        $firstDateOfMonth = DateTimeUtil::getFirstDateOfMonth($month, $year);
+        $lastDateOfMonth = DateTimeUtil::getLastDateOfMonth($month, $year);
 
         return DB::table('categories')
             ->join('products', 'products.category_id', '=', 'categories.id')
@@ -106,7 +106,7 @@ class MonthlyReportRepository implements IMonthlyReportRepository
                 DB::raw('sum(order_items.quantity) as quantity'),
             ])
             ->whereBetween('orders.created_at', [
-                $firstDateOfMonth, DateTimeHelper::dateToEndOfDate($lastDateOfMonth)
+                $firstDateOfMonth, DateTimeUtil::dateToEndOfDate($lastDateOfMonth)
             ])
             ->where('orders.status', OrderStatusConstants::COMPLETED)
             ->groupBy('categories.id')
@@ -115,8 +115,8 @@ class MonthlyReportRepository implements IMonthlyReportRepository
     }
     public function getBestSellerBrands(int $month, int $year)
     {
-        $firstDateOfMonth = DateTimeHelper::getFirstDateOfMonth($month, $year);
-        $lastDateOfMonth = DateTimeHelper::getLastDateOfMonth($month, $year);
+        $firstDateOfMonth = DateTimeUtil::getFirstDateOfMonth($month, $year);
+        $lastDateOfMonth = DateTimeUtil::getLastDateOfMonth($month, $year);
 
         return DB::table('brands')
             ->join('products', 'products.brand_id', '=', 'brands.id')
@@ -128,7 +128,7 @@ class MonthlyReportRepository implements IMonthlyReportRepository
                 DB::raw('sum(order_items.quantity) as quantity'),
             ])
             ->whereBetween('orders.created_at', [
-                $firstDateOfMonth, DateTimeHelper::dateToEndOfDate($lastDateOfMonth)
+                $firstDateOfMonth, DateTimeUtil::dateToEndOfDate($lastDateOfMonth)
             ])
             ->where('orders.status', OrderStatusConstants::COMPLETED)
             ->groupBy('brands.id')

@@ -2,9 +2,8 @@
 
 namespace App\Repositories\Concretes;
 
-use App\Helpers\DateTimeHelper;
+use App\Utils\DateTimeUtil;
 use App\Models\Customer;
-use App\Models\Product;
 use App\Repositories\IDashboardRepository;
 use Illuminate\Support\Facades\DB;
 
@@ -12,7 +11,7 @@ class DashboardRepository implements IDashboardRepository
 {
     public function getNumberNewCustomers(string $date)
     {
-        return Customer::whereBetween('created_at', [$date, DateTimeHelper::dateToEndOfDate($date)])
+        return Customer::whereBetween('created_at', [$date, DateTimeUtil::dateToEndOfDate($date)])
             ->count();
     }
 
@@ -23,7 +22,7 @@ class DashboardRepository implements IDashboardRepository
                 DB::raw('SUM(order_items.total_price) as revenue'),
             ])
             ->join('order_items', 'order_items.order_id', '=', 'orders.id')
-            ->whereBetween('orders.created_at', [$date, DateTimeHelper::dateToEndOfDate($date)])
+            ->whereBetween('orders.created_at', [$date, DateTimeUtil::dateToEndOfDate($date)])
             ->groupBy('orders.id')
             ->first();
 
@@ -38,7 +37,7 @@ class DashboardRepository implements IDashboardRepository
                 DB::raw('COUNT(*) AS qty')
             ])
             ->whereIn('payment_method', $paymentMethods)
-            ->whereBetween('orders.created_at', [$date, DateTimeHelper::dateToEndOfDate($date)])
+            ->whereBetween('orders.created_at', [$date, DateTimeUtil::dateToEndOfDate($date)])
             ->groupBy('payment_method')
             ->get();
     }
