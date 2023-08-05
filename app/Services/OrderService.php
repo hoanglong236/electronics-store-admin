@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Common\Constants;
+use App\Constants\ConfigConstants;
 use App\Http\Requests\Constants\OrderFilterRequestConstants;
 use App\Models\Constants\OrderStatusConstants;
 use App\Repositories\IOrderRepository;
@@ -21,7 +21,7 @@ class OrderService
     public function getCustomOrdersPaginator(
         $fromDate,
         $toDate,
-        $itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT
+        $itemPerPage = ConfigConstants::DEFAULT_ITEM_PAGE_COUNT
     ) {
         return $this->orderRepository->filterCustomOrdersAndPaginate(
             [],
@@ -34,7 +34,7 @@ class OrderService
 
     public function getFilterCustomOrdersPaginator(
         $orderFilterProperties,
-        $itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT
+        $itemPerPage = ConfigConstants::DEFAULT_ITEM_PAGE_COUNT
     ) {
         $searchFields = [];
         $orderIdKeyword = $orderFilterProperties['orderIdKeyword'];

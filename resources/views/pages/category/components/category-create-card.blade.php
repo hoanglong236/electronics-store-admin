@@ -8,7 +8,7 @@
             <div class="form-group">
                 <label for="parentCategoryId" class="form-control-label">Parent category</label>
                 <select id="parentCategoryId" name="parentId" class="form-control">
-                    <option value="{{ Constants::NONE_VALUE }}">None</option>
+                    <option value="{{ CommonConstants::NONE_VALUE }}">None</option>
                     @foreach ($categoryMap as $parentCategoryId => $parentCategory)
                         <option value="{{ $parentCategoryId }}" @selected(intval(old('parentId')) === $parentCategoryId)>
                             {{ $parentCategory->name }}

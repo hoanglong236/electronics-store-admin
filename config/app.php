@@ -211,7 +211,8 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        'Constants' => App\Common\Constants::class,
+        'CommonConstants' => App\Constants\CommonConstants::class,
+        'MessageConstants' => App\Constants\MessageConstants::class,
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
 

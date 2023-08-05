@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Concretes;
 
-use App\Common\Constants;
+use App\Constants\ConfigConstants;
 use App\Utils\DateTimeUtil;
 use App\Models\Constants\OrderStatusConstants;
 use App\Repositories\IMonthlyReportRepository;
@@ -87,7 +87,7 @@ class MonthlyReportRepository implements IMonthlyReportRepository
             ])
             ->where('orders.status', OrderStatusConstants::COMPLETED)
             ->groupBy('products.id')
-            ->limit(Constants::BEST_SELLER_ITEMS_LIMIT)
+            ->limit(ConfigConstants::BEST_SELLER_ITEMS_LIMIT)
             ->get();
     }
 
@@ -110,7 +110,7 @@ class MonthlyReportRepository implements IMonthlyReportRepository
             ])
             ->where('orders.status', OrderStatusConstants::COMPLETED)
             ->groupBy('categories.id')
-            ->limit(Constants::BEST_SELLER_ITEMS_LIMIT)
+            ->limit(ConfigConstants::BEST_SELLER_ITEMS_LIMIT)
             ->get();
     }
     public function getBestSellerBrands(int $month, int $year)
@@ -132,7 +132,7 @@ class MonthlyReportRepository implements IMonthlyReportRepository
             ])
             ->where('orders.status', OrderStatusConstants::COMPLETED)
             ->groupBy('brands.id')
-            ->limit(Constants::BEST_SELLER_ITEMS_LIMIT)
+            ->limit(ConfigConstants::BEST_SELLER_ITEMS_LIMIT)
             ->get();
     }
 }

@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants\CommonConstants;
+use App\Constants\MessageConstants;
 use App\Http\Controllers\Controller;
 use App\Services\AdminService;
 use App\Http\Controllers\DashboardController;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Session;
-use App\Common\Constants;
 use App\Http\Requests\RegisterRequest;
-use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
@@ -38,7 +38,7 @@ class AdminController extends Controller
             return redirect()->action([DashboardController::class, 'index']);
         }
 
-        Session::flash(Constants::ACTION_ERROR, Constants::LOGIN_DETAIL_INVALID);
+        Session::flash(CommonConstants::ACTION_ERROR, MessageConstants::LOGIN_DETAIL_INVALID);
         return redirect()->action([AdminController::class, 'index'])->withInput();
     }
 
@@ -46,7 +46,7 @@ class AdminController extends Controller
     {
         $this->adminService->logout();
 
-        Session::flash(Constants::ACTION_SUCCESS, Constants::LOGOUT_SUCCESS);
+        Session::flash(CommonConstants::ACTION_SUCCESS, MessageConstants::LOGOUT_SUCCESS);
         return redirect()->action([AdminController::class, 'index']);
     }
 
@@ -64,7 +64,7 @@ class AdminController extends Controller
         $registerProperties = $registerRequest->validated();
         $this->adminService->register($registerProperties);
 
-        Session::flash(Constants::ACTION_SUCCESS, Constants::REGISTER_SUCCESS);
+        Session::flash(CommonConstants::ACTION_SUCCESS, MessageConstants::REGISTER_SUCCESS);
         return redirect()->action([AdminController::class, 'index']);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Common\Constants;
+use App\Constants\CommonConstants;
 use App\Constants\ConfigConstants;
 use App\Repositories\ICategoryRepository;
 use App\Utils\CommonUtil;
@@ -30,14 +30,14 @@ class CategoryService
         return $this->categoryRepository->findById($categoryId);
     }
 
-    public function getCategoriesPaginator($itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT)
+    public function getCategoriesPaginator($itemPerPage = ConfigConstants::DEFAULT_ITEM_PAGE_COUNT)
     {
         return $this->categoryRepository->searchAndPaginate('', $itemPerPage);
     }
 
     public function getSearchCategoriesPaginator(
         $searchProperties,
-        $itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT
+        $itemPerPage = ConfigConstants::DEFAULT_ITEM_PAGE_COUNT
     ) {
         $searchKeyword = $searchProperties['searchKeyword'];
         $escapedKeyword = CommonUtil::escapeKeyword($searchKeyword);
@@ -65,7 +65,7 @@ class CategoryService
     {
         $createAttributes = [];
 
-        if ($categoryProperties['parentId'] !== Constants::NONE_VALUE) {
+        if ($categoryProperties['parentId'] !== CommonConstants::NONE_VALUE) {
             $createAttributes['parent_id'] = $categoryProperties['parentId'];
         }
         $createAttributes['icon_path'] = $this->saveCategoryIconToStorage($categoryProperties['icon']);
@@ -89,8 +89,10 @@ class CategoryService
             $this->deleteCategoryIconFromStorage($oldCategory->icon_path);
             $updateAttributes['icon_path'] = $this->saveCategoryIconToStorage($categoryProperties['icon']);
         }
-        if ($categoryProperties['parentId'] !== Constants::NONE_VALUE) {
+        if ($categoryProperties['parentId'] !== CommonConstants::NONE_VALUE) {
             $updateAttributes['parent_id'] = $categoryProperties['parentId'];
+        } else {
+            $updateAttributes['parent_id'] = null;
         }
         $updateAttributes['name'] = $categoryProperties['name'];
         $updateAttributes['slug'] = $categoryProperties['slug'];

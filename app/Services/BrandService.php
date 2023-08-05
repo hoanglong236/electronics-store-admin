@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Common\Constants;
 use App\Constants\ConfigConstants;
 use App\Repositories\IBrandRepository;
 use App\Utils\CommonUtil;
@@ -30,14 +29,14 @@ class BrandService
         return $this->brandRepository->findById($brandId);
     }
 
-    public function getBrandsPaginator($itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT)
+    public function getBrandsPaginator($itemPerPage = ConfigConstants::DEFAULT_ITEM_PAGE_COUNT)
     {
         return $this->brandRepository->searchAndPaginate('', $itemPerPage);
     }
 
     public function getSearchBrandsPaginator(
         $searchProperties,
-        $itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT
+        $itemPerPage = ConfigConstants::DEFAULT_ITEM_PAGE_COUNT
     ) {
         $searchKeyword = $searchProperties['searchKeyword'];
         $escapedKeyword = CommonUtil::escapeKeyword($searchKeyword);

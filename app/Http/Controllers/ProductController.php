@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Common\Constants;
+use App\Constants\CommonConstants;
+use App\Constants\MessageConstants;
 use App\Http\Requests\Constants\ProductSearchRequestConstants;
 use App\Http\Requests\ProductImageRequest;
 use App\Http\Requests\ProductRequest;
@@ -83,7 +84,7 @@ class ProductController extends Controller
         $productProperties = $productRequest->validated();
         $this->productService->createProduct($productProperties);
 
-        Session::flash(Constants::ACTION_SUCCESS, Constants::CREATE_SUCCESS);
+        Session::flash(CommonConstants::ACTION_SUCCESS, MessageConstants::CREATE_SUCCESS);
         return redirect()->action([ProductController::class, 'index']);
     }
 
@@ -104,7 +105,7 @@ class ProductController extends Controller
         $productProperties = $productRequest->validated();
         $this->productService->updateProduct($productProperties, $productId);
 
-        Session::flash(Constants::ACTION_SUCCESS, Constants::UPDATE_SUCCESS);
+        Session::flash(CommonConstants::ACTION_SUCCESS, MessageConstants::UPDATE_SUCCESS);
         return redirect()->action([ProductController::class, 'index']);
     }
 
@@ -112,7 +113,7 @@ class ProductController extends Controller
     {
         $this->productService->deleteProductById($productId);
 
-        Session::flash(Constants::ACTION_SUCCESS, Constants::DELETE_SUCCESS);
+        Session::flash(CommonConstants::ACTION_SUCCESS, MessageConstants::DELETE_SUCCESS);
         return redirect()->action([ProductController::class, 'index']);
     }
 
@@ -132,7 +133,7 @@ class ProductController extends Controller
         $productImageProperties['productId'] = $productId;
         $this->productService->createProductImages($productImageProperties);
 
-        Session::flash(Constants::ACTION_SUCCESS, Constants::CREATE_SUCCESS);
+        Session::flash(CommonConstants::ACTION_SUCCESS, MessageConstants::CREATE_SUCCESS);
         return redirect()->action([ProductController::class, 'showDetails'], $productId);
     }
 
@@ -140,7 +141,7 @@ class ProductController extends Controller
     {
         $this->productService->deleteProductImageById($productImageId);
 
-        Session::flash(Constants::ACTION_SUCCESS, Constants::DELETE_SUCCESS);
+        Session::flash(CommonConstants::ACTION_SUCCESS, MessageConstants::DELETE_SUCCESS);
         return redirect()->action([ProductController::class, 'showDetails'], $productId);
     }
 }

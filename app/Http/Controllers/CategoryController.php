@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Common\Constants;
+use App\Constants\CommonConstants;
+use App\Constants\MessageConstants;
 use App\Http\Requests\CategoryRequest;
 use App\Http\Requests\SimpleSearchRequest;
 use App\Services\CategoryService;
@@ -70,7 +71,7 @@ class CategoryController extends Controller
         $categoryProperties = $categoryRequest->validated();
         $this->categoryService->createCategory($categoryProperties);
 
-        Session::flash(Constants::ACTION_SUCCESS, Constants::CREATE_SUCCESS);
+        Session::flash(CommonConstants::ACTION_SUCCESS, MessageConstants::CREATE_SUCCESS);
         return redirect()->action([CategoryController::class, 'index']);
     }
 
@@ -90,7 +91,7 @@ class CategoryController extends Controller
         $categoryProperties = $categoryRequest->validated();
         $this->categoryService->updateCategory($categoryProperties, $categoryId);
 
-        Session::flash(Constants::ACTION_SUCCESS, Constants::UPDATE_SUCCESS);
+        Session::flash(CommonConstants::ACTION_SUCCESS, MessageConstants::UPDATE_SUCCESS);
         return redirect()->action([CategoryController::class, 'index']);
     }
 
@@ -98,7 +99,7 @@ class CategoryController extends Controller
     {
         $this->categoryService->deleteCategoryById($categoryId);
 
-        Session::flash(Constants::ACTION_SUCCESS, Constants::DELETE_SUCCESS);
+        Session::flash(CommonConstants::ACTION_SUCCESS, MessageConstants::DELETE_SUCCESS);
         return redirect()->action([CategoryController::class, 'index']);
     }
 }

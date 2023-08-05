@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Common\Constants;
+use App\Constants\CommonConstants;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
@@ -30,18 +30,20 @@ class CategoryRequest extends FormRequest
         $categoryNameUniqueRule = Rule::unique('categories', 'name')->where('delete_flag', false);
         $categorySlugUniqueRule = Rule::unique('categories', 'slug')->where('delete_flag', false);
 
-        $hasParentId = isset($this->parentId) && $this->parentId !== Constants::NONE_VALUE;
+        $hasParentId = isset($this->parentId) && $this->parentId !== CommonConstants::NONE_VALUE;
 
         return [
             'parentId' => [
                 $hasParentId ? Rule::exists('categories', 'id')->where('delete_flag', false) : ''
             ],
             'name' => [
-                'required', 'max:60',
+                'required',
+                'max:60',
                 $isUpdateCategoryRequest ? $categoryNameUniqueRule->ignore($categoryId) : $categoryNameUniqueRule
             ],
             'slug' => [
-                'required', 'max:60',
+                'required',
+                'max:60',
                 $isUpdateCategoryRequest ? $categorySlugUniqueRule->ignore($categoryId) : $categorySlugUniqueRule
             ],
             'icon' => ['mimes:jpeg,jpg,png', Rule::requiredIf(!$isUpdateCategoryRequest)],

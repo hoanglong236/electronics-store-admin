@@ -36,8 +36,8 @@
     </div>
 @endsection
 
-@if (Session::has(Constants::ACTION_SUCCESS))
+@if (Session::has(CommonConstants::ACTION_SUCCESS))
     <script>
-        alert('{{ Session::get(Constants::ACTION_SUCCESS) }}');
+        alert('{{ Session::get(CommonConstants::ACTION_SUCCESS) }}');
     </script>
 @endif

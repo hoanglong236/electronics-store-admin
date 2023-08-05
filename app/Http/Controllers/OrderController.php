@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Common\Constants;
+use App\Constants\CommonConstants;
+use App\Constants\MessageConstants;
 use App\Http\Requests\Constants\OrderFilterRequestConstants;
 use App\Http\Requests\OrderFilterRequest;
 use App\Http\Requests\OrderStatusRequest;
@@ -80,7 +81,7 @@ class OrderController extends Controller
         $orderStatusProperties = $orderStatusRequest->validated();
         $this->orderService->updateOrderStatus($orderStatusProperties, $orderId);
 
-        Session::flash(Constants::ACTION_SUCCESS, Constants::UPDATE_SUCCESS);
+        Session::flash(CommonConstants::ACTION_SUCCESS, MessageConstants::UPDATE_SUCCESS);
         return redirect()->action([OrderController::class, 'index']);
     }
 

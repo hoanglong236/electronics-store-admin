@@ -12,7 +12,6 @@ class ConfigConstants
     const APP_TIMEZONE = 'Asia/Ho_Chi_Minh';
 
     const DEFAULT_ITEM_PAGE_COUNT = 12;
-    const SEARCH_KEYWORD_MAX_LENGTH = 64;
     const BEST_SELLER_ITEMS_LIMIT = 3;
 
     private function __construct()

@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Common\Constants;
 use App\Constants\ConfigConstants;
 use App\Http\Requests\Constants\ProductSearchRequestConstants;
 use App\Repositories\IProductRepository;
@@ -31,7 +30,7 @@ class ProductService
         return $this->productRepository->findById($productId);
     }
 
-    public function getProductsPaginator($itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT)
+    public function getProductsPaginator($itemPerPage = ConfigConstants::DEFAULT_ITEM_PAGE_COUNT)
     {
         return $this->productRepository->searchAndPaginate(
             '',
@@ -42,7 +41,7 @@ class ProductService
 
     public function getSearchProductsPaginator(
         $productSearchProperties,
-        $itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT
+        $itemPerPage = ConfigConstants::DEFAULT_ITEM_PAGE_COUNT
     ) {
         $searchOption = $productSearchProperties['searchOption'];
         $searchKeyword = $productSearchProperties['searchKeyword'];
@@ -57,7 +56,7 @@ class ProductService
 
     private function saveProductImageToStorage($image)
     {
-        $imagePath = $this->storageService->saveFile($image, ConfigConstants::FOLDER_PATH_CATEGORY_ICONS);
+        $imagePath = $this->storageService->saveFile($image, ConfigConstants::FOLDER_PATH_PRODUCT_IMAGES);
         if ($imagePath) {
             $this->firebaseStorageService->uploadImage($imagePath);
         }

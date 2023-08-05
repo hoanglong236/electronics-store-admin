@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Common\Constants;
+use App\Constants\CommonConstants;
+use App\Constants\MessageConstants;
 use App\Http\Requests\CustomerDisableFlagRequest;
 use App\Http\Requests\SimpleSearchRequest;
 use App\Services\CustomerService;
@@ -52,7 +53,7 @@ class CustomerController extends Controller
         $customerDisableFlagProperties = $customerDisableFlagRequest->validated();
         $this->customerService->updateCustomerDisableFlag($customerDisableFlagProperties, $customerId);
 
-        Session::flash(Constants::ACTION_SUCCESS, Constants::UPDATE_SUCCESS);
+        Session::flash(CommonConstants::ACTION_SUCCESS, MessageConstants::UPDATE_SUCCESS);
         return redirect()->action([CustomerController::class, 'index']);
     }
 
@@ -60,7 +61,7 @@ class CustomerController extends Controller
     {
         $this->customerService->deleteCustomerById($customerId);
 
-        Session::flash(Constants::ACTION_SUCCESS, Constants::DELETE_SUCCESS);
+        Session::flash(CommonConstants::ACTION_SUCCESS, MessageConstants::DELETE_SUCCESS);
         return redirect()->action([CustomerController::class, 'index']);
     }
 

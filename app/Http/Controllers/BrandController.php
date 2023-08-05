@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Common\Constants;
+use App\Constants\CommonConstants;
+use App\Constants\MessageConstants;
 use App\Http\Requests\BrandRequest;
 use App\Http\Requests\SimpleSearchRequest;
 use App\Services\BrandService;
@@ -60,7 +61,7 @@ class BrandController extends Controller
         $brandProperties = $brandRequest->validated();
         $this->brandService->createBrand($brandProperties);
 
-        Session::flash(Constants::ACTION_SUCCESS, Constants::CREATE_SUCCESS);
+        Session::flash(CommonConstants::ACTION_SUCCESS, MessageConstants::CREATE_SUCCESS);
         return redirect()->action([BrandController::class, 'index']);
     }
 
@@ -79,7 +80,7 @@ class BrandController extends Controller
         $brandProperties = $brandRequest->validated();
         $this->brandService->updateBrand($brandProperties, $brandId);
 
-        Session::flash(Constants::ACTION_SUCCESS, Constants::UPDATE_SUCCESS);
+        Session::flash(CommonConstants::ACTION_SUCCESS, MessageConstants::UPDATE_SUCCESS);
         return redirect()->action([BrandController::class, 'index']);
     }
 
@@ -87,7 +88,7 @@ class BrandController extends Controller
     {
         $this->brandService->deleteBrandById($brandId);
 
-        Session::flash(Constants::ACTION_SUCCESS, Constants::DELETE_SUCCESS);
+        Session::flash(CommonConstants::ACTION_SUCCESS, MessageConstants::DELETE_SUCCESS);
         return redirect()->action([BrandController::class, 'index']);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Common\Constants;
+use App\Constants\ConfigConstants;
 use App\Repositories\ICustomerRepository;
 use App\Utils\CommonUtil;
 use Illuminate\Support\Facades\Log;
@@ -16,14 +16,14 @@ class CustomerService
         $this->customerRepository = $customerRepository;
     }
 
-    public function getCustomersPaginator($itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT)
+    public function getCustomersPaginator($itemPerPage = ConfigConstants::DEFAULT_ITEM_PAGE_COUNT)
     {
         return $this->customerRepository->searchAndPaginate('', $itemPerPage);
     }
 
     public function getSearchCustomersPaginator(
         $searchProperties,
-        $itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT
+        $itemPerPage = ConfigConstants::DEFAULT_ITEM_PAGE_COUNT
     ) {
         $searchKeyword = $searchProperties['searchKeyword'];
         $escapedKeyword = CommonUtil::escapeKeyword($searchKeyword);

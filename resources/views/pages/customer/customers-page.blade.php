@@ -4,9 +4,9 @@
     <div class="row">
         <div class="col-md-12">
             <h2 class="title-5 mb-4">Customer</h2>
-            @if (Session::has(Constants::ACTION_SUCCESS))
+            @if (Session::has(CommonConstants::ACTION_SUCCESS))
                 @include('shared.components.action-success-label', [
-                    'succeeMessage' => Session::get(Constants::ACTION_SUCCESS),
+                    'succeeMessage' => Session::get(CommonConstants::ACTION_SUCCESS),
                 ])
             @endif
             <div class="table-data__tool">

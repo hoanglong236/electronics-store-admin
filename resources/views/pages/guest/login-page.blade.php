@@ -13,13 +13,13 @@
                 <div class="login-form mt-4">
                     @include('pages.guest.components.login-form')
 
-                    @if (Session::has(Constants::ACTION_ERROR))
+                    @if (Session::has(CommonConstants::ACTION_ERROR))
                         <div class="alert alert-danger" role="alert">
-                            {{ Session::get(Constants::ACTION_ERROR) }}
+                            {{ Session::get(CommonConstants::ACTION_ERROR) }}
                         </div>
-                    @elseif (Session::has(Constants::ACTION_SUCCESS))
+                    @elseif (Session::has(CommonConstants::ACTION_SUCCESS))
                         <div class="alert alert-success" role="alert">
-                            {{ Session::get(Constants::ACTION_SUCCESS) }}
+                            {{ Session::get(CommonConstants::ACTION_SUCCESS) }}
                         </div>
                     @endif
 
