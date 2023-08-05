@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Common\Constants;
 use App\Config\Config;
 use App\Repositories\ICategoryRepository;
+use App\Utils\CommonUtil;
 use Illuminate\Support\Facades\Log;
 
 class CategoryService
@@ -39,7 +40,7 @@ class CategoryService
         $itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT
     ) {
         $searchKeyword = $searchProperties['searchKeyword'];
-        $escapedKeyword = UtilsService::escapeKeyword($searchKeyword);
+        $escapedKeyword = CommonUtil::escapeKeyword($searchKeyword);
 
         return $this->categoryRepository->searchAndPaginate($escapedKeyword, $itemPerPage);
     }

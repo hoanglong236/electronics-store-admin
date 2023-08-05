@@ -6,7 +6,7 @@ use App\Common\Constants;
 use App\Http\Requests\BrandRequest;
 use App\Http\Requests\SimpleSearchRequest;
 use App\Services\BrandService;
-use App\Services\UtilsService;
+use App\Utils\CommonUtil;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Log;
 
@@ -42,7 +42,7 @@ class BrandController extends Controller
         $data['searchKeyword'] = $searchProperties['searchKeyword'];
         $data['brands'] = $paginator->items();
         $data['paginator'] = $paginator->withPath(
-            'search?' . UtilsService::convertMapToParamsString($searchProperties)
+            'search?' . CommonUtil::convertMapToParamsString($searchProperties)
         );
 
         return view('pages.brand.brands-page', ['data' => $data]);

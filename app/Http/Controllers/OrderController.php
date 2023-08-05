@@ -8,8 +8,7 @@ use App\Http\Requests\OrderFilterRequest;
 use App\Http\Requests\OrderStatusRequest;
 use App\Services\Exports\OrderExportCsvService;
 use App\Services\OrderService;
-use App\Services\UtilsService;
-use Illuminate\Http\Request;
+use App\Utils\CommonUtil;
 use Illuminate\Support\Facades\Session;
 
 class OrderController extends Controller
@@ -64,7 +63,7 @@ class OrderController extends Controller
         $data['toDate'] = $orderFilterProperties['toDate'];
         $data['orders'] = $paginator->items();
         $data['paginator'] = $paginator->withPath(
-            'filter?' . UtilsService::convertMapToParamsString($orderFilterProperties)
+            'filter?' . CommonUtil::convertMapToParamsString($orderFilterProperties)
         );
 
         return view('pages.order.orders-page', ['data' => $data]);

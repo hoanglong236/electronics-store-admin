@@ -10,7 +10,7 @@ use App\Http\Requests\ProductSearchRequest;
 use App\Services\BrandService;
 use App\Services\CategoryService;
 use App\Services\ProductService;
-use App\Services\UtilsService;
+use App\Utils\CommonUtil;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
@@ -51,7 +51,7 @@ class ProductController extends Controller
         $data['currentSearchOption'] = $productSearchProperties['searchOption'];
         $data['products'] = $paginator->items();
         $data['paginator'] = $paginator->withPath(
-            'search?' . UtilsService::convertMapToParamsString($productSearchProperties)
+            'search?' . CommonUtil::convertMapToParamsString($productSearchProperties)
         );
 
         return view('pages.product.products-page', ['data' => $data]);

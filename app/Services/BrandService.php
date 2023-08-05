@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Common\Constants;
 use App\Config\Config;
 use App\Repositories\IBrandRepository;
+use App\Utils\CommonUtil;
 use Illuminate\Support\Facades\Log;
 
 class BrandService
@@ -39,7 +40,7 @@ class BrandService
         $itemPerPage = Constants::DEFAULT_ITEM_PAGE_COUNT
     ) {
         $searchKeyword = $searchProperties['searchKeyword'];
-        $escapedKeyword = UtilsService::escapeKeyword($searchKeyword);
+        $escapedKeyword = CommonUtil::escapeKeyword($searchKeyword);
 
         return $this->brandRepository->searchAndPaginate($escapedKeyword, $itemPerPage);
     }

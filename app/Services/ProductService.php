@@ -6,6 +6,7 @@ use App\Common\Constants;
 use App\Config\Config;
 use App\DataFilterConstants\ProductSearchOptionConstants;
 use App\Repositories\IProductRepository;
+use App\Utils\CommonUtil;
 use Illuminate\Support\Facades\Log;
 
 class ProductService
@@ -45,7 +46,7 @@ class ProductService
     ) {
         $searchOption = $productSearchProperties['searchOption'];
         $searchKeyword = $productSearchProperties['searchKeyword'];
-        $escapedKeyword = UtilsService::escapeKeyword($searchKeyword);
+        $escapedKeyword = CommonUtil::escapeKeyword($searchKeyword);
 
         return $this->productRepository->searchAndPaginate(
             $escapedKeyword,

@@ -6,7 +6,7 @@ use App\Common\Constants;
 use App\Http\Requests\CategoryRequest;
 use App\Http\Requests\SimpleSearchRequest;
 use App\Services\CategoryService;
-use App\Services\UtilsService;
+use App\Utils\CommonUtil;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
@@ -39,7 +39,7 @@ class CategoryController extends Controller
         $data['searchKeyword'] = $searchProperties['searchKeyword'];
         $data['categories'] = $paginator->items();
         $data['paginator'] = $paginator->withPath(
-            'search?' . UtilsService::convertMapToParamsString($searchProperties)
+            'search?' . CommonUtil::convertMapToParamsString($searchProperties)
         );
 
         return view('pages.category.categories-page', ['data' => $data]);

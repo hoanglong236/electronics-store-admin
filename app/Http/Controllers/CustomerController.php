@@ -6,8 +6,7 @@ use App\Common\Constants;
 use App\Http\Requests\CustomerDisableFlagRequest;
 use App\Http\Requests\SimpleSearchRequest;
 use App\Services\CustomerService;
-use App\Services\UtilsService;
-use Illuminate\Http\Request;
+use App\Utils\CommonUtil;
 use Illuminate\Support\Facades\Session;
 
 class CustomerController extends Controller
@@ -42,7 +41,7 @@ class CustomerController extends Controller
         $data['searchKeyword'] = $searchProperties['searchKeyword'];
         $data['customers'] = $paginator->items();
         $data['paginator'] = $paginator->withPath(
-            'search?' . UtilsService::convertMapToParamsString($searchProperties)
+            'search?' . CommonUtil::convertMapToParamsString($searchProperties)
         );
 
         return view('pages.customer.customers-page', ['data' => $data]);

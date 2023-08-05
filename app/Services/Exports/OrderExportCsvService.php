@@ -4,7 +4,7 @@ namespace App\Services\Exports;
 
 use App\Http\Requests\Constants\OrderFilterRequestConstants;
 use App\Repositories\IOrderRepository;
-use App\Services\UtilsService;
+use App\Utils\CommonUtil;
 use Illuminate\Support\Facades\Log;
 
 class OrderExportCsvService extends ExportCsvService
@@ -37,14 +37,14 @@ class OrderExportCsvService extends ExportCsvService
         if ($orderIdKeyword) {
             $searchFields[] = [
                 'name' => 'orderId',
-                'value' => UtilsService::escapeKeyword($orderIdKeyword)
+                'value' => CommonUtil::escapeKeyword($orderIdKeyword)
             ];
         }
         $emailKeyword = $orderFilterProperties['emailKeyword'];
         if ($emailKeyword) {
             $searchFields[] = [
                 'name' => 'email',
-                'value' => UtilsService::escapeKeyword($emailKeyword)
+                'value' => CommonUtil::escapeKeyword($emailKeyword)
             ];
         }
 

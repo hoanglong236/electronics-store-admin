@@ -6,6 +6,7 @@ use App\Common\Constants;
 use App\Http\Requests\Constants\OrderFilterRequestConstants;
 use App\Models\Constants\OrderStatusConstants;
 use App\Repositories\IOrderRepository;
+use App\Utils\CommonUtil;
 use Illuminate\Support\Facades\Log;
 
 class OrderService
@@ -40,14 +41,14 @@ class OrderService
         if ($orderIdKeyword) {
             $searchFields[] = [
                 'name' => 'orderId',
-                'value' => UtilsService::escapeKeyword($orderIdKeyword)
+                'value' => CommonUtil::escapeKeyword($orderIdKeyword)
             ];
         }
         $emailKeyword = $orderFilterProperties['emailKeyword'];
         if ($emailKeyword) {
             $searchFields[] = [
                 'name' => 'email',
-                'value' => UtilsService::escapeKeyword($emailKeyword)
+                'value' => CommonUtil::escapeKeyword($emailKeyword)
             ];
         }
 
