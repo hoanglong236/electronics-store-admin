@@ -16,8 +16,22 @@ class OrderExportCsvService extends ExportCsvService
         $this->orderRepository = $orderRepository;
     }
 
-    private function getFilterCustomOrdersIterator($orderFilterProperties)
+    protected function getLabels()
     {
+        return [
+            'ID',
+            'Email',
+            'Payment Method',
+            'Status',
+            'Total',
+            'Create Date',
+        ];
+    }
+
+    protected function getRecordIterator()
+    {
+        $orderFilterProperties = $this->props;
+
         $searchFields = [];
         $orderIdKeyword = $orderFilterProperties['orderIdKeyword'];
         if ($orderIdKeyword) {
@@ -52,18 +66,15 @@ class OrderExportCsvService extends ExportCsvService
         );
     }
 
-    protected function getData(array $props)
+    protected function convertIteratorElementToArray(object $element)
     {
-        $data = [];
-        $data['iterator'] = $this->getFilterCustomOrdersIterator($props);
-        $data['labels'] = [
-            'Order ID',
-            'Email',
-            'Total',
-            'Payment Method',
-            'Status',
-            'Create Date',
+        return [
+            $element->id,
+            $element->email,
+            $element->payment_method,
+            $element->status,
+            $element->total,
+            $element->create_date,
         ];
-        return $data;
     }
 }

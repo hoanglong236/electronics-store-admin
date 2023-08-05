@@ -4,9 +4,9 @@
             <tr>
                 <th>ID</th>
                 <th>Email</th>
-                <th>Total</th>
                 <th>Payment<br>method</th>
                 <th>Status</th>
+                <th>Total</th>
                 <th>Create date</th>
                 <th></th>
             </tr>
@@ -15,8 +15,7 @@
             @foreach ($orders as $order)
                 <tr>
                     <td>{{ $order->id }}</td>
-                    <td>{{ $order->customer_email }}</td>
-                    <td>${{ number_format($order->total, 2) }}</td>
+                    <td>{{ $order->email }}</td>
                     <td>{{ $order->payment_method }}</td>
                     <td>
                         @if (count($nextSelectableStatusMap[$order->status]) === 0)
@@ -47,6 +46,7 @@
                             </form>
                         @endif
                     </td>
+                    <td>${{ number_format($order->total, 2) }}</td>
                     <td>{{ $order->create_date }}</td>
                     <td>
                         @include('shared.components.buttons.detail-icon-button', [

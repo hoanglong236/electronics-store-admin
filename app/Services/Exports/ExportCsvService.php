@@ -4,9 +4,14 @@ namespace App\Services\Exports;
 
 abstract class ExportCsvService
 {
-    protected abstract function getData(array $props);
+    protected $props;
 
-    private function generateCsv(array $data) {
+    protected abstract function getLabels();
+    protected abstract function getRecordIterator();
+    protected abstract function convertIteratorElementToArray(object $element);
+
+    private function generateCsv(array $labels, object $iterator)
+    {
         $fileName = "filter_orders_" . date('Y-m-d') . ".csv";
 
         header('Content-Description: File Transfer');
@@ -17,19 +22,21 @@ abstract class ExportCsvService
 
         $stream = fopen('php://output', 'w');
 
-        fputcsv($stream, $data['labels']);
-        $iterator = $data['iterator'];
-
-        foreach ($iterator as $obj) {
-            fputcsv($stream, array_values((array) $obj));
+        fputcsv($stream, $labels);
+        foreach ($iterator as $element) {
+            fputcsv($stream, $this->convertIteratorElementToArray($element));
         }
 
         fclose($stream);
         exit;
     }
 
-    public function export(array $props) {
-        $data = $this->getData($props);
-        $this->generateCsv($data);
+    public function export(array $props)
+    {
+        $this->props = $props;
+
+        $labels = $this->getLabels();
+        $iterator = $this->getRecordIterator();
+        $this->generateCsv($labels, $iterator);
     }
 }

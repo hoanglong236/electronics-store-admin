@@ -27,11 +27,11 @@ class OrderRepository implements IOrderRepository
             ->join('order_items', 'order_items.order_id', '=', 'orders.id')
             ->select(
                 'orders.id',
-                'orders.status',
                 'orders.payment_method',
-                DB::raw('date(orders.created_at) as create_date'),
-                'customers.email as customer_email',
+                'orders.status',
                 DB::raw('sum(order_items.total_price) as total'),
+                'customers.email',
+                DB::raw('date(orders.created_at) as create_date'),
             );
 
         foreach ($searchFields as $searchField) {
