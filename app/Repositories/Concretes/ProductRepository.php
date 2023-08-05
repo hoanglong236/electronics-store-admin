@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Concretes;
 
-use App\DataFilterConstants\ProductSearchOptionConstants;
+use App\Http\Requests\Constants\ProductSearchRequestConstants;
 use App\Models\Product;
 use App\Models\ProductImage;
 use App\Repositories\IProductRepository;
@@ -48,7 +48,7 @@ class ProductRepository implements IProductRepository
 
         if (strlen($escapedKeyword) > 0) {
             switch ($searchOption) {
-                case ProductSearchOptionConstants::SEARCH_ALL:
+                case ProductSearchRequestConstants::SEARCH_ALL:
                     $queryBuilder
                         ->join('categories', 'categories.id', '=', 'products.category_id')
                         ->join('brands', 'brands.id', '=', 'products.brand_id')
@@ -61,7 +61,7 @@ class ProductRepository implements IProductRepository
                                 ->orWhere('brands.slug', 'LIKE', '%' . $escapedKeyword . '%');
                         });
                     break;
-                case ProductSearchOptionConstants::SEARCH_CATEGORY:
+                case ProductSearchRequestConstants::SEARCH_CATEGORY:
                     $queryBuilder
                         ->join('categories', 'categories.id', '=', 'products.category_id')
                         ->where(function ($query) use ($escapedKeyword) {
@@ -69,7 +69,7 @@ class ProductRepository implements IProductRepository
                                 ->orWhere('categories.slug', 'LIKE', '%' . $escapedKeyword . '%');
                         });
                     break;
-                case ProductSearchOptionConstants::SEARCH_BRAND:
+                case ProductSearchRequestConstants::SEARCH_BRAND:
                     $queryBuilder
                         ->join('brands', 'brands.id', '=', 'products.brand_id')
                         ->where(function ($query) use ($escapedKeyword) {

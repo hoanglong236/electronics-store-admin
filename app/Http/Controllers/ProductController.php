@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Common\Constants;
-use App\DataFilterConstants\ProductSearchOptionConstants;
+use App\Http\Requests\Constants\ProductSearchRequestConstants;
 use App\Http\Requests\ProductImageRequest;
 use App\Http\Requests\ProductRequest;
 use App\Http\Requests\ProductSearchRequest;
@@ -62,8 +62,8 @@ class ProductController extends Controller
         return [
             'pageTitle' => 'Products',
             'searchKeyword' => '',
-            'searchOptions' => ProductSearchOptionConstants::toArray(),
-            'currentSearchOption' => ProductSearchOptionConstants::SEARCH_ALL,
+            'searchOptions' => ProductSearchRequestConstants::toArray(),
+            'currentSearchOption' => ProductSearchRequestConstants::SEARCH_ALL,
         ];
     }
 

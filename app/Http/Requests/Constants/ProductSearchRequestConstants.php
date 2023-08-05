@@ -1,8 +1,8 @@
 <?php
 
-namespace App\DataFilterConstants;
+namespace App\Http\Requests\Constants;
 
-class ProductSearchOptionConstants
+class ProductSearchRequestConstants
 {
     const SEARCH_ALL = 'All';
     const SEARCH_CATEGORY = 'Category';

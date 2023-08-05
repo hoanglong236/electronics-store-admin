@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Common\Constants;
 use App\Config\Config;
-use App\DataFilterConstants\ProductSearchOptionConstants;
+use App\Http\Requests\Constants\ProductSearchRequestConstants;
 use App\Repositories\IProductRepository;
 use App\Utils\CommonUtil;
 use Illuminate\Support\Facades\Log;
@@ -35,7 +35,7 @@ class ProductService
     {
         return $this->productRepository->searchAndPaginate(
             '',
-            ProductSearchOptionConstants::SEARCH_ALL,
+            ProductSearchRequestConstants::SEARCH_ALL,
             $itemPerPage
         );
     }

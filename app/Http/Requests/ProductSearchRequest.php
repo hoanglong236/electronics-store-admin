@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\DataFilterConstants\ProductSearchOptionConstants;
+use App\Http\Requests\Constants\ProductSearchRequestConstants;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -27,7 +27,7 @@ class ProductSearchRequest extends FormRequest
             'searchKeyword' => 'max:64',
             'searchOption' => [
                 'required',
-                Rule::in(ProductSearchOptionConstants::toArray()),
+                Rule::in(ProductSearchRequestConstants::toArray()),
             ]
         ];
     }
