@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Common\Constants;
-use App\Config\Config;
+use App\Constants\ConfigConstants;
 use App\Repositories\ICategoryRepository;
 use App\Utils\CommonUtil;
 use Illuminate\Support\Facades\Log;
@@ -47,7 +47,7 @@ class CategoryService
 
     private function saveCategoryIconToStorage($icon)
     {
-        $iconPath = $this->storageService->saveFile($icon, Config::FOLDER_PATH_CATEGORY_ICONS);
+        $iconPath = $this->storageService->saveFile($icon, ConfigConstants::FOLDER_PATH_CATEGORY_ICONS);
         if ($iconPath) {
             $this->firebaseStorageService->uploadImage($iconPath);
         }

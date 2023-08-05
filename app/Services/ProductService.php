@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Common\Constants;
-use App\Config\Config;
+use App\Constants\ConfigConstants;
 use App\Http\Requests\Constants\ProductSearchRequestConstants;
 use App\Repositories\IProductRepository;
 use App\Utils\CommonUtil;
@@ -57,7 +57,7 @@ class ProductService
 
     private function saveProductImageToStorage($image)
     {
-        $imagePath = $this->storageService->saveFile($image, Config::FOLDER_PATH_CATEGORY_ICONS);
+        $imagePath = $this->storageService->saveFile($image, ConfigConstants::FOLDER_PATH_CATEGORY_ICONS);
         if ($imagePath) {
             $this->firebaseStorageService->uploadImage($imagePath);
         }

@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Config\Config;
+use App\Constants\ConfigConstants;
 use App\Repositories\ISeederRepository;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class ProductSeeder extends Seeder
@@ -347,7 +346,7 @@ class ProductSeeder extends Seeder
                 'quantity' => 1000,
                 'warranty_period' => 24,
                 'description' => 'None',
-                'main_image_path' => Config::FOLDER_PATH_PRODUCT_IMAGES . '/' . $productInfo['slug'] . '.jpg',
+                'main_image_path' => ConfigConstants::FOLDER_PATH_PRODUCT_IMAGES . '/' . $productInfo['slug'] . '.jpg',
                 'delete_flag' => false,
             ]);
             $this->createProductImages($product->id, $productInfo['slug']);
@@ -358,15 +357,15 @@ class ProductSeeder extends Seeder
     {
         $this->seederRepository->createProductImage([
             'product_id' => $productId,
-            'image_path' => Config::FOLDER_PATH_PRODUCT_IMAGES . '/' . $productSlug . '-1.jpg',
+            'image_path' => ConfigConstants::FOLDER_PATH_PRODUCT_IMAGES . '/' . $productSlug . '-1.jpg',
         ]);
         $this->seederRepository->createProductImage([
             'product_id' => $productId,
-            'image_path' => Config::FOLDER_PATH_PRODUCT_IMAGES . '/' . $productSlug . '-2.jpg',
+            'image_path' => ConfigConstants::FOLDER_PATH_PRODUCT_IMAGES . '/' . $productSlug . '-2.jpg',
         ]);
         $this->seederRepository->createProductImage([
             'product_id' => $productId,
-            'image_path' => Config::FOLDER_PATH_PRODUCT_IMAGES . '/' . $productSlug . '-3.jpg',
+            'image_path' => ConfigConstants::FOLDER_PATH_PRODUCT_IMAGES . '/' . $productSlug . '-3.jpg',
         ]);
     }
 }

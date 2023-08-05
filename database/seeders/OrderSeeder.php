@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\Constants\OrderStatusConstants;
 use App\Models\Constants\PaymentMethodConstants;
 use App\Repositories\ISeederRepository;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class OrderSeeder extends Seeder

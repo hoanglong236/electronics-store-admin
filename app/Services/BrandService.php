@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Common\Constants;
-use App\Config\Config;
+use App\Constants\ConfigConstants;
 use App\Repositories\IBrandRepository;
 use App\Utils\CommonUtil;
 use Illuminate\Support\Facades\Log;
@@ -47,7 +47,7 @@ class BrandService
 
     private function saveBrandLogoToStorage($logo)
     {
-        $logoPath = $this->storageService->saveFile($logo, Config::FOLDER_PATH_BRAND_LOGOS);
+        $logoPath = $this->storageService->saveFile($logo, ConfigConstants::FOLDER_PATH_BRAND_LOGOS);
         if ($logoPath) {
             $this->firebaseStorageService->uploadImage($logoPath);
         }

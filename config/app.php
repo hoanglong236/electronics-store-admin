@@ -1,6 +1,6 @@
 <?php
 
-use App\Config\Config;
+use App\Constants\ConfigConstants;
 use Illuminate\Support\Facades\Facade;
 
 return [
@@ -70,7 +70,7 @@ return [
     |
     */
 
-    'timezone' => Config::APP_TIMEZONE,
+    'timezone' => ConfigConstants::APP_TIMEZONE,
 
     /*
     |--------------------------------------------------------------------------

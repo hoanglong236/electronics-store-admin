@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Libs\Cloud\Storage\FirebaseStorage;
 use App\Repositories\ISeederRepository;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class FirebaseUploadImageSeeder extends Seeder

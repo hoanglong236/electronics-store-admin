@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Config\Config;
+use App\Constants\ConfigConstants;
 use App\Repositories\ISeederRepository;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class BrandSeeder extends Seeder
@@ -43,7 +42,7 @@ class BrandSeeder extends Seeder
             $this->seederRepository->createBrand([
                 'name' => $brandInfo['name'],
                 'slug' => $brandInfo['slug'],
-                'logo_path' => Config::FOLDER_PATH_BRAND_LOGOS . '/' . $brandInfo['slug'] . '.png',
+                'logo_path' => ConfigConstants::FOLDER_PATH_BRAND_LOGOS . '/' . $brandInfo['slug'] . '.png',
                 'delete_flag' => false,
             ]);
         }

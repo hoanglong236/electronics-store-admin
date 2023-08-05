@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Config\Config;
+use App\Constants\ConfigConstants;
 use App\Repositories\ISeederRepository;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class CategorySeeder extends Seeder
@@ -51,7 +50,7 @@ class CategorySeeder extends Seeder
             $this->seederRepository->createCategory([
                 'name' => $categoryInfo['name'],
                 'slug' => $categoryInfo['slug'],
-                'icon_path' => Config::FOLDER_PATH_CATEGORY_ICONS . '/' . $categoryInfo['slug'] . '.png',
+                'icon_path' => ConfigConstants::FOLDER_PATH_CATEGORY_ICONS . '/' . $categoryInfo['slug'] . '.png',
                 'delete_flag' => false,
             ]);
         }
@@ -64,7 +63,7 @@ class CategorySeeder extends Seeder
                 'parent_id' => $categoryInfo['parentId'],
                 'name' => $categoryInfo['name'],
                 'slug' => $categoryInfo['slug'],
-                'icon_path' => Config::FOLDER_PATH_CATEGORY_ICONS . '/' . $categoryInfo['slug'] . '.png',
+                'icon_path' => ConfigConstants::FOLDER_PATH_CATEGORY_ICONS . '/' . $categoryInfo['slug'] . '.png',
                 'delete_flag' => false,
             ]);
         }

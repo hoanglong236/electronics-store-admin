@@ -2,7 +2,7 @@
 
 namespace App\Libs\Cloud\Storage;
 
-use App\Config\Config;
+use App\Constants\ConfigConstants;
 use Kreait\Firebase\Factory;
 
 /**
@@ -16,7 +16,7 @@ use Kreait\Firebase\Factory;
  */
 class FirebaseStorage
 {
-    private static $STORAGE_FOLDER_PATH = Config::FOLDER_PATH_FIREBASE_STORAGE_IMAGES . "/";
+    private static $STORAGE_FOLDER_PATH = ConfigConstants::FOLDER_PATH_FIREBASE_STORAGE_IMAGES . "/";
 
     private $firebaseBucket;
 
