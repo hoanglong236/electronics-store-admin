@@ -62,10 +62,6 @@ class MonthlyReportExportExcelService extends ExportExcelService
             $orderPlacedQty += $item->placed;
         }
 
-        if ($orderPlacedQty === 0) {
-            return [];
-        }
-
         $data = [];
         $data['order']['analysis'] = $orderAnalysisData;
         $data['bestSellers']['products'] = $this->monthlyReportRepository
