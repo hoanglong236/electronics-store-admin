@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Repositories\Concretes\AdminRepository;
 use App\Repositories\Concretes\BrandRepository;
 use App\Repositories\Concretes\CategoryRepository;
 use App\Repositories\Concretes\CustomerRepository;
@@ -10,6 +11,7 @@ use App\Repositories\Concretes\MonthlyReportRepository;
 use App\Repositories\Concretes\OrderRepository;
 use App\Repositories\Concretes\ProductRepository;
 use App\Repositories\Concretes\SeederRepository;
+use App\Repositories\IAdminRepository;
 use App\Repositories\IBrandRepository;
 use App\Repositories\ICategoryRepository;
 use App\Repositories\ICustomerRepository;
@@ -18,6 +20,7 @@ use App\Repositories\IMonthlyReportRepository;
 use App\Repositories\IOrderRepository;
 use App\Repositories\IProductRepository;
 use App\Repositories\ISeederRepository;
+use App\Services\AdminService;
 use App\Services\BrandService;
 use App\Services\CategoryService;
 use App\Services\CustomerService;
@@ -40,6 +43,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(ISeederRepository::class, SeederRepository::class);
 
+        $this->app->bind(IAdminRepository::class, AdminRepository::class);
         $this->app->bind(ICategoryRepository::class, CategoryRepository::class);
         $this->app->bind(IBrandRepository::class, BrandRepository::class);
         $this->app->bind(IProductRepository::class, ProductRepository::class);
@@ -54,6 +58,13 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(FirebaseStorageService::class, function () {
             return new FirebaseStorageService();
         });
+
+        $this->app->instance(
+            AdminService::class,
+            new AdminService(
+                $this->app->make(IAdminRepository::class)
+            )
+        );
 
         $this->app->instance(
             CategoryService::class,

@@ -15,9 +15,9 @@ class AdminController extends Controller
 {
     private $adminService;
 
-    public function __construct()
+    public function __construct(AdminService $adminService)
     {
-        $this->adminService = new AdminService();
+        $this->adminService = $adminService;
     }
 
     public function index()
