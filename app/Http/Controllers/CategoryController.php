@@ -19,6 +19,16 @@ class CategoryController extends Controller
         $this->categoryService = $categoryService;
     }
 
+    private function getCommonDataForCategoriesPage()
+    {
+        $data = [];
+        $data['pageTitle'] = 'Categories';
+        $data['categoryMap'] = $this->categoryService->getMapFromCategoryIdToCategory(true);
+        $data['searchKeyword'] = '';
+
+        return $data;
+    }
+
     public function index()
     {
         $paginator = $this->categoryService->getCategoriesPaginator();
@@ -45,22 +55,11 @@ class CategoryController extends Controller
         return view('pages.category.categories-page', ['data' => $data]);
     }
 
-    private function getCommonDataForCategoriesPage()
-    {
-        $categoryMap = $this->categoryService->getMapFromCategoryIdToCategory(true);
-        return [
-            'pageTitle' => 'Categories',
-            'categoryMap' => $categoryMap,
-            'searchKeyword' => '',
-        ];
-    }
-
     public function create()
     {
         $data = [];
-
         $data['pageTitle'] = 'Create category';
-        $data['categoryMap'] = $this->categoryService->getMapFromCategoryIdToCategory();
+        $data['parentCategoryMap'] = $this->categoryService->getMapFromCategoryIdToCategory();
 
         return view('pages.category.category-create-page', ['data' => $data]);
     }
@@ -76,14 +75,14 @@ class CategoryController extends Controller
 
     public function update($categoryId)
     {
-        $data = [];
         $category = $this->categoryService->getCategoryById($categoryId);
-        $categoryMap = $this->categoryService->getMapFromCategoryIdToCategory(!is_null($category->parent_id));
-        unset($categoryMap[$category->id]);
+        $parentCategoryMap = $this->categoryService->getMapFromCategoryIdToCategory(!is_null($category->parent_id));
+        unset($parentCategoryMap[$category->id]);
 
+        $data = [];
         $data['pageTitle'] = 'Update category';
         $data['category'] = $category;
-        $data['categoryMap'] = $categoryMap;
+        $data['parentCategoryMap'] = $parentCategoryMap;
 
         return view('pages.category.category-update-page', ['data' => $data]);
     }

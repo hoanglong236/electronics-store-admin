@@ -12,11 +12,11 @@
                 <select id="parentCategoryId" name="parentId" class="form-control">
                     <option value="{{ CommonConstants::NONE_VALUE }}">None</option>
                     @if (is_null($category->parent_id))
-                        @foreach ($categoryMap as $parentCategoryId => $parentCategory)
+                        @foreach ($parentCategoryMap as $parentCategoryId => $parentCategory)
                             <option value="{{ $parentCategoryId }}">{{ $parentCategory->name }}</option>
                         @endforeach
                     @else
-                        @foreach ($categoryMap as $parentCategoryId => $parentCategory)
+                        @foreach ($parentCategoryMap as $parentCategoryId => $parentCategory)
                             @if ($category->parent_id === $parentCategoryId)
                                 <option value="{{ $parentCategoryId }}" selected>
                                     {{ $parentCategory->delete_flag ? $parentCategory->name . ' (deleted)' : $parentCategory->name }}
