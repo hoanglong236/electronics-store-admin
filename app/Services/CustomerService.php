@@ -58,7 +58,7 @@ class CustomerService
             'updatedAt' => $customer->updated_at,
         ];
 
-        $addresses = $this->customerRepository->retrieveCustomerAddressesByCustomerId($customerId);
+        $addresses = $this->customerRepository->getCustomerAddressesByCustomerId($customerId);
         foreach ($addresses as $address) {
             $customerDetails['addresses'][] = [
                 'specificAddress' => $address->specific_address,

@@ -142,7 +142,7 @@ class ProductService
         ];
 
         $productDetails['images'] = [];
-        $images = $this->productRepository->retrieveProductImagesByProductId($productId);
+        $images = $this->productRepository->getProductImagesByProductId($productId);
         foreach ($images as $image) {
             $productDetails['images'][] = [
                 'id' => $image->id,

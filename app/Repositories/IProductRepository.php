@@ -13,7 +13,7 @@ interface IProductRepository
     );
 
     public function getCustomProductById(int $id);
-    public function retrieveProductImagesByProductId(int $productId);
+    public function getProductImagesByProductId(int $productId);
     public function createProductImage(array $attributes);
     public function deleteProductImageById(int $id);
 }

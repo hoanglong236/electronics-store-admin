@@ -9,5 +9,5 @@ interface ICustomerRepository
     public function deleteById(int $id);
     public function searchAndPaginate(string $escapedKeyword, int $itemPerPage);
 
-    public function retrieveCustomerAddressesByCustomerId(int $customerId);
+    public function getCustomerAddressesByCustomerId(int $customerId);
 }

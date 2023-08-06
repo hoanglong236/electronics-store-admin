@@ -51,7 +51,7 @@ class CustomerRepository implements ICustomerRepository
             ->paginate($itemPerPage);
     }
 
-    public function retrieveCustomerAddressesByCustomerId(int $customerId)
+    public function getCustomerAddressesByCustomerId(int $customerId)
     {
         return CustomerAddress::select([
             'specific_address',

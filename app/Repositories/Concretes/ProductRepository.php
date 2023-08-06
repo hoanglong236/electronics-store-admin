@@ -107,7 +107,7 @@ class ProductRepository implements IProductRepository
             ->first();
     }
 
-    public function retrieveProductImagesByProductId(int $productId)
+    public function getProductImagesByProductId(int $productId)
     {
         return ProductImage::where('product_id', $productId)->get();
     }
