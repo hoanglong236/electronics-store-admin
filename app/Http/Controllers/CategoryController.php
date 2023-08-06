@@ -8,7 +8,6 @@ use App\Http\Requests\CategoryRequest;
 use App\Http\Requests\SimpleSearchRequest;
 use App\Services\CategoryService;
 use App\Utils\CommonUtil;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
 class CategoryController extends Controller
@@ -78,10 +77,13 @@ class CategoryController extends Controller
     public function update($categoryId)
     {
         $data = [];
+        $category = $this->categoryService->getCategoryById($categoryId);
+        $categoryMap = $this->categoryService->getMapFromCategoryIdToCategory(!is_null($category->parent_id));
+        unset($categoryMap[$category->id]);
 
         $data['pageTitle'] = 'Update category';
-        $data['category'] = $this->categoryService->getCategoryById($categoryId);
-        $data['categoryMap'] = $this->categoryService->getMapFromCategoryIdToCategory(true);
+        $data['category'] = $category;
+        $data['categoryMap'] = $categoryMap;
 
         return view('pages.category.category-update-page', ['data' => $data]);
     }
