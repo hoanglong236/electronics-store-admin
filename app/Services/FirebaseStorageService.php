@@ -13,13 +13,13 @@ class FirebaseStorageService
         $this->firebaseStorage = new FirebaseStorage();
     }
 
-    public function uploadImage($imagePath)
+    public function uploadImage(string $imagePath)
     {
         $imageResource = fopen(public_path('/storage/') . $imagePath, "r");
         $this->firebaseStorage->upload($imageResource, $imagePath);
     }
 
-    public function deleteImage($imagePath)
+    public function deleteImage(string $imagePath)
     {
         $this->firebaseStorage->delete($imagePath);
     }

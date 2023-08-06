@@ -7,7 +7,6 @@ use App\Http\Requests\Constants\OrderFilterRequestConstants;
 use App\Models\Constants\OrderStatusConstants;
 use App\Repositories\IOrderRepository;
 use App\Utils\CommonUtil;
-use Illuminate\Support\Facades\Log;
 
 class OrderService
 {
@@ -19,9 +18,9 @@ class OrderService
     }
 
     public function getCustomOrdersPaginator(
-        $fromDate,
-        $toDate,
-        $itemPerPage = ConfigConstants::DEFAULT_ITEM_PAGE_COUNT
+        string $fromDate,
+        string $toDate,
+        int $itemPerPage = ConfigConstants::DEFAULT_ITEM_PAGE_COUNT
     ) {
         return $this->orderRepository->filterCustomOrdersAndPaginate(
             [],
@@ -33,8 +32,8 @@ class OrderService
     }
 
     public function getFilterCustomOrdersPaginator(
-        $orderFilterProperties,
-        $itemPerPage = ConfigConstants::DEFAULT_ITEM_PAGE_COUNT
+        array $orderFilterProperties,
+        int $itemPerPage = ConfigConstants::DEFAULT_ITEM_PAGE_COUNT
     ) {
         $searchFields = [];
         $orderIdKeyword = $orderFilterProperties['orderIdKeyword'];
@@ -71,7 +70,7 @@ class OrderService
         );
     }
 
-    public function updateOrderStatus($orderStatusProperties, $orderId)
+    public function updateOrderStatus(array $orderStatusProperties, int $orderId)
     {
         $updateAttributes = [];
         $updateAttributes['status'] = $orderStatusProperties['status'];
@@ -95,7 +94,7 @@ class OrderService
         ];
     }
 
-    public function getOrderDetails($orderId)
+    public function getOrderDetails(int $orderId)
     {
         $orderDetails = [];
 

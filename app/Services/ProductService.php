@@ -6,7 +6,6 @@ use App\Constants\ConfigConstants;
 use App\Http\Requests\Constants\ProductSearchRequestConstants;
 use App\Repositories\IProductRepository;
 use App\Utils\CommonUtil;
-use Illuminate\Support\Facades\Log;
 
 class ProductService
 {
@@ -25,12 +24,12 @@ class ProductService
         $this->firebaseStorageService = $firebaseStorageService;
     }
 
-    public function getProductById($productId)
+    public function getProductById(int $productId)
     {
         return $this->productRepository->findById($productId);
     }
 
-    public function getProductsPaginator($itemPerPage = ConfigConstants::DEFAULT_ITEM_PAGE_COUNT)
+    public function getProductsPaginator(int $itemPerPage = ConfigConstants::DEFAULT_ITEM_PAGE_COUNT)
     {
         return $this->productRepository->searchAndPaginate(
             '',
@@ -40,8 +39,8 @@ class ProductService
     }
 
     public function getSearchProductsPaginator(
-        $productSearchProperties,
-        $itemPerPage = ConfigConstants::DEFAULT_ITEM_PAGE_COUNT
+        array $productSearchProperties,
+        int $itemPerPage = ConfigConstants::DEFAULT_ITEM_PAGE_COUNT
     ) {
         $searchOption = $productSearchProperties['searchOption'];
         $searchKeyword = $productSearchProperties['searchKeyword'];
@@ -64,13 +63,13 @@ class ProductService
         return $imagePath;
     }
 
-    private function deleteProductImageFromStorage($imagePath)
+    private function deleteProductImageFromStorage(string $imagePath)
     {
         $this->storageService->deleteFile($imagePath);
         $this->firebaseStorageService->deleteImage($imagePath);
     }
 
-    public function createProduct($productProperties)
+    public function createProduct(array $productProperties)
     {
         $createAttributes = [];
 
@@ -89,7 +88,7 @@ class ProductService
         $this->productRepository->create($createAttributes);
     }
 
-    public function updateProduct($productProperties, $productId)
+    public function updateProduct(array $productProperties, int $productId)
     {
         $oldProduct = $this->getProductById($productId);
         if (!$oldProduct) {
@@ -115,12 +114,12 @@ class ProductService
         $this->productRepository->update($updateAttributes, $productId);
     }
 
-    public function deleteProductById($productId)
+    public function deleteProductById(int $productId)
     {
         $this->productRepository->deleteById($productId);
     }
 
-    public function getProductDetails($productId)
+    public function getProductDetails(int $productId)
     {
         $productDetails = [];
 
@@ -153,7 +152,7 @@ class ProductService
         return $productDetails;
     }
 
-    public function createProductImages($productImageProperties)
+    public function createProductImages(array $productImageProperties)
     {
         $images = $productImageProperties['images'];
         foreach ($images as $image) {
@@ -166,7 +165,7 @@ class ProductService
         }
     }
 
-    public function deleteProductImageById($productImageId)
+    public function deleteProductImageById(int $productImageId)
     {
         $deletedProductImage = $this->productRepository->deleteProductImageById($productImageId);
         if ($deletedProductImage) {

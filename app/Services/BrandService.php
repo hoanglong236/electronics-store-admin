@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Constants\ConfigConstants;
 use App\Repositories\IBrandRepository;
 use App\Utils\CommonUtil;
-use Illuminate\Support\Facades\Log;
 
 class BrandService
 {
@@ -24,19 +23,19 @@ class BrandService
         $this->firebaseStorageService = $firebaseStorageService;
     }
 
-    public function getBrandById($brandId)
+    public function getBrandById(int $brandId)
     {
         return $this->brandRepository->findById($brandId);
     }
 
-    public function getBrandsPaginator($itemPerPage = ConfigConstants::DEFAULT_ITEM_PAGE_COUNT)
+    public function getBrandsPaginator(int $itemPerPage = ConfigConstants::DEFAULT_ITEM_PAGE_COUNT)
     {
         return $this->brandRepository->searchAndPaginate('', $itemPerPage);
     }
 
     public function getSearchBrandsPaginator(
-        $searchProperties,
-        $itemPerPage = ConfigConstants::DEFAULT_ITEM_PAGE_COUNT
+        array $searchProperties,
+        int $itemPerPage = ConfigConstants::DEFAULT_ITEM_PAGE_COUNT
     ) {
         $searchKeyword = $searchProperties['searchKeyword'];
         $escapedKeyword = CommonUtil::escapeKeyword($searchKeyword);
@@ -54,13 +53,13 @@ class BrandService
         return $logoPath;
     }
 
-    private function deleteBrandLogoFromStorage($logoPath)
+    private function deleteBrandLogoFromStorage(string $logoPath)
     {
         $this->storageService->deleteFile($logoPath);
         $this->firebaseStorageService->deleteImage($logoPath);
     }
 
-    public function createBrand($brandProperties)
+    public function createBrand(array $brandProperties)
     {
         $createAttributes = [];
 
@@ -72,7 +71,7 @@ class BrandService
         $this->brandRepository->create($createAttributes);
     }
 
-    public function updateBrand($brandProperties, $brandId)
+    public function updateBrand(array $brandProperties, int $brandId)
     {
         $oldBrand = $this->getBrandById($brandId);
         if (!$oldBrand) {
@@ -92,12 +91,12 @@ class BrandService
         $this->brandRepository->update($updateAttributes, $brandId);
     }
 
-    public function deleteBrandById($brandId)
+    public function deleteBrandById(int $brandId)
     {
         $this->brandRepository->deleteById($brandId);
     }
 
-    public function getMapFromBrandIdToBrand($withDeleted = false)
+    public function getMapFromBrandIdToBrand(bool $withDeleted = false)
     {
         $miniBrands = $this->brandRepository->listAll(
             ['id', 'name', 'delete_flag'],

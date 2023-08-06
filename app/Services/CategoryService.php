@@ -6,7 +6,6 @@ use App\Constants\CommonConstants;
 use App\Constants\ConfigConstants;
 use App\Repositories\ICategoryRepository;
 use App\Utils\CommonUtil;
-use Illuminate\Support\Facades\Log;
 
 class CategoryService
 {
@@ -25,19 +24,19 @@ class CategoryService
         $this->firebaseStorageService = $firebaseStorageService;
     }
 
-    public function getCategoryById($categoryId)
+    public function getCategoryById(int $categoryId)
     {
         return $this->categoryRepository->findById($categoryId);
     }
 
-    public function getCategoriesPaginator($itemPerPage = ConfigConstants::DEFAULT_ITEM_PAGE_COUNT)
+    public function getCategoriesPaginator(int $itemPerPage = ConfigConstants::DEFAULT_ITEM_PAGE_COUNT)
     {
         return $this->categoryRepository->searchAndPaginate('', $itemPerPage);
     }
 
     public function getSearchCategoriesPaginator(
-        $searchProperties,
-        $itemPerPage = ConfigConstants::DEFAULT_ITEM_PAGE_COUNT
+        array $searchProperties,
+        int $itemPerPage = ConfigConstants::DEFAULT_ITEM_PAGE_COUNT
     ) {
         $searchKeyword = $searchProperties['searchKeyword'];
         $escapedKeyword = CommonUtil::escapeKeyword($searchKeyword);
@@ -55,13 +54,13 @@ class CategoryService
         return $iconPath;
     }
 
-    private function deleteCategoryIconFromStorage($iconPath)
+    private function deleteCategoryIconFromStorage(string $iconPath)
     {
         $this->storageService->deleteFile($iconPath);
         $this->firebaseStorageService->deleteImage($iconPath);
     }
 
-    public function createCategory($categoryProperties)
+    public function createCategory(array $categoryProperties)
     {
         $createAttributes = [];
 
@@ -76,7 +75,7 @@ class CategoryService
         $this->categoryRepository->create($createAttributes);
     }
 
-    public function updateCategory($categoryProperties, $categoryId)
+    public function updateCategory(array $categoryProperties, int $categoryId)
     {
         $oldCategory = $this->getCategoryById($categoryId);
         if (!$oldCategory) {
@@ -100,12 +99,12 @@ class CategoryService
         $this->categoryRepository->update($updateAttributes, $categoryId);
     }
 
-    public function deleteCategoryById($categoryId)
+    public function deleteCategoryById(int $categoryId)
     {
         $this->categoryRepository->deleteById($categoryId);
     }
 
-    public function getMapFromCategoryIdToCategory($withDeleted = false)
+    public function getMapFromCategoryIdToCategory(bool $withDeleted = false)
     {
         $miniCategories = $this->categoryRepository->listAll(
             ['id', 'name', 'delete_flag'],

@@ -16,7 +16,7 @@ class AdminService
         $this->adminRepository = $adminRepository;
     }
 
-    public function login($loginProperties)
+    public function login(array $loginProperties)
     {
         return Auth::guard('admin')->attempt($loginProperties);
     }
@@ -28,7 +28,7 @@ class AdminService
         Session::regenerateToken();
     }
 
-    public function register($registerProperties)
+    public function register(array $registerProperties)
     {
         $registerProperties['password'] = Hash::make($registerProperties['password']);
         $this->adminRepository->create($registerProperties);

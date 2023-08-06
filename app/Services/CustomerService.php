@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Constants\ConfigConstants;
 use App\Repositories\ICustomerRepository;
 use App\Utils\CommonUtil;
-use Illuminate\Support\Facades\Log;
 
 class CustomerService
 {
@@ -16,14 +15,14 @@ class CustomerService
         $this->customerRepository = $customerRepository;
     }
 
-    public function getCustomersPaginator($itemPerPage = ConfigConstants::DEFAULT_ITEM_PAGE_COUNT)
+    public function getCustomersPaginator(int $itemPerPage = ConfigConstants::DEFAULT_ITEM_PAGE_COUNT)
     {
         return $this->customerRepository->searchAndPaginate('', $itemPerPage);
     }
 
     public function getSearchCustomersPaginator(
-        $searchProperties,
-        $itemPerPage = ConfigConstants::DEFAULT_ITEM_PAGE_COUNT
+        array $searchProperties,
+        int $itemPerPage = ConfigConstants::DEFAULT_ITEM_PAGE_COUNT
     ) {
         $searchKeyword = $searchProperties['searchKeyword'];
         $escapedKeyword = CommonUtil::escapeKeyword($searchKeyword);
@@ -31,19 +30,19 @@ class CustomerService
         return $this->customerRepository->searchAndPaginate($escapedKeyword, $itemPerPage);
     }
 
-    public function updateCustomerDisableFlag($customerDisableFlagProperties, $customerId)
+    public function updateCustomerDisableFlag(array $customerDisableFlagProperties, int $customerId)
     {
         $updateAttributes = [];
         $updateAttributes['disable_flag'] = $customerDisableFlagProperties['disableFlag'];
         $this->customerRepository->update($updateAttributes, $customerId);
     }
 
-    public function deleteCustomerById($customerId)
+    public function deleteCustomerById(int $customerId)
     {
         $this->customerRepository->deleteById($customerId);
     }
 
-    public function getCustomerDetails($customerId)
+    public function getCustomerDetails(int $customerId)
     {
         $customerDetails = [];
 
