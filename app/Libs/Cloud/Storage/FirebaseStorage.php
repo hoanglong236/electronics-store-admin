@@ -27,10 +27,10 @@ class FirebaseStorage
         $this->firebaseBucket = $storage->getBucket();
     }
 
-    public function upload($resource, $newResourcePath)
+    public function upload($resource, $resourcePath)
     {
         $this->firebaseBucket->upload($resource, [
-            'name' => static::$STORAGE_FOLDER_PATH . $newResourcePath
+            'name' => static::$STORAGE_FOLDER_PATH . $resourcePath
         ]);
     }
 

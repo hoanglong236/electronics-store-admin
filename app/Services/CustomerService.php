@@ -10,9 +10,9 @@ class CustomerService
 {
     private $customerRepository;
 
-    public function __construct(ICustomerRepository $customerRepository)
+    public function __construct(ICustomerRepository $iCustomerRepository)
     {
-        $this->customerRepository = $customerRepository;
+        $this->customerRepository = $iCustomerRepository;
     }
 
     public function getCustomersPaginator(int $itemPerPage = ConfigConstants::DEFAULT_ITEM_PAGE_COUNT)

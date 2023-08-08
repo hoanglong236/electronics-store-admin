@@ -12,16 +12,11 @@ class ProductService
     private $productRepository;
 
     private $storageService;
-    private $firebaseStorageService;
 
-    public function __construct(
-        IProductRepository $productRepository,
-        StorageService $storageService,
-        FirebaseStorageService $firebaseStorageService
-    ) {
-        $this->productRepository = $productRepository;
+    public function __construct(IProductRepository $iProductRepository, StorageService $storageService)
+    {
+        $this->productRepository = $iProductRepository;
         $this->storageService = $storageService;
-        $this->firebaseStorageService = $firebaseStorageService;
     }
 
     public function getProductById(int $productId)
@@ -31,11 +26,8 @@ class ProductService
 
     public function getProductsPaginator(int $itemPerPage = ConfigConstants::DEFAULT_ITEM_PAGE_COUNT)
     {
-        return $this->productRepository->searchAndPaginate(
-            '',
-            ProductSearchRequestConstants::SEARCH_ALL,
-            $itemPerPage
-        );
+        return $this->productRepository
+            ->searchAndPaginate('', ProductSearchRequestConstants::SEARCH_ALL, $itemPerPage);
     }
 
     public function getSearchProductsPaginator(
@@ -46,34 +38,16 @@ class ProductService
         $searchKeyword = $productSearchProperties['searchKeyword'];
         $escapedKeyword = CommonUtil::escapeKeyword($searchKeyword);
 
-        return $this->productRepository->searchAndPaginate(
-            $escapedKeyword,
-            $searchOption,
-            $itemPerPage
-        );
-    }
-
-    private function saveProductImageToStorage($image)
-    {
-        $imagePath = $this->storageService->saveFile($image, ConfigConstants::FOLDER_PATH_PRODUCT_IMAGES);
-        if ($imagePath) {
-            $this->firebaseStorageService->uploadImage($imagePath);
-        }
-
-        return $imagePath;
-    }
-
-    private function deleteProductImageFromStorage(string $imagePath)
-    {
-        $this->storageService->deleteFile($imagePath);
-        $this->firebaseStorageService->deleteImage($imagePath);
+        return $this->productRepository
+            ->searchAndPaginate($escapedKeyword, $searchOption, $itemPerPage);
     }
 
     public function createProduct(array $productProperties)
     {
         $createAttributes = [];
 
-        $createAttributes['main_image_path'] = $this->saveProductImageToStorage($productProperties['mainImage']);
+        $createAttributes['main_image_path'] = $this->storageService
+            ->saveFile($productProperties['mainImage'], ConfigConstants::FOLDER_PATH_PRODUCT_IMAGES);
         $createAttributes['category_id'] = $productProperties['categoryId'];
         $createAttributes['brand_id'] = $productProperties['brandId'];
         $createAttributes['name'] = $productProperties['name'];
@@ -96,10 +70,10 @@ class ProductService
         }
 
         $updateAttributes = [];
-
         if (isset($productProperties['mainImage'])) {
-            $this->deleteProductImageFromStorage($oldProduct->main_image_path);
-            $updateAttributes['main_image_path'] = $this->saveProductImageToStorage($productProperties['mainImage']);
+            $this->storageService->deleteFile($oldProduct->main_image_path);
+            $updateAttributes['main_image_path'] = $this->storageService
+                ->saveFile($productProperties['mainImage'], ConfigConstants::FOLDER_PATH_PRODUCT_IMAGES);
         }
         $updateAttributes['category_id'] = $productProperties['categoryId'];
         $updateAttributes['brand_id'] = $productProperties['brandId'];
@@ -157,8 +131,8 @@ class ProductService
         $images = $productImageProperties['images'];
         foreach ($images as $image) {
             $createAttributes = [];
-
-            $createAttributes['image_path'] = $this->saveProductImageToStorage($image);
+            $createAttributes['image_path'] = $this->storageService
+                ->saveFile($image, ConfigConstants::FOLDER_PATH_PRODUCT_IMAGES);
             $createAttributes['product_id'] = $productImageProperties['productId'];
 
             $this->productRepository->createProductImage($createAttributes);
@@ -169,7 +143,7 @@ class ProductService
     {
         $deletedProductImage = $this->productRepository->deleteProductImageById($productImageId);
         if ($deletedProductImage) {
-            $this->deleteProductImageFromStorage($deletedProductImage->image_path);
+            $this->storageService->deleteFile($deletedProductImage->image_path);
         }
     }
 }

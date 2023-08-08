@@ -8,9 +8,9 @@ class MonthlyReportService
 {
     private $monthlyReportRepository;
 
-    public function __construct(IMonthlyReportRepository $monthlyReportRepository)
+    public function __construct(IMonthlyReportRepository $iMonthlyReportRepository)
     {
-        $this->monthlyReportRepository = $monthlyReportRepository;
+        $this->monthlyReportRepository = $iMonthlyReportRepository;
     }
 
     public function getMonthlyReportData(int $month, int $year)

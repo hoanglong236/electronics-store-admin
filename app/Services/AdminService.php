@@ -11,9 +11,9 @@ class AdminService
 {
     private $adminRepository;
 
-    public function __construct(IAdminRepository $adminRepository)
+    public function __construct(IAdminRepository $iAdminRepository)
     {
-        $this->adminRepository = $adminRepository;
+        $this->adminRepository = $iAdminRepository;
     }
 
     public function login(array $loginProperties)

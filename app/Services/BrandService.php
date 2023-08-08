@@ -11,16 +11,11 @@ class BrandService
     private $brandRepository;
 
     private $storageService;
-    private $firebaseStorageService;
 
-    public function __construct(
-        IBrandRepository $brandRepository,
-        StorageService $storageService,
-        FirebaseStorageService $firebaseStorageService
-    ) {
-        $this->brandRepository = $brandRepository;
+    public function __construct(IBrandRepository $iBrandRepository, StorageService $storageService)
+    {
+        $this->brandRepository = $iBrandRepository;
         $this->storageService = $storageService;
-        $this->firebaseStorageService = $firebaseStorageService;
     }
 
     public function getBrandById(int $brandId)
@@ -43,27 +38,12 @@ class BrandService
         return $this->brandRepository->searchAndPaginate($escapedKeyword, $itemPerPage);
     }
 
-    private function saveBrandLogoToStorage($logo)
-    {
-        $logoPath = $this->storageService->saveFile($logo, ConfigConstants::FOLDER_PATH_BRAND_LOGOS);
-        if ($logoPath) {
-            $this->firebaseStorageService->uploadImage($logoPath);
-        }
-
-        return $logoPath;
-    }
-
-    private function deleteBrandLogoFromStorage(string $logoPath)
-    {
-        $this->storageService->deleteFile($logoPath);
-        $this->firebaseStorageService->deleteImage($logoPath);
-    }
-
     public function createBrand(array $brandProperties)
     {
         $createAttributes = [];
 
-        $createAttributes['logo_path'] = $this->saveBrandLogoToStorage($brandProperties['logo']);
+        $createAttributes['logo_path'] = $this->storageService
+            ->saveFile($brandProperties['logo'], ConfigConstants::FOLDER_PATH_BRAND_LOGOS);
         $createAttributes['name'] = $brandProperties['name'];
         $createAttributes['slug'] = $brandProperties['slug'];
         $createAttributes['delete_flag'] = false;
@@ -79,12 +59,11 @@ class BrandService
         }
 
         $updateAttributes = [];
-
         if (isset($brandProperties['logo'])) {
-            $this->deleteBrandLogoFromStorage($oldBrand->logo_path);
-            $updateAttributes['logo_path'] = $this->saveBrandLogoToStorage($brandProperties['logo']);
+            $this->storageService->deleteFile($oldBrand->logo_path);
+            $updateAttributes['logo_path'] = $this->storageService
+                ->saveFile($brandProperties['logo'], ConfigConstants::FOLDER_PATH_BRAND_LOGOS);
         }
-
         $updateAttributes['name'] = $brandProperties['name'];
         $updateAttributes['slug'] = $brandProperties['slug'];
 

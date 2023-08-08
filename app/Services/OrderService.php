@@ -12,9 +12,9 @@ class OrderService
 {
     private $orderRepository;
 
-    public function __construct(IOrderRepository $orderRepository)
+    public function __construct(IOrderRepository $iOrderRepository)
     {
-        $this->orderRepository = $orderRepository;
+        $this->orderRepository = $iOrderRepository;
     }
 
     public function getCustomOrdersPaginator(

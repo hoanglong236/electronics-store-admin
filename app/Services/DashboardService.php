@@ -9,9 +9,9 @@ class DashboardService
 {
     private $dashboardRepository;
 
-    public function __construct(IDashboardRepository $dashboardRepository)
+    public function __construct(IDashboardRepository $iDashboardRepository)
     {
-        $this->dashboardRepository = $dashboardRepository;
+        $this->dashboardRepository = $iDashboardRepository;
     }
 
     public function getDashboardData(string $date)

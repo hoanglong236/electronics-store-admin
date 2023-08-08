@@ -5,15 +5,14 @@ namespace App\Services\Exports;
 use App\Http\Requests\Constants\OrderFilterRequestConstants;
 use App\Repositories\IOrderRepository;
 use App\Utils\CommonUtil;
-use Illuminate\Support\Facades\Log;
 
 class OrderExportCsvService extends ExportCsvService
 {
     private $orderRepository;
 
-    public function __construct(IOrderRepository $orderRepository)
+    public function __construct(IOrderRepository $iOrderRepository)
     {
-        $this->orderRepository = $orderRepository;
+        $this->orderRepository = $iOrderRepository;
     }
 
     protected function getLabels()

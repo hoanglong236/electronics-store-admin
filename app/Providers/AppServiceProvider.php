@@ -27,7 +27,6 @@ use App\Services\CustomerService;
 use App\Services\DashboardService;
 use App\Services\Exports\MonthlyReportExportExcelService;
 use App\Services\Exports\OrderExportCsvService;
-use App\Services\FirebaseStorageService;
 use App\Services\MonthlyReportService;
 use App\Services\OrderService;
 use App\Services\ProductService;
@@ -43,6 +42,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(ISeederRepository::class, SeederRepository::class);
 
+        // main repositories
         $this->app->bind(IAdminRepository::class, AdminRepository::class);
         $this->app->bind(ICategoryRepository::class, CategoryRepository::class);
         $this->app->bind(IBrandRepository::class, BrandRepository::class);
@@ -52,13 +52,12 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(IMonthlyReportRepository::class, MonthlyReportRepository::class);
         $this->app->bind(IDashboardRepository::class, DashboardRepository::class);
 
+        // singletons
         $this->app->singleton(StorageService::class, function () {
             return new StorageService();
         });
-        $this->app->singleton(FirebaseStorageService::class, function () {
-            return new FirebaseStorageService();
-        });
 
+        // normal instances
         $this->app->instance(
             AdminService::class,
             new AdminService(
@@ -70,8 +69,7 @@ class AppServiceProvider extends ServiceProvider
             CategoryService::class,
             new CategoryService(
                 $this->app->make(ICategoryRepository::class),
-                $this->app->make(StorageService::class),
-                $this->app->make(FirebaseStorageService::class)
+                $this->app->make(StorageService::class)
             )
         );
 
@@ -79,8 +77,7 @@ class AppServiceProvider extends ServiceProvider
             BrandService::class,
             new BrandService(
                 $this->app->make(IBrandRepository::class),
-                $this->app->make(StorageService::class),
-                $this->app->make(FirebaseStorageService::class)
+                $this->app->make(StorageService::class)
             )
         );
 
@@ -88,8 +85,7 @@ class AppServiceProvider extends ServiceProvider
             ProductService::class,
             new ProductService(
                 $this->app->make(IProductRepository::class),
-                $this->app->make(StorageService::class),
-                $this->app->make(FirebaseStorageService::class)
+                $this->app->make(StorageService::class)
             )
         );
 

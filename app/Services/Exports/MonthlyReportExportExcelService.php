@@ -15,7 +15,6 @@ use App\Libs\Excel\ExcelWorkbook;
 use App\Libs\Excel\ExcelWorksheet;
 use App\Repositories\IMonthlyReportRepository;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Log;
 
 class MonthlyReportExportExcelService extends ExportExcelService
 {
@@ -31,9 +30,9 @@ class MonthlyReportExportExcelService extends ExportExcelService
     private $month;
     private $dayOfMonth;
 
-    public function __construct(IMonthlyReportRepository $monthlyReportRepository)
+    public function __construct(IMonthlyReportRepository $iMonthlyReportRepository)
     {
-        $this->monthlyReportRepository = $monthlyReportRepository;
+        $this->monthlyReportRepository = $iMonthlyReportRepository;
 
         $this->tableHeaderStyle = $this->generateTableHeaderStyle()
             ->setFontSize(10);
