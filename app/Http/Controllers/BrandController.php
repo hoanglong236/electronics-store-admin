@@ -9,7 +9,6 @@ use App\Http\Requests\SimpleSearchRequest;
 use App\Services\BrandService;
 use App\Utils\CommonUtil;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Log;
 
 class BrandController extends Controller
 {
@@ -20,31 +19,34 @@ class BrandController extends Controller
         $this->brandService = $brandService;
     }
 
+    private function getBaseDataForBrandsPage($paginator)
+    {
+        $data = [];
+        $data['brands'] = $paginator->items();
+        $data['paginator'] = $paginator;
+        $data['pageTitle'] = 'Brands';
+
+        return $data;
+    }
+
     public function index()
     {
         $paginator = $this->brandService->getBrandsPaginator();
-        $data = [];
 
-        $data['pageTitle'] = 'Brands';
+        $data = $this->getBaseDataForBrandsPage($paginator);
         $data['searchKeyword'] = '';
-        $data['brands'] = $paginator->items();
-        $data['paginator'] = $paginator;
 
         return view('pages.brand.brands-page', ['data' => $data]);
     }
 
     public function search(SimpleSearchRequest $searchRequest)
     {
-        $searchProperties = $searchRequest->validated();
-        $paginator = $this->brandService->getSearchBrandsPaginator($searchProperties);
-        $data = [];
+        $searchProps = $searchRequest->validated();
+        $paginator = $this->brandService->getSearchBrandsPaginator($searchProps);
+        $paginator = $paginator->withPath('search?' . CommonUtil::convertMapToParamsString($searchProps));
 
-        $data['pageTitle'] = 'Brands';
-        $data['searchKeyword'] = $searchProperties['searchKeyword'];
-        $data['brands'] = $paginator->items();
-        $data['paginator'] = $paginator->withPath(
-            'search?' . CommonUtil::convertMapToParamsString($searchProperties)
-        );
+        $data = $this->getBaseDataForBrandsPage($paginator);
+        $data['searchKeyword'] = $searchProps['searchKeyword'];
 
         return view('pages.brand.brands-page', ['data' => $data]);
     }
@@ -58,33 +60,32 @@ class BrandController extends Controller
 
     public function createHandler(BrandRequest $brandRequest)
     {
-        $brandProperties = $brandRequest->validated();
-        $this->brandService->createBrand($brandProperties);
+        $brandProps = $brandRequest->validated();
+        $this->brandService->createBrand($brandProps);
 
         Session::flash(CommonConstants::ACTION_SUCCESS, MessageConstants::CREATE_SUCCESS);
         return redirect()->action([BrandController::class, 'index']);
     }
 
-    public function update($brandId)
+    public function update(int $brandId)
     {
         $data = [];
-
-        $data['pageTitle'] = 'Update Brand';
         $data['brand'] = $this->brandService->getBrandById($brandId);
+        $data['pageTitle'] = 'Update Brand';
 
         return view('pages.brand.brand-update-page', ['data' => $data]);
     }
 
-    public function updateHandler(BrandRequest $brandRequest, $brandId)
+    public function updateHandler(BrandRequest $brandRequest, int $brandId)
     {
-        $brandProperties = $brandRequest->validated();
-        $this->brandService->updateBrand($brandProperties, $brandId);
+        $brandProps = $brandRequest->validated();
+        $this->brandService->updateBrand($brandProps, $brandId);
 
         Session::flash(CommonConstants::ACTION_SUCCESS, MessageConstants::UPDATE_SUCCESS);
         return redirect()->action([BrandController::class, 'index']);
     }
 
-    public function delete($brandId)
+    public function delete(int $brandId)
     {
         $this->brandService->deleteBrandById($brandId);
 

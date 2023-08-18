@@ -22,58 +22,50 @@ class OrderService
         string $toDate,
         int $itemPerPage = ConfigConstants::DEFAULT_ITEM_PAGE_COUNT
     ) {
-        return $this->orderRepository->filterCustomOrdersAndPaginate(
-            [],
-            [],
-            $fromDate,
-            $toDate,
-            $itemPerPage
-        );
+        $conditions = [];
+        $conditions['fromDate'] = $fromDate;
+        $conditions['toDate'] = $toDate;
+        return $this->orderRepository->filterCustomOrdersAndPaginate($conditions, $itemPerPage);
     }
 
     public function getFilterCustomOrdersPaginator(
-        array $orderFilterProperties,
-        int $itemPerPage = ConfigConstants::DEFAULT_ITEM_PAGE_COUNT
+        array $orderFilterProps, int $itemPerPage = ConfigConstants::DEFAULT_ITEM_PAGE_COUNT
     ) {
-        $searchFields = [];
-        $orderIdKeyword = $orderFilterProperties['orderIdKeyword'];
+        $conditions = [];
+
+        $orderIdKeyword = $orderFilterProps['orderIdKeyword'];
         if ($orderIdKeyword) {
-            $searchFields[] = [
+            $conditions['searchFields'][] = [
                 'name' => 'orderId',
                 'value' => CommonUtil::escapeKeyword($orderIdKeyword)
             ];
         }
-        $emailKeyword = $orderFilterProperties['emailKeyword'];
+        $emailKeyword = $orderFilterProps['emailKeyword'];
         if ($emailKeyword) {
-            $searchFields[] = [
+            $conditions['searchFields'][] = [
                 'name' => 'email',
                 'value' => CommonUtil::escapeKeyword($emailKeyword)
             ];
         }
 
-        $filterFields = [];
-        $statusFilter = $orderFilterProperties['statusFilter'];
+        $statusFilter = $orderFilterProps['statusFilter'];
         if ($statusFilter !== OrderFilterRequestConstants::ALL) {
-            $filterFields[] = ['name' => 'status', 'value' => $statusFilter];
+            $conditions['filterFields'][] = ['name' => 'status', 'value' => $statusFilter];
         }
-        $paymentMethodFilter = $orderFilterProperties['paymentMethodFilter'];
+        $paymentMethodFilter = $orderFilterProps['paymentMethodFilter'];
         if ($paymentMethodFilter !== OrderFilterRequestConstants::ALL) {
-            $filterFields[] = ['name' => 'paymentMethod', 'value' => $paymentMethodFilter];
+            $conditions['filterFields'][] = ['name' => 'paymentMethod', 'value' => $paymentMethodFilter];
         }
 
-        return $this->orderRepository->filterCustomOrdersAndPaginate(
-            $searchFields,
-            $filterFields,
-            $orderFilterProperties['fromDate'],
-            $orderFilterProperties['toDate'],
-            $itemPerPage
-        );
+        $conditions['fromDate'] = $orderFilterProps['fromDate'];
+        $conditions['toDate'] = $orderFilterProps['toDate'];
+        return $this->orderRepository->filterCustomOrdersAndPaginate($conditions, $itemPerPage);
     }
 
-    public function updateOrderStatus(array $orderStatusProperties, int $orderId)
+    public function updateOrderStatus(array $orderStatusProps, int $orderId)
     {
         $updateAttributes = [];
-        $updateAttributes['status'] = $orderStatusProperties['status'];
+        $updateAttributes['status'] = $orderStatusProps['status'];
         $this->orderRepository->update($updateAttributes, $orderId);
     }
 
@@ -109,7 +101,7 @@ class OrderService
             ];
         }
 
-        $customOrder = $this->orderRepository->getOrderAlongWithCustomerInfoById($orderId);
+        $customOrder = $this->orderRepository->getOrderAndCustomerInfoByOrderId($orderId);
         $orderDetails['order'] = [
             'id' => $customOrder->id,
             'status' => $customOrder->status,

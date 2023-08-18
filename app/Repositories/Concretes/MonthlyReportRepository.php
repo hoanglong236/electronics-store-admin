@@ -50,22 +50,20 @@ class MonthlyReportRepository implements IMonthlyReportRepository
         $dataReturn = [];
 
         for ($day = 1; $day <= $lastDayOfMonth; $day++) {
-            $record = (object) [
-                'day' => $day,
-                'placed' => 0,
-                'placed_value' => 0,
-                'cancelled' => 0,
-                'cancelled_value' => 0
-            ];
-
             if ($resultIndex < $resultCount && $result[$resultIndex]->day === $day) {
                 $record = $result[$resultIndex];
                 $resultIndex++;
+            } else {
+                $record = (object) [
+                    'day' => $day,
+                    'placed' => 0,
+                    'placed_value' => 0,
+                    'cancelled' => 0,
+                    'cancelled_value' => 0
+                ];
             }
-
             $dataReturn[] = $record;
         }
-
         return $dataReturn;
     }
 

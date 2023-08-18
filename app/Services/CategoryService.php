@@ -13,8 +13,9 @@ class CategoryService
 
     private $storageService;
 
-    public function __construct(ICategoryRepository $iCategoryRepository, StorageService $storageService)
-    {
+    public function __construct(
+        ICategoryRepository $iCategoryRepository, StorageService $storageService
+    ) {
         $this->categoryRepository = $iCategoryRepository;
         $this->storageService = $storageService;
     }
@@ -30,32 +31,30 @@ class CategoryService
     }
 
     public function getSearchCategoriesPaginator(
-        array $searchProperties,
-        int $itemPerPage = ConfigConstants::DEFAULT_ITEM_PAGE_COUNT
+        array $searchProps, int $itemPerPage = ConfigConstants::DEFAULT_ITEM_PAGE_COUNT
     ) {
-        $searchKeyword = $searchProperties['searchKeyword'];
+        $searchKeyword = $searchProps['searchKeyword'];
         $escapedKeyword = CommonUtil::escapeKeyword($searchKeyword);
 
         return $this->categoryRepository->searchAndPaginate($escapedKeyword, $itemPerPage);
     }
 
-    public function createCategory(array $categoryProperties)
+    public function createCategory(array $categoryProps)
     {
         $createAttributes = [];
-
-        if ($categoryProperties['parentId'] !== CommonConstants::NONE_VALUE) {
-            $createAttributes['parent_id'] = $categoryProperties['parentId'];
+        if ($categoryProps['parentId'] !== CommonConstants::NONE_VALUE) {
+            $createAttributes['parent_id'] = $categoryProps['parentId'];
         }
         $createAttributes['icon_path'] = $this->storageService
-            ->saveFile($categoryProperties['icon'], ConfigConstants::FOLDER_PATH_CATEGORY_ICONS);
-        $createAttributes['name'] = $categoryProperties['name'];
-        $createAttributes['slug'] = $categoryProperties['slug'];
+            ->saveFile($categoryProps['icon'], ConfigConstants::FOLDER_PATH_CATEGORY_ICONS);
+        $createAttributes['name'] = $categoryProps['name'];
+        $createAttributes['slug'] = $categoryProps['slug'];
         $createAttributes['delete_flag'] = false;
 
         $this->categoryRepository->create($createAttributes);
     }
 
-    public function updateCategory(array $categoryProperties, int $categoryId)
+    public function updateCategory(array $categoryProps, int $categoryId)
     {
         $oldCategory = $this->getCategoryById($categoryId);
         if (!$oldCategory) {
@@ -63,18 +62,18 @@ class CategoryService
         }
 
         $updateAttributes = [];
-        if (isset($categoryProperties['icon'])) {
+        if (isset($categoryProps['icon'])) {
             $this->storageService->deleteFile($oldCategory->icon_path);
             $updateAttributes['icon_path'] = $this->storageService
-                ->saveFile($categoryProperties['icon'], ConfigConstants::FOLDER_PATH_CATEGORY_ICONS);
+                ->saveFile($categoryProps['icon'], ConfigConstants::FOLDER_PATH_CATEGORY_ICONS);
         }
-        if ($categoryProperties['parentId'] !== CommonConstants::NONE_VALUE) {
-            $updateAttributes['parent_id'] = $categoryProperties['parentId'];
+        if ($categoryProps['parentId'] !== CommonConstants::NONE_VALUE) {
+            $updateAttributes['parent_id'] = $categoryProps['parentId'];
         } else {
             $updateAttributes['parent_id'] = null;
         }
-        $updateAttributes['name'] = $categoryProperties['name'];
-        $updateAttributes['slug'] = $categoryProperties['slug'];
+        $updateAttributes['name'] = $categoryProps['name'];
+        $updateAttributes['slug'] = $categoryProps['slug'];
 
         $this->categoryRepository->update($updateAttributes, $categoryId);
     }
@@ -95,7 +94,6 @@ class CategoryService
         foreach ($miniCategories as $miniCategory) {
             $map[$miniCategory->id] = $miniCategory;
         }
-
         return $map;
     }
 }

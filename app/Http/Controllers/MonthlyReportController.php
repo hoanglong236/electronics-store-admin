@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\MonthlyReportSearchRequest;
 use App\Services\Exports\MonthlyReportExportExcelService;
 use App\Services\MonthlyReportService;
-use Illuminate\Http\Request;
+use DateTime;
 
 class MonthlyReportController extends Controller
 {
@@ -22,41 +22,41 @@ class MonthlyReportController extends Controller
 
     public function index()
     {
-        $currentDate = new \DateTime();
+        $currentDate = new DateTime();
         $month = intval($currentDate->format('m'));
         $year = intval($currentDate->format('Y'));
 
-        $data['pageTitle'] = 'Monthly Report';
+        $data = [];
+        $data['monthlyReportData'] = $this->monthlyReportService->getMonthlyReportData($month, $year);
         $data['month'] = $month;
         $data['year'] = $year;
-        $data['monthlyReportData'] = $this->monthlyReportService->getMonthlyReportData($month, $year);
+        $data['pageTitle'] = 'Monthly Report';
 
         return view('pages.monthly-report.monthly-report-page', ['data' => $data]);
     }
 
     public function search(MonthlyReportSearchRequest $monthlyReportSearchRequest)
     {
-        $monthlyReportSearchProperties = $monthlyReportSearchRequest->validated();
-        $month = $monthlyReportSearchProperties['month'];
-        $year = $monthlyReportSearchProperties['year'];
+        $monthlyReportSearchProps = $monthlyReportSearchRequest->validated();
+        $month = $monthlyReportSearchProps['month'];
+        $year = $monthlyReportSearchProps['year'];
 
-        $data['pageTitle'] = 'Monthly Report';
+        $data = [];
+        $data['monthlyReportData'] = $this->monthlyReportService->getMonthlyReportData($month, $year);
         $data['month'] = $month;
         $data['year'] = $year;
-        $data['monthlyReportData'] = $this->monthlyReportService->getMonthlyReportData($month, $year);
+        $data['pageTitle'] = 'Monthly Report';
 
         return view('pages.monthly-report.monthly-report-page', ['data' => $data]);
     }
 
     public function exportExcel(MonthlyReportSearchRequest $monthlyReportSearchRequest)
     {
-        $monthlyReportSearchProperties = $monthlyReportSearchRequest->validated();
-        $month = $monthlyReportSearchProperties['month'];
-        $year = $monthlyReportSearchProperties['year'];
+        $monthlyReportSearchProps = $monthlyReportSearchRequest->validated();
 
         $this->monthlyReportExportExcelService->export([
-            'month' => $month,
-            'year' => $year
+            'month' => $monthlyReportSearchProps['month'],
+            'year' => $monthlyReportSearchProps['year']
         ]);
     }
 }

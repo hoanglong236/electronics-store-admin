@@ -16,9 +16,9 @@ class AdminService
         $this->adminRepository = $iAdminRepository;
     }
 
-    public function login(array $loginProperties)
+    public function login(array $loginProps)
     {
-        return Auth::guard('admin')->attempt($loginProperties);
+        return Auth::guard('admin')->attempt($loginProps);
     }
 
     public function logout()
@@ -28,9 +28,9 @@ class AdminService
         Session::regenerateToken();
     }
 
-    public function register(array $registerProperties)
+    public function register(array $registerProps)
     {
-        $registerProperties['password'] = Hash::make($registerProperties['password']);
-        $this->adminRepository->create($registerProperties);
+        $registerProps['password'] = Hash::make($registerProps['password']);
+        $this->adminRepository->create($registerProps);
     }
 }

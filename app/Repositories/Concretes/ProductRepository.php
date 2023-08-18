@@ -33,12 +33,7 @@ class ProductRepository implements IProductRepository
 
     public function deleteById(int $id)
     {
-        $product = $this->findById($id);
-        if ($product) {
-            $product->update(['delete_flag' => true]);
-            return $product;
-        }
-        return false;
+        return $this->update(['delete_flag' => true], $id);
     }
 
     public function searchAndPaginate(

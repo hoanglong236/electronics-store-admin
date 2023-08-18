@@ -30,12 +30,7 @@ class BrandRepository implements IBrandRepository
 
     public function deleteById(int $id)
     {
-        $brand = $this->findById($id);
-        if ($brand) {
-            $brand->update(['delete_flag' => true]);
-            return $brand;
-        }
-        return false;
+        return $this->update(['delete_flag' => true], $id);
     }
 
     public function searchAndPaginate(string $escapedKeyword, int $itemPerPage)
@@ -61,7 +56,6 @@ class BrandRepository implements IBrandRepository
         if (!$withDeleted) {
             $queryBuilder->where('delete_flag', false);
         }
-
         return $queryBuilder->get();
     }
 }

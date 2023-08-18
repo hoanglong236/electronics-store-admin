@@ -26,12 +26,7 @@ class CustomerRepository implements ICustomerRepository
 
     public function deleteById(int $id)
     {
-        $customer = $this->findById($id);
-        if ($customer) {
-            $customer->update(['delete_flag' => true]);
-            return $customer;
-        }
-        return false;
+        return $this->update(['delete_flag' => true], $id);
     }
 
     public function searchAndPaginate(string $escapedKeyword, int $itemPerPage)

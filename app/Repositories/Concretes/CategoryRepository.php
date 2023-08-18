@@ -31,12 +31,7 @@ class CategoryRepository implements ICategoryRepository
 
     public function deleteById(int $id)
     {
-        $category = $this->findById($id);
-        if ($category) {
-            $category->update(['delete_flag' => true]);
-            return $category;
-        }
-        return false;
+        return $this->update(['delete_flag' => true], $id);
     }
 
     public function searchAndPaginate(string $escapedKeyword, int $itemPerPage)
@@ -69,7 +64,6 @@ class CategoryRepository implements ICategoryRepository
         if (!$withDeleted) {
             $queryBuilder->where('delete_flag', false);
         }
-
         return $queryBuilder->get();
     }
 }

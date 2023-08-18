@@ -16,10 +16,10 @@ class DashboardController extends Controller
     public function index()
     {
         $today = date('Y-m-d');
-        $data = [];
 
-        $data['pageTitle'] = 'Dashboard';
+        $data = [];
         $data['dashboardData'] = $this->dashboardService->getDashboardData($today);
+        $data['pageTitle'] = 'Dashboard';
 
         return view('pages.dashboard.dashboard-page', ['data' => $data]);
     }

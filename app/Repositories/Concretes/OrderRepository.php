@@ -19,9 +19,8 @@ class OrderRepository implements IOrderRepository
         return false;
     }
 
-    private function getFilterCustomOrdersQueryBuilder(
-        array $searchFields, array $filterFields, string $fromDate, string $toDate
-    ) {
+    private function getFilterCustomOrdersQueryBuilder(array $conditions)
+    {
         $queryBuilder = DB::table('orders')
             ->join('customers', 'customers.id', '=', 'orders.customer_id')
             ->join('order_items', 'order_items.order_id', '=', 'orders.id')
@@ -34,6 +33,7 @@ class OrderRepository implements IOrderRepository
                 DB::raw('date(orders.created_at) as create_date'),
             );
 
+        $searchFields = $conditions['searchFields'] ?? [];
         foreach ($searchFields as $searchField) {
             $escapedKeyword = $searchField['value'];
             switch ($searchField['name']) {
@@ -46,6 +46,7 @@ class OrderRepository implements IOrderRepository
             }
         }
 
+        $filterFields = $conditions['filterFields'] ?? [];
         foreach ($filterFields as $filterField) {
             switch ($filterField['name']) {
                 case 'status':
@@ -58,28 +59,25 @@ class OrderRepository implements IOrderRepository
         }
 
         $queryBuilder->whereBetween('orders.created_at', [
-            $fromDate, DateTimeUtil::dateToEndOfDate($toDate)
+            $conditions['fromDate'], DateTimeUtil::dateToEndOfDate($conditions['toDate'])
         ]);
-
         return $queryBuilder->groupBy('orders.id');
     }
 
-    public function filterCustomOrdersAndPaginate(
-        array $searchFields, array $filterFields, string $fromDate, string $toDate, int $itemPerPage
-    ) {
-        return $this->getFilterCustomOrdersQueryBuilder($searchFields, $filterFields, $fromDate, $toDate)
+    public function filterCustomOrdersAndPaginate(array $conditions, int $itemPerPage)
+    {
+        return $this->getFilterCustomOrdersQueryBuilder($conditions)
             ->latest('id')
             ->paginate($itemPerPage);
     }
 
-    public function getFilterCustomOrdersIterator(
-        array $searchFields, array $filterFields, string $fromDate, string $toDate
-    ) {
-        return $this->getFilterCustomOrdersQueryBuilder($searchFields, $filterFields, $fromDate, $toDate)
+    public function getFilterCustomOrdersIterator(array $conditions)
+    {
+        return $this->getFilterCustomOrdersQueryBuilder($conditions)
             ->lazyByIdDesc();
     }
 
-    public function getOrderAlongWithCustomerInfoById(int $id)
+    public function getOrderAndCustomerInfoByOrderId(int $orderId)
     {
         return DB::table('orders')
             ->join('customers', 'customers.id', '=', 'orders.customer_id')
@@ -89,7 +87,7 @@ class OrderRepository implements IOrderRepository
                 'customers.email as customer_email',
                 'customers.phone as customer_phone',
             )
-            ->where('orders.id', $id)
+            ->where('orders.id', $orderId)
             ->first();
     }
 

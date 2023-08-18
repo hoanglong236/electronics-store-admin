@@ -16,7 +16,6 @@ class MonthlyReportService
     public function getMonthlyReportData(int $month, int $year)
     {
         $orderAnalysisData = $this->monthlyReportRepository->getOrderAnalysisDataByDayOfMonth($month, $year);
-
         $orderPlacedQty = 0;
         $totalOrderValuePlaced = 0;
         $orderCancelledQty = 0;
@@ -28,14 +27,12 @@ class MonthlyReportService
             $orderCancelledQty += $item->cancelled;
             $totalOrderValueCancelled += $item->cancelled_value;
         }
-
         if ($orderPlacedQty === 0) {
             return [];
         }
 
-        $data = [];
         $numberDaysInMonth = count($orderAnalysisData);
-
+        $data = [];
         $data['order']['summary'] = [
             'total' => [
                 'qty' => [
@@ -63,7 +60,6 @@ class MonthlyReportService
             ]
         ];
         $data['order']['analysis'] = $orderAnalysisData;
-
         $data['bestSellers']['products'] = $this->monthlyReportRepository
             ->getBestSellerProducts($month, $year);
         $data['bestSellers']['brands'] = $this->monthlyReportRepository

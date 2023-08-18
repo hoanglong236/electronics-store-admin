@@ -29,40 +29,36 @@ class OrderExportCsvService extends ExportCsvService
 
     protected function getRecordIterator()
     {
-        $orderFilterProperties = $this->props;
+        $conditions = [];
+        $orderFilterProps = $this->props;
 
-        $searchFields = [];
-        $orderIdKeyword = $orderFilterProperties['orderIdKeyword'];
+        $orderIdKeyword = $orderFilterProps['orderIdKeyword'];
         if ($orderIdKeyword) {
-            $searchFields[] = [
+            $conditions['searchFields'][] = [
                 'name' => 'orderId',
                 'value' => CommonUtil::escapeKeyword($orderIdKeyword)
             ];
         }
-        $emailKeyword = $orderFilterProperties['emailKeyword'];
+        $emailKeyword = $orderFilterProps['emailKeyword'];
         if ($emailKeyword) {
-            $searchFields[] = [
+            $conditions['searchFields'][] = [
                 'name' => 'email',
                 'value' => CommonUtil::escapeKeyword($emailKeyword)
             ];
         }
 
-        $filterFields = [];
-        $statusFilter = $orderFilterProperties['statusFilter'];
+        $statusFilter = $orderFilterProps['statusFilter'];
         if ($statusFilter !== OrderFilterRequestConstants::ALL) {
-            $filterFields[] = ['name' => 'status', 'value' => $statusFilter];
+            $conditions['filterFields'][] = ['name' => 'status', 'value' => $statusFilter];
         }
-        $paymentMethodFilter = $orderFilterProperties['paymentMethodFilter'];
+        $paymentMethodFilter = $orderFilterProps['paymentMethodFilter'];
         if ($paymentMethodFilter !== OrderFilterRequestConstants::ALL) {
-            $filterFields[] = ['name' => 'paymentMethod', 'value' => $paymentMethodFilter];
+            $conditions['filterFields'][] = ['name' => 'paymentMethod', 'value' => $paymentMethodFilter];
         }
 
-        return $this->orderRepository->getFilterCustomOrdersIterator(
-            $searchFields,
-            $filterFields,
-            $orderFilterProperties['fromDate'],
-            $orderFilterProperties['toDate']
-        );
+        $conditions['fromDate'] = $orderFilterProps['fromDate'];
+        $conditions['toDate'] = $orderFilterProps['toDate'];
+        return $this->orderRepository->getFilterCustomOrdersIterator($conditions);
     }
 
     protected function convertIteratorElementToArray(object $element)

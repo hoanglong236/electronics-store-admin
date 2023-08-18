@@ -23,17 +23,15 @@ class OrderController extends Controller
         $this->orderExportCsvService = $orderExportCsvService;
     }
 
-    private function getCommonDataForOrdersPage()
+    private function getBaseDataForOrdersPage($paginator)
     {
-        $nextSelectableStatusMap = $this->orderService->getNextSelectableStatusMap();
-        return [
-            'pageTitle' => 'Order',
-            'nextSelectableStatusMap' => $nextSelectableStatusMap,
-            'orderIdKeyword' => '',
-            'emailKeyword' => '',
-            'statusFilter' => OrderFilterRequestConstants::ALL,
-            'paymentMethodFilter' => OrderFilterRequestConstants::ALL,
-        ];
+        $data = [];
+        $data['orders'] = $paginator->items();
+        $data['paginator'] = $paginator;
+        $data['nextSelectableStatusMap'] = $this->orderService->getNextSelectableStatusMap();
+        $data['pageTitle'] = 'Orders';
+
+        return $data;
     }
 
     public function index()
@@ -41,9 +39,11 @@ class OrderController extends Controller
         $today = date('Y-m-d');
         $paginator = $this->orderService->getCustomOrdersPaginator($today, $today);
 
-        $data = $this->getCommonDataForOrdersPage();
-        $data['orders'] = $paginator->items();
-        $data['paginator'] = $paginator;
+        $data = $this->getBaseDataForOrdersPage($paginator);
+        $data['orderIdKeyword'] = '';
+        $data['emailKeyword'] = '';
+        $data['statusFilter'] = OrderFilterRequestConstants::ALL;
+        $data['paymentMethodFilter'] = OrderFilterRequestConstants::ALL;
         $data['fromDate'] = $today;
         $data['toDate'] = $today;
 
@@ -52,45 +52,41 @@ class OrderController extends Controller
 
     public function filter(OrderFilterRequest $orderFilterRequest)
     {
-        $orderFilterProperties = $orderFilterRequest->validated();
-        $paginator = $this->orderService->getFilterCustomOrdersPaginator($orderFilterProperties);
+        $orderFilterProps = $orderFilterRequest->validated();
+        $paginator = $this->orderService->getFilterCustomOrdersPaginator($orderFilterProps);
+        $paginator = $paginator->withPath('filter?' . CommonUtil::convertMapToParamsString($orderFilterProps));
 
-        $data = $this->getCommonDataForOrdersPage();
-        $data['orderIdKeyword'] = $orderFilterProperties['orderIdKeyword'];
-        $data['emailKeyword'] = $orderFilterProperties['emailKeyword'];
-        $data['statusFilter'] = $orderFilterProperties['statusFilter'];
-        $data['paymentMethodFilter'] = $orderFilterProperties['paymentMethodFilter'];
-        $data['fromDate'] = $orderFilterProperties['fromDate'];
-        $data['toDate'] = $orderFilterProperties['toDate'];
-        $data['orders'] = $paginator->items();
-        $data['paginator'] = $paginator->withPath(
-            'filter?' . CommonUtil::convertMapToParamsString($orderFilterProperties)
-        );
+        $data = $this->getBaseDataForOrdersPage($paginator);
+        $data['orderIdKeyword'] = $orderFilterProps['orderIdKeyword'];
+        $data['emailKeyword'] = $orderFilterProps['emailKeyword'];
+        $data['statusFilter'] = $orderFilterProps['statusFilter'];
+        $data['paymentMethodFilter'] = $orderFilterProps['paymentMethodFilter'];
+        $data['fromDate'] = $orderFilterProps['fromDate'];
+        $data['toDate'] = $orderFilterProps['toDate'];
 
         return view('pages.order.orders-page', ['data' => $data]);
     }
 
     public function filterAndExportCsv(OrderFilterRequest $orderFilterRequest)
     {
-        $orderFilterProperties = $orderFilterRequest->validated();
-        $this->orderExportCsvService->export($orderFilterProperties);
+        $orderFilterProps = $orderFilterRequest->validated();
+        $this->orderExportCsvService->export($orderFilterProps);
     }
 
-    public function updateOrderStatus(OrderStatusRequest $orderStatusRequest, $orderId)
+    public function updateOrderStatus(OrderStatusRequest $orderStatusRequest, int $orderId)
     {
-        $orderStatusProperties = $orderStatusRequest->validated();
-        $this->orderService->updateOrderStatus($orderStatusProperties, $orderId);
+        $orderStatusProps = $orderStatusRequest->validated();
+        $this->orderService->updateOrderStatus($orderStatusProps, $orderId);
 
         Session::flash(CommonConstants::ACTION_SUCCESS, MessageConstants::UPDATE_SUCCESS);
         return redirect()->action([OrderController::class, 'index']);
     }
 
-    public function showDetails($orderId)
+    public function showDetails(int $orderId)
     {
         $data = [];
-
-        $data['pageTitle'] = 'Order details';
         $data['orderDetails'] = $this->orderService->getOrderDetails($orderId);
+        $data['pageTitle'] = 'Order details';
 
         return view('pages.order.order-details-page', ['data' => $data]);
     }

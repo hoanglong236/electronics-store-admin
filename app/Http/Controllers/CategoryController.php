@@ -19,12 +19,13 @@ class CategoryController extends Controller
         $this->categoryService = $categoryService;
     }
 
-    private function getCommonDataForCategoriesPage()
+    private function getBaseDataForCategoriesPage($paginator)
     {
         $data = [];
-        $data['pageTitle'] = 'Categories';
+        $data['categories'] = $paginator->items();
+        $data['paginator'] = $paginator;
         $data['categoryMap'] = $this->categoryService->getMapFromCategoryIdToCategory(true);
-        $data['searchKeyword'] = '';
+        $data['pageTitle'] = 'Categories';
 
         return $data;
     }
@@ -33,24 +34,20 @@ class CategoryController extends Controller
     {
         $paginator = $this->categoryService->getCategoriesPaginator();
 
-        $data = $this->getCommonDataForCategoriesPage();
-        $data['categories'] = $paginator->items();
-        $data['paginator'] = $paginator;
+        $data = $this->getBaseDataForCategoriesPage($paginator);
+        $data['searchKeyword'] = '';
 
         return view('pages.category.categories-page', ['data' => $data]);
     }
 
     public function search(SimpleSearchRequest $searchRequest)
     {
-        $searchProperties = $searchRequest->validated();
-        $paginator = $this->categoryService->getSearchCategoriesPaginator($searchProperties);
+        $searchProps = $searchRequest->validated();
+        $paginator = $this->categoryService->getSearchCategoriesPaginator($searchProps);
+        $paginator = $paginator->withPath('search?' . CommonUtil::convertMapToParamsString($searchProps));
 
-        $data = $this->getCommonDataForCategoriesPage();
-        $data['searchKeyword'] = $searchProperties['searchKeyword'];
-        $data['categories'] = $paginator->items();
-        $data['paginator'] = $paginator->withPath(
-            'search?' . CommonUtil::convertMapToParamsString($searchProperties)
-        );
+        $data = $this->getBaseDataForCategoriesPage($paginator);
+        $data['searchKeyword'] = $searchProps['searchKeyword'];
 
         return view('pages.category.categories-page', ['data' => $data]);
     }
@@ -58,45 +55,45 @@ class CategoryController extends Controller
     public function create()
     {
         $data = [];
-        $data['pageTitle'] = 'Create category';
         $data['parentCategoryMap'] = $this->categoryService->getMapFromCategoryIdToCategory();
+        $data['pageTitle'] = 'Create category';
 
         return view('pages.category.category-create-page', ['data' => $data]);
     }
 
     public function createHandler(CategoryRequest $categoryRequest)
     {
-        $categoryProperties = $categoryRequest->validated();
-        $this->categoryService->createCategory($categoryProperties);
+        $categoryProps = $categoryRequest->validated();
+        $this->categoryService->createCategory($categoryProps);
 
         Session::flash(CommonConstants::ACTION_SUCCESS, MessageConstants::CREATE_SUCCESS);
         return redirect()->action([CategoryController::class, 'index']);
     }
 
-    public function update($categoryId)
+    public function update(int $categoryId)
     {
         $category = $this->categoryService->getCategoryById($categoryId);
         $parentCategoryMap = $this->categoryService->getMapFromCategoryIdToCategory(!is_null($category->parent_id));
         unset($parentCategoryMap[$category->id]);
 
         $data = [];
-        $data['pageTitle'] = 'Update category';
         $data['category'] = $category;
         $data['parentCategoryMap'] = $parentCategoryMap;
+        $data['pageTitle'] = 'Update category';
 
         return view('pages.category.category-update-page', ['data' => $data]);
     }
 
-    public function updateHandler(CategoryRequest $categoryRequest, $categoryId)
+    public function updateHandler(CategoryRequest $categoryRequest, int $categoryId)
     {
-        $categoryProperties = $categoryRequest->validated();
-        $this->categoryService->updateCategory($categoryProperties, $categoryId);
+        $categoryProps = $categoryRequest->validated();
+        $this->categoryService->updateCategory($categoryProps, $categoryId);
 
         Session::flash(CommonConstants::ACTION_SUCCESS, MessageConstants::UPDATE_SUCCESS);
         return redirect()->action([CategoryController::class, 'index']);
     }
 
-    public function delete($categoryId)
+    public function delete(int $categoryId)
     {
         $this->categoryService->deleteCategoryById($categoryId);
 

@@ -13,8 +13,9 @@ class ProductService
 
     private $storageService;
 
-    public function __construct(IProductRepository $iProductRepository, StorageService $storageService)
-    {
+    public function __construct(
+        IProductRepository $iProductRepository, StorageService $storageService
+    ) {
         $this->productRepository = $iProductRepository;
         $this->storageService = $storageService;
     }
@@ -31,38 +32,36 @@ class ProductService
     }
 
     public function getSearchProductsPaginator(
-        array $productSearchProperties,
-        int $itemPerPage = ConfigConstants::DEFAULT_ITEM_PAGE_COUNT
+        array $productSearchProps, int $itemPerPage = ConfigConstants::DEFAULT_ITEM_PAGE_COUNT
     ) {
-        $searchOption = $productSearchProperties['searchOption'];
-        $searchKeyword = $productSearchProperties['searchKeyword'];
+        $searchOption = $productSearchProps['searchOption'];
+        $searchKeyword = $productSearchProps['searchKeyword'];
         $escapedKeyword = CommonUtil::escapeKeyword($searchKeyword);
 
         return $this->productRepository
             ->searchAndPaginate($escapedKeyword, $searchOption, $itemPerPage);
     }
 
-    public function createProduct(array $productProperties)
+    public function createProduct(array $productProps)
     {
         $createAttributes = [];
-
         $createAttributes['main_image_path'] = $this->storageService
-            ->saveFile($productProperties['mainImage'], ConfigConstants::FOLDER_PATH_PRODUCT_IMAGES);
-        $createAttributes['category_id'] = $productProperties['categoryId'];
-        $createAttributes['brand_id'] = $productProperties['brandId'];
-        $createAttributes['name'] = $productProperties['name'];
-        $createAttributes['slug'] = $productProperties['slug'];
-        $createAttributes['price'] = $productProperties['price'];
-        $createAttributes['discount_percent'] = $productProperties['discountPercent'];
-        $createAttributes['quantity'] = $productProperties['quantity'];
-        $createAttributes['warranty_period'] = $productProperties['warrantyPeriod'];
-        $createAttributes['description'] = $productProperties['description'];
+            ->saveFile($productProps['mainImage'], ConfigConstants::FOLDER_PATH_PRODUCT_IMAGES);
+        $createAttributes['category_id'] = $productProps['categoryId'];
+        $createAttributes['brand_id'] = $productProps['brandId'];
+        $createAttributes['name'] = $productProps['name'];
+        $createAttributes['slug'] = $productProps['slug'];
+        $createAttributes['price'] = $productProps['price'];
+        $createAttributes['discount_percent'] = $productProps['discountPercent'];
+        $createAttributes['quantity'] = $productProps['quantity'];
+        $createAttributes['warranty_period'] = $productProps['warrantyPeriod'];
+        $createAttributes['description'] = $productProps['description'];
         $createAttributes['delete_flag'] = false;
 
         $this->productRepository->create($createAttributes);
     }
 
-    public function updateProduct(array $productProperties, int $productId)
+    public function updateProduct(array $productProps, int $productId)
     {
         $oldProduct = $this->getProductById($productId);
         if (!$oldProduct) {
@@ -70,20 +69,20 @@ class ProductService
         }
 
         $updateAttributes = [];
-        if (isset($productProperties['mainImage'])) {
+        if (isset($productProps['mainImage'])) {
             $this->storageService->deleteFile($oldProduct->main_image_path);
             $updateAttributes['main_image_path'] = $this->storageService
-                ->saveFile($productProperties['mainImage'], ConfigConstants::FOLDER_PATH_PRODUCT_IMAGES);
+                ->saveFile($productProps['mainImage'], ConfigConstants::FOLDER_PATH_PRODUCT_IMAGES);
         }
-        $updateAttributes['category_id'] = $productProperties['categoryId'];
-        $updateAttributes['brand_id'] = $productProperties['brandId'];
-        $updateAttributes['name'] = $productProperties['name'];
-        $updateAttributes['slug'] = $productProperties['slug'];
-        $updateAttributes['price'] = $productProperties['price'];
-        $updateAttributes['discount_percent'] = $productProperties['discountPercent'];
-        $updateAttributes['quantity'] = $productProperties['quantity'];
-        $updateAttributes['warranty_period'] = $productProperties['warrantyPeriod'];
-        $updateAttributes['description'] = $productProperties['description'];
+        $updateAttributes['category_id'] = $productProps['categoryId'];
+        $updateAttributes['brand_id'] = $productProps['brandId'];
+        $updateAttributes['name'] = $productProps['name'];
+        $updateAttributes['slug'] = $productProps['slug'];
+        $updateAttributes['price'] = $productProps['price'];
+        $updateAttributes['discount_percent'] = $productProps['discountPercent'];
+        $updateAttributes['quantity'] = $productProps['quantity'];
+        $updateAttributes['warranty_period'] = $productProps['warrantyPeriod'];
+        $updateAttributes['description'] = $productProps['description'];
 
         $this->productRepository->update($updateAttributes, $productId);
     }
@@ -126,14 +125,14 @@ class ProductService
         return $productDetails;
     }
 
-    public function createProductImages(array $productImageProperties)
+    public function createProductImages(array $productImageProps)
     {
-        $images = $productImageProperties['images'];
+        $images = $productImageProps['images'];
         foreach ($images as $image) {
             $createAttributes = [];
             $createAttributes['image_path'] = $this->storageService
                 ->saveFile($image, ConfigConstants::FOLDER_PATH_PRODUCT_IMAGES);
-            $createAttributes['product_id'] = $productImageProperties['productId'];
+            $createAttributes['product_id'] = $productImageProps['productId'];
 
             $this->productRepository->createProductImage($createAttributes);
         }

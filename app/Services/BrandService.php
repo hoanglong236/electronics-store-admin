@@ -12,8 +12,9 @@ class BrandService
 
     private $storageService;
 
-    public function __construct(IBrandRepository $iBrandRepository, StorageService $storageService)
-    {
+    public function __construct(
+        IBrandRepository $iBrandRepository, StorageService $storageService
+    ) {
         $this->brandRepository = $iBrandRepository;
         $this->storageService = $storageService;
     }
@@ -29,29 +30,27 @@ class BrandService
     }
 
     public function getSearchBrandsPaginator(
-        array $searchProperties,
-        int $itemPerPage = ConfigConstants::DEFAULT_ITEM_PAGE_COUNT
+        array $searchProps, int $itemPerPage = ConfigConstants::DEFAULT_ITEM_PAGE_COUNT
     ) {
-        $searchKeyword = $searchProperties['searchKeyword'];
+        $searchKeyword = $searchProps['searchKeyword'];
         $escapedKeyword = CommonUtil::escapeKeyword($searchKeyword);
 
         return $this->brandRepository->searchAndPaginate($escapedKeyword, $itemPerPage);
     }
 
-    public function createBrand(array $brandProperties)
+    public function createBrand(array $brandProps)
     {
         $createAttributes = [];
-
         $createAttributes['logo_path'] = $this->storageService
-            ->saveFile($brandProperties['logo'], ConfigConstants::FOLDER_PATH_BRAND_LOGOS);
-        $createAttributes['name'] = $brandProperties['name'];
-        $createAttributes['slug'] = $brandProperties['slug'];
+            ->saveFile($brandProps['logo'], ConfigConstants::FOLDER_PATH_BRAND_LOGOS);
+        $createAttributes['name'] = $brandProps['name'];
+        $createAttributes['slug'] = $brandProps['slug'];
         $createAttributes['delete_flag'] = false;
 
         $this->brandRepository->create($createAttributes);
     }
 
-    public function updateBrand(array $brandProperties, int $brandId)
+    public function updateBrand(array $brandProps, int $brandId)
     {
         $oldBrand = $this->getBrandById($brandId);
         if (!$oldBrand) {
@@ -59,13 +58,13 @@ class BrandService
         }
 
         $updateAttributes = [];
-        if (isset($brandProperties['logo'])) {
+        if (isset($brandProps['logo'])) {
             $this->storageService->deleteFile($oldBrand->logo_path);
             $updateAttributes['logo_path'] = $this->storageService
-                ->saveFile($brandProperties['logo'], ConfigConstants::FOLDER_PATH_BRAND_LOGOS);
+                ->saveFile($brandProps['logo'], ConfigConstants::FOLDER_PATH_BRAND_LOGOS);
         }
-        $updateAttributes['name'] = $brandProperties['name'];
-        $updateAttributes['slug'] = $brandProperties['slug'];
+        $updateAttributes['name'] = $brandProps['name'];
+        $updateAttributes['slug'] = $brandProps['slug'];
 
         $this->brandRepository->update($updateAttributes, $brandId);
     }
@@ -77,16 +76,13 @@ class BrandService
 
     public function getMapFromBrandIdToBrand(bool $withDeleted = false)
     {
-        $miniBrands = $this->brandRepository->listAll(
-            ['id', 'name', 'delete_flag'],
-            $withDeleted
-        );
+        $miniBrands = $this->brandRepository
+            ->listAll(['id', 'name', 'delete_flag'], $withDeleted);
         $map = [];
 
         foreach ($miniBrands as $miniBrand) {
             $map[$miniBrand->id] = $miniBrand;
         }
-
         return $map;
     }
 }

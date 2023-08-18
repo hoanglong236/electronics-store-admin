@@ -21,7 +21,7 @@
                                 </div>
                                 <div class="mess__item">
                                     <div class="image img-cir img-40">
-                                        <img src="{{ asset('assets/images/icon/avatar-06.jpg') }}"
+                                        <img src="{{ asset('assets/images/icon/customer-avatar.png') }}"
                                             alt="Michelle Moreno" />
                                     </div>
                                     <div class="content">
@@ -32,7 +32,7 @@
                                 </div>
                                 <div class="mess__item">
                                     <div class="image img-cir img-40">
-                                        <img src="{{ asset('assets/images/icon/avatar-04.jpg') }}" alt="Diane Myers" />
+                                        <img src="{{ asset('assets/images/icon/customer-avatar.png') }}" alt="Diane Myers" />
                                     </div>
                                     <div class="content">
                                         <h6>Diane Myers</h6>
@@ -54,7 +54,7 @@
                                 </div>
                                 <div class="email__item">
                                     <div class="image img-cir img-40">
-                                        <img src="{{ asset('assets/images/icon/avatar-06.jpg') }}"
+                                        <img src="{{ asset('assets/images/icon/customer-avatar.png') }}"
                                             alt="Cynthia Harvey" />
                                     </div>
                                     <div class="content">
@@ -64,7 +64,7 @@
                                 </div>
                                 <div class="email__item">
                                     <div class="image img-cir img-40">
-                                        <img src="{{ asset('assets/images/icon/avatar-05.jpg') }}"
+                                        <img src="{{ asset('assets/images/icon/customer-avatar.png') }}"
                                             alt="Cynthia Harvey" />
                                     </div>
                                     <div class="content">
@@ -74,7 +74,7 @@
                                 </div>
                                 <div class="email__item">
                                     <div class="image img-cir img-40">
-                                        <img src="{{ asset('assets/images/icon/avatar-04.jpg') }}"
+                                        <img src="{{ asset('assets/images/icon/customer-avatar.png') }}"
                                             alt="Cynthia Harvey" />
                                     </div>
                                     <div class="content">

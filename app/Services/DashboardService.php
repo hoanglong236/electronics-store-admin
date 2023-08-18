@@ -17,7 +17,6 @@ class DashboardService
     public function getDashboardData(string $date)
     {
         $data = [];
-
         $data['newCustomersCount'] = $this->dashboardRepository->getNumberNewCustomers($date);
         $data['revenue'] = $this->dashboardRepository->getRevenue($date);
 
@@ -34,7 +33,6 @@ class DashboardService
 
         $data['orderQty'] = $totalOrderQty;
         $data['orderQtyByPaymentMethods'] = $orderQtyByPaymentMethods;
-
         return $data;
     }
 }

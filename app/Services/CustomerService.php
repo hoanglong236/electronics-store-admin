@@ -21,19 +21,18 @@ class CustomerService
     }
 
     public function getSearchCustomersPaginator(
-        array $searchProperties,
-        int $itemPerPage = ConfigConstants::DEFAULT_ITEM_PAGE_COUNT
+        array $searchProps, int $itemPerPage = ConfigConstants::DEFAULT_ITEM_PAGE_COUNT
     ) {
-        $searchKeyword = $searchProperties['searchKeyword'];
+        $searchKeyword = $searchProps['searchKeyword'];
         $escapedKeyword = CommonUtil::escapeKeyword($searchKeyword);
 
         return $this->customerRepository->searchAndPaginate($escapedKeyword, $itemPerPage);
     }
 
-    public function updateCustomerDisableFlag(array $customerDisableFlagProperties, int $customerId)
+    public function updateCustomerDisableFlag(array $customerDisableProps, int $customerId)
     {
         $updateAttributes = [];
-        $updateAttributes['disable_flag'] = $customerDisableFlagProperties['disableFlag'];
+        $updateAttributes['disable_flag'] = $customerDisableProps['disableFlag'];
         $this->customerRepository->update($updateAttributes, $customerId);
     }
 

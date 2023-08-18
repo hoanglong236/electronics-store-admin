@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Constants\CommonConstants;
 use App\Constants\MessageConstants;
-use App\Http\Requests\CustomerDisableFlagRequest;
+use App\Http\Requests\CustomerDisableRequest;
 use App\Http\Requests\SimpleSearchRequest;
 use App\Services\CustomerService;
 use App\Utils\CommonUtil;
@@ -19,45 +19,48 @@ class CustomerController extends Controller
         $this->customerService = $customerService;
     }
 
+    private function getBaseDataForCustomersPage($paginator)
+    {
+        $data = [];
+        $data['customers'] = $paginator->items();
+        $data['paginator'] = $paginator;
+        $data['pageTitle'] = 'Customers';
+
+        return $data;
+    }
+
     public function index()
     {
         $paginator = $this->customerService->getCustomersPaginator();
-        $data = [];
 
-        $data['pageTitle'] = 'Customers';
+        $data = $this->getBaseDataForCustomersPage($paginator);
         $data['searchKeyword'] = '';
-        $data['customers'] = $paginator->items();
-        $data['paginator'] = $paginator;
 
         return view('pages.customer.customers-page', ['data' => $data]);
     }
 
     public function search(SimpleSearchRequest $searchRequest)
     {
-        $searchProperties = $searchRequest->validated();
-        $paginator = $this->customerService->getSearchCustomersPaginator($searchProperties);
-        $data = [];
+        $searchProps = $searchRequest->validated();
+        $paginator = $this->customerService->getSearchCustomersPaginator($searchProps);
+        $paginator = $paginator->withPath('search?' . CommonUtil::convertMapToParamsString($searchProps));
 
-        $data['pageTitle'] = 'Customers';
-        $data['searchKeyword'] = $searchProperties['searchKeyword'];
-        $data['customers'] = $paginator->items();
-        $data['paginator'] = $paginator->withPath(
-            'search?' . CommonUtil::convertMapToParamsString($searchProperties)
-        );
+        $data = $this->getBaseDataForCustomersPage($paginator);
+        $data['searchKeyword'] = $searchProps['searchKeyword'];
 
         return view('pages.customer.customers-page', ['data' => $data]);
     }
 
-    public function updateDisableFlag(CustomerDisableFlagRequest $customerDisableFlagRequest, $customerId)
+    public function updateDisableFlag(CustomerDisableRequest $customerDisableRequest, int $customerId)
     {
-        $customerDisableFlagProperties = $customerDisableFlagRequest->validated();
-        $this->customerService->updateCustomerDisableFlag($customerDisableFlagProperties, $customerId);
+        $customerDisableProps = $customerDisableRequest->validated();
+        $this->customerService->updateCustomerDisableFlag($customerDisableProps, $customerId);
 
         Session::flash(CommonConstants::ACTION_SUCCESS, MessageConstants::UPDATE_SUCCESS);
         return redirect()->action([CustomerController::class, 'index']);
     }
 
-    public function delete($customerId)
+    public function delete(int $customerId)
     {
         $this->customerService->deleteCustomerById($customerId);
 
@@ -65,12 +68,11 @@ class CustomerController extends Controller
         return redirect()->action([CustomerController::class, 'index']);
     }
 
-    public function showDetails($customerId)
+    public function showDetails(int $customerId)
     {
         $data = [];
-
-        $data['pageTitle'] = 'Customer details';
         $data['customerDetails'] = $this->customerService->getCustomerDetails($customerId);
+        $data['pageTitle'] = 'Customer details';
 
         return view('pages.customer.customer-details-page', ['data' => $data]);
     }

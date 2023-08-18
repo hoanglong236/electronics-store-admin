@@ -22,17 +22,15 @@ class AdminController extends Controller
 
     public function index()
     {
-        $data = [
-            'pageTitle' => 'Login',
-        ];
-
+        $data = [];
+        $data['pageTitle'] = 'Login';
         return view('pages.guest.login-page', ['data' => $data]);
     }
 
     public function loginHandler(LoginRequest $loginRequest)
     {
-        $loginProperties = $loginRequest->validated();
-        $isLoggedIn = $this->adminService->login($loginProperties);
+        $loginProps = $loginRequest->validated();
+        $isLoggedIn = $this->adminService->login($loginProps);
 
         if ($isLoggedIn) {
             return redirect()->action([DashboardController::class, 'index']);
@@ -52,17 +50,15 @@ class AdminController extends Controller
 
     public function register()
     {
-        $data = [
-            'pageTitle' => 'Register'
-        ];
-
+        $data = [];
+        $data['pageTitle'] = 'Register';
         return view('pages.guest.register-page', ['data' => $data]);
     }
 
     public function registerHandler(RegisterRequest $registerRequest)
     {
-        $registerProperties = $registerRequest->validated();
-        $this->adminService->register($registerProperties);
+        $registerProps = $registerRequest->validated();
+        $this->adminService->register($registerProps);
 
         Session::flash(CommonConstants::ACTION_SUCCESS, MessageConstants::REGISTER_SUCCESS);
         return redirect()->action([AdminController::class, 'index']);
