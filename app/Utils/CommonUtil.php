@@ -10,18 +10,17 @@ class CommonUtil
 
     public static function escapeKeyword(string $keyword)
     {
-        $search = array('%', '_');
-        $replace = array('\%', '\_');
-        return str_replace($search, $replace, $keyword);
+        $searchPatterns = ['%', '_'];
+        $replacePatterns = ['\%', '\_'];
+        return str_replace($searchPatterns, $replacePatterns, $keyword);
     }
 
     public static function convertMapToParamsString($map)
     {
         $str = '';
         foreach ($map as $key => $value) {
-            $str .= $key . '=' . $value . '&';
+            $str .= $key . '=' . ($value ?? '') . '&';
         }
-
         return substr($str, 0, -1);
     }
 }
