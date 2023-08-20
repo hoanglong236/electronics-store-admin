@@ -23,7 +23,7 @@ class AdminService
 
     public function logout()
     {
-        Auth::logout();
+        Auth::guard('admin')->logout();
         Session::invalidate();
         Session::regenerateToken();
     }
