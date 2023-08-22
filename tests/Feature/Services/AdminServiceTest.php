@@ -2,14 +2,12 @@
 
 namespace Tests\Feature\Services;
 
-use App;
 use App\Models\Admin;
 use App\Services\AdminService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
 use Tests\TestCase;
 
 class AdminServiceTest extends TestCase
@@ -17,36 +15,29 @@ class AdminServiceTest extends TestCase
     use RefreshDatabase;
     use WithFaker;
 
-    private $setUpEmail;
-    private $setUpPassword;
     private $adminService;
 
-    private function setUpCommonBeforeRunningTest()
+    private function allTestSetup()
     {
-        $this->setUpEmail = $this->faker()->safeEmail();
-        $this->setUpPassword = $this->faker()->password(6, 6);
-        $this->adminService = App::make(AdminService::class);
-
-        Log::debug('Setup email: ' . $this->setUpEmail);
+        $this->adminService = app(AdminService::class);
     }
 
-    private function setUpCreateAdmin()
+    private function createAdminSetup(array $props)
     {
         return Admin::factory()->create([
-            'email' => $this->setUpEmail,
-            'password' => Hash::make($this->setUpPassword),
+            'email' => $props['email'],
+            'password' => Hash::make($props['password']),
         ]);
     }
 
-    public function test_admin_should_be_register_ok(): void
+    public function test_it_should_be_registered_as_admin(): void
     {
         // Setup
-        $this->setUpCommonBeforeRunningTest();
-        $setUpName = $this->faker()->userName();
+        $this->allTestSetup();
         $registerProps = [
-            'email' => $this->setUpEmail,
-            'name' => $setUpName,
-            'password' => $this->setUpPassword
+            'email' => $this->faker->safeEmail(),
+            'name' => $this->faker->userName(),
+            'password' => $this->faker->password(6, 6)
         ];
 
         // Run
@@ -54,34 +45,39 @@ class AdminServiceTest extends TestCase
 
         // Asserts
         $this->assertDatabaseHas('admins', [
-            'email' => $this->setUpEmail,
-            'name' => $setUpName
+            'email' => $registerProps['email'],
+            'name' => $registerProps['name']
         ]);
     }
 
-    public function test_admin_should_be_login_ok(): void
+    public function test_it_should_be_logged_as_admin(): void
     {
         // Setup
-        $this->setUpCommonBeforeRunningTest();
-        $this->setUpCreateAdmin();
+        $this->allTestSetup();
         $loginProps = [
-            'email' => $this->setUpEmail,
-            'password' => $this->setUpPassword
+            'email' => $this->faker->safeEmail(),
+            'password' => $this->faker->password(6, 6)
         ];
+        $this->createAdminSetup($loginProps);
+
+        // Run
+        $isLoginSuccess = $this->adminService->login($loginProps);
 
         // Asserts
-        $this->assertTrue($this->adminService->login($loginProps));
+        $this->assertTrue($isLoginSuccess);
+        $this->assertTrue(Auth::guard('admin')->check());
+        $this->assertEquals($loginProps['email'], Auth::guard('admin')->user()->email);
     }
 
-    public function test_admin_should_be_logout_ok(): void
+    public function test_it_should_be_logged_out_as_admin(): void
     {
         // Setup
-        $this->setUpCommonBeforeRunningTest();
-        $this->setUpCreateAdmin();
+        $this->allTestSetup();
         $loginProps = [
-            'email' => $this->setUpEmail,
-            'password' => $this->setUpPassword
+            'email' => $this->faker->safeEmail(),
+            'password' => $this->faker->password(6, 6)
         ];
+        $this->createAdminSetup($loginProps);
         $isLoginSuccess = $this->adminService->login($loginProps);
 
         // Run
