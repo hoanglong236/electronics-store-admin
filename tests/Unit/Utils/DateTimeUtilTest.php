@@ -19,14 +19,14 @@ class DateTimeUtilTest extends TestCase
         $this->assertEquals($date2 . ' ' . $endTimeOfDay, DateTimeUtil::dateToEndOfDate($date2));
     }
 
-    public function test_it_should_return_first_date_of_month(): void
+    public function test_it_should_be_returned_first_date_of_month(): void
     {
         // Asserts
         $this->assertEquals('2023/01/01', DateTimeUtil::getFirstDateOfMonth(1, 2023));
-        $this->assertEquals('2023/05/01', DateTimeUtil::getFirstDateOfMonth(5, 2023));
+        $this->assertEquals('2023/04/01', DateTimeUtil::getFirstDateOfMonth(4, 2023));
     }
 
-    public function test_it_should_return_last_date_of_month(): void
+    public function test_it_should_be_returned_last_date_of_month(): void
     {
         // Asserts
         $this->assertEquals('2023/01/31', DateTimeUtil::getLastDateOfMonth(1, 2023));
@@ -36,7 +36,7 @@ class DateTimeUtilTest extends TestCase
         $this->assertEquals('2000/02/29', DateTimeUtil::getLastDateOfMonth(2, 2000));
     }
 
-    public function test_it_should_return_last_day_of_month(): void
+    public function test_it_should_be_returned_last_day_of_month(): void
     {
         // Asserts
         $this->assertEquals(31, DateTimeUtil::getLastDayOfMonth(1, 2023));

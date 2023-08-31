@@ -17,12 +17,12 @@ class AdminServiceTest extends TestCase
 
     private $adminService;
 
-    private function allTestSetup()
+    private function allTestSetup(): void
     {
         $this->adminService = app(AdminService::class);
     }
 
-    private function createAdminSetup(array $props)
+    private function createAdminSetup(array $props): Admin
     {
         return Admin::factory()->create([
             'email' => $props['email'],
@@ -46,7 +46,27 @@ class AdminServiceTest extends TestCase
         // Asserts
         $this->assertDatabaseHas('admins', [
             'email' => $registerProps['email'],
-            'name' => $registerProps['name']
+            'name' => $registerProps['name'],
+        ]);
+    }
+
+    public function test_password_should_not_be_stored_as_plain_text_when_register(): void
+    {
+        // Setup
+        $this->allTestSetup();
+        $registerProps = [
+            'email' => $this->faker->safeEmail(),
+            'name' => $this->faker->userName(),
+            'password' => $this->faker->password(6, 6)
+        ];
+
+        // Run
+        $this->adminService->register($registerProps);
+
+        // Asserts
+        $this->assertDatabaseMissing('admins', [
+            'email' => $registerProps['email'],
+            'password' => $registerProps['password']
         ]);
     }
 
@@ -65,7 +85,6 @@ class AdminServiceTest extends TestCase
 
         // Asserts
         $this->assertTrue($isLoginSuccess);
-        $this->assertTrue(Auth::guard('admin')->check());
         $this->assertEquals($loginProps['email'], Auth::guard('admin')->user()->email);
     }
 

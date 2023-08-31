@@ -31,6 +31,6 @@ class AdminService
     public function register(array $registerProps)
     {
         $registerProps['password'] = Hash::make($registerProps['password']);
-        $this->adminRepository->create($registerProps);
+        return $this->adminRepository->create($registerProps);
     }
 }
