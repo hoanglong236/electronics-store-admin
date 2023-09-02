@@ -47,7 +47,7 @@ class BrandService
         $createAttributes['slug'] = $brandProps['slug'];
         $createAttributes['delete_flag'] = false;
 
-        $this->brandRepository->create($createAttributes);
+        return $this->brandRepository->create($createAttributes);
     }
 
     public function updateBrand(array $brandProps, int $brandId)
@@ -66,12 +66,12 @@ class BrandService
         $updateAttributes['name'] = $brandProps['name'];
         $updateAttributes['slug'] = $brandProps['slug'];
 
-        $this->brandRepository->update($updateAttributes, $brandId);
+        return $this->brandRepository->update($updateAttributes, $brandId);
     }
 
     public function deleteBrandById(int $brandId)
     {
-        $this->brandRepository->deleteById($brandId);
+        return $this->brandRepository->deleteById($brandId);
     }
 
     public function getMapFromBrandIdToBrand(bool $withDeleted = false)
