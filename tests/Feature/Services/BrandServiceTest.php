@@ -22,7 +22,7 @@ class BrandServiceTest extends TestCase
         $this->brandService = app(BrandService::class);
     }
 
-    public function test_it_should_be_get_brand_by_id(): void
+    public function test_brand_should_be_found_by_id(): void
     {
         // Setup
         $this->allTestSetup();
@@ -35,7 +35,7 @@ class BrandServiceTest extends TestCase
         $this->assertEquals($brandSetup->attributesToArray(), $brand->attributesToArray());
     }
 
-    public function test_it_should_not_be_get_brand_by_not_existed_id(): void
+    public function test_brand_should_not_be_found_when_id_not_exist(): void
     {
         // Setup
         $this->allTestSetup();
@@ -116,9 +116,7 @@ class BrandServiceTest extends TestCase
         // Setup
         $this->allTestSetup();
         Brand::factory()->create(['name' => 'Banana', 'slug' => 'banana']);
-        Brand::factory()->create(['name' => 'Banana1', 'slug' => 'banana-1']);
         Brand::factory()->create(['name' => 'Apple', 'slug' => 'apple']);
-        Brand::factory()->create(['name' => 'Apple1', 'slug' => 'apple-1']);
 
         $itemPerPageSetup = 2;
         $searchProps = [];
@@ -138,10 +136,9 @@ class BrandServiceTest extends TestCase
         // Setup
         $this->allTestSetup();
         $createProps = [];
-        $createProps['name'] = 'Banana';
-        $createProps['slug'] = 'banana';
-        $createProps['logo'] = UploadedFile::fake()->image('banana.png');
-        $createProps['delete_flag'] = false;
+        $createProps['name'] = 'Brand';
+        $createProps['slug'] = 'brand';
+        $createProps['logo'] = UploadedFile::fake()->image('brand.png');
 
         // Run
         $brand = $this->brandService->createBrand($createProps);
@@ -164,10 +161,8 @@ class BrandServiceTest extends TestCase
     {
         // Setup
         $this->allTestSetup();
-        $brandSetup = Brand::factory()->create([
-            'name' => 'Brand',
-            'slug' => 'brand',
-        ]);
+        $brandSetup = Brand::factory()->create(['name' => 'Brand', 'slug' => 'brand']);
+
         $updateProps = [];
         $updateProps['name'] = 'New brand';
         $updateProps['slug'] = 'new-brand';
@@ -203,6 +198,10 @@ class BrandServiceTest extends TestCase
         $deletedBrand = $this->brandService->deleteBrandById($brandSetup->id);
 
         // Asserts
+        $this->assertDatabaseHas('brands', [
+            'id' => $brandSetup->id,
+            'delete_flag' => true,
+        ]);
         $this->assertTrue($deletedBrand->delete_flag);
     }
 
